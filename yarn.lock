@@ -1719,7 +1719,7 @@ __metadata:
 
 "resolve@patch:resolve@^1.22.1#~builtin<compat/resolve>":
   version: 1.22.1
-  resolution: "resolve@patch:resolve@npm%3A1.22.1#~builtin<compat/resolve>::version=1.22.1&hash=07638b"
+  resolution: "resolve@patch:resolve@npm%3A1.22.1#~builtin<compat/resolve>::version=1.22.1&hash=c3c19d"
   dependencies:
     is-core-module: ^2.9.0
     path-parse: ^1.0.7
@@ -1981,11 +1981,11 @@ __metadata:
 
 "typescript@patch:typescript@^5.0.3#~builtin<compat/typescript>":
   version: 5.0.3
-  resolution: "typescript@patch:typescript@npm%3A5.0.3#~builtin<compat/typescript>::version=5.0.3&hash=7ad353"
+  resolution: "typescript@patch:typescript@npm%3A5.0.3#~builtin<compat/typescript>::version=5.0.3&hash=b5f058"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 7e50cd198d2f7f052ac4e10d9a9b6e88ed91b3434c32b6e82f278a4e33727b42fee5d33929ef8a633b409a6bf62fd4bb95df464809507b7a703a4c73269dce3c
+  checksum: 381de1b58d2deb6443cc7d23365b4db36de8360dfc4f4d295ca2fdb0e01687711fb541478838fb9326da315baf6967d616c745d990f2c362036b337a12b18255
   languageName: node
   linkType: hard
 

@@ -3,12 +3,13 @@
   "private": true,
   "author": "ChainSafe <info@chainsafe.io>",
   "license": "(MIT)",
-  "packageManager": "yarn@3.2.1",
+  "packageManager": "yarn@3.8.2",
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "website"
   ],
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   },
   "scripts": {
     "build": "yarn workspaces foreach -vpt run build",
