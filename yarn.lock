@@ -39,6 +39,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@chainsafe/gopher-sdk@workspace:packages/sdk":
+  version: 0.0.0-use.local
+  resolution: "@chainsafe/gopher-sdk@workspace:packages/sdk"
+  dependencies:
+    "@types/eslint": ^8.37.0
+    "@types/node": 18.15.11
+    eslint: ^8.37.0
+    typescript: ^5.0.3
+  languageName: unknown
+  linkType: soft
+
 "@esbuild/aix-ppc64@npm:0.20.2":
   version: 0.20.2
   resolution: "@esbuild/aix-ppc64@npm:0.20.2"
