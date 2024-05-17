@@ -1,9 +1,7 @@
 <script lang="ts">
-    import {connect} from "$lib/stores/wallet";
+	import { connect } from '$lib/stores/wallet';
 
-    connect
+	connect;
 </script>
 
-<button class="btn variant-filled" on:click={() => connect()}>
-    Connect Wallet
-</button>
+<button class="btn variant-filled" on:click={() => connect()}> Connect Wallet </button>

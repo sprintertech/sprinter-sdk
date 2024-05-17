@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '../app.postcss';
-	import {AppShell, AppBar, LightSwitch} from '@skeletonlabs/skeleton';
+	import { AppShell, AppBar, LightSwitch } from '@skeletonlabs/skeleton';
 
 	// Highlight JS
 	import hljs from 'highlight.js/lib/core';
