@@ -21,35 +21,6 @@ export function hacks_getChainIcon(id: number): string {
 	}
 }
 
-export async function hacks_getNetworkDetails(chainID: number): Promise<Object> {
-	const account = await MMSDK.getProvider()!.request({ method: 'eth_requestAccounts', params: [] });
-
-	const url =
-		'https://corsproxy.io/?' +
-		encodeURIComponent(`https://api.gopher.chainsafe.dev/networks/${chainID}/assets/fungible`);
-	const assets = await fetch(url).then((r) => r.json());
-
-	const userAssets = await Promise.all(
-		assets.data.map((asset) => {
-			const url =
-				'https://corsproxy.io/?' +
-				encodeURIComponent(
-					`https://api.gopher.chainsafe.dev/accounts/${account[0]}/assets/fungible/${asset.Symbol}`
-				);
-			return fetch(url)
-				.then((r) => r.json())
-				.then((r) => r.data.find((assetData) => assetData.chainId === chainID))
-				.then((r) => ({ ...r, Symbol: asset.Symbol }));
-		})
-	);
-
-	return {
-		data: assets.data,
-		assets: userAssets,
-		assetsMap: userAssets.reduce((p, c) => ({ ...p, [c.Symbol]: c }), {})
-	};
-}
-
 export async function hacks_getGopherData(): Promise<Object> {
 	const networksResponse = await fetch(makeUrl('https://api.gopher.chainsafe.dev/networks')).then(
 		(r) => r.json()

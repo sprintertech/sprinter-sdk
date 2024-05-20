@@ -10,7 +10,6 @@
 
   const handleListClick = async (index: number) => {
     const data = await promise;
-    console.log(data);
     const token = data.tokens[index];
 
     const modal: ModalSettings = {
