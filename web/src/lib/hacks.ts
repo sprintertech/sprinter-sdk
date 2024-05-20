@@ -81,22 +81,26 @@ export async function hacks_getGopherData(): Promise<Object> {
 	const balancesResponses = await Promise.all(
 		tokens
 			.keys()
-			.map((key) =>
-				fetch(
-					makeUrl(`https://api.gopher.chainsafe.dev/accounts/${account}/assets/fungible/${key}`)
-				).then((r) => ({ Symbol: key, ...r.json() }))
+			.map((key) => fetch(
+            makeUrl(`https://api.gopher.chainsafe.dev/accounts/${account}/assets/fungible/${key}`)
+          ).then(r => r.json()).then((r) =>({ Symbol: key, ...r }))
 			)
 	);
 
-	console.log(balancesResponses);
 	const balances = new Map<string, Object[]>();
 	balancesResponses.forEach((balance) => {
 		balances.set(balance.Symbol, balance.data);
 	});
 
-	const result = { networks, tokens, balances };
-	console.log(result);
-	return result;
+	const tokensData = [...tokens.keys()].map(key => {
+		const tokenData = tokens.get(key);
+		const balanceData = balances.get(key);
+
+		const totalBalance = balanceData.reduce((prev, cur) => prev + Number(cur.balance), 0)
+		return { ...tokenData, balances: balanceData, total: totalBalance };
+	});
+
+	return { raw: { networks, tokens, balances }, tokens: tokensData };
 }
 
 const makeUrl = (url: string): string => 'https://corsproxy.io/?' + encodeURIComponent(url);
