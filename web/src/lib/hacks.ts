@@ -22,11 +22,11 @@ export function hacks_getChainIcon(id: number): string {
 }
 
 export async function hacks_getGopherData(): Promise<Object> {
-	const networksResponse = await fetch(makeUrl('https://api.gopher.chainsafe.dev/networks')).then(
+	const networksResponse = await fetch('https://api.gopher.chainsafe.dev/networks').then(
 		(r) => r.json()
 	);
 	const networks = networksResponse.data.reduce(
-		(prev, network) => prev.set(network.ChainID, network),
+		(prev, network) => prev.set(network.chainID, network),
 		new Map<number, Object>()
 	);
 
@@ -34,7 +34,7 @@ export async function hacks_getGopherData(): Promise<Object> {
 		networks
 			.keys()
 			.map((key) =>
-				fetch(makeUrl(`https://api.gopher.chainsafe.dev/networks/${key}/assets/fungible`)).then(
+				fetch(`https://api.gopher.chainsafe.dev/networks/${key}/assets/fungible`).then(
 					(r) => r.json()
 				)
 			)
@@ -43,23 +43,23 @@ export async function hacks_getGopherData(): Promise<Object> {
 	const tokens = new Map<string, Object>();
 	fungibleResponses.forEach((response) => {
 		response.data.forEach((asset) => {
-			if (tokens.has(asset.Symbol)) return;
-			tokens.set(asset.Symbol, asset);
+			if (tokens.has(asset.symbol)) return;
+			tokens.set(asset.symbol, asset);
 		});
 	});
 
 	const account = await MMSDK.getProvider()!.request({ method: 'eth_requestAccounts', params: [] });
 	const balancesResponses = await Promise.all(
 		tokens.keys().map((key) =>
-			fetch(makeUrl(`https://api.gopher.chainsafe.dev/accounts/${account}/assets/fungible/${key}`))
+			fetch(`https://api.gopher.chainsafe.dev/accounts/${account}/assets/fungible/${key}`)
 				.then((r) => r.json())
-				.then((r) => ({ Symbol: key, ...r }))
+				.then((r) => ({ symbol: key, ...r }))
 		)
 	);
 
 	const balances = new Map<string, Object[]>();
 	balancesResponses.forEach((balance) => {
-		balances.set(balance.Symbol, balance.data);
+		balances.set(balance.symbol, balance.data);
 	});
 
 	const tokensData = [...tokens.keys()].map((key) => {
@@ -72,5 +72,3 @@ export async function hacks_getGopherData(): Promise<Object> {
 
 	return { raw: { networks, tokens, balances }, tokens: tokensData };
 }
-
-const makeUrl = (url: string): string => 'https://corsproxy.io/?' + encodeURIComponent(url);

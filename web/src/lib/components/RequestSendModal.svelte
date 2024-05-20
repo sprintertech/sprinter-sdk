@@ -48,7 +48,7 @@
                     Token
                     <select class="select" bind:value={token}>
                         {#each $modalStore[0].value.tokens as token}
-                            <option value="{token[1].Symbol}">{token[1].Name}</option>
+                            <option value="{token[1].symbol}">{token[1].name}</option>
                         {/each}
                     </select>
                 </div>
@@ -57,7 +57,7 @@
                     Destination
                     <select class="select" bind:value={network}>
                         {#each $modalStore[0].value.networks as network}
-                            <option value="{network[1].ChainID}">{network[1].Name}</option>
+                            <option value="{network[1].chainID}">{network[1].name}</option>
                         {/each}
                     </select>
                 </div>
@@ -80,11 +80,11 @@
                                 Whitelisted Sources
                                 <ListBox multiple>
                                     {#each balances as balance}
-                                        <ListBoxItem bind:group={whitelisted} name="{$modalStore[0].value.networks.get(balance.chainId).Name}" value="{balance.chainId}">
+                                        <ListBoxItem bind:group={whitelisted} name="{$modalStore[0].value.networks.get(balance.chainId).name}" value="{balance.chainId}">
                                             <svelte:fragment slot="lead">
                                                 <img class="size-6" src={hacks_getChainIcon(balance.chainId)} alt={`${balance.chainId}-LOGO`} />
                                             </svelte:fragment>
-                                            {$modalStore[0].value.networks.get(balance.chainId).Name}
+                                            {$modalStore[0].value.networks.get(balance.chainId).name}
                                             <svelte:fragment slot="trail">{balance.balance}</svelte:fragment>
                                         </ListBoxItem>
                                     {/each}

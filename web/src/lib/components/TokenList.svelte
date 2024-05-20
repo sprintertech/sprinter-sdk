@@ -17,10 +17,10 @@
 		const modal: ModalSettings = {
 			type: 'component',
 			component: { ref: TokenModal },
-			title: token.Name,
+			title: token.name,
 			buttonTextCancel: "close",
 			value: { networks: data.raw.networks, balances: token.balances },
-			meta: { icon: token.LogoURI, sybol: token.Symbol }
+			meta: { icon: token.logoURI, sybol: token.symbol }
 		};
 		modalStore.trigger(modal);
 	}
@@ -56,8 +56,8 @@
 			<tbody>
 				{#each data.tokens as token, i}
 					<tr on:click={() => handleListClick(i)}>
-						<td><img class="size-8" src={token.LogoURI} alt={`${token.LogoURI}-LOGO`} /></td>
-						<td>{token.Name}</td>
+						<td><img class="size-8" src={token.logoURI} alt={`${token.logoURI}-LOGO`} /></td>
+						<td>{token.name}</td>
 						<td />
 						<td>{token.total}</td>
 					</tr>
