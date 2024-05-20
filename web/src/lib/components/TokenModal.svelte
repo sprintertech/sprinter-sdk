@@ -36,7 +36,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						{#each $modalStore[0].value.balances as balance, i}
+						{#each $modalStore[0].value.balances as balance}
 							<tr>
 								<td><img class="size-7" src={hacks_getChainIcon(balance.chainId)} alt="" /></td>
 								<td>{$modalStore[0].value.networks.get(balance.chainId).Name}</td>
