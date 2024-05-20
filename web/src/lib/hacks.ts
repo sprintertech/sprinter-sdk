@@ -50,12 +50,11 @@ export async function hacks_getGopherData(): Promise<Object> {
 
 	const account = await MMSDK.getProvider()!.request({ method: 'eth_requestAccounts', params: [] });
 	const balancesResponses = await Promise.all(
-		tokens
-			.keys()
-			.map((key) => fetch(
-            makeUrl(`https://api.gopher.chainsafe.dev/accounts/${account}/assets/fungible/${key}`)
-          ).then(r => r.json()).then((r) =>({ Symbol: key, ...r }))
-			)
+		tokens.keys().map((key) =>
+			fetch(makeUrl(`https://api.gopher.chainsafe.dev/accounts/${account}/assets/fungible/${key}`))
+				.then((r) => r.json())
+				.then((r) => ({ Symbol: key, ...r }))
+		)
 	);
 
 	const balances = new Map<string, Object[]>();
@@ -63,11 +62,11 @@ export async function hacks_getGopherData(): Promise<Object> {
 		balances.set(balance.Symbol, balance.data);
 	});
 
-	const tokensData = [...tokens.keys()].map(key => {
+	const tokensData = [...tokens.keys()].map((key) => {
 		const tokenData = tokens.get(key);
 		const balanceData = balances.get(key);
 
-		const totalBalance = balanceData.reduce((prev, cur) => prev + Number(cur.balance), 0)
+		const totalBalance = balanceData.reduce((prev, cur) => prev + Number(cur.balance), 0);
 		return { ...tokenData, balances: balanceData, total: totalBalance };
 	});
 
