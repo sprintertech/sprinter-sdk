@@ -5,6 +5,7 @@
 	import { hacks_getGopherData } from '$lib/hacks';
 	import TokenModal from '$lib/components/TokenModal.svelte';
 	import RequestSendModal from "$lib/components/RequestSendModal.svelte";
+	import ResponseSendModal from "$lib/components/ResponseSendModal.svelte";
 
 	const modalStore = getModalStore();
 
@@ -33,7 +34,17 @@
 			component: { ref: RequestSendModal },
 			title: "Send Tokens",
 			value: data.raw,
-			response: console.log,
+			response: handleTokenSending,
+		};
+		modalStore.trigger(modal);
+	}
+
+	function handleTokenSending(value: Object) {
+		const modal: ModalSettings = {
+			type: 'component',
+			component: { ref: ResponseSendModal },
+			title: "Sending tokens",
+			value,
 		};
 		modalStore.trigger(modal);
 	}

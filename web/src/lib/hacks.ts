@@ -72,3 +72,21 @@ export async function hacks_getGopherData(): Promise<Object> {
 
 	return { raw: { networks, tokens, balances }, tokens: tokensData };
 }
+
+export async function hacks_getQuota(value: Object) {
+	const url = new URL('https://api.gopher.chainsafe.dev/solutions/aggregation');
+
+	const account = await MMSDK.getProvider()!.request({ method: 'eth_requestAccounts', params: [] });
+	url.searchParams.set('account', account[0]);
+
+	url.searchParams.set('destination', value.network);
+	url.searchParams.set('token', value.token);
+	url.searchParams.set('amount', value.amount);
+	//
+	if (value.whitelisted) url.searchParams.set('whitelistedSourceChains', value.whitelisted);
+	if (value.threshold) url.searchParams.set('threshold', value.threshold);
+
+	console.log(url.toString());
+
+	return await fetch(url.toString()).then((r) => r.json());
+}
