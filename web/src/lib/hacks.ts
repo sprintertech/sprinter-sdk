@@ -22,8 +22,8 @@ export function hacks_getChainIcon(id: number): string {
 }
 
 export async function hacks_getGopherData(): Promise<Object> {
-	const networksResponse = await fetch('https://api.gopher.chainsafe.dev/networks').then(
-		(r) => r.json()
+	const networksResponse = await fetch('https://api.gopher.chainsafe.dev/networks').then((r) =>
+		r.json()
 	);
 	const networks = networksResponse.data.reduce(
 		(prev, network) => prev.set(network.chainID, network),
@@ -34,8 +34,8 @@ export async function hacks_getGopherData(): Promise<Object> {
 		networks
 			.keys()
 			.map((key) =>
-				fetch(`https://api.gopher.chainsafe.dev/networks/${key}/assets/fungible`).then(
-					(r) => r.json()
+				fetch(`https://api.gopher.chainsafe.dev/networks/${key}/assets/fungible`).then((r) =>
+					r.json()
 				)
 			)
 	);

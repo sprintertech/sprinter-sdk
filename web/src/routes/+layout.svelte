@@ -12,7 +12,6 @@
 	import typescript from 'highlight.js/lib/languages/typescript';
 	import json from 'highlight.js/lib/languages/json';
 
-
 	hljs.registerLanguage('xml', xml); // for HTML
 	hljs.registerLanguage('css', css);
 	hljs.registerLanguage('javascript', javascript);
