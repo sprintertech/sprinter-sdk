@@ -2,6 +2,7 @@
 	import type { SvelteComponent } from 'svelte';
 	import { getModalStore } from '@skeletonlabs/skeleton';
 	import { hacks_getChainIcon } from '$lib/hacks';
+	import { fromWei } from 'web3-utils';
 
 	// Props
 	/** Exposes parent props to this component. */
@@ -40,7 +41,7 @@
 							<tr>
 								<td><img class="size-7" src={hacks_getChainIcon(balance.chainId)} alt="" /></td>
 								<td>{$modalStore[0].value.networks.get(balance.chainId).name}</td>
-								<td>{balance.balance}</td>
+								<td>{fromWei(balance.balance, 'mwei')}</td>
 							</tr>
 						{/each}
 					</tbody>

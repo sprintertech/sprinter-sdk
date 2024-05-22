@@ -6,6 +6,7 @@
 	import TokenModal from '$lib/components/TokenModal.svelte';
 	import RequestSendModal from '$lib/components/RequestSendModal.svelte';
 	import ResponseSendModal from '$lib/components/ResponseSendModal.svelte';
+	import { fromWei } from 'web3-utils';
 
 	const modalStore = getModalStore();
 
@@ -70,7 +71,7 @@
 						<td><img class="size-8" src={token.logoURI} alt={`${token.logoURI}-LOGO`} /></td>
 						<td>{token.name}</td>
 						<td />
-						<td>{token.total}</td>
+						<td>{fromWei(token.total, 'ether')}</td>
 					</tr>
 				{/each}
 			</tbody>
