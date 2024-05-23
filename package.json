@@ -6,7 +6,7 @@
   "packageManager": "yarn@3.8.2",
   "workspaces": [
     "packages/*",
-    "website"
+    "web"
   ],
   "engines": {
     "node": ">=20.0.0"
