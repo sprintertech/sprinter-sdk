@@ -1,15 +1,7 @@
-import { writable } from 'svelte/store';
+import { readable, writable } from 'svelte/store';
+import { createStore, type EIP6963ProviderDetail } from 'mipd';
 
-import { MetaMaskSDK } from '@metamask/sdk';
+export const selectedProvider = writable<false | EIP6963ProviderDetail>();
 
-export function connect() {
-	MMSDK.connect().then(web3Connected.set);
-}
-
-export const MMSDK = new MetaMaskSDK({
-	dappMetadata: {
-		name: 'Gopher POC'
-	}
-});
-
-export const web3Connected = writable(false);
+const store = createStore();
+export const providers = readable(store.getProviders(), store.subscribe);

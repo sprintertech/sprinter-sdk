@@ -44,8 +44,8 @@
 	"type": "module",
 	"dependencies": {
 		"@floating-ui/dom": "1.6.5",
-		"@metamask/sdk": "^0.20.3",
 		"highlight.js": "11.9.0",
+		"mipd": "^0.0.7",
 		"web3-utils": "^4.2.3"
 	}
 }

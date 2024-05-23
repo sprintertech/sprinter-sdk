@@ -1,4 +1,5 @@
-import { MMSDK } from '$lib/stores/wallet';
+import { get } from 'svelte/store';
+import { selectedProvider } from '$lib/stores/wallet';
 
 export function hacks_getChainIcon(id: number): string {
 	switch (id) {
@@ -19,6 +20,13 @@ export function hacks_getChainIcon(id: number): string {
 		default:
 			return 'https://images.emojiterra.com/google/noto-emoji/unicode-15.1/color/svg/1f937-2642.svg';
 	}
+}
+
+function getProvider() {
+	const storeProvider = get(selectedProvider);
+	if (!storeProvider) return;
+
+	return storeProvider.provider;
 }
 
 export async function hacks_getGopherData(): Promise<Object> {
@@ -48,7 +56,7 @@ export async function hacks_getGopherData(): Promise<Object> {
 		});
 	});
 
-	const account = await MMSDK.getProvider()!.request({ method: 'eth_requestAccounts', params: [] });
+	const account = await getProvider().request({ method: 'eth_requestAccounts', params: [] });
 	const balancesResponses = await Promise.all(
 		tokens.keys().map((key) =>
 			fetch(`https://api.gopher.chainsafe.dev/accounts/${account}/assets/fungible/${key}`)
@@ -76,7 +84,7 @@ export async function hacks_getGopherData(): Promise<Object> {
 export async function hacks_getQuota(value: Object) {
 	const url = new URL('https://api.gopher.chainsafe.dev/solutions/aggregation');
 
-	const account = await MMSDK.getProvider()!.request({ method: 'eth_requestAccounts', params: [] });
+	const account = await getProvider().request({ method: 'eth_requestAccounts', params: [] });
 	url.searchParams.set('account', account[0]);
 
 	url.searchParams.set('destination', value.network);
