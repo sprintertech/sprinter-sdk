@@ -76,19 +76,23 @@
 							{@const balance = $modalStore[0]?.meta.balances
 								.get(token.symbol)
 								.find(({ chainId }) => chainId === data.sourceChain)}
-							<li class="bg-gray-700 p-4 rounded-lg flex justify-between items-center mb-4">
+							<li
+								class="bg-gray-200 dark:bg-gray-700 p-4 rounded-lg flex justify-between items-center mb-4"
+							>
 								<div class="flex items-center">
 									<img src={network.logoURI} alt="Source Chain Icon" class="w-8 h-8 mr-2" />
 									<div>
-										<p class="text-lg font-semibold">
+										<p class="text-lg font-semibold text-black dark:text-white">
 											{fromWei(data.transaction.value, token.decimals)}
 											{token.name} on {network.name}
 										</p>
-										<p class="text-sm text-gray-400">
+										<p class="text-sm text-gray-600 dark:text-gray-400">
 											Balance: {fromWei(balance.balance, token.decimals)}
 											{token.name}
 										</p>
-										<p class="text-sm text-gray-400">Fee: {data.fee.amountUSD} USD</p>
+										<p class="text-sm text-gray-600 dark:text-gray-400">
+											Fee: {data.fee.amountUSD} USD
+										</p>
 									</div>
 								</div>
 								<div class="flex flex-col items-center justify-center h-full">
@@ -128,8 +132,11 @@
 				<p style="color: red">{error.message}</p>
 			{/await}
 		</article>
-		<footer class="modal-footer {parent.regionFooter}">
-			<button class="btn {parent.buttonNeutral}" on:click={parent.onClose}>
+		<footer class="modal-footer flex justify-end space-x-4 mt-4 {parent.regionFooter}">
+			<button
+				class="btn bg-gray-300 dark:bg-gray-600 text-black dark:text-white py-2 px-4 rounded {parent.buttonNeutral}"
+				on:click={parent.onClose}
+			>
 				{parent.buttonTextCancel}
 			</button>
 		</footer>
