@@ -22,7 +22,7 @@
 			title: token.name,
 			buttonTextCancel: 'close',
 			value: { networks: data.raw.networks, balances: token.balances },
-			meta: { icon: token.logoURI, sybol: token.symbol }
+			meta: { icon: token.logoURI, sybol: token.symbol, decimals: token.decimals }
 		};
 		modalStore.trigger(modal);
 	}
@@ -74,7 +74,7 @@
 						<td><img class="size-8" src={token.logoURI} alt={`${token.logoURI}-LOGO`} /></td>
 						<td>{token.name}</td>
 						<td />
-						<td>{fromWei(token.total, 'ether')}</td>
+						<td>{fromWei(token.total, token.decimals)}</td>
 					</tr>
 				{/each}
 			</tbody>
