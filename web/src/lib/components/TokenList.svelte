@@ -40,12 +40,15 @@
 		modalStore.trigger(modal);
 	}
 
-	function handleTokenSending(value: Object) {
+	async function handleTokenSending(value: Object) {
+		const data = await promise;
+
 		const modal: ModalSettings = {
 			type: 'component',
 			component: { ref: ResponseSendModal },
-			title: 'Sending tokens',
-			value
+			title: 'Submit transactions',
+			value,
+			meta: data.raw
 		};
 		modalStore.trigger(modal);
 	}
