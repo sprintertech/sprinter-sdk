@@ -96,5 +96,9 @@ export async function hacks_getQuota(value: Object) {
 
 	console.log(url.toString());
 
-	return await fetch(url.toString()).then((r) => r.json());
+	return await fetch(url.toString()).then((r) =>
+		r.json().then(json => {
+			if (r.ok) return json;
+			throw new Error(JSON.stringify(json));
+		}));
 }
