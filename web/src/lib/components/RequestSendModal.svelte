@@ -109,9 +109,9 @@
 												/>
 											</svelte:fragment>
 											{$modalStore[0].value.networks.get(balance.chainId).name}
-											<svelte:fragment slot="trail"
-												>{fromWei(balance.balance, tokenInfo.decimals)}</svelte:fragment
-											>
+											<svelte:fragment slot="trail">
+												{fromWei(balance.balance, tokenInfo.decimals)}
+											</svelte:fragment>
 										</ListBoxItem>
 									{/each}
 								</ListBox>

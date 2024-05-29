@@ -83,7 +83,7 @@
 									<img src={network.logoURI} alt="Source Chain Icon" class="w-8 h-8 mr-2" />
 									<div>
 										<p class="text-lg font-semibold text-black dark:text-white">
-											{fromWei(data.transaction.value, token.decimals)}
+											{fromWei(data.amount, token.decimals)}
 											{token.name} on {network.name}
 										</p>
 										<p class="text-sm text-gray-600 dark:text-gray-400">

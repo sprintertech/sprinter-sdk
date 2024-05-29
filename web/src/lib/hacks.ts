@@ -30,7 +30,7 @@ function getProvider() {
 }
 
 export async function hacks_getGopherData(): Promise<Object> {
-	const networksResponse = await fetch('https://api.gopher.chainsafe.dev/networks').then((r) =>
+	const networksResponse = await fetch('https://gopher.test.buildwithsygma.com/networks').then((r) =>
 		r.json()
 	);
 	const networks = networksResponse.data.reduce(
@@ -42,7 +42,7 @@ export async function hacks_getGopherData(): Promise<Object> {
 		networks
 			.keys()
 			.map((key) =>
-				fetch(`https://api.gopher.chainsafe.dev/networks/${key}/assets/fungible`).then((r) =>
+				fetch(`https://gopher.test.buildwithsygma.com/networks/${key}/assets/fungible`).then((r) =>
 					r.json()
 				)
 			)
@@ -59,7 +59,7 @@ export async function hacks_getGopherData(): Promise<Object> {
 	const account = await getProvider().request({ method: 'eth_requestAccounts', params: [] });
 	const balancesResponses = await Promise.all(
 		tokens.keys().map((key) =>
-			fetch(`https://api.gopher.chainsafe.dev/accounts/${account}/assets/fungible/${key}`)
+			fetch(`https://gopher.test.buildwithsygma.com/accounts/${account}/assets/fungible/${key}`)
 				.then((r) => r.json())
 				.then((r) => ({ symbol: key, ...r }))
 		)
@@ -82,7 +82,7 @@ export async function hacks_getGopherData(): Promise<Object> {
 }
 
 export async function hacks_getQuota(value: Object) {
-	const url = new URL('https://api.gopher.chainsafe.dev/solutions/aggregation');
+	const url = new URL('https://gopher.test.buildwithsygma.com/solutions/aggregation');
 
 	const account = await getProvider().request({ method: 'eth_requestAccounts', params: [] });
 	url.searchParams.set('account', account[0]);
