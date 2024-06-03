@@ -6,7 +6,8 @@
 	import { formatDuration } from '$lib/formatters';
 	import { fromWei, toHex } from 'web3-utils';
 	import { selectedProvider } from '$lib/stores/wallet';
-	import { Web3 } from 'web3';
+	import { type NonPayableCallOptions, Web3 } from 'web3';
+	import { erc20Abi } from '$lib/erc20.abi';
 
 	// Props
 	/** Exposes parent props to this component. */
@@ -18,28 +19,35 @@
 	$: quota = hacks_getQuota($modalStore[0]?.value);
 	$: token = $modalStore[0]?.meta.tokens.get($modalStore[0]?.value.token);
 
+	$: console.log(token, $modalStore[0]);
+
 	const submitting: boolean[] = [];
 	const successful: boolean[] = [];
 	// TODO: there is not place for this over here! refactor it to somewhere
-	async function submitTransaction(transaction: Object, index: number) {
+	async function submitTransaction(quotaRecord: Object, index: number) {
 		try {
 			submitting[index] = true;
+
+			const [ownerAddress] = await $selectedProvider.provider.request({
+				method: 'eth_requestAccounts',
+				params: []
+			});
 
 			// Preparation /w questionable approach but will see for now
 			try {
 				await $selectedProvider.provider.request({
 					method: 'wallet_switchEthereumChain',
-					params: [{ chainId: toHex(transaction.chainId) }]
+					params: [{ chainId: toHex(quotaRecord.sourceChain) }]
 				});
 			} catch (error) {
 				if (error.code === 4902) {
-					const network = $modalStore[0]?.meta.networks.get(transaction.chainId);
+					const network = $modalStore[0]?.meta.networks.get(quotaRecord.sourceChain);
 					await $selectedProvider.provider.request({
 						method: 'wallet_addEthereumChain',
 						params: [
 							{
 								chainName: network.name,
-								chainId: toHex(transaction.chainId),
+								chainId: toHex(quotaRecord.sourceChain),
 								rpcUrls: network.rpcURLs
 							}
 						]
@@ -48,7 +56,28 @@
 			}
 
 			const web3 = new Web3($selectedProvider.provider);
-			const receipt = await web3.eth.sendTransaction(transaction);
+
+			// @ts-ignore   // chainId is missing in web3js call options type
+			const callOptions: NonPayableCallOptions = { chainId: quotaRecord.sourceChain };
+
+			// Approval sniff etc...\
+			const erc20 = new web3.eth.Contract(erc20Abi, quotaRecord.sourceTokenAddress);
+
+			const allowed = await erc20.methods
+				.allowance(ownerAddress, quotaRecord.transaction.to)
+				.call(callOptions);
+
+			if (BigInt(quotaRecord.amount) > BigInt(allowed)) {
+				const approval = await erc20.methods
+					.approve(quotaRecord.transaction.to, quotaRecord.amount)
+					.send(callOptions);
+
+				console.warn(approval);
+				if (!approval) throw new Error('Not Approved!'); // To stop execution
+			}
+
+			// FINAL STEP!
+			const receipt = await web3.eth.sendTransaction(quotaRecord.transaction);
 
 			console.warn(`TX receipt: `, receipt);
 			successful[index] = true;
@@ -100,7 +129,7 @@
 										<button
 											class="border border-blue-500 text-blue-500 text-xs px-2 py-1 rounded mb-1"
 											disabled={submitting[index]}
-											on:click={() => submitTransaction(data.transaction, index)}
+											on:click={() => submitTransaction(data, index)}
 										>
 											Submit & Send
 										</button>

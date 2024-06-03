@@ -30,8 +30,8 @@ function getProvider() {
 }
 
 export async function hacks_getGopherData(): Promise<Object> {
-	const networksResponse = await fetch('https://gopher.test.buildwithsygma.com/networks').then((r) =>
-		r.json()
+	const networksResponse = await fetch('https://gopher.test.buildwithsygma.com/networks').then(
+		(r) => r.json()
 	);
 	const networks = networksResponse.data.reduce(
 		(prev, network) => prev.set(network.chainID, network),
@@ -93,8 +93,6 @@ export async function hacks_getQuota(value: Object) {
 	//
 	if (value.whitelisted) url.searchParams.set('whitelistedSourceChains', value.whitelisted);
 	if (value.threshold) url.searchParams.set('threshold', value.threshold);
-
-	console.log(url.toString());
 
 	return await fetch(url.toString()).then((r) =>
 		r.json().then(json => {
