@@ -94,9 +94,10 @@ export async function hacks_getQuota(value: Object) {
 	if (value.whitelisted) url.searchParams.set('whitelistedSourceChains', value.whitelisted);
 	if (value.threshold) url.searchParams.set('threshold', value.threshold);
 
-	return await fetch(url.toString()).then((r) =>
-		r.json().then(json => {
-			if (r.ok) return json;
+	return await fetch(url.toString()).then((response) =>
+		response.json().then((json) => {
+			if (response.ok) return json;
 			throw new Error(JSON.stringify(json));
-		}));
+		})
+	);
 }

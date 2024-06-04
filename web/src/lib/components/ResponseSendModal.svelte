@@ -70,10 +70,13 @@
 			if (BigInt(quotaRecord.amount) > BigInt(allowed)) {
 				const approval = await erc20.methods
 					.approve(quotaRecord.transaction.to, quotaRecord.amount)
-					.send(callOptions);
+					.send({
+						...callOptions,
+						from: ownerAddress
+					});
 
-				console.warn(approval);
-				if (!approval) throw new Error('Not Approved!'); // To stop execution
+				console.log(approval);
+				if (!approval.status) throw new Error('Not Approved!'); // To stop execution
 			}
 
 			// FINAL STEP!
@@ -81,7 +84,8 @@
 
 			console.warn(`TX receipt: `, receipt);
 			successful[index] = true;
-		} catch {
+		} catch (error) {
+			console.error(error);
 			submitting[index] = false;
 		}
 	}
