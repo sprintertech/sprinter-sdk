@@ -41,7 +41,7 @@
 							<tr>
 								<td><img class="size-7" src={hacks_getChainIcon(balance.chainId)} alt="" /></td>
 								<td>{$modalStore[0].value.networks.get(balance.chainId).name}</td>
-								<td>{fromWei(balance.balance, 'mwei')}</td>
+								<td>{fromWei(balance.balance, $modalStore[0].meta.decimals)}</td>
 							</tr>
 						{/each}
 					</tbody>

@@ -8,6 +8,7 @@
 		ListBoxItem
 	} from '@skeletonlabs/skeleton';
 	import { hacks_getChainIcon } from '$lib/hacks';
+	import { fromWei, toWei } from 'web3-utils';
 
 	// Props
 	/** Exposes parent props to this component. */
@@ -24,7 +25,10 @@
 	let threshold: number;
 
 	let balances;
+	let tokenInfo;
 	function updateWhitelistedOnTokenChange() {
+		tokenInfo = $modalStore[0]?.value?.tokens.get(token);
+
 		balances = $modalStore[0]?.value?.balances?.get(token) ?? [];
 		whitelisted = balances.map((balance) => balance.chainId);
 	}
@@ -36,7 +40,13 @@
 
 	function onRequestQuota(): void {
 		if ($modalStore[0].response)
-			$modalStore[0].response({ token, network, whitelisted, amount, threshold });
+			$modalStore[0].response({
+				token,
+				network,
+				whitelisted,
+				amount: toWei(amount, tokenInfo.decimals),
+				threshold: threshold ? toWei(threshold, tokenInfo.decimals) : undefined
+			});
 		modalStore.close();
 	}
 
@@ -99,7 +109,9 @@
 												/>
 											</svelte:fragment>
 											{$modalStore[0].value.networks.get(balance.chainId).name}
-											<svelte:fragment slot="trail">{balance.balance}</svelte:fragment>
+											<svelte:fragment slot="trail">
+												{fromWei(balance.balance, tokenInfo.decimals)}
+											</svelte:fragment>
 										</ListBoxItem>
 									{/each}
 								</ListBox>
@@ -110,9 +122,9 @@
 			</div>
 		</article>
 		<footer class="modal-footer {parent.regionFooter}">
-			<button class="btn {parent.buttonNeutral}" on:click={parent.onClose}
-				>{parent.buttonTextCancel}</button
-			>
+			<button class="btn {parent.buttonNeutral}" on:click={parent.onClose}>
+				{parent.buttonTextCancel}
+			</button>
 			<button class="btn {parent.buttonPositive}" on:click={onRequestQuota}>Send Tokens</button>
 		</footer>
 	</div>
