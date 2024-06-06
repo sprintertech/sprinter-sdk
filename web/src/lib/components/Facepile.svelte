@@ -19,7 +19,7 @@
 <div class="flex -space-x-2">
 	{#each list as item}
 		<img
-			class="inline-block size-8 rounded-full ring-2 ring-white dark:ring-neutral-900"
+			class="inline-block size-8 rounded-full ring-white dark:ring-neutral-900"
 			src={item.logo}
 			alt={item.name}
 		/>
