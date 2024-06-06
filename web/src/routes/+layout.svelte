@@ -26,6 +26,8 @@
 
 	// Import the header and other components
 	import Header from '$lib/components/Header.svelte';
+	import { selectedProvider } from '$lib/stores/wallet';
+	import ConnectView from '$lib/components/ConnectView.svelte';
 </script>
 
 <Modal />
@@ -39,5 +41,14 @@
 	<svelte:fragment slot="sidebarLeft"></svelte:fragment>
 	<svelte:fragment slot="sidebarRight"></svelte:fragment>
 	<!-- Page Route Content -->
-	<slot />
+	{#if $selectedProvider}
+		<slot />
+	{:else}
+		<div class="container h-full mx-auto flex justify-center items-center">
+			<div class="space-y-10 text-center flex flex-col items-center">
+				<h2 class="h2">Welcome to Gopher POC.</h2>
+				<ConnectView />
+			</div>
+		</div>
+	{/if}
 </AppShell>
