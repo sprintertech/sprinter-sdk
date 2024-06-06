@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { selectedProvider } from '$lib/stores/wallet';
-	import TokenList from '$lib/components/TokenList.svelte';
 	import ConnectView from '$lib/components/ConnectView.svelte';
 	import Portfolio from "$lib/components/Portfolio.svelte";
 	import Account from "$lib/components/Account.svelte";

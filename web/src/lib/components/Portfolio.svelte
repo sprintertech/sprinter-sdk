@@ -4,8 +4,7 @@
   import Facepile from "$lib/components/Facepile.svelte";
 
   const promise = hacks_getGopherData();
-
-  $: total = "$4,001.23" || promise.then(({tokens}) => tokens);
+  $: total = promise.then(({tokens}) => tokens.reduce((p, c) => p + Number(fromWei(c.total, c.decimals)), 0));
 </script>
 
 {#await promise}
@@ -16,7 +15,15 @@
     <div class="w-full p-6 bg-white rounded-xl flex justify-between items-center relative">
         <div>
             <div class="text-slate-800 text-lg font-normal text-left">Balance</div>
-            <div class="text-slate-800 text-4xl font-semibold">{total}</div>
+            <div class="text-slate-800 text-4xl font-semibold">
+                {#await total}
+                    0
+                {:then result}
+                    ${result.toFixed(2)}
+                {:catch error}
+                    - {JSON.stringify(error)}
+                {/await}
+            </div>
         </div>
         <div class="absolute right-0 top-0 bottom-0 w-[60%] bg-gradient-to-r from-white via-indigo-600 to-fuchsia-800 rounded-xl"></div>
     </div>
