@@ -55,24 +55,28 @@
 				<h3 class="h3">Please select wallet</h3>
 				<article class="container mx-auto">
 					<ul class="space-y-4">
-						{#each $providers as provider}
-							<li
-								on:click={() => selectWallet(provider)}
-								class="relative bg-white dark:bg-gray-800 p-4 rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-700 hover:shadow-lg transition duration-300 flex items-center cursor-pointer"
-							>
-								<img
-									src={provider.info.icon}
-									alt="{provider.info.icon} Icon"
-									class="w-12 h-12 mr-4"
-								/>
-								<div>
-									<h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
-										{provider.info.name}
-									</h3>
-									<p class="text-gray-600 dark:text-gray-400">{provider.info.rdns}</p>
-								</div>
-							</li>
-						{/each}
+						{#if !$providers.length}
+							No wallets Found GET ONE!
+						{:else}
+							{#each $providers as provider}
+								<li
+									on:click={() => selectWallet(provider)}
+									class="relative bg-white dark:bg-gray-800 p-4 rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-700 hover:shadow-lg transition duration-300 flex items-center cursor-pointer"
+								>
+									<img
+										src={provider.info.icon}
+										alt="{provider.info.icon} Icon"
+										class="w-12 h-12 mr-4"
+									/>
+									<div>
+										<h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+											{provider.info.name}
+										</h3>
+										<p class="text-gray-600 dark:text-gray-400">{provider.info.rdns}</p>
+									</div>
+								</li>
+							{/each}
+						{/if}
 					</ul>
 				</article>
 			</div>
