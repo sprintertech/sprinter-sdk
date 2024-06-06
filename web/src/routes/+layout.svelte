@@ -26,8 +26,12 @@
 
 	// Import the header and other components
 	import Header from '$lib/components/Header.svelte';
-	import { selectedProvider } from '$lib/stores/wallet';
-	import ConnectView from '$lib/components/ConnectView.svelte';
+
+	import { providers, selectedProvider } from '$lib/stores/wallet';
+	import type { EIP6963ProviderDetail } from 'mipd';
+	function selectWallet(provider: EIP6963ProviderDetail): void {
+		selectedProvider.set(provider);
+	}
 </script>
 
 <Modal />
@@ -47,7 +51,30 @@
 		<div class="container h-full mx-auto flex justify-center items-center">
 			<div class="space-y-10 text-center flex flex-col items-center">
 				<h2 class="h2">Welcome to Gopher POC.</h2>
-				<ConnectView />
+				<br />
+				<h3 class="h3">Please select wallet</h3>
+				<article class="container mx-auto">
+					<ul class="space-y-4">
+						{#each $providers as provider}
+							<li
+								on:click={() => selectWallet(provider)}
+								class="relative bg-white dark:bg-gray-800 p-4 rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-700 hover:shadow-lg transition duration-300 flex items-center cursor-pointer"
+							>
+								<img
+									src={provider.info.icon}
+									alt="{provider.info.icon} Icon"
+									class="w-12 h-12 mr-4"
+								/>
+								<div>
+									<h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+										{provider.info.name}
+									</h3>
+									<p class="text-gray-600 dark:text-gray-400">{provider.info.rdns}</p>
+								</div>
+							</li>
+						{/each}
+					</ul>
+				</article>
 			</div>
 		</div>
 	{/if}
