@@ -1,12 +1,31 @@
 <script lang="ts">
 	import { fromWei } from 'web3-utils';
 	import Facepile from '$lib/components/Facepile.svelte';
+	import { getModalStore, type ModalSettings } from '@skeletonlabs/skeleton';
+	import TokenModal from '$lib/components/TokenModal.svelte';
 
-	export let promise;
+	export let promise: Promise<any>;
 
 	$: total = promise.then(({ tokens }) =>
 		tokens.reduce((p, c) => p + Number(fromWei(c.total, c.decimals)), 0)
 	);
+
+	const modalStore = getModalStore();
+
+	async function handleListClick(index: number) {
+		const data = await promise;
+		const token = data.tokens[index];
+
+		const modal: ModalSettings = {
+			type: 'component',
+			component: { ref: TokenModal },
+			title: token.name,
+			buttonTextCancel: 'close',
+			value: { networks: data.raw.networks, balances: token.balances },
+			meta: { icon: token.logoURI, sybol: token.symbol, decimals: token.decimals }
+		};
+		modalStore.trigger(modal);
+	}
 </script>
 
 {#await promise}
@@ -39,14 +58,14 @@
 				<table class="table table-hover">
 					<thead>
 						<tr class="font-medium">
-							<th class="text-left">ASSET</th>
-							<th class="text-left">BALANCE</th>
+							<th>ASSET</th>
+							<th>BALANCE</th>
 							<th>DISTRIBUTION</th>
 						</tr>
 					</thead>
 					<tbody>
 						{#each data.tokens as token, i}
-							<tr class="pt-2">
+							<tr class="pt-2" on:click={() => handleListClick(i)}>
 								<td class="flex items-center gap-2 py-2">
 									<div
 										class="relative w-6 h-6 bg-gradient-to-b from-amber-500 to-amber-300 rounded-full overflow-hidden"
