@@ -49,7 +49,8 @@
 		const drawerSettings: DrawerSettings = {
 			id: 'SendTokens',
 			width: 'w-[518px]',
-			position: 'right'
+			position: 'right',
+			meta: data.raw,
 		};
 		drawerStore.open(drawerSettings);
 	}
