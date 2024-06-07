@@ -1,6 +1,11 @@
 <script lang="ts">
 	import { selectedProvider } from '$lib/stores/wallet';
-	import { getModalStore, type ModalSettings } from '@skeletonlabs/skeleton';
+	import {
+		type DrawerSettings,
+		getDrawerStore,
+		getModalStore,
+		type ModalSettings, type PopupSettings
+	} from '@skeletonlabs/skeleton';
 	import RequestSendModal from '$lib/components/RequestSendModal.svelte';
 	import ResponseSendModal from '$lib/components/ResponseSendModal.svelte';
 
@@ -35,6 +40,19 @@
 		};
 		modalStore.trigger(modal);
 	}
+
+	const drawerStore = getDrawerStore();
+
+	async function openSendDrawer() {
+		const data = await promise;
+
+		const drawerSettings: DrawerSettings = {
+			id: 'SendTokens',
+			width: 'w-[518px]',
+			position: 'right'
+		};
+		drawerStore.open(drawerSettings);
+	}
 </script>
 
 <div class="w-[1012px] h-full py-[15px] flex-col justify-start items-center gap-2.5 inline-flex">
@@ -54,6 +72,15 @@
 			</div>
 		</div>
 		<div class="self-stretch justify-end items-start gap-2 inline-flex">
+			<div class="p-2.5 bg-black rounded-full justify-center items-center gap-2 flex">
+				<button
+					type="button"
+					class="text-white text-base font-medium font-['Inter'] leading-normal"
+					on:click={openSendDrawer}
+				>
+					Drawer
+				</button>
+			</div>
 			<div class="p-2.5 bg-black rounded-full justify-center items-center gap-2 flex">
 				<button
 					type="button"

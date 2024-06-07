@@ -29,11 +29,13 @@
 
 	import { providers, selectedProvider } from '$lib/stores/wallet';
 	import type { EIP6963ProviderDetail } from 'mipd';
+	import DrawerManager from '$lib/components/DrawerManager.svelte';
 	function selectWallet(provider: EIP6963ProviderDetail): void {
 		selectedProvider.set(provider);
 	}
 </script>
 
+<DrawerManager />
 <Modal />
 
 <!-- App Shell -->
