@@ -30,8 +30,19 @@
 	import { providers, selectedProvider } from '$lib/stores/wallet';
 	import type { EIP6963ProviderDetail } from 'mipd';
 	import DrawerManager from '$lib/components/DrawerManager.svelte';
-	function selectWallet(provider: EIP6963ProviderDetail): void {
-		selectedProvider.set(provider);
+
+	let selecting = false;
+	async function selectWallet(provider: EIP6963ProviderDetail): Promise<void> {
+		if (selecting) return;
+
+		selecting = true;
+		try {
+			await provider.provider.request({ method: 'eth_requestAccounts', params: [] });
+
+			selectedProvider.set(provider);
+		} finally {
+			selecting = false;
+		}
 	}
 </script>
 
