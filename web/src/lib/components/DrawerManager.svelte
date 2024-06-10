@@ -1,6 +1,7 @@
 <script>
 	import { Drawer, getDrawerStore } from '@skeletonlabs/skeleton';
 	import SendTokensDrawer from '$lib/components/SendTokensDrawer.svelte';
+	import SubmitTokensDrawer from '$lib/components/SubmitTokensDrawer.svelte';
 
 	const drawerStore = getDrawerStore();
 	const close = () => {
@@ -18,18 +19,18 @@
 			<div class="grow shrink basis-0 flex-col justify-center items-start gap-1 inline-flex">
 				<div class="self-stretch justify-start items-center gap-2 inline-flex">
 					<div class="text-neutral-900 text-lg font-medium font-['Inter'] leading-normal">
-						Send Tokens
+						{$drawerStore.meta.title || '(missing title)'}
 					</div>
 				</div>
 			</div>
 			<div class="p-0.5 rounded-md justify-center items-center gap-0.5 flex">
-				<div class="w-5 h-5 relative" on:click={close}>x</div>
+				<button class="w-5 h-5 relative" on:click={close}>x</button>
 			</div>
 		</div>
 		{#if $drawerStore.id === 'SendTokens'}
 			<SendTokensDrawer />
-		{:else if $drawerStore.id === 'example-2'}
-			<!-- (show 'example-2' contents) -->
+		{:else if $drawerStore.id === 'SubmitQuota'}
+			<SubmitTokensDrawer />
 		{:else}
 			<!-- (fallback contents) -->
 		{/if}
