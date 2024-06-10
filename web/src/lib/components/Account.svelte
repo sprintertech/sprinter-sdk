@@ -1,45 +1,10 @@
 <script lang="ts">
 	import { selectedProvider } from '$lib/stores/wallet';
-	import {
-		type DrawerSettings,
-		getDrawerStore,
-		getModalStore,
-		type ModalSettings, type PopupSettings
-	} from '@skeletonlabs/skeleton';
-	import RequestSendModal from '$lib/components/RequestSendModal.svelte';
-	import ResponseSendModal from '$lib/components/ResponseSendModal.svelte';
+	import { type DrawerSettings, getDrawerStore } from '@skeletonlabs/skeleton';
 
 	$: address = $selectedProvider.provider.request({ method: 'eth_requestAccounts', params: [] });
 
 	export let promise: Promise<any>;
-
-	const modalStore = getModalStore();
-
-	async function handleSendClick() {
-		const data = await promise;
-
-		const modal: ModalSettings = {
-			type: 'component',
-			component: { ref: RequestSendModal },
-			title: 'Send Tokens',
-			value: data.raw,
-			response: handleTokenSending
-		};
-		modalStore.trigger(modal);
-	}
-
-	async function handleTokenSending(value: Object) {
-		const data = await promise;
-
-		const modal: ModalSettings = {
-			type: 'component',
-			component: { ref: ResponseSendModal },
-			title: 'Submit transactions',
-			value,
-			meta: data.raw
-		};
-		modalStore.trigger(modal);
-	}
 
 	const drawerStore = getDrawerStore();
 
@@ -50,7 +15,10 @@
 			id: 'SendTokens',
 			width: 'w-[518px]',
 			position: 'right',
-			meta: data.raw,
+			meta: {
+				...data.raw,
+				title: 'Send Tokens'
+			}
 		};
 		drawerStore.open(drawerSettings);
 	}
@@ -79,16 +47,7 @@
 					class="text-white text-base font-medium font-['Inter'] leading-normal"
 					on:click={openSendDrawer}
 				>
-					Drawer
-				</button>
-			</div>
-			<div class="p-2.5 bg-black rounded-full justify-center items-center gap-2 flex">
-				<button
-					type="button"
-					class="text-white text-base font-medium font-['Inter'] leading-normal"
-					on:click={handleSendClick}
-				>
-					Send & Receive
+					Send
 				</button>
 			</div>
 		</div>
