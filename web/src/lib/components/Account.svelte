@@ -24,12 +24,12 @@
 	}
 </script>
 
-<div class="w-[1012px] h-full py-[15px] flex-col justify-start items-center gap-2.5 inline-flex">
+<div class="w-[1024px] h-full py-[15px] flex-col justify-start items-center gap-2.5 inline-flex">
 	<div
-		class="self-stretch h-[152px] px-[22px] py-[23px] bg-gray-200 rounded-xl flex-col justify-start items-center gap-[34px] flex"
+			class="self-stretch h-[152px] px-[22px] py-[23px] bg-gray-200 dark:bg-gray-700 rounded-xl flex-col justify-start items-center gap-[34px] flex"
 	>
 		<div class="self-stretch justify-start items-start gap-2.5 inline-flex">
-			<div class="text-black text-xl font-medium font-['Inter'] leading-7">
+			<div class="text-black dark:text-white text-xl font-medium font-['Inter'] leading-7">
 				Hello
 				{#await address}
 					0
@@ -41,11 +41,11 @@
 			</div>
 		</div>
 		<div class="self-stretch justify-end items-start gap-2 inline-flex">
-			<div class="p-2.5 bg-black rounded-full justify-center items-center gap-2 flex">
+			<div class="p-2.5 bg-black dark:bg-gray-200 rounded-full justify-center items-center gap-2 flex">
 				<button
-					type="button"
-					class="text-white text-base font-medium font-['Inter'] leading-normal"
-					on:click={openSendDrawer}
+						type="button"
+						class="text-white dark:text-black text-base font-medium font-['Inter'] leading-normal"
+						on:click={openSendDrawer}
 				>
 					Send
 				</button>
