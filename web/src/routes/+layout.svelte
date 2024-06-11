@@ -44,7 +44,11 @@
 			selecting = false;
 		}
 	}
+
+	import { autoModeWatcher } from '@skeletonlabs/skeleton';
 </script>
+
+<svelte:head>{@html '<script>(' + autoModeWatcher.toString() + ')();</script>'}</svelte:head>
 
 <DrawerManager />
 <Modal />
