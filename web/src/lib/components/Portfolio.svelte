@@ -28,9 +28,6 @@
 	}
 </script>
 
-{#await promise}
-	<p>...waiting</p>
-{:then data}
 	<div class="w-[1024px] bg-gray-200 dark:bg-gray-800 flex flex-col items-center gap-4 rounded-xl">
 		<!-- Balance Section -->
 		<div class="w-full p-6 rounded-xl flex justify-between items-center relative py-9">
@@ -38,7 +35,7 @@
 				<div class="text-slate-800 dark:text-slate-200 text-lg font-normal text-left">Balance</div>
 				<div class="text-slate-800 dark:text-slate-200 text-4xl font-semibold">
 					{#await total}
-						0
+						<div class="placeholder h-11 w-40" />
 					{:then result}
 						${result.toFixed(2)}
 					{:catch error}
@@ -62,6 +59,15 @@
 					</tr>
 					</thead>
 					<tbody>
+					{#await promise}
+						{#each {length: 3} as _}
+							<tr class="pt-2">
+								<td><div class="placeholder h-8" /></td>
+								<td><div class="placeholder h-8" /></td>
+								<td><div class="placeholder h-8" /></td>
+							</tr>
+						{/each}
+					{:then data}
 					{#each data.tokens as token, i}
 						<tr class="pt-2 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer" on:click={() => handleListClick(i)}>
 							<td class="flex items-center gap-2 py-2">
@@ -80,11 +86,11 @@
 							</td>
 						</tr>
 					{/each}
+					{:catch error}
+						<p style="color: red">{error.message}</p>
+					{/await}
 					</tbody>
 				</table>
 			</div>
 		</div>
 	</div>
-{:catch error}
-	<p style="color: red">{error.message}</p>
-{/await}

@@ -85,11 +85,14 @@
 	</div>
 </div>
 
-{#await quota}
-	<p>...waiting</p>
-{:then response}
+
 	<article class="container mx-auto p-4">
 		<ul class="space-y-4">
+			{#await quota}
+				<li class="bg-gray-200 dark:bg-gray-700 p-4 rounded-lg flex justify-between items-center mb-4">
+					<div class="placeholder h-[68px] w-full rounded-lg" />
+				</li>
+			{:then response}
 			{#each response.data as data, index}
 				{@const network = $drawerStore.meta.networks.get(data.sourceChain)}
 				{@const balance = $drawerStore.meta.balances
@@ -143,11 +146,11 @@
 					</div>
 				</li>
 			{/each}
+			{:catch error}
+				<p style="color: red">{error.message}</p>
+			{/await}
 		</ul>
 	</article>
-{:catch error}
-	<p style="color: red">{error.message}</p>
-{/await}
 
 <div class="w-full p-5 bg-white dark:bg-gray-800 border-t border-zinc-200 dark:border-gray-600 items-center gap-4 inline-flex mt-auto">
 	<button
