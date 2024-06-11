@@ -32,7 +32,7 @@
 			<div class="text-black dark:text-white text-xl font-medium font-['Inter'] leading-7">
 				Hello
 				{#await address}
-					0
+					0x....
 				{:then result}
 					{result[0]}
 				{:catch error}
