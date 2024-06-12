@@ -9,8 +9,7 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"test": "vitest",
-		"lint": "echo TODO",
-		"lint:temp": "prettier --check . && eslint .",
+		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
@@ -44,7 +43,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@floating-ui/dom": "1.6.5",
+		"@floating-ui/dom": "^1.6.5",
 		"date-fns": "^3.6.0",
 		"highlight.js": "11.9.0",
 		"mipd": "^0.0.7",
