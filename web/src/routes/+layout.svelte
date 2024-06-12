@@ -48,7 +48,10 @@
 	import { autoModeWatcher } from '@skeletonlabs/skeleton';
 </script>
 
-<svelte:head>{@html '<script>(' + autoModeWatcher.toString() + ')();</script>'}</svelte:head>
+<svelte:head>
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+	{@html '<script>(' + autoModeWatcher.toString() + ')();</script>'}
+</svelte:head>
 
 <DrawerManager />
 <Modal />
@@ -76,6 +79,7 @@
 							No wallets Found GET ONE!
 						{:else}
 							{#each $providers as provider}
+								<!-- eslint-disable-next-line svelte/valid-compile -->
 								<li
 									on:click={() => selectWallet(provider)}
 									class="relative bg-white dark:bg-gray-800 p-4 rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-700 hover:shadow-lg transition duration-300 flex items-center cursor-pointer"

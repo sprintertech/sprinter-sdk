@@ -10,6 +10,7 @@
 			>
 				<img
 					src="https://media1.tenor.com/m/zfhl02Fs4ZwAAAAC/raccoon-dancing-in-a-circle-raccoon-dancing.gif"
+					alt="Joke Logo"
 				/>
 			</div>
 			<div class="text-black dark:text-white text-xl font-medium font-['Inter'] leading-7">

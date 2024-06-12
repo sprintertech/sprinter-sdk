@@ -14,7 +14,7 @@
 	const submitting: boolean[] = [];
 	const successful: boolean[] = [];
 	// TODO: there is not place for this over here! refactor it to somewhere
-	async function submitTransaction(quotaRecord: Object, index: number) {
+	async function submitTransaction(quotaRecord: object, index: number) {
 		try {
 			submitting[index] = true;
 
@@ -47,7 +47,7 @@
 
 			const web3 = new Web3($selectedProvider.provider);
 
-			// @ts-ignore   // chainId is missing in web3js call options type
+			// @ts-expect-error   // chainId is missing in web3js call options type
 			const callOptions: NonPayableCallOptions = { chainId: quotaRecord.sourceChain };
 
 			// Approval sniff etc...\

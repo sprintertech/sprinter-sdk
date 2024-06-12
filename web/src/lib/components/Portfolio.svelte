@@ -4,7 +4,7 @@
 	import { getModalStore, type ModalSettings } from '@skeletonlabs/skeleton';
 	import TokenModal from '$lib/components/TokenModal.svelte';
 
-	export let promise: Promise<any>;
+	export let promise: Promise<object>;
 
 	$: total = promise.then(({ tokens }) =>
 		tokens.reduce((p, c) => p + Number(fromWei(c.total, c.decimals)), 0)
@@ -64,6 +64,7 @@
 				</thead>
 				<tbody>
 					{#await promise}
+						<!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
 						{#each { length: 3 } as _}
 							<tr class="pt-2">
 								<td><div class="placeholder h-8" /></td>
