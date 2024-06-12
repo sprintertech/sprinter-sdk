@@ -48,6 +48,7 @@ export interface Solution {
   senderAddress: Address;
   sourceChain: ChainID;
   sourceTokenAddress: Address;
+  amount: string;
   tool: {
     logoURI: string;
     name: string;

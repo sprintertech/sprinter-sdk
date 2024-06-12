@@ -14,7 +14,7 @@ import {
  * all the new runtimes or frameworks have different env approach so this seems most straightforward way
  */
 // eslint-disable-next-line
-export let BASE_URL = "https://api.gopher.chainsafe.dev/";
+export let BASE_URL = "https://gopher.test.buildwithsygma.com/";
 
 export async function getSupportedChains(): Promise<Chain[]> {
   const url = new URL("/networks", BASE_URL);

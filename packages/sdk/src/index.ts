@@ -44,12 +44,12 @@ class GopherManager {
     return this.#chains;
   }
 
-  public async getUserBalances(): Promise<{
+  public async getUserBalances(tokens?: FungibleToken[]): Promise<{
     [sybol: TokenSymbol]: FungibleTokenBalance[];
   }> {
     const account = await this.getAccount();
 
-    const tokenList = await this.getAvailableTokens();
+    const tokenList = tokens || (await this.getAvailableTokens());
 
     const balances = await Promise.all(
       tokenList.map((token) =>
@@ -67,9 +67,10 @@ class GopherManager {
   }
 
   public async getSolution(
-    settings: Omit<SolutionOptions, "account">
+    settings: Omit<SolutionOptions, "account">,
+    targetAccount?: Address
   ): Promise<Solution[]> {
-    const account = await this.getAccount();
+    const account = targetAccount || (await this.getAccount());
 
     return await getSolution({ ...settings, account });
   }
