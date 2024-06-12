@@ -29,13 +29,13 @@ function getProvider() {
 	return storeProvider.provider;
 }
 
-export async function hacks_getGopherData(): Promise<Object> {
+export async function hacks_getGopherData(): Promise<object> {
 	const networksResponse = await fetch('https://gopher.test.buildwithsygma.com/networks').then(
 		(r) => r.json()
 	);
 	const networks = networksResponse.data.reduce(
 		(prev, network) => prev.set(network.chainID, network),
-		new Map<number, Object>()
+		new Map<number, object>()
 	);
 
 	const fungibleResponses = await Promise.all(
@@ -48,7 +48,7 @@ export async function hacks_getGopherData(): Promise<Object> {
 			)
 	);
 
-	const tokens = new Map<string, Object>();
+	const tokens = new Map<string, object>();
 	fungibleResponses.forEach((response) => {
 		response.data.forEach((asset) => {
 			if (tokens.has(asset.symbol)) return;
@@ -65,7 +65,7 @@ export async function hacks_getGopherData(): Promise<Object> {
 		)
 	);
 
-	const balances = new Map<string, Object[]>();
+	const balances = new Map<string, object[]>();
 	balancesResponses.forEach((balance) => {
 		balances.set(balance.symbol, balance.data);
 	});
@@ -81,7 +81,7 @@ export async function hacks_getGopherData(): Promise<Object> {
 	return { raw: { networks, tokens, balances }, tokens: tokensData };
 }
 
-export async function hacks_getQuota(value: Object) {
+export async function hacks_getQuota(value: object) {
 	const url = new URL('https://gopher.test.buildwithsygma.com/solutions/aggregation');
 
 	const account = await getProvider().request({ method: 'eth_requestAccounts', params: [] });
