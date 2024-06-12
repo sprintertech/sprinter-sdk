@@ -1,4 +1,5 @@
-import { MMSDK } from '$lib/stores/wallet';
+import { get } from 'svelte/store';
+import { selectedProvider } from '$lib/stores/wallet';
 
 export function hacks_getChainIcon(id: number): string {
 	switch (id) {
@@ -21,26 +22,33 @@ export function hacks_getChainIcon(id: number): string {
 	}
 }
 
-export async function hacks_getGopherData(): Promise<Object> {
-	const networksResponse = await fetch('https://api.gopher.chainsafe.dev/networks').then((r) =>
-		r.json()
+function getProvider() {
+	const storeProvider = get(selectedProvider);
+	if (!storeProvider) return;
+
+	return storeProvider.provider;
+}
+
+export async function hacks_getGopherData(): Promise<object> {
+	const networksResponse = await fetch('https://gopher.test.buildwithsygma.com/networks').then(
+		(r) => r.json()
 	);
 	const networks = networksResponse.data.reduce(
 		(prev, network) => prev.set(network.chainID, network),
-		new Map<number, Object>()
+		new Map<number, object>()
 	);
 
 	const fungibleResponses = await Promise.all(
 		networks
 			.keys()
 			.map((key) =>
-				fetch(`https://api.gopher.chainsafe.dev/networks/${key}/assets/fungible`).then((r) =>
+				fetch(`https://gopher.test.buildwithsygma.com/networks/${key}/assets/fungible`).then((r) =>
 					r.json()
 				)
 			)
 	);
 
-	const tokens = new Map<string, Object>();
+	const tokens = new Map<string, object>();
 	fungibleResponses.forEach((response) => {
 		response.data.forEach((asset) => {
 			if (tokens.has(asset.symbol)) return;
@@ -48,16 +56,16 @@ export async function hacks_getGopherData(): Promise<Object> {
 		});
 	});
 
-	const account = await MMSDK.getProvider()!.request({ method: 'eth_requestAccounts', params: [] });
+	const account = await getProvider().request({ method: 'eth_requestAccounts', params: [] });
 	const balancesResponses = await Promise.all(
 		tokens.keys().map((key) =>
-			fetch(`https://api.gopher.chainsafe.dev/accounts/${account}/assets/fungible/${key}`)
+			fetch(`https://gopher.test.buildwithsygma.com/accounts/${account}/assets/fungible/${key}`)
 				.then((r) => r.json())
 				.then((r) => ({ symbol: key, ...r }))
 		)
 	);
 
-	const balances = new Map<string, Object[]>();
+	const balances = new Map<string, object[]>();
 	balancesResponses.forEach((balance) => {
 		balances.set(balance.symbol, balance.data);
 	});
@@ -73,10 +81,10 @@ export async function hacks_getGopherData(): Promise<Object> {
 	return { raw: { networks, tokens, balances }, tokens: tokensData };
 }
 
-export async function hacks_getQuota(value: Object) {
-	const url = new URL('https://api.gopher.chainsafe.dev/solutions/aggregation');
+export async function hacks_getQuota(value: object) {
+	const url = new URL('https://gopher.test.buildwithsygma.com/solutions/aggregation');
 
-	const account = await MMSDK.getProvider()!.request({ method: 'eth_requestAccounts', params: [] });
+	const account = await getProvider().request({ method: 'eth_requestAccounts', params: [] });
 	url.searchParams.set('account', account[0]);
 
 	url.searchParams.set('destination', value.network);
@@ -86,7 +94,10 @@ export async function hacks_getQuota(value: Object) {
 	if (value.whitelisted) url.searchParams.set('whitelistedSourceChains', value.whitelisted);
 	if (value.threshold) url.searchParams.set('threshold', value.threshold);
 
-	console.log(url.toString());
-
-	return await fetch(url.toString()).then((r) => r.json());
+	return await fetch(url.toString()).then((response) =>
+		response.json().then((json) => {
+			if (response.ok) return json;
+			throw new Error(JSON.stringify(json));
+		})
+	);
 }
