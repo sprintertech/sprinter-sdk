@@ -13,8 +13,10 @@ import {
  * It is intentional so users can change base url without needing env. TODO: validate claim
  * all the new runtimes or frameworks have different env approach so this seems most straightforward way
  */
-// eslint-disable-next-line
 export let BASE_URL = "https://gopher.test.buildwithsygma.com/";
+export function setBaseUrl(url: string): void {
+  BASE_URL = url;
+}
 
 export async function getSupportedChains(): Promise<Chain[]> {
   const url = new URL("/networks", BASE_URL);
