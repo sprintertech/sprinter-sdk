@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { SvelteComponent } from 'svelte';
 	import { getModalStore } from '@skeletonlabs/skeleton';
-	import { hacks_getChainIcon } from '$lib/hacks';
 	import { fromWei } from 'web3-utils';
+	import { getNetworkByChainId } from '$lib/utils';
 
 	// Props
 	/** Exposes parent props to this component. */
@@ -38,9 +38,10 @@
 					</thead>
 					<tbody>
 						{#each $modalStore[0].value.balances as balance}
+							{@const network = getNetworkByChainId($modalStore[0].value.networks, balance.chainId)}
 							<tr>
-								<td><img class="size-7" src={hacks_getChainIcon(balance.chainId)} alt="" /></td>
-								<td>{$modalStore[0].value.networks.get(balance.chainId).name}</td>
+								<td><img class="size-7" src={network.logoURI} alt="{network.name}-logo" /></td>
+								<td>{network.name}</td>
 								<td>{fromWei(balance.balance, $modalStore[0].meta.decimals)}</td>
 							</tr>
 						{/each}

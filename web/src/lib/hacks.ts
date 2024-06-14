@@ -29,58 +29,6 @@ function getProvider() {
 	return storeProvider.provider;
 }
 
-export async function hacks_getGopherData(): Promise<object> {
-	const networksResponse = await fetch('https://gopher.test.buildwithsygma.com/networks').then(
-		(r) => r.json()
-	);
-	const networks = networksResponse.data.reduce(
-		(prev, network) => prev.set(network.chainID, network),
-		new Map<number, object>()
-	);
-
-	const fungibleResponses = await Promise.all(
-		networks
-			.keys()
-			.map((key) =>
-				fetch(`https://gopher.test.buildwithsygma.com/networks/${key}/assets/fungible`).then((r) =>
-					r.json()
-				)
-			)
-	);
-
-	const tokens = new Map<string, object>();
-	fungibleResponses.forEach((response) => {
-		response.data.forEach((asset) => {
-			if (tokens.has(asset.symbol)) return;
-			tokens.set(asset.symbol, asset);
-		});
-	});
-
-	const account = await getProvider().request({ method: 'eth_requestAccounts', params: [] });
-	const balancesResponses = await Promise.all(
-		tokens.keys().map((key) =>
-			fetch(`https://gopher.test.buildwithsygma.com/accounts/${account}/assets/fungible/${key}`)
-				.then((r) => r.json())
-				.then((r) => ({ symbol: key, ...r }))
-		)
-	);
-
-	const balances = new Map<string, object[]>();
-	balancesResponses.forEach((balance) => {
-		balances.set(balance.symbol, balance.data);
-	});
-
-	const tokensData = [...tokens.keys()].map((key) => {
-		const tokenData = tokens.get(key);
-		const balanceData = balances.get(key);
-
-		const totalBalance = balanceData.reduce((prev, cur) => prev + Number(cur.balance), 0);
-		return { ...tokenData, balances: balanceData, total: totalBalance };
-	});
-
-	return { raw: { networks, tokens, balances }, tokens: tokensData };
-}
-
 export async function hacks_getQuota(value: object) {
 	const url = new URL('https://gopher.test.buildwithsygma.com/solutions/aggregation');
 

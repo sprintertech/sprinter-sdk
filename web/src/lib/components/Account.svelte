@@ -5,16 +5,12 @@
 	$: address = $selectedProvider.provider.request({ method: 'eth_requestAccounts', params: [] });
 
 	const drawerStore = getDrawerStore();
-
 	async function openSendDrawer() {
-		const data = await promise;
-
 		const drawerSettings: DrawerSettings = {
 			id: 'SendTokens',
 			width: 'w-[518px]',
 			position: 'right',
 			meta: {
-				...data.raw,
 				title: 'Send Tokens'
 			}
 		};

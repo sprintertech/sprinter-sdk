@@ -3,7 +3,7 @@
 	import Facepile from '$lib/components/Facepile.svelte';
 	import { getModalStore, type ModalSettings } from '@skeletonlabs/skeleton';
 	import TokenModal from '$lib/components/TokenModal.svelte';
-	import { gopher } from "$lib/stores/gopher";
+	import { gopher } from '$lib/stores/gopher';
 
 	const modalStore = getModalStore();
 
@@ -11,8 +11,12 @@
 	const balances = $gopher.getUserBalances();
 	const chains = $gopher.getAvailableChains();
 
-	$: total = balances.then(b => Object.values(b).reduce((p, c) =>
-		p += Number(fromWei(c.total, c.balances[0].tokenDecimals)), 0));
+	$: total = balances.then((b) =>
+		Object.values(b).reduce(
+			(p, c) => (p += Number(fromWei(c.total, c.balances[0].tokenDecimals))),
+			0
+		)
+	);
 
 	async function handleListClick(index: number) {
 		const networks = await chains;
