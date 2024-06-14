@@ -45,7 +45,7 @@ class GopherManager {
   }
 
   public async getUserBalances(tokens?: FungibleToken[]): Promise<{
-    [sybol: TokenSymbol]: FungibleTokenBalance[];
+    [sybol: TokenSymbol]: { balances: FungibleTokenBalance[]; total: string };
   }> {
     const account = await this.getAccount();
 
@@ -53,17 +53,22 @@ class GopherManager {
 
     const balances = await Promise.all(
       tokenList.map((token) =>
-        getUserFungibleTokens(account, token.symbol).then((r) => ({
+        getUserFungibleTokens(account, token.symbol).then((balances) => ({
           symbol: token.symbol,
-          ...r,
+          balances,
         }))
       )
     );
 
-    return balances.reduce((previousValue, { symbol, ...currentValue }) => {
-      previousValue[symbol] = currentValue;
+    return balances.reduce((previousValue, { symbol, balances }) => {
+      previousValue[symbol] = {
+        total: balances
+          .reduce((prev, cur) => prev + BigInt(cur.balance), 0n)
+          .toString(),
+        balances,
+      };
       return previousValue;
-    }, {} as { [symbol: TokenSymbol]: FungibleTokenBalance[] });
+    }, {} as { [symbol: TokenSymbol]: { balances: FungibleTokenBalance[]; total: string } });
   }
 
   public async getSolution(

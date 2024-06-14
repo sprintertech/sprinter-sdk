@@ -46,7 +46,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chainsafe/gopher-sdk@workspace:packages/sdk":
+"@chainsafe/gopher-sdk@workspace:^, @chainsafe/gopher-sdk@workspace:packages/sdk":
   version: 0.0.0-use.local
   resolution: "@chainsafe/gopher-sdk@workspace:packages/sdk"
   dependencies:
@@ -6543,6 +6543,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "web@workspace:web"
   dependencies:
+    "@chainsafe/gopher-sdk": "workspace:^"
     "@floating-ui/dom": ^1.6.5
     "@skeletonlabs/skeleton": 2.10.0
     "@skeletonlabs/tw-plugin": 0.4.0

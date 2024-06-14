@@ -4,8 +4,6 @@
 
 	$: address = $selectedProvider.provider.request({ method: 'eth_requestAccounts', params: [] });
 
-	export let promise: Promise<object>;
-
 	const drawerStore = getDrawerStore();
 
 	async function openSendDrawer() {

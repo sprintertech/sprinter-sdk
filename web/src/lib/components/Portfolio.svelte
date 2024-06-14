@@ -3,25 +3,28 @@
 	import Facepile from '$lib/components/Facepile.svelte';
 	import { getModalStore, type ModalSettings } from '@skeletonlabs/skeleton';
 	import TokenModal from '$lib/components/TokenModal.svelte';
-
-	export let promise: Promise<object>;
-
-	$: total = promise.then(({ tokens }) =>
-		tokens.reduce((p, c) => p + Number(fromWei(c.total, c.decimals)), 0)
-	);
+	import { gopher } from "$lib/stores/gopher";
 
 	const modalStore = getModalStore();
 
+	const tokens = $gopher.getAvailableTokens();
+	const balances = $gopher.getUserBalances();
+	const chains = $gopher.getAvailableChains();
+
+	$: total = balances.then(b => Object.values(b).reduce((p, c) =>
+		p += Number(fromWei(c.total, c.balances[0].tokenDecimals)), 0));
+
 	async function handleListClick(index: number) {
-		const data = await promise;
-		const token = data.tokens[index];
+		const networks = await chains;
+		const token = (await tokens)[index];
+		const selectedBalances = (await balances)[token.symbol];
 
 		const modal: ModalSettings = {
 			type: 'component',
 			component: { ref: TokenModal },
 			title: token.name,
 			buttonTextCancel: 'close',
-			value: { networks: data.raw.networks, balances: token.balances },
+			value: { networks, balances: selectedBalances.balances },
 			meta: { icon: token.logoURI, sybol: token.symbol, decimals: token.decimals }
 		};
 		modalStore.trigger(modal);
@@ -63,7 +66,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					{#await promise}
+					{#await Promise.all([tokens, balances, chains])}
 						<!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
 						{#each { length: 3 } as _}
 							<tr class="pt-2">
@@ -72,8 +75,8 @@
 								<td><div class="placeholder h-8" /></td>
 							</tr>
 						{/each}
-					{:then data}
-						{#each data.tokens as token, i}
+					{:then [tokens, balances, chains]}
+						{#each tokens as token, i}
 							<tr
 								class="pt-2 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
 								on:click={() => handleListClick(i)}
@@ -89,11 +92,11 @@
 									</div>
 								</td>
 								<td class="text-slate-700 dark:text-slate-300 text-base text-left">
-									{fromWei(token.total, token.decimals)}
+									{fromWei(balances[token.symbol].total, token.decimals)}
 									{token.symbol}
 								</td>
 								<td class="text-slate-700 dark:text-slate-300 text-base">
-									<Facepile balances={token.balances} networks={data.raw.networks} />
+									<Facepile balances={balances[token.symbol].balances} networks={chains} />
 								</td>
 							</tr>
 						{/each}

@@ -16,6 +16,7 @@ export interface Chain {
   chainID: ChainID;
   chainType: "evm" /* string */;
   name: string;
+  logoURI: string;
   rpcurls: string[];
 }
 
