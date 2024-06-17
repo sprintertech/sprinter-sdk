@@ -42,7 +42,7 @@
 		});
 	});
 
-	let balances: FungibleTokenBalance[];
+	let balances: FungibleTokenBalance[] = [];
 	let tokenInfo: FungibleToken;
 	async function updateWhitelistedOnTokenChange() {
 		tokenInfo = getTokenBySymbol(await tokens, selectedToken);
@@ -54,17 +54,19 @@
 		updateWhitelistedOnTokenChange();
 	}
 
-	function requestQuota() {
+	async function requestQuota() {
 		const drawerSettings: DrawerSettings = {
 			id: 'SubmitQuota',
 			width: 'w-[518px]',
 			position: 'right',
 			meta: {
-				...$drawerStore.meta,
 				title: 'Submit Quotas',
+				tokens: await tokens,
+				chains: await chains,
+				balances,
 				quota: {
 					token: selectedToken,
-					network: selectedNetwork,
+					destinationChain: selectedNetwork,
 					whitelisted,
 					amount: toWei(amount, tokenInfo.decimals),
 					threshold: threshold ? toWei(threshold, tokenInfo.decimals) : undefined
@@ -210,19 +212,16 @@
 							<ListBox multiple>
 								{#await chains then networks}
 									{#each balances as balance}
+										{@const network = getNetworkByChainId(networks, balance.chainId)}
 										<ListBoxItem
 											bind:group={whitelisted}
-											name={$drawerStore.meta.networks.get(balance.chainId).name}
-											value={balance.chainId}
+											name={getNetworkByChainId(networks, balance.chainId).name}
+											value={String(balance.chainId)}
 										>
 											<svelte:fragment slot="lead">
-												<img
-													class="size-6"
-													src={getNetworkByChainId(networks, balance.chainId)}
-													alt={`${balance.chainId}-LOGO`}
-												/>
+												<img class="size-6" src={network.logoURI} alt={`${balance.chainId}-LOGO`} />
 											</svelte:fragment>
-											{$drawerStore.meta.networks.get(balance.chainId).name}
+											{network.name}
 											<svelte:fragment slot="trail">
 												{fromWei(balance.balance, tokenInfo.decimals)}
 											</svelte:fragment>

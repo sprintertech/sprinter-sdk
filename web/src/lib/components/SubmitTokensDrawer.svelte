@@ -1,20 +1,22 @@
 <script lang="ts">
 	import { fromWei, toHex } from 'web3-utils';
 	import { formatDuration } from '$lib/formatters';
-	import { hacks_getQuota } from '$lib/hacks';
 	import { getDrawerStore } from '@skeletonlabs/skeleton';
 	import { selectedProvider } from '$lib/stores/wallet';
 	import { type NonPayableCallOptions, Web3 } from 'web3';
 	import { erc20Abi } from '$lib/erc20.abi';
+	import { gopher } from '$lib/stores/gopher';
+	import { getNetworkByChainId, getTokenBySymbol } from '$lib/utils';
+	import { type Solution } from '@chainsafe/gopher-sdk';
 
 	const drawerStore = getDrawerStore();
-	$: quota = hacks_getQuota($drawerStore.meta.quota);
-	$: token = $drawerStore.meta.tokens.get($drawerStore.meta.quota.token);
+	$: quota = $gopher.getSolution($drawerStore.meta.quota);
+	$: token = getTokenBySymbol($drawerStore.meta.tokens, $drawerStore.meta.quota.token);
 
 	const submitting: boolean[] = [];
 	const successful: boolean[] = [];
 	// TODO: there is not place for this over here! refactor it to somewhere
-	async function submitTransaction(quotaRecord: object, index: number) {
+	async function submitTransaction(quotaRecord: Solution, index: number) {
 		try {
 			submitting[index] = true;
 
@@ -31,7 +33,7 @@
 				});
 			} catch (error) {
 				if (error.code === 4902) {
-					const network = $drawerStore.meta.networks.get(quotaRecord.sourceChain);
+					const network = getNetworkByChainId($drawerStore.meta.chains, quotaRecord.sourceChain);
 					await $selectedProvider.provider.request({
 						method: 'wallet_addEthereumChain',
 						params: [
@@ -98,11 +100,11 @@
 				<div class="placeholder h-[68px] w-full rounded-lg" />
 			</li>
 		{:then response}
-			{#each response.data as data, index}
-				{@const network = $drawerStore.meta.networks.get(data.sourceChain)}
-				{@const balance = $drawerStore.meta.balances
-					.get(token.symbol)
-					.find(({ chainId }) => chainId === data.sourceChain)}
+			{#each response as data, index}
+				{@const network = getNetworkByChainId($drawerStore.meta.chains, data.sourceChain)}
+				{@const balance = $drawerStore.meta.balances.find(
+					({ chainId }) => chainId === data.sourceChain
+				)}
 				<li
 					class="bg-gray-200 dark:bg-gray-700 p-4 rounded-lg flex justify-between items-center mb-4"
 				>
@@ -164,7 +166,7 @@
 >
 	<button
 		on:click={() => {
-			quota = hacks_getQuota($drawerStore.meta.quota);
+			quota = $gopher.getSolution($drawerStore.meta.quota);
 		}}
 		class="w-full h-10 p-2.5 bg-white dark:bg-gray-700 rounded-[10px] shadow border border-zinc-200 dark:border-gray-600 justify-center items-center gap-1 inline-flex"
 	>
