@@ -40,6 +40,12 @@ interface Amount {
   amountUSD: number;
 }
 
+export type SolutionResponse = Solution[] | FailedSolution;
+
+export interface FailedSolution {
+  error: string;
+}
+
 export interface Solution {
   destinationChain: ChainID;
   destinationTokenAddress: Address;

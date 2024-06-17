@@ -10,8 +10,8 @@ import {
   Chain,
   FungibleToken,
   FungibleTokenBalance,
-  Solution,
   SolutionOptions,
+  SolutionResponse,
   TokenSymbol,
 } from "./types";
 
@@ -74,7 +74,7 @@ class GopherManager {
   public async getSolution(
     settings: Omit<SolutionOptions, "account">,
     targetAccount?: Address
-  ): Promise<Solution[]> {
+  ): Promise<SolutionResponse> {
     const account = targetAccount || (await this.getAccount());
 
     return await getSolution({ ...settings, account });

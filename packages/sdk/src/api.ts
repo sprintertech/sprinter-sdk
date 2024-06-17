@@ -2,10 +2,12 @@ import {
   Address,
   Chain,
   ChainID,
+  FailedSolution,
   FungibleToken,
   FungibleTokenBalance,
   Solution,
   SolutionOptions,
+  SolutionResponse,
   TokenSymbol,
 } from "./types";
 
@@ -78,7 +80,7 @@ export async function getSolution({
   amount,
   threshold,
   whitelistedSourceChains,
-}: SolutionOptions): Promise<Solution[]> {
+}: SolutionOptions): Promise<SolutionResponse> {
   const url = new URL("/solutions/aggregation", BASE_URL);
 
   url.searchParams.set("account", account);
@@ -94,8 +96,10 @@ export async function getSolution({
     );
 
   const response = await fetch(url).then(
-    (response) => response.json() as unknown as { data: Solution[] }
+    (response) =>
+      response.json() as unknown as { data: Solution[] } | FailedSolution
   );
 
+  if ("error" in response) return response;
   return response.data;
 }

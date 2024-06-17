@@ -1,5 +1,4 @@
 import {
-	type Address,
 	type Chain,
 	type ChainID,
 	type FungibleToken,
