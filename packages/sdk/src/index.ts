@@ -22,7 +22,7 @@ export * as api from "./api";
 // TODO: find correct type so all disables can be safely removed
 type EIP1193Provider = any;
 
-class GopherManager {
+class Gopher {
   #provider: EIP1193Provider;
 
   // local "cache"
@@ -93,10 +93,4 @@ class GopherManager {
   }
 }
 
-export {
-  getSupportedChains,
-  getFungibleTokens,
-  getSolution,
-  GopherManager,
-  BASE_URL,
-};
+export { getSupportedChains, getFungibleTokens, getSolution, Gopher, BASE_URL };

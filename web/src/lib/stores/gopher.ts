@@ -1,9 +1,9 @@
 import { writable } from 'svelte/store';
-import { GopherManager } from '@chainsafe/gopher-sdk';
+import { Gopher } from '@chainsafe/gopher-sdk';
 import { selectedProvider } from '$lib/stores/wallet';
 
-export const gopher = writable<GopherManager>();
+export const gopher = writable<Gopher>();
 
 selectedProvider.subscribe((event) => {
-	if (event) gopher.set(new GopherManager(event.provider));
+	if (event) gopher.set(new Gopher(event.provider));
 });
