@@ -10,21 +10,12 @@ import {
   SolutionResponse,
   TokenSymbol,
 } from "./types";
+import { getEnv } from "./utils";
 
-const ENV_NAME = "GOPHER_URL";
-export let BASE_URL = ((): string => {
-  if (typeof process !== 'undefined' && "env" in process && process.env[ENV_NAME])
-    return process.env[ENV_NAME];
-
-  /** Type assertion workaround, lazy approach, but it is not like it's going to be abused.
-   * Will accept any solution that is simple, and would introduce any overhead!
-  // @ts-expect-error */
-  if ("env" in import.meta && import.meta.env[ENV_NAME])
-    // @ts-expect-error
-    return import.meta.env[ENV_NAME];
-
-  return "https://gopher.test.buildwithsygma.com/";
-})();
+export let BASE_URL = getEnv(
+  "GOPHER_URL",
+  "https://gopher.test.buildwithsygma.com/"
+);
 export function setBaseUrl(url: string): void {
   BASE_URL = url;
 }
