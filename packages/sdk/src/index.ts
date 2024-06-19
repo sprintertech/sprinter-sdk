@@ -3,6 +3,7 @@ import {
   getSolution,
   getSupportedChains,
   getUserFungibleTokens,
+  setBaseUrl,
   BASE_URL,
 } from "./api";
 import {
@@ -93,4 +94,4 @@ class Gopher {
   }
 }
 
-export { getSupportedChains, getFungibleTokens, getSolution, Gopher, BASE_URL };
+export { Gopher, setBaseUrl, BASE_URL };
