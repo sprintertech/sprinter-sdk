@@ -1,28 +1,93 @@
-import { Chain, FungibleToken, Solution, SolutionOptions } from "./types";
+import { EIP1193Provider } from "eip1193-types";
+import {
+  getFungibleTokens,
+  getSolution,
+  getSupportedChains,
+  getUserFungibleTokens,
+  setBaseUrl,
+  BASE_URL,
+} from "./api";
+import {
+  Address,
+  Chain,
+  FungibleToken,
+  FungibleTokenBalance,
+  SolutionOptions,
+  SolutionResponse,
+  TokenSymbol,
+} from "./types";
 
-export async function getSupportedChains(): Promise<Chain[]> {
-  return Promise.resolve([]);
+export type * from "./types";
+export * as api from "./api";
+export * from "./enums";
+
+class Gopher {
+  #provider: EIP1193Provider;
+
+  // local "cache"
+  #tokens?: FungibleToken[];
+  #chains?: Chain[];
+
+  constructor(provider: EIP1193Provider) {
+    this.#provider = provider;
+  }
+
+  public async getAvailableTokens(): Promise<FungibleToken[]> {
+    if (!this.#tokens) this.#tokens = await getFungibleTokens();
+    return this.#tokens;
+  }
+
+  public async getAvailableChains(): Promise<Chain[]> {
+    if (!this.#chains) this.#chains = await getSupportedChains();
+    return this.#chains;
+  }
+
+  public async getUserBalances(tokens?: FungibleToken[]): Promise<{
+    [sybol: TokenSymbol]: { balances: FungibleTokenBalance[]; total: string };
+  }> {
+    const account = await this.getAccount();
+
+    const tokenList = tokens || (await this.getAvailableTokens());
+
+    const balances = await Promise.all(
+      tokenList.map((token) =>
+        getUserFungibleTokens(account, token.symbol).then((balances) => ({
+          symbol: token.symbol,
+          balances,
+        }))
+      )
+    );
+
+    return balances.reduce((previousValue, { symbol, balances }) => {
+      previousValue[symbol] = {
+        total: balances
+          .reduce((prev, cur) => prev + BigInt(cur.balance), 0n)
+          .toString(),
+        balances,
+      };
+      return previousValue;
+    }, {} as { [symbol: TokenSymbol]: { balances: FungibleTokenBalance[]; total: string } });
+  }
+
+  public async getSolution(
+    settings: Omit<SolutionOptions, "account">,
+    targetAccount?: Address
+  ): Promise<SolutionResponse> {
+    const account = targetAccount || (await this.getAccount());
+
+    return await getSolution({ ...settings, account });
+  }
+
+  private async getAccount(): Promise<Address> {
+    const [account] = (await this.#provider.request({
+      method: "eth_requestAccounts",
+      params: [],
+    })) as Address[];
+    if (!account)
+      throw new Error("No available account! Check your provider or something");
+
+    return account;
+  }
 }
 
-export async function getKnownFungibleTokens(): Promise<FungibleToken[]> {
-  return Promise.resolve([]);
-}
-
-export async function getSolution({
-  account,
-  destinationChain,
-  token,
-  amount,
-  threshold,
-  whitelistedSourceChains,
-}: SolutionOptions): Promise<Solution[]> {
-  console.log(
-    account,
-    destinationChain,
-    token,
-    amount,
-    threshold,
-    whitelistedSourceChains
-  );
-  return Promise.resolve([]);
-}
+export { Gopher, setBaseUrl, BASE_URL, EIP1193Provider };

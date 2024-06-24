@@ -7,8 +7,6 @@
 	const close = () => {
 		drawerStore.close();
 	};
-
-	$: console.log($drawerStore);
 </script>
 
 <Drawer>

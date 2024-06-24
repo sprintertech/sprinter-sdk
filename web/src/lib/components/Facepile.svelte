@@ -1,19 +1,25 @@
 <script lang="ts">
-	export let balances;
-	export let networks;
+	import type { Chain, FungibleTokenBalance } from '@chainsafe/gopher-sdk';
 
-	$: list = balances.reduce((previousValue, { balance, chainId }) => {
-		if (balance != '0') {
-			const network = networks.get(chainId); // not having types yet! { name, logoURI }
-			previousValue.push({
-				balance: BigInt(balance),
-				chainId,
-				name: network.name,
-				logo: network.logoURI
-			});
-		}
-		return previousValue;
-	}, []);
+	export let balances: FungibleTokenBalance[];
+	export let networks: Chain[];
+
+	$: list = balances.reduce(
+		(previousValue, { balance, chainId }) => {
+			if (balance != '0') {
+				const network = networks.find((network) => network.chainID === chainId);
+				if (network)
+					previousValue.push({
+						balance: BigInt(balance),
+						chainId,
+						name: network.name,
+						logo: network.logoURI
+					});
+			}
+			return previousValue;
+		},
+		[] as { logo: string; name: string; balance: bigint; chainId: number }[]
+	);
 </script>
 
 <div class="flex -space-x-2">

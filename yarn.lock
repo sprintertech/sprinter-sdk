@@ -46,12 +46,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chainsafe/gopher-sdk@workspace:packages/sdk":
+"@chainsafe/gopher-sdk@workspace:^, @chainsafe/gopher-sdk@workspace:packages/sdk":
   version: 0.0.0-use.local
   resolution: "@chainsafe/gopher-sdk@workspace:packages/sdk"
   dependencies:
     "@types/eslint": ^8.37.0
     "@types/node": 18.15.11
+    eip1193-types: ^0.2.1
     eslint: ^8.37.0
     typescript: ^5.0.3
   languageName: unknown
@@ -2225,6 +2226,13 @@ __metadata:
   version: 0.2.0
   resolution: "eastasianwidth@npm:0.2.0"
   checksum: 26f364ebcdb6395f95124fda411f63137a4bfb5d3a06453f7f23dfe52502905bd84e0488172e0f9ec295fdc45f05c23d5d91baf16bd26f0fe9acd777a188dc39
+  languageName: node
+  linkType: hard
+
+"eip1193-types@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "eip1193-types@npm:0.2.1"
+  checksum: 423723535a890ab44d6b7c88815b9c8df48ec269f3386943fd37e6db55fcca11f9bc8b9fbae30f821db18c1b95d4a0631aa51d9a99a82d4f09bdcd43a766e2fc
   languageName: node
   linkType: hard
 
@@ -6543,6 +6551,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "web@workspace:web"
   dependencies:
+    "@chainsafe/gopher-sdk": "workspace:^"
     "@floating-ui/dom": ^1.6.5
     "@skeletonlabs/skeleton": 2.10.0
     "@skeletonlabs/tw-plugin": 0.4.0

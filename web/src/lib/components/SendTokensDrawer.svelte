@@ -10,8 +10,14 @@
 		type DrawerSettings
 	} from '@skeletonlabs/skeleton';
 	import { onMount } from 'svelte';
-	import { hacks_getChainIcon } from '$lib/hacks';
 	import { fromWei, toWei } from 'web3-utils';
+	import { gopher } from '$lib/stores/gopher';
+	import { getNetworkByChainId, getTokenBySymbol } from '$lib/utils';
+	import { type FungibleToken, type FungibleTokenBalance } from '@chainsafe/gopher-sdk';
+
+	const tokens = $gopher.getAvailableTokens();
+	const allBalances = $gopher.getUserBalances();
+	const chains = $gopher.getAvailableChains();
 
 	const drawerStore = getDrawerStore();
 
@@ -31,32 +37,36 @@
 	};
 
 	onMount(() => {
-		selectedToken = $drawerStore.meta.tokens.values().next().value.symbol;
+		tokens.then(([firstToken]) => {
+			selectedToken = firstToken.symbol;
+		});
 	});
 
-	let balances;
-	let tokenInfo;
-	function updateWhitelistedOnTokenChange() {
-		tokenInfo = $drawerStore.meta.tokens.get(selectedToken);
+	let balances: FungibleTokenBalance[] = [];
+	let tokenInfo: FungibleToken;
+	async function updateWhitelistedOnTokenChange() {
+		tokenInfo = getTokenBySymbol(await tokens, selectedToken);
 
-		balances = $drawerStore.meta.balances.get(selectedToken) ?? [];
-		whitelisted = balances.map((balance) => balance.chainId);
+		balances = (await allBalances)[selectedToken].balances ?? [];
+		whitelisted = balances.map((balance) => String(balance.chainId));
 	}
 	$: if (selectedToken) {
 		updateWhitelistedOnTokenChange();
 	}
 
-	function requestQuota() {
+	async function requestQuota() {
 		const drawerSettings: DrawerSettings = {
 			id: 'SubmitQuota',
 			width: 'w-[518px]',
 			position: 'right',
 			meta: {
-				...$drawerStore.meta,
 				title: 'Submit Quotas',
+				tokens: await tokens,
+				chains: await chains,
+				balances,
 				quota: {
 					token: selectedToken,
-					network: selectedNetwork,
+					destinationChain: selectedNetwork,
 					whitelisted,
 					amount: toWei(amount, tokenInfo.decimals),
 					threshold: threshold ? toWei(threshold, tokenInfo.decimals) : undefined
@@ -112,16 +122,20 @@
 					</button>
 					<div class="card w-48 shadow-xl py-2" data-popup="popupCombobox">
 						<ListBox rounded="rounded-none">
-							{#each $drawerStore.meta.tokens.values() as token}
-								<ListBoxItem bind:group={selectedToken} name="medium" value={token.symbol}>
-									<img
-										class="inline-block size-5 rounded-full mr-1"
-										src={token.logoURI}
-										alt={token.name}
-									/>
-									{token.name}
-								</ListBoxItem>
-							{/each}
+							{#await tokens}
+								Loading....
+							{:then data}
+								{#each data as token}
+									<ListBoxItem bind:group={selectedToken} name="medium" value={token.symbol}>
+										<img
+											class="inline-block size-5 rounded-full mr-1"
+											src={token.logoURI}
+											alt={token.name}
+										/>
+										{token.name}
+									</ListBoxItem>
+								{/each}
+							{/await}
 						</ListBox>
 						<div class="arrow bg-surface-100-800-token" />
 					</div>
@@ -147,9 +161,13 @@
 		class="self-stretch px-4 py-3 rounded-lg border border-zinc-200 dark:border-gray-600 flex-col justify-center items-start gap-1 flex text-zinc-800 dark:text-zinc-200 text-lg font-medium font-['Inter'] leading-relaxed bg-transparent"
 		bind:value={selectedNetwork}
 	>
-		{#each $drawerStore.meta.networks.values() as network}
-			<option value={network.chainID}>{network.name}</option>
-		{/each}
+		{#await chains}
+			<option disabled>Loading...</option>
+		{:then networks}
+			{#each networks as network}
+				<option value={network.chainID}>{network.name}</option>
+			{/each}
+		{/await}
 	</select>
 </div>
 
@@ -192,25 +210,24 @@
 						<svelte:fragment slot="summary">WHITELIST A NETWORK</svelte:fragment>
 						<svelte:fragment slot="content">
 							<ListBox multiple>
-								{#each balances as balance}
-									<ListBoxItem
-										bind:group={whitelisted}
-										name={$drawerStore.meta.networks.get(balance.chainId).name}
-										value={balance.chainId}
-									>
-										<svelte:fragment slot="lead">
-											<img
-												class="size-6"
-												src={hacks_getChainIcon(balance.chainId)}
-												alt={`${balance.chainId}-LOGO`}
-											/>
-										</svelte:fragment>
-										{$drawerStore.meta.networks.get(balance.chainId).name}
-										<svelte:fragment slot="trail">
-											{fromWei(balance.balance, tokenInfo.decimals)}
-										</svelte:fragment>
-									</ListBoxItem>
-								{/each}
+								{#await chains then networks}
+									{#each balances as balance}
+										{@const network = getNetworkByChainId(networks, balance.chainId)}
+										<ListBoxItem
+											bind:group={whitelisted}
+											name={getNetworkByChainId(networks, balance.chainId).name}
+											value={String(balance.chainId)}
+										>
+											<svelte:fragment slot="lead">
+												<img class="size-6" src={network.logoURI} alt={`${balance.chainId}-LOGO`} />
+											</svelte:fragment>
+											{network.name}
+											<svelte:fragment slot="trail">
+												{fromWei(balance.balance, tokenInfo.decimals)}
+											</svelte:fragment>
+										</ListBoxItem>
+									{/each}
+								{/await}
 							</ListBox>
 						</svelte:fragment>
 					</AccordionItem>
