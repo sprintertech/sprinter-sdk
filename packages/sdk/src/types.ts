@@ -1,3 +1,5 @@
+import { ChainType } from "./enums";
+
 export type Address = `0x${string}`;
 
 export type TokenSymbol = string;
@@ -5,7 +7,7 @@ export type TokenSymbol = string;
 export type ChainID = number;
 
 export interface FungibleToken {
-  addresses: { [chainID: ChainID]: Address };
+  addresses: Record<ChainID, Address>;
   decimals: number;
   logoURI: string;
   name: string;
@@ -14,7 +16,7 @@ export interface FungibleToken {
 
 export interface Chain {
   chainID: ChainID;
-  chainType: "evm" /* string */;
+  chainType: ChainType;
   name: string;
   logoURI: string;
   rpcurls: string[];
@@ -60,13 +62,15 @@ export interface Solution {
     logoURI: string;
     name: string;
   };
-  transaction: {
-    chainId: ChainID;
-    data: string;
-    from: Address;
-    gasLimit: string;
-    gasPrice: string;
-    to: Address;
-    value: string;
-  };
+  transaction: Transaction;
+}
+
+export interface Transaction {
+  chainId: ChainID;
+  data: string;
+  from: Address;
+  gasLimit: string;
+  gasPrice: string;
+  to: Address;
+  value: string;
 }

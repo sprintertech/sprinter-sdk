@@ -89,10 +89,10 @@ export async function getSolution({
   url.searchParams.set("amount", String(amount));
   //
   if (threshold) url.searchParams.set("threshold", String(threshold));
-  if (whitelistedSourceChains && whitelistedSourceChains.length)
+  if (whitelistedSourceChains?.length)
     url.searchParams.set(
       "whitelistedSourceChains",
-      whitelistedSourceChains.toString()
+      whitelistedSourceChains.join(",")
     );
 
   const response = await fetch(url).then(

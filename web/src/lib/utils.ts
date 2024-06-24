@@ -1,13 +1,14 @@
 import {
 	type Chain,
 	type ChainID,
+	ChainType,
 	type FungibleToken,
 	type TokenSymbol
 } from '@chainsafe/gopher-sdk';
 
 const noNetworkFound: Chain = {
 	chainID: 0,
-	chainType: 'evm',
+	chainType: ChainType.EVM,
 	name: 'none',
 	logoURI: 'https://static.thenounproject.com/png/75231-200.png',
 	rpcurls: []

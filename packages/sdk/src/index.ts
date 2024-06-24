@@ -1,3 +1,4 @@
+import { EIP1193Provider } from "eip1193-types";
 import {
   getFungibleTokens,
   getSolution,
@@ -18,20 +19,16 @@ import {
 
 export type * from "./types";
 export * as api from "./api";
-
-// Note: code below is hacking, not a final api or approach
-// TODO: find correct type so all disables can be safely removed
-type EIP1193Provider = any;
+export * from "./enums";
 
 class Gopher {
   #provider: EIP1193Provider;
 
   // local "cache"
-  #tokens: FungibleToken[] | undefined;
-  #chains: Chain[] | undefined;
+  #tokens?: FungibleToken[];
+  #chains?: Chain[];
 
   constructor(provider: EIP1193Provider) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     this.#provider = provider;
   }
 
@@ -82,11 +79,10 @@ class Gopher {
   }
 
   private async getAccount(): Promise<Address> {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     const [account] = (await this.#provider.request({
       method: "eth_requestAccounts",
       params: [],
-    })) as unknown as Address[];
+    })) as Address[];
     if (!account)
       throw new Error("No available account! Check your provider or something");
 
@@ -94,4 +90,4 @@ class Gopher {
   }
 }
 
-export { Gopher, setBaseUrl, BASE_URL };
+export { Gopher, setBaseUrl, BASE_URL, EIP1193Provider };
