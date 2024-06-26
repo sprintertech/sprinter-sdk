@@ -4,37 +4,33 @@ sidebar_position: 1
 
 # Get Started
 
-# SDK Usage
+# API usages
 
-This section explains how to use the Gopher SDK to interact with blockchain networks, including setup, initialization, and usage examples for various functionalities.
+If your preferred way is usage of API call or due to limitation of enrolment.
 
-## Installation
+You can use swagger https://gopher.test.buildwithsygma.com/swagger/index.html  
+or refer to other documents for more explanatory nature
 
-Install the Gopher SDK using npm or yarn:
+### Example
 
-```bash
-npm install gopher-sdk
-# or
-yarn add gopher-sdk
+Example of getting list of supported networks
+
+```shell
+curl -X 'GET' \
+  'https://gopher.test.buildwithsygma.com/networks' \
+  -H 'accept: application/json'
 ```
 
-## Example
+### Table of content
 
-To start using the Gopher SDK, you need to initialize it with an EIP1193 provider (e.g., MetaMask).
+For more detailed information about endpoint please refer to other documents
 
-```typescript
-import { Gopher } from 'gopher-sdk';
-
-const gopher = new Gopher(window.ethereum);
-```
-
-or call APi calls by yourself
-
-```typescript
-import { api } from 'gopher-sdk';
-
-const ownerAddress = "0x3E101Ec02e7A48D16DADE204C96bFF842E7E2519";
-const tokenSymbol = "USDC";
-
-api.getUserFungibleTokens(ownerAddress, tokenSymbol).then(console.log);
-```
+* Assets
+  * get All assets information
+  * get specific assets information
+  * get specific network assets
+* Network
+  * get all supported networks
+* Solution
+  * Token aggregation
+  * Token aggregation with contract call
