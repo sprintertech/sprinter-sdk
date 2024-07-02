@@ -4,20 +4,22 @@ sidebar_position: 1
 
 # Introduction
 
-Gopher SDK is a powerful tool that aggregates cross-chain balances and assists in transaction management, helping your customers seamlessly interact with multiple blockchain networks.
+Welcome to the Gopher SDK documentation! The Gopher SDK is a powerful tool designed to simplify cross-chain balance aggregation and transaction management, allowing your customers to seamlessly interact with multiple blockchain networks.
 
-## Options
+## Getting Started
 
-You have two options for using the Gopher SDK:
+Depending on your needs, you have two main options for using the Gopher SDK:
 
-1. **Using the SDK (recommended)**: This approach provides a convenient and unified interface for interacting with the blockchain using TypeScript support, making it easier to integrate with your application.
-2. **Calling APIs directly**: If you prefer more control or want to implement your own solution in another language, you can directly call the provided API endpoints.
+1. **Using the SDK (Recommended for TypeScript and Web Framework Developers)**
+2. **Calling APIs Directly**
 
 ### Using the SDK
 
-The Gopher SDK allows you to easily interact with blockchain networks using the `Gopher` class, which supports TypeScript for type safety and better development experience.
+Using the Gopher SDK provides a convenient and unified interface for blockchain interactions, complete with TypeScript support for enhanced type safety and a better development experience. This approach is particularly recommended for developers working with TypeScript or popular web frameworks.
 
-#### Example
+#### Quick Example
+
+Here's a quick example of how to use the SDK in your project:
 
 ```typescript
 import { Gopher } from 'gopher-sdk';
@@ -27,13 +29,15 @@ const gopher = new Gopher(window.ethereum);
 gopher.getUserBalances().then(console.log);
 ```
 
+For a more detailed guide on setting up and using the SDK, refer to the [SDK Documentation](sdk/overview.md).
+
 ### Calling API Endpoints Directly
 
-If you prefer to directly interact with the APIs or want to implement the solution in another language, you can use the provided API endpoints independently of the SDK.
+If you prefer more control or wish to implement the solution in a different programming language, you can directly interact with the API endpoints provided by Gopher.
 
-#### Example
+#### Quick Example
 
-Here is how you can call the API directly using JavaScript's Fetch API:
+Here’s how you can call the API directly using JavaScript's Fetch API:
 
 ```javascript
 const ownerAddress = "0x3E101Ec02e7A48D16DADE204C96bFF842E7E2519";
@@ -45,3 +49,14 @@ fetch(`${baseUrl}/accounts/${ownerAddress}/assets/fungible/${tokenSymbol}`)
   .then(data => console.log(data))
   .catch(error => console.error('Error fetching user fungible tokens:', error));
 ```
+
+For a comprehensive list of available endpoints and how to use them, check out the [API Documentation](api/get-started.md).
+
+## Next Steps
+
+- If you're new to Gopher SDK, start with our [Getting Started Guide](get-started.md).
+- For an in-depth understanding, read the [Introduction to Gopher SDK](introduction.md).
+- Explore detailed examples and advanced usage in the [SDK Documentation](sdk/overview.md).
+- Dive into the specifics of our API in the [API Documentation](api/get-started.md).
+
+We hope you find the Gopher SDK easy to use and integrate into your projects. Happy coding!
