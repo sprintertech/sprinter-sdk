@@ -17,13 +17,13 @@ The Gopher SDK is a powerful tool designed to simplify interaction with multiple
 To install the Gopher SDK, run the following command in your project directory:
 
 ```bash
-npm install gopher-sdk
+npm install @chainsafe/gopher-sdk
 ```
 
 Or if you prefer using yarn:
 
 ```bash
-yarn add gopher-sdk
+yarn add @chainsafe/gopher-sdk
 ```
 
 ## Basic Usage
@@ -33,7 +33,7 @@ Here's a quick example to get you started with the SDK:
 ### 1. Import the Gopher SDK
 
 ```typescript
-import { Gopher } from 'gopher-sdk';
+import { Gopher } from '@chainsafe/gopher-sdk';
 ```
 
 ### 2. Initialize the Gopher SDK
@@ -69,7 +69,7 @@ gopher.getSolution({
 Here's a more detailed example that combines all the basic operations:
 
 ```typescript
-import { Gopher } from 'gopher-sdk';
+import { Gopher } from '@chainsafe/gopher-sdk';
 
 const gopher = new Gopher(window.ethereum);
 

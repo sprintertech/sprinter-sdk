@@ -7,9 +7,9 @@ Gopher SDK is a powerful library for interacting with blockchain networks, allow
 Install the library using npm or yarn:
 
 ```bash
-npm install gopher-sdk
+npm install @chainsafe/gopher-sdk
 # or
-yarn add gopher-sdk
+yarn add @chainsafe/gopher-sdk
 ```
 
 ## Usage
@@ -23,7 +23,7 @@ The `Gopher` class provides a convenient interface for interacting with the bloc
 #### Example
 
 ```typescript
-import { Gopher } from 'gopher-sdk';
+import { Gopher } from '@chainsafe/gopher-sdk';
 
 const gopher = new Gopher(window.ethereum);
 
@@ -37,7 +37,7 @@ Alternatively, you can call the API endpoints directly using the provided SDK fu
 #### Example
 
 ```typescript
-import { api } from 'gopher-sdk';
+import { api } from '@chainsafe/gopher-sdk';
 
 const ownerAddress = "0x3E101Ec02e7A48D16DADE204C96bFF842E7E2519";
 const tokenSymbol = "USDC";
@@ -52,7 +52,7 @@ The SDK uses environment variables to configure the base URL `GOPHER_URL`. You c
 #### Setting Environment Variables in Code
 
 ```typescript
-import { setBaseUrl } from 'gopher-sdk';
+import { setBaseUrl } from '@chainsafe/gopher-sdk';
 
 setBaseUrl("http://localhost:8080");
 ```

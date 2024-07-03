@@ -22,7 +22,7 @@ Using the Gopher SDK provides a convenient and unified interface for blockchain 
 Here's a quick example of how to use the SDK in your project:
 
 ```typescript
-import { Gopher } from 'gopher-sdk';
+import { Gopher } from '@chainsafe/gopher-sdk';
 
 const gopher = new Gopher(window.ethereum);
 

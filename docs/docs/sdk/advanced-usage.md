@@ -53,7 +53,7 @@ You can integrate the Gopher SDK with other libraries and tools in your DApp to 
 ### Example with Web3.js v4
 
 ```typescript
-import { Gopher } from 'gopher-sdk';
+import { Gopher } from '@chainsafe/gopher-sdk';
 import Web3 from 'web3';
 
 async function integrateWithWeb3() {
