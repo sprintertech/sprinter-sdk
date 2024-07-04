@@ -20,7 +20,15 @@ function HomepageHeader() {
           <Link
             className="button button--secondary button--lg"
             to="/docs/introduction">
-            Docusaurus Tutorial - 5min ⏱️
+            Documentation
+          </Link>
+        </div>
+        <br />
+        <div className={styles.buttons}>
+          <Link
+            className="button button--secondary button--lg"
+            to="https://poc.gopher.buildwithsygma.com/">
+            Proof of Concept
           </Link>
         </div>
       </div>

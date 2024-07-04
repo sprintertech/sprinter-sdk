@@ -22,6 +22,14 @@
 		<LightSwitch />
 		<a
 			class="btn btn-sm variant-ghost-surface dark:text-white"
+			href="https://docs.gopher.buildwithsygma.com/"
+			target="_blank"
+			rel="noreferrer"
+		>
+			Docs
+		</a>
+		<a
+			class="btn btn-sm variant-ghost-surface dark:text-white"
 			href="https://github.com/ChainSafe/gopher-ts"
 			target="_blank"
 			rel="noreferrer"
