@@ -27,7 +27,7 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="https://poc.gopher.buildwithsygma.com/">
+            to="https://poc.sprinter.buildwithsygma.com/">
             Proof of Concept
           </Link>
         </div>

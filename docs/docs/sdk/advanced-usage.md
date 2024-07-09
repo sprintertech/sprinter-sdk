@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Advanced Usage
 
-This section explores advanced features and best practices for using the Gopher SDK in your decentralized applications (DApps).
+This section explores advanced features and best practices for using the Sprinter SDK in your decentralized applications (DApps).
 
 ## Handling Errors
 
@@ -13,7 +13,7 @@ The DApp is responsible for handling errors that occur during the transaction pr
 ### Example
 
 ```typescript
-gopher.getUserBalances()
+sprinter.getUserBalances()
   .then(balances => {
     console.log('User balances:', balances);
   })
@@ -28,12 +28,12 @@ gopher.getUserBalances()
 
 ## Customizing Requests
 
-The Gopher SDK allows you to customize requests to suit your application's needs. Here’s how to provide additional options when fetching solutions.
+The Sprinter SDK allows you to customize requests to suit your application's needs. Here’s how to provide additional options when fetching solutions.
 
 ### Example
 
 ```typescript
-gopher.getSolution({
+sprinter.getSolution({
   token: "USDC",
   destinationChain: 42161,  // Destination chain ID
   amount: "1000000000"      // Amount in the smallest unit (e.g., wei)
@@ -48,24 +48,24 @@ gopher.getSolution({
 
 ## Integrating with Other Libraries
 
-You can integrate the Gopher SDK with other libraries and tools in your DApp to enhance functionality.
+You can integrate the Sprinter SDK with other libraries and tools in your DApp to enhance functionality.
 
 ### Example with Web3.js v4
 
 ```typescript
-import { Gopher } from '@chainsafe/gopher-sdk';
+import { Sprinter } from '@chainsafe/sprinter-sdk';
 import Web3 from 'web3';
 
 async function integrateWithWeb3() {
   const web3 = new Web3(window.ethereum);
   const accounts = await web3.eth.requestAccounts();
 
-  const gopher = new Gopher(window.ethereum);
+  const sprinter = new Sprinter(window.ethereum);
 
-  const balances = await gopher.getUserBalances();
+  const balances = await sprinter.getUserBalances();
   console.log('User balances:', balances);
 
-  const solution = await gopher.getSolution({
+  const solution = await sprinter.getSolution({
     token: "USDC",
     destinationChain: 42161,
     amount: "1000000000"
@@ -92,11 +92,11 @@ integrateWithWeb3().catch(console.error);
 ### Explanation
 
 - **Web3.js v4**: A library for interacting with the Ethereum blockchain, used here to manage accounts and send transactions.
-- **solution[0].transaction**: The transaction object provided by Gopher's solution that is used to execute the transaction.
+- **solution[0].transaction**: The transaction object provided by Sprinter's solution that is used to execute the transaction.
 
 ## Best Practices
 
-Follow these best practices to ensure smooth and efficient integration of the Gopher SDK in your DApp:
+Follow these best practices to ensure smooth and efficient integration of the Sprinter SDK in your DApp:
 
 - **Error Handling**: Always implement comprehensive error handling to manage issues gracefully.
 - **User Experience**: Provide clear feedback to users about the status of their transactions and any errors that occur.

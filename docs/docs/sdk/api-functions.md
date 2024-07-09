@@ -4,7 +4,7 @@ sidebar_position: 4
 
 # API Functions Reference
 
-This section provides detailed information about the API functions available in the Gopher SDK. Use this reference to understand how to utilize the API functions in your decentralized applications (DApps).
+This section provides detailed information about the API functions available in the Sprinter SDK. Use this reference to understand how to utilize the API functions in your decentralized applications (DApps).
 
 ## API Functions
 
@@ -19,7 +19,7 @@ Sets the base URL for the API.
 #### Example
 
 ```typescript
-setBaseUrl("https://new-api-url.com/");
+setBaseUrl("https://test.api.sprinter.buildwithsygma.com/");
 ```
 
 ### `getSupportedChains(): Promise<Chain[]>`
@@ -263,6 +263,6 @@ Represents an amount in both native and USD values.
 
 ## Next Steps
 
-- **[Gopher Class](class-reference.md)**: Get detailed information about the Gopher class provided by the SDK.
+- **[Sprinter Class](class-reference.md)**: Get detailed information about the Sprinter class provided by the SDK.
 - **[Advanced Usage](advanced-usage.md)**: Explore advanced features and best practices.
 - **[Getting Started](../get-started.md)**: Review the basic setup and core concepts.

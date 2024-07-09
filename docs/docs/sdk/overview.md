@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # SDK Overview
 
-The Gopher SDK is a powerful tool designed to simplify interaction with multiple blockchain networks. It provides a unified interface for aggregating balances and optimizing cross-chain operations, making it easier to build decentralized applications (DApps).
+The Sprinter SDK is a powerful tool designed to simplify interaction with multiple blockchain networks. It provides a unified interface for aggregating balances and optimizing cross-chain operations, making it easier to build decentralized applications (DApps).
 
 ## Key Features
 
@@ -14,34 +14,34 @@ The Gopher SDK is a powerful tool designed to simplify interaction with multiple
 
 ## Installation
 
-To install the Gopher SDK, run the following command in your project directory:
+To install the Sprinter SDK, run the following command in your project directory:
 
 ```bash
-npm install @chainsafe/gopher-sdk
+npm install @chainsafe/sprinter-sdk
 ```
 
 Or if you prefer using yarn:
 
 ```bash
-yarn add @chainsafe/gopher-sdk
+yarn add @chainsafe/sprinter-sdk
 ```
 
 ## Basic Usage
 
 Here's a quick example to get you started with the SDK:
 
-### 1. Import the Gopher SDK
+### 1. Import the Sprinter SDK
 
 ```typescript
-import { Gopher } from '@chainsafe/gopher-sdk';
+import { Sprinter } from '@chainsafe/sprinter-sdk';
 ```
 
-### 2. Initialize the Gopher SDK
+### 2. Initialize the Sprinter SDK
 
-To initialize the SDK, create a new instance of the `Gopher` class with an Ethereum provider:
+To initialize the SDK, create a new instance of the `Sprinter` class with an Ethereum provider:
 
 ```typescript
-const gopher = new Gopher(window.ethereum);
+const sprinter = new Sprinter(window.ethereum);
 ```
 
 ### 3. Fetch User Balances
@@ -49,7 +49,7 @@ const gopher = new Gopher(window.ethereum);
 Once initialized, you can fetch the user's balances across multiple blockchains:
 
 ```typescript
-gopher.getUserBalances().then(console.log);
+sprinter.getUserBalances().then(console.log);
 ```
 
 ### 4. Get Solution
@@ -57,7 +57,7 @@ gopher.getUserBalances().then(console.log);
 Retrieve the optimal solution for managing cross-chain transactions:
 
 ```typescript
-gopher.getSolution({
+sprinter.getSolution({
   token: "USDC",
   destinationChain: 42161,  // Destination chain ID
   amount: "1000000000"      // Amount in the smallest unit (e.g., wei)
@@ -69,16 +69,16 @@ gopher.getSolution({
 Here's a more detailed example that combines all the basic operations:
 
 ```typescript
-import { Gopher } from '@chainsafe/gopher-sdk';
+import { Sprinter } from '@chainsafe/sprinter-sdk';
 
-const gopher = new Gopher(window.ethereum);
+const sprinter = new Sprinter(window.ethereum);
 
 // Fetch user balances
-gopher.getUserBalances().then(balances => {
+sprinter.getUserBalances().then(balances => {
   console.log('User balances:', balances);
 
   // Get solution for transactions
-  return gopher.getSolution({
+  return sprinter.getSolution({
     token: "USDC",
     destinationChain: 42161,  // Destination chain ID
     amount: "1000000000"      // Amount in the smallest unit (e.g., wei)
@@ -96,7 +96,7 @@ gopher.getUserBalances().then(balances => {
 
 ## Next Steps
 
-- **[Core Concepts](../get-started.md)**: Understand the fundamental concepts and operations of the Gopher SDK.
+- **[Core Concepts](../get-started.md)**: Understand the fundamental concepts and operations of the Sprinter SDK.
 - **[Advanced Usage](advanced-usage.md)**: Explore advanced features and best practices.
 - **[Class API Reference](class-reference.md)**: Get detailed information about the classes and methods provided by the SDK.
 - **[API Reference](api-functions.md)**: Get detailed information about the classes and methods provided by the SDK.
