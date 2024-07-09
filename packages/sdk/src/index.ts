@@ -21,7 +21,7 @@ export type * from "./types";
 export * as api from "./api";
 export * from "./enums";
 
-class Gopher {
+class Sprinter {
   #provider: EIP1193Provider;
 
   // local "cache"
@@ -90,4 +90,4 @@ class Gopher {
   }
 }
 
-export { Gopher, setBaseUrl, BASE_URL, EIP1193Provider };
+export { Sprinter, setBaseUrl, BASE_URL, EIP1193Provider };
