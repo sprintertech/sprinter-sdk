@@ -11,13 +11,13 @@
 	} from '@skeletonlabs/skeleton';
 	import { onMount } from 'svelte';
 	import { fromWei, toWei } from 'web3-utils';
-	import { gopher } from '$lib/stores/gopher';
+	import { sprinter } from '$lib/stores/sprinter';
 	import { getNetworkByChainId, getTokenBySymbol } from '$lib/utils';
-	import { type FungibleToken, type FungibleTokenBalance } from '@chainsafe/gopher-sdk';
+	import { type FungibleToken, type FungibleTokenBalance } from '@chainsafe/sprinter-sdk';
 
-	const tokens = $gopher.getAvailableTokens();
-	const allBalances = $gopher.getUserBalances();
-	const chains = $gopher.getAvailableChains();
+	const tokens = $sprinter.getAvailableTokens();
+	const allBalances = $sprinter.getUserBalances();
+	const chains = $sprinter.getAvailableChains();
 
 	const drawerStore = getDrawerStore();
 

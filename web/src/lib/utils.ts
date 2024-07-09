@@ -4,7 +4,7 @@ import {
 	ChainType,
 	type FungibleToken,
 	type TokenSymbol
-} from '@chainsafe/gopher-sdk';
+} from '@chainsafe/sprinter-sdk';
 
 const noNetworkFound: Chain = {
 	chainID: 0,
