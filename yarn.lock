@@ -1724,9 +1724,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chainsafe/gopher-sdk@workspace:^, @chainsafe/gopher-sdk@workspace:packages/sdk":
+"@chainsafe/sprinter-sdk@workspace:^, @chainsafe/sprinter-sdk@workspace:packages/sdk":
   version: 0.0.0-use.local
-  resolution: "@chainsafe/gopher-sdk@workspace:packages/sdk"
+  resolution: "@chainsafe/sprinter-sdk@workspace:packages/sdk"
   dependencies:
     "@types/eslint": ^8.37.0
     "@types/node": 18.15.11
@@ -6438,17 +6438,6 @@ __metadata:
   checksum: 8a095c5ccade42c867a60252914ae485ec90da243d735d1f63ec1e64c1cfbc2b8810ad69a29ab6326d159d4fddaa2f5bad067808c42072351ec458efff86708f
   languageName: node
   linkType: hard
-
-"demo@workspace:packages/demo":
-  version: 0.0.0-use.local
-  resolution: "demo@workspace:packages/demo"
-  dependencies:
-    "@types/eslint": ^8.37.0
-    "@types/node": 18.15.11
-    eslint: ^8.37.0
-    typescript: ^5.0.3
-  languageName: unknown
-  linkType: soft
 
 "depd@npm:2.0.0":
   version: 2.0.0
@@ -15959,7 +15948,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "web@workspace:web"
   dependencies:
-    "@chainsafe/gopher-sdk": "workspace:^"
+    "@chainsafe/sprinter-sdk": "workspace:^"
     "@floating-ui/dom": ^1.6.5
     "@skeletonlabs/skeleton": 2.10.0
     "@skeletonlabs/tw-plugin": 0.4.0

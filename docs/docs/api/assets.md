@@ -24,7 +24,7 @@ The response is a JSON object containing an array of fungible token objects.
 
 ```shell
 curl -X 'GET' \
-  'https://gopher.test.buildwithsygma.com/assets/fungible' \
+  'https://api.sprinter.buildwithsygma.com/assets/fungible' \
   -H 'accept: application/json'
 ```
 
@@ -91,7 +91,7 @@ The response is a JSON object containing the details of the specified token.
 
 ```shell
 curl -X 'GET' \
-  'https://gopher.test.buildwithsygma.com/assets/fungible/usdc' \
+  'https://api.sprinter.buildwithsygma.com/assets/fungible/usdc' \
   -H 'accept: application/json'
 ```
 
@@ -144,7 +144,7 @@ The response is a JSON object containing an array of fungible token objects for 
 
 ```shell
 curl -X 'GET' \
-  'https://gopher.test.buildwithsygma.com/networks/1/assets/fungible' \
+  'https://api.sprinter.buildwithsygma.com/networks/1/assets/fungible' \
   -H 'accept: application/json'
 ```
 

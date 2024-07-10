@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Chain, FungibleTokenBalance } from '@chainsafe/gopher-sdk';
+	import type { Chain, FungibleTokenBalance } from '@chainsafe/sprinter-sdk';
 
 	export let balances: FungibleTokenBalance[];
 	export let networks: Chain[];

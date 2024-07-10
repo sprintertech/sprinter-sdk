@@ -2,13 +2,13 @@
 sidebar_position: 3
 ---
 
-# Gopher Class Reference
+# Sprinter Class Reference
 
-This section provides detailed information about the `Gopher` class available in the Gopher SDK. Use this reference to understand how to utilize the `Gopher` class in your decentralized applications (DApps).
+This section provides detailed information about the `Sprinter` class available in the Sprinter SDK. Use this reference to understand how to utilize the `Sprinter` class in your decentralized applications (DApps).
 
-## Gopher Class
+## Sprinter Class
 
-The main class provided by the Gopher SDK. It includes methods for interacting with multiple blockchain networks.
+The main class provided by the Sprinter SDK. It includes methods for interacting with multiple blockchain networks.
 
 ### `constructor(provider: EIP1193Provider)`
 
@@ -21,7 +21,7 @@ Initializes the SDK with the given Ethereum provider.
 #### Example
 
 ```typescript
-const gopher = new Gopher(window.ethereum);
+const sprinter = new Sprinter(window.ethereum);
 ```
 
 ### `getAvailableTokens(): Promise<FungibleToken[]>`
@@ -35,7 +35,7 @@ Fetches the available fungible tokens across supported blockchain networks.
 #### Example
 
 ```typescript
-gopher.getAvailableTokens().then(tokens => {
+sprinter.getAvailableTokens().then(tokens => {
   console.log('Available tokens:', tokens);
 });
 ```
@@ -51,7 +51,7 @@ Fetches the supported blockchain networks.
 #### Example
 
 ```typescript
-gopher.getAvailableChains().then(chains => {
+sprinter.getAvailableChains().then(chains => {
   console.log('Supported chains:', chains);
 });
 ```
@@ -71,7 +71,7 @@ Fetches the user's balances for specified tokens across multiple blockchains. If
 #### Example
 
 ```typescript
-gopher.getUserBalances().then(balances => {
+sprinter.getUserBalances().then(balances => {
   console.log('User balances:', balances);
 });
 ```
@@ -97,7 +97,7 @@ Retrieves the optimal solution for managing cross-chain transactions based on th
 #### Example
 
 ```typescript
-gopher.getSolution({
+sprinter.getSolution({
   token: "USDC",
   destinationChain: 42161,  // Destination chain ID
   amount: 1000000000        // Amount in the smallest unit (e.g., wei)

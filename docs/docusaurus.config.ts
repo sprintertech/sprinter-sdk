@@ -3,20 +3,20 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'Gopher Docs',
-  tagline: 'Dinosaurs are cool',
+  title: 'Sprinter Docs',
+  tagline: 'Sprinter is soo cool',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://your-docusaurus-site.example.com',
+  url: 'https://docs.sprinter.buildwithsygma.com/',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'TODO', // Usually your GitHub org/user name.
-  projectName: 'gopher-ts', // Usually your repo name.
+  organizationName: 'ChainSafe', // Usually your GitHub org/user name.
+  projectName: 'sprinter-ts', // Usually your repo name.
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -49,7 +49,7 @@ const config: Config = {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      title: 'My Site',
+      title: 'Sprinter',
       logo: {
         alt: 'My Site Logo',
         src: 'img/logo.svg',
@@ -62,7 +62,12 @@ const config: Config = {
           label: 'Docs',
         },
         {
-          href: 'https://github.com/facebook/docusaurus',
+          href: 'https://poc.sprinter.buildwithsygma.com/',
+          label: 'POC',
+          position: 'right',
+        },
+        {
+          href: 'https://github.com/ChainSafe/sprinter-ts',
           label: 'GitHub',
           position: 'right',
         },
@@ -107,7 +112,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Sprinter, Inc. Built with Docusaurus.`,
     },
     prism: {
       theme: prismThemes.github,

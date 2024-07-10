@@ -29,7 +29,7 @@ The response is a JSON object containing an array of fungible token balance obje
 
 ```shell
 curl -X 'GET' \
-  'https://gopher.test.buildwithsygma.com/accounts/0x123.../assets/fungible/usdc' \
+  'https://api.sprinter.buildwithsygma.com/accounts/0x123.../assets/fungible/usdc' \
   -H 'accept: application/json'
 ```
 

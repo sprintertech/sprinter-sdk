@@ -13,8 +13,8 @@ import {
 import { getEnv } from "./utils";
 
 export let BASE_URL = getEnv(
-  "GOPHER_URL",
-  "https://gopher.test.buildwithsygma.com/"
+  "SPRINTER_URL",
+  "https://api.sprinter.buildwithsygma.com/"
 );
 export function setBaseUrl(url: string): void {
   BASE_URL = url;

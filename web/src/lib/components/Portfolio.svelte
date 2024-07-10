@@ -3,13 +3,13 @@
 	import Facepile from '$lib/components/Facepile.svelte';
 	import { getModalStore, type ModalSettings } from '@skeletonlabs/skeleton';
 	import TokenModal from '$lib/components/TokenModal.svelte';
-	import { gopher } from '$lib/stores/gopher';
+	import { sprinter } from '$lib/stores/sprinter';
 
 	const modalStore = getModalStore();
 
-	const tokens = $gopher.getAvailableTokens();
-	const balances = $gopher.getUserBalances();
-	const chains = $gopher.getAvailableChains();
+	const tokens = $sprinter.getAvailableTokens();
+	const balances = $sprinter.getUserBalances();
+	const chains = $sprinter.getAvailableChains();
 
 	$: total = balances.then((b) =>
 		Object.values(b).reduce(

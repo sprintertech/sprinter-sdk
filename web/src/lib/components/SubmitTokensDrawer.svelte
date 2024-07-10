@@ -5,13 +5,13 @@
 	import { selectedProvider } from '$lib/stores/wallet';
 	import { type NonPayableCallOptions, Web3 } from 'web3';
 	import { erc20Abi } from '$lib/erc20.abi';
-	import { gopher } from '$lib/stores/gopher';
+	import { sprinter } from '$lib/stores/sprinter';
 	import { getNetworkByChainId, getTokenBySymbol } from '$lib/utils';
-	import { type Solution } from '@chainsafe/gopher-sdk';
+	import { type Solution } from '@chainsafe/sprinter-sdk';
 	import SkullCrossbonesSolid from '$lib/icons/SkullCrossbonesSolid.svelte';
 
 	const drawerStore = getDrawerStore();
-	$: quota = $gopher.getSolution($drawerStore.meta.quota);
+	$: quota = $sprinter.getSolution($drawerStore.meta.quota);
 	$: token = getTokenBySymbol($drawerStore.meta.tokens, $drawerStore.meta.quota.token);
 
 	const submitting: boolean[] = [];
@@ -177,7 +177,7 @@
 >
 	<button
 		on:click={() => {
-			quota = $gopher.getSolution($drawerStore.meta.quota);
+			quota = $sprinter.getSolution($drawerStore.meta.quota);
 		}}
 		class="w-full h-10 p-2.5 bg-white dark:bg-gray-700 rounded-[10px] shadow border border-zinc-200 dark:border-gray-600 justify-center items-center gap-1 inline-flex"
 	>

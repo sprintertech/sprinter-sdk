@@ -6,9 +6,9 @@ sidebar_position: 1
 
 ## API Usage
 
-If you prefer using API calls directly or due to limitations of your environment, you can use the Gopher API. This guide provides an overview of the available endpoints and examples of how to interact with them.
+If you prefer using API calls directly or due to limitations of your environment, you can use the Sprinter API. This guide provides an overview of the available endpoints and examples of how to interact with them.
 
-You can use the Swagger documentation available at [Gopher Swagger API](https://gopher.test.buildwithsygma.com/swagger/index.html) for more detailed information.
+You can use the Swagger documentation available at [Sprinter Swagger API](https://api.sprinter.buildwithsygma.com/swagger/index.html) for more detailed information.
 
 ### Example
 
@@ -16,7 +16,7 @@ Example of getting a list of supported networks:
 
 ```shell
 curl -X 'GET' \
-  'https://gopher.test.buildwithsygma.com/networks' \
+  'https://api.sprinter.buildwithsygma.com/networks' \
   -H 'accept: application/json'
 ```
 
@@ -34,4 +34,4 @@ For more detailed information about each endpoint, please refer to the specific 
   - Token aggregation
   - Token aggregation with contract call
 
-Explore each section to understand how to make the most out of the Gopher API.
+Explore each section to understand how to make the most out of the Sprinter API.

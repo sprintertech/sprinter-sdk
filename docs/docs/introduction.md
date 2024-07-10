@@ -4,36 +4,36 @@ sidebar_position: 1
 
 # Introduction
 
-Welcome to the Gopher SDK documentation! The Gopher SDK is a powerful tool designed to simplify cross-chain balance aggregation and transaction management, allowing your customers to seamlessly interact with multiple blockchain networks.
+Welcome to the Sprinter SDK documentation! The Sprinter SDK is a powerful tool designed to simplify cross-chain balance aggregation and transaction management, allowing your customers to seamlessly interact with multiple blockchain networks.
 
 ## Getting Started
 
-Depending on your needs, you have two main options for using the Gopher SDK:
+Depending on your needs, you have two main options for using the Sprinter SDK:
 
 1. **Using the SDK (Recommended for TypeScript and Web Framework Developers)**
 2. **Calling APIs Directly**
 
 ### Using the SDK
 
-Using the Gopher SDK provides a convenient and unified interface for blockchain interactions, complete with TypeScript support for enhanced type safety and a better development experience. This approach is particularly recommended for developers working with TypeScript or popular web frameworks.
+Using the Sprinter SDK provides a convenient and unified interface for blockchain interactions, complete with TypeScript support for enhanced type safety and a better development experience. This approach is particularly recommended for developers working with TypeScript or popular web frameworks.
 
 #### Quick Example
 
 Here's a quick example of how to use the SDK in your project:
 
 ```typescript
-import { Gopher } from '@chainsafe/gopher-sdk';
+import { Sprinter } from '@chainsafe/sprinter-sdk';
 
-const gopher = new Gopher(window.ethereum);
+const sprinter = new Sprinter(window.ethereum);
 
-gopher.getUserBalances().then(console.log);
+sprinter.getUserBalances().then(console.log);
 ```
 
 For a more detailed guide on setting up and using the SDK, refer to the [SDK Documentation](sdk/overview.md).
 
 ### Calling API Endpoints Directly
 
-If you prefer more control or wish to implement the solution in a different programming language, you can directly interact with the API endpoints provided by Gopher.
+If you prefer more control or wish to implement the solution in a different programming language, you can directly interact with the API endpoints provided by Sprinter.
 
 #### Quick Example
 
@@ -54,9 +54,9 @@ For a comprehensive list of available endpoints and how to use them, check out t
 
 ## Next Steps
 
-- If you're new to Gopher SDK, start with our [Getting Started Guide](get-started.md).
-- For an in-depth understanding, read the [Introduction to Gopher SDK](introduction.md).
+- If you're new to Sprinter SDK, start with our [Getting Started Guide](get-started.md).
+- For an in-depth understanding, read the [Introduction to Sprinter SDK](introduction.md).
 - Explore detailed examples and advanced usage in the [SDK Documentation](sdk/overview.md).
 - Dive into the specifics of our API in the [API Documentation](api/get-started.md).
 
-We hope you find the Gopher SDK easy to use and integrate into your projects. Happy coding!
+We hope you find the Sprinter SDK easy to use and integrate into your projects. Happy coding!

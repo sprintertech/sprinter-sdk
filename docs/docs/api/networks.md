@@ -24,7 +24,7 @@ The response is a JSON object containing an array of network objects.
 
 ```shell
 curl -X 'GET' \
-  'https://gopher.test.buildwithsygma.com/networks' \
+  'https://api.sprinter.buildwithsygma.com/networks' \
   -H 'accept: application/json'
 ```
 

@@ -4,7 +4,7 @@ sidebar_position: 5
 
 # Solutions
 
-This section explains how to get solutions for specific actions using the Gopher API.
+This section explains how to get solutions for specific actions using the Sprinter API.
 
 ## GET - /solutions/aggregation
 
@@ -24,7 +24,7 @@ The response is a JSON object containing an array of solutions.
 
 ```shell
 curl -X 'GET' \
-  'https://gopher.test.buildwithsygma.com/solutions/aggregation' \
+  'https://api.sprinter.buildwithsygma.com/solutions/aggregation' \
   -H 'accept: application/json'
 ```
 
@@ -115,7 +115,7 @@ The request body should be a JSON object containing the following fields:
 
 ```shell
 curl -X 'POST' \
-  'https://gopher.test.buildwithsygma.com/solutions/aggregation' \
+  'https://api.sprinter.buildwithsygma.com/solutions/aggregation' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
