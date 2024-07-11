@@ -1,8 +1,25 @@
 <script lang="ts">
 	import { selectedProvider } from '$lib/stores/wallet';
 	import { type DrawerSettings, getDrawerStore } from '@skeletonlabs/skeleton';
+	import { Web3 } from 'web3';
+	import { sprinterNameServiceAbi } from '$lib/sprinterNameService.abi';
 
 	$: address = $selectedProvider.provider.request({ method: 'eth_requestAccounts', params: [] });
+
+	async function getSprinterName(address: string): Promise<string> {
+		const SEPOLIA_RPC_PROVIDER = 'https://ethereum-sepolia-rpc.publicnode.com';
+		const web3 = new Web3(SEPOLIA_RPC_PROVIDER);
+
+		const SPRINTER_SEPOLIA_ADDRESS = '0x816c467d53274FCae795bDde9A67Dd980Db21419';
+		const sprinterNameService = new web3.eth.Contract(
+			sprinterNameServiceAbi,
+			SPRINTER_SEPOLIA_ADDRESS
+		);
+
+		const name = await sprinterNameService.methods.names(address).call();
+		if (!name) throw new Error('Name not found!');
+		return name;
+	}
 
 	const drawerStore = getDrawerStore();
 	async function openSendDrawer() {
@@ -28,7 +45,13 @@
 				{#await address}
 					0x....
 				{:then result}
-					{result[0]}
+					{#await getSprinterName(result[0])}
+						{result[0]}
+					{:then name}
+						{name}
+					{:catch error}
+						{result[0]}
+					{/await}
 				{:catch error}
 					- {JSON.stringify(error)}
 				{/await}
