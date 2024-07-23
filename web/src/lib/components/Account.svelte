@@ -9,6 +9,7 @@
 	import { Web3 } from 'web3';
 	import { sprinterNameServiceAbi } from '$lib/sprinterNameService.abi';
 	import UpdateNameModal from '$lib/components/UpdateNameModal.svelte';
+	import { SPRINTER_SEPOLIA_ADDRESS } from '$lib/stores/sprinter';
 
 	$: address = $selectedProvider.provider.request({ method: 'eth_requestAccounts', params: [] });
 
@@ -16,7 +17,6 @@
 		const SEPOLIA_RPC_PROVIDER = 'https://ethereum-sepolia-rpc.publicnode.com';
 		const web3 = new Web3(SEPOLIA_RPC_PROVIDER);
 
-		const SPRINTER_SEPOLIA_ADDRESS = '0x01D6Dbd6663f2a19aaec09381D3e3826Cdf96C4E';
 		const sprinterNameService = new web3.eth.Contract(
 			sprinterNameServiceAbi,
 			SPRINTER_SEPOLIA_ADDRESS
