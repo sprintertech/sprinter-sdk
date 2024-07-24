@@ -2,8 +2,6 @@ import { ChainType } from "./enums";
 
 export type Address = `0x${string}`;
 
-export type HexString = `0x${string}`;
-
 export type TokenSymbol = string;
 
 export type ChainID = number;
@@ -39,15 +37,17 @@ export interface SolutionOptions {
   whitelistedSourceChains?: ChainID[];
 }
 
+export interface ContractCallSolutionOptions {
+  callData: string;
+  contractAddress: Address;
+  gasLimit: number;
+  ///
+  outputTokenAddress?: Address;
+  approvalAddress?: Address;
+}
+
 export interface ContractSolutionOptions extends SolutionOptions {
-  contractCall: {
-    callData: HexString;
-    contractAddress: Address;
-    gasLimit: number;
-    ///
-    outputTokenAddress?: Address;
-    approvalAddress?: Address;
-  };
+  contractCall: ContractCallSolutionOptions;
 }
 
 interface Amount {

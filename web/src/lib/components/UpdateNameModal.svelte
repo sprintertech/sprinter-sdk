@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { SvelteComponent } from 'svelte';
 	import { getModalStore } from '@skeletonlabs/skeleton';
-	import { BASE_URL, type Solution } from '@chainsafe/sprinter-sdk';
+	import { type Solution } from '@chainsafe/sprinter-sdk';
 	import { eth } from 'web3';
 	import { selectedProvider } from '$lib/stores/wallet';
 	import { fromWei, toWei } from 'web3-utils';
@@ -36,35 +36,30 @@
 	async function onNameSubmit() {
 		fetching = true;
 		const address = (
-			await $selectedProvider.provider.request({ method: 'eth_requestAccounts', params: [] })
+				await $selectedProvider.provider.request({ method: 'eth_requestAccounts', params: [] })
 		)[0];
-		const amount = toWei(donation, 6);
+
+		const amount = Number(toWei(donation, 6));
 		const data = eth.abi.encodeParameters(['address', 'string'], [address, name]);
 
-		const url = new URL('/solutions/aggregation', BASE_URL);
-		const response = await fetch(url, {
-			method: 'POST',
-			body: JSON.stringify({
-				account: address,
-				amount: amount,
-				token: 'USDC',
-				destination: 11155111,
-				destinationContractCall: {
-					callData: data,
-					contractAddress: SPRINTER_SEPOLIA_ADDRESS,
-					gasLimit: 10_000_000
-				},
-				type: 'fungible'
-			})
-		}).then((response) => response.json());
+		const response = await $sprinter.getSolution({
+			amount: amount,
+			token: 'USDC',
+			destinationChain: 11155111,
+			contractCall: {
+				callData: data,
+				contractAddress: SPRINTER_SEPOLIA_ADDRESS,
+				gasLimit: 10_000_000
+			},
+		});
 
 		fetching = false;
-		if (response.error) {
+		if ('error' in response) {
 			hasError = true;
 			return;
 		}
 		hasError = false;
-		transactions = response.data;
+		transactions = response;
 	}
 </script>
 

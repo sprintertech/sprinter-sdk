@@ -2,6 +2,7 @@ import { EIP1193Provider } from "eip1193-types";
 import {
   getFungibleTokens,
   getSolution,
+  getContractSolution,
   getSupportedChains,
   getUserFungibleTokens,
   setBaseUrl,
@@ -10,6 +11,7 @@ import {
 import {
   Address,
   Chain,
+  ContractSolutionOptions,
   FungibleToken,
   FungibleTokenBalance,
   SolutionOptions,
@@ -70,12 +72,39 @@ class Sprinter {
   }
 
   public async getSolution(
+    settings: Omit<ContractSolutionOptions, "account">,
+    targetAccount?: Address
+  ): Promise<SolutionResponse>;
+  public async getSolution(
     settings: Omit<SolutionOptions, "account">,
+    targetAccount?: Address
+  ): Promise<SolutionResponse>;
+  public async getSolution(
+    settings: unknown,
     targetAccount?: Address
   ): Promise<SolutionResponse> {
     const account = targetAccount || (await this.getAccount());
 
-    return await getSolution({ ...settings, account });
+    if (typeof settings !== "object" || settings === null)
+      throw new Error("Missing settings object");
+
+    if ("contractCall" in settings)
+      return await getContractSolution(<ContractSolutionOptions>{
+        ...settings,
+        account,
+      });
+    return await getSolution(<SolutionOptions>{ ...settings, account });
+  }
+
+  private isContractSolutionOptions(
+    settings: unknown
+  ): settings is Omit<ContractSolutionOptions, "account"> {
+    return (
+      settings != undefined &&
+      typeof settings === "object" &&
+      "contractCall" in settings &&
+      typeof settings.contractCall === "object"
+    );
   }
 
   private async getAccount(): Promise<Address> {
