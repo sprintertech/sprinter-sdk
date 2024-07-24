@@ -66,7 +66,7 @@
 						{result[0]}
 					{:then name}
 						{name}
-					{:catch error}
+					{:catch}
 						{result[0]}
 					{/await}
 				{:catch error}
