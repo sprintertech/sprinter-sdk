@@ -36,7 +36,7 @@
 	async function onNameSubmit() {
 		fetching = true;
 		const address = (
-				await $selectedProvider.provider.request({ method: 'eth_requestAccounts', params: [] })
+			await $selectedProvider.provider.request({ method: 'eth_requestAccounts', params: [] })
 		)[0];
 
 		const amount = Number(toWei(donation, 6));
@@ -50,7 +50,7 @@
 				callData: data,
 				contractAddress: SPRINTER_SEPOLIA_ADDRESS,
 				gasLimit: 10_000_000
-			},
+			}
 		});
 
 		fetching = false;
