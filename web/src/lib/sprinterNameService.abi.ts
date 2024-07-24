@@ -17,5 +17,5 @@ export const sprinterNameServiceAbi = [
 		],
 		stateMutability: 'view',
 		type: 'function'
-	},
+	}
 ] as const;
