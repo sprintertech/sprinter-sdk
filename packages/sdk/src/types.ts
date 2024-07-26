@@ -37,6 +37,19 @@ export interface SolutionOptions {
   whitelistedSourceChains?: ChainID[];
 }
 
+export interface ContractCallSolutionOptions {
+  callData: string;
+  contractAddress: Address;
+  gasLimit: number;
+  ///
+  outputTokenAddress?: Address;
+  approvalAddress?: Address;
+}
+
+export interface ContractSolutionOptions extends SolutionOptions {
+  contractCall: ContractCallSolutionOptions;
+}
+
 interface Amount {
   amount: string;
   amountUSD: number;

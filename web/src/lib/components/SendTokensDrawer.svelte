@@ -55,6 +55,8 @@
 	}
 
 	async function requestQuota() {
+		if (!selectedNetwork) selectedNetwork = String((await chains)[0].chainID);
+
 		const drawerSettings: DrawerSettings = {
 			id: 'SubmitQuota',
 			width: 'w-[518px]',
