@@ -11,7 +11,7 @@ type FeatureItem = {
 const FeatureList: FeatureItem[] = [
   {
     title: 'Unified Balance',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    Svg: require('@site/static/img/balance.svg').default,
     description: (
       <>
         Single token balance displayed across multiple chains.
@@ -20,7 +20,7 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: 'Optimized execution',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    Svg: require('@site/static/img/execution.svg').default,
     description: (
       <>
         Automatically determines the fastest and cheapest execution paths for a transfer, regardless of layer.
@@ -29,7 +29,7 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: 'UX Boon',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    Svg: require('@site/static/img/ux.svg').default,
     description: (
       <>
         One signature to nuke network switching once and for all.
