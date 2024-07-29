@@ -3,8 +3,8 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'Sprinter Docs',
-  tagline: 'Sprinter is soo cool',
+  title: 'Sprinter',
+  tagline: 'Do Not Walk, Sprint.',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
@@ -55,16 +55,16 @@ const config: Config = {
         src: 'img/logo.svg',
       },
       items: [
-        {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
-          position: 'left',
-          label: 'Docs',
-        },
+        // {
+        //  type: 'docSidebar',
+        //  sidebarId: 'tutorialSidebar',
+        //  position: 'left',
+        //  label: 'Docs',
+        // }
         {
           href: 'https://poc.sprinter.buildwithsygma.com/',
           label: 'POC',
-          position: 'right',
+          position: 'left',
         },
         {
           href: 'https://github.com/ChainSafe/sprinter-ts',
@@ -83,22 +83,26 @@ const config: Config = {
               label: 'Introduction',
               to: '/docs/introduction',
             },
+            {
+              label: 'SDK',
+              to: '/docs/category/sdk',
+            },
+            {
+              label: 'API',
+              to: '/docs/category/api',
+            },
           ],
         },
         {
           title: 'Community',
           items: [
             {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+              label: 'Twitter',
+              href: 'https://twitter.com/sprinter_ux',
             },
             {
               label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
-            },
-            {
-              label: 'Twitter',
-              href: 'https://twitter.com/docusaurus',
+              href: 'https://discord.gg/DjpAhQvbkw',
             },
           ],
         },
@@ -106,8 +110,16 @@ const config: Config = {
           title: 'More',
           items: [
             {
+              label: 'Website',
+              href: 'https://sprinter.box',
+            },
+            {
               label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              href: 'https://github.com/ChainSafe/sprinter-ts',
+            },
+            {
+              label: 'Blog',
+              href: 'https://blog.chainsafe.io',
             },
           ],
         },
