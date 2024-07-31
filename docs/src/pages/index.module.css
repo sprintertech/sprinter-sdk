@@ -3,21 +3,74 @@
  * and scoped locally.
  */
 
-.heroBanner {
-  padding: 4rem 0;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
 @media screen and (max-width: 996px) {
   .heroBanner {
     padding: 2rem;
   }
 }
 
+.heroBanner {
+  background-color: #282c34;
+  padding: 4rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.heroTitle {
+  font-size: 4rem;
+  font-weight: bold;
+}
+
+.heroSubtitle {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.highlight {
+  color: #61dafb; /* Change to your desired highlight color */
+}
+
 .buttons {
+  margin-top: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.callToActionSection {
+  padding: 4rem 0;
+  background-color: #f9f9f9;
+}
+
+.callToActionSection h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.callToActionSection p {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.callToActionSection img.ctaImage {
+  display: block;
+  margin: 0 auto; /* Center the image horizontally */
+  max-width: 100%; /* Make sure the image doesn't overflow its container */
+  height: auto; /* Maintain the aspect ratio */
+  width: 200px; /* Set a specific width or max-width as needed */
+}
+
+.svg-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Adjust this as needed */
+}
+
+.icon {
+  width: 150px; /* Adjust this as needed */
+  height: 150px; /* Adjust this as needed */
 }

@@ -14,12 +14,12 @@ const FeatureList: FeatureItem[] = [
     Svg: require('@site/static/img/balance.svg').default,
     description: (
       <>
-        Single token balance displayed across multiple chains.
+        Single token balance representing one asset across multiple chains.
       </>
     ),
   },
   {
-    title: 'Optimized execution',
+    title: 'Optimized Execution',
     Svg: require('@site/static/img/execution.svg').default,
     description: (
       <>
@@ -28,7 +28,7 @@ const FeatureList: FeatureItem[] = [
     ),
   },
   {
-    title: 'UX Boon',
+    title: 'UX Buff',
     Svg: require('@site/static/img/ux.svg').default,
     description: (
       <>

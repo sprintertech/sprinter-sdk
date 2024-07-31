@@ -4,8 +4,8 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'Sprinter',
-  tagline: 'Do Not Walk, Sprint.',
-  favicon: 'img/favicon.ico',
+  tagline: 'Multichain interactions that feel like one',
+  favicon: 'img/run.ico',
 
   // Set the production url of your site here
   url: 'https://docs.sprinter.buildwithsygma.com/',
@@ -51,8 +51,8 @@ const config: Config = {
     navbar: {
       title: 'Sprinter',
       logo: {
-        alt: 'My Site Logo',
-        src: 'img/logo.svg',
+        alt: 'Sprinter Temp Logo',
+        src: 'img/run.svg',
       },
       items: [
         // {
@@ -65,6 +65,16 @@ const config: Config = {
           href: 'https://poc.sprinter.buildwithsygma.com/',
           label: 'POC',
           position: 'left',
+        },
+        {
+          to: 'docs/get-started',
+          position: 'left',
+          label: 'Learn',
+        },
+        {
+          to: 'docs/api/get-started',
+          position: 'left',
+          label: 'API',
         },
         {
           href: 'https://github.com/ChainSafe/sprinter-ts',
@@ -102,7 +112,7 @@ const config: Config = {
             },
             {
               label: 'Discord',
-              href: 'https://discord.gg/DjpAhQvbkw',
+              href: 'https://discord.gg/Qdf6GyNB5J',
             },
           ],
         },
@@ -119,7 +129,7 @@ const config: Config = {
             },
             {
               label: 'Blog',
-              href: 'https://blog.chainsafe.io',
+              href: 'https://blog.buildwithsygma.com',
             },
           ],
         },
