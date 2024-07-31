@@ -1,4 +1,4 @@
-import {
+import type {
   Address,
   Chain,
   ChainID,
@@ -15,7 +15,7 @@ import { getEnv } from "./utils";
 
 export let BASE_URL = getEnv(
   "SPRINTER_URL",
-  "https://api.sprinter.buildwithsygma.com/"
+  "https://api.sprinter.buildwithsygma.com/",
 );
 export function setBaseUrl(url: string): void {
   BASE_URL = url;
@@ -24,18 +24,18 @@ export function setBaseUrl(url: string): void {
 export async function getSupportedChains(): Promise<Chain[]> {
   const url = new URL("/networks", BASE_URL);
   const response = await fetch(url).then(
-    (response) => response.json() as unknown as { data: Chain[] }
+    (response) => response.json() as unknown as { data: Chain[] },
   );
 
   return response.data;
 }
 
 export async function getChainTokens(
-  chainID: ChainID
+  chainID: ChainID,
 ): Promise<FungibleToken[]> {
   const url = new URL(`/networks/${chainID}/assets/fungible`, BASE_URL);
   const response = await fetch(url).then(
-    (response) => response.json() as unknown as { data: FungibleToken[] }
+    (response) => response.json() as unknown as { data: FungibleToken[] },
   );
 
   return response.data;
@@ -44,31 +44,32 @@ export async function getChainTokens(
 export async function getFungibleTokens(): Promise<FungibleToken[]> {
   const url = new URL("/assets/fungible", BASE_URL);
   const response = await fetch(url).then(
-    (response) => response.json() as unknown as { data: FungibleToken[] }
+    (response) => response.json() as unknown as { data: FungibleToken[] },
   );
 
   return response.data;
 }
 
 export async function getFungibleToken(
-  token: TokenSymbol
+  token: TokenSymbol,
 ): Promise<FungibleToken> {
   const url = new URL(`/assets/fungible/${token}`, BASE_URL);
   return await fetch(url).then(
-    (response) => response.json() as unknown as FungibleToken
+    (response) => response.json() as unknown as FungibleToken,
   );
 }
 
 export async function getUserFungibleTokens(
   address: Address,
-  token: TokenSymbol
+  token: TokenSymbol,
 ): Promise<FungibleTokenBalance[]> {
   const url = new URL(
     `/accounts/${address}/assets/fungible/${token}`,
-    BASE_URL
+    BASE_URL,
   );
   const response = await fetch(url).then(
-    (response) => response.json() as unknown as { data: FungibleTokenBalance[] }
+    (response) =>
+      response.json() as unknown as { data: FungibleTokenBalance[] },
   );
 
   return response.data;
@@ -93,12 +94,12 @@ export async function getSolution({
   if (whitelistedSourceChains?.length)
     url.searchParams.set(
       "whitelistedSourceChains",
-      whitelistedSourceChains.join(",")
+      whitelistedSourceChains.join(","),
     );
 
   const response = await fetch(url).then(
     (response) =>
-      response.json() as unknown as { data: Solution[] } | FailedSolution
+      response.json() as unknown as { data: Solution[] } | FailedSolution,
   );
 
   if ("error" in response) return response;
@@ -130,7 +131,7 @@ export async function getContractSolution({
     }),
   }).then(
     (response) =>
-      response.json() as unknown as { data: Solution[] } | FailedSolution
+      response.json() as unknown as { data: Solution[] } | FailedSolution,
   );
 
   if ("error" in response) return response;
