@@ -13,10 +13,10 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "build": "yarn workspaces foreach -vpt run build",
-    "lint": "yarn workspaces foreach -vpt run lint",
-    "test:unit": "yarn workspaces foreach -vpt run test:unit",
-    "test:integrations": "yarn workspaces foreach -vpt run test:integrations"
+    "build": "yarn workspaces foreach -Avpt run build",
+    "lint": "yarn workspaces foreach -Avpt run lint",
+    "test:unit": "yarn workspaces foreach -Avpt run test:unit",
+    "test:integrations": "yarn workspaces foreach -Avpt run test:integrations"
   },
   "devDependencies": {
     "@chainsafe/eslint-config": "^2.2.4",

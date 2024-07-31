@@ -1,4 +1,4 @@
-import { ChainType } from "./enums";
+import type { ChainType } from "./enums";
 
 export type Address = `0x${string}`;
 

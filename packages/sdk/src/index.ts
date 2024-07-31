@@ -1,4 +1,5 @@
 import { EIP1193Provider } from "eip1193-types";
+
 import {
   getFungibleTokens,
   getSolution,
@@ -8,7 +9,7 @@ import {
   setBaseUrl,
   BASE_URL,
 } from "./api";
-import {
+import type {
   Address,
   Chain,
   ContractSolutionOptions,
@@ -56,32 +57,40 @@ class Sprinter {
         getUserFungibleTokens(account, token.symbol).then((balances) => ({
           symbol: token.symbol,
           balances,
-        }))
-      )
+        })),
+      ),
     );
 
-    return balances.reduce((previousValue, { symbol, balances }) => {
-      previousValue[symbol] = {
-        total: balances
-          .reduce((prev, cur) => prev + BigInt(cur.balance), 0n)
-          .toString(),
-        balances,
-      };
-      return previousValue;
-    }, {} as { [symbol: TokenSymbol]: { balances: FungibleTokenBalance[]; total: string } });
+    return balances.reduce(
+      (previousValue, { symbol, balances }) => {
+        previousValue[symbol] = {
+          total: balances
+            .reduce((prev, cur) => prev + BigInt(cur.balance), 0n)
+            .toString(),
+          balances,
+        };
+        return previousValue;
+      },
+      {} as {
+        [symbol: TokenSymbol]: {
+          balances: FungibleTokenBalance[];
+          total: string;
+        };
+      },
+    );
   }
 
   public async getSolution(
     settings: Omit<ContractSolutionOptions, "account">,
-    targetAccount?: Address
+    targetAccount?: Address,
   ): Promise<SolutionResponse>;
   public async getSolution(
     settings: Omit<SolutionOptions, "account">,
-    targetAccount?: Address
+    targetAccount?: Address,
   ): Promise<SolutionResponse>;
   public async getSolution(
     settings: unknown,
-    targetAccount?: Address
+    targetAccount?: Address,
   ): Promise<SolutionResponse> {
     const account = targetAccount || (await this.getAccount());
 
@@ -97,7 +106,7 @@ class Sprinter {
   }
 
   private isContractSolutionOptions(
-    settings: unknown
+    settings: unknown,
   ): settings is Omit<ContractSolutionOptions, "account"> {
     return (
       settings != undefined &&
