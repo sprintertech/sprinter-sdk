@@ -3,7 +3,7 @@
   "private": true,
   "author": "ChainSafe <info@chainsafe.io>",
   "license": "(MIT)",
-  "packageManager": "yarn@3.8.2",
+  "packageManager": "yarn@4.3.1",
   "workspaces": [
     "packages/*",
     "web",
@@ -19,11 +19,11 @@
     "test:integrations": "yarn workspaces foreach -vpt run test:integrations"
   },
   "devDependencies": {
-    "@chainsafe/eslint-config": "^1.1.0",
-    "@rushstack/eslint-patch": "^1.2.0",
-    "@types/eslint": "^8.37.0",
-    "@types/node": "18.15.11",
-    "eslint": "8.37.0",
+    "@chainsafe/eslint-config": "^2.2.4",
+    "@rushstack/eslint-patch": "^1.10.4",
+    "@types/eslint": "^8.56.11",
+    "@types/node": "18.19.42",
+    "eslint": "8.57.0",
     "typescript": "^5.0.3"
   }
 }
