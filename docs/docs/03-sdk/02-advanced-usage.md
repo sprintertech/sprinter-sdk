@@ -102,9 +102,3 @@ Follow these best practices to ensure smooth and efficient integration of the Sp
 - **User Experience**: Provide clear feedback to users about the status of their transactions and any errors that occur.
 - **Security**: Ensure that your application handles sensitive information securely and follows best practices for interacting with blockchain networks.
 - **Optimization**: Use the SDK’s features to optimize cross-chain transactions and minimize costs.
-
-## Next Steps
-
-- **[Class API Reference](class-reference.md)**: Get detailed information about the classes and methods provided by the SDK.
-- **[API Reference](api-functions.md)**: Get detailed information about the classes and methods provided by the SDK.
-- **[Getting Started](../get-started.md)**: Review the basic setup and core concepts.

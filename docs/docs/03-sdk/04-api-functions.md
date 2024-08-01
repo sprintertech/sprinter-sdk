@@ -261,8 +261,3 @@ Represents an amount in both native and USD values.
 - `amount: string`: The amount in the smallest unit (e.g., wei).
 - `amountUSD: number`: The equivalent amount in USD.
 
-## Next Steps
-
-- **[Sprinter Class](class-reference.md)**: Get detailed information about the Sprinter class provided by the SDK.
-- **[Advanced Usage](advanced-usage.md)**: Explore advanced features and best practices.
-- **[Getting Started](../get-started.md)**: Review the basic setup and core concepts.

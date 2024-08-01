@@ -38,7 +38,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/chainsafe/sprinter-ts',
         },
         blog: false,
       } satisfies Preset.Options,
@@ -47,7 +47,7 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
+    // image: 'img/docusaurus-social-card.jpg',
     navbar: {
       title: 'Sprinter',
       logo: {
@@ -67,12 +67,12 @@ const config: Config = {
           position: 'left',
         },
         {
-          to: 'docs/get-started',
+          to: 'docs/gettingstarted',
           position: 'left',
           label: 'Learn',
         },
         {
-          to: 'docs/api/get-started',
+          to: 'docs/api/api-usage',
           position: 'left',
           label: 'API',
         },
@@ -91,7 +91,7 @@ const config: Config = {
           items: [
             {
               label: 'Introduction',
-              to: '/docs/introduction',
+              to: '/docs/intro',
             },
             {
               label: 'SDK',

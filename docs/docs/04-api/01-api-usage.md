@@ -2,9 +2,7 @@
 sidebar_position: 1
 ---
 
-# Get Started
-
-## API Usage
+# API Usage
 
 If you prefer using API calls directly or due to limitations of your environment, you can use the Sprinter API. This guide provides an overview of the available endpoints and examples of how to interact with them.
 
@@ -24,13 +22,13 @@ curl -X 'GET' \
 
 For more detailed information about each endpoint, please refer to the specific documents:
 
-- [Fungible Assets](assets.md)
+- [Fungible Assets](03-assets.md)
   - Get all assets information
   - Get specific assets information
   - Get specific network assets
-- [Networks](networks.md)
+- [Networks](02-networks.md)
   - Get all supported networks
-- [Solutions](solutions.md)
+- [Solutions](05-solutions.md)
   - Token aggregation
   - Token aggregation with contract call
 

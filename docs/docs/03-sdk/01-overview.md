@@ -93,10 +93,3 @@ sprinter.getUserBalances().then(balances => {
   console.error('An error occurred:', error);
 });
 ```
-
-## Next Steps
-
-- **[Core Concepts](../get-started.md)**: Understand the fundamental concepts and operations of the Sprinter SDK.
-- **[Advanced Usage](advanced-usage.md)**: Explore advanced features and best practices.
-- **[Class API Reference](class-reference.md)**: Get detailed information about the classes and methods provided by the SDK.
-- **[API Reference](api-functions.md)**: Get detailed information about the classes and methods provided by the SDK.

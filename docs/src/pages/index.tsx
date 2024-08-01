@@ -21,7 +21,7 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="/docs/introduction">
+            to="/docs/intro">
             Get Started
           </Link>
         </div>
@@ -45,7 +45,7 @@ function CallToActionSection() {
         <div className="row">
           <div className="col col--6">
           <h2>
-              Sprint Into <span className={styles.highlight}>Action</span>
+              <span className={styles.highlight}>Sprint</span> Into Action
             </h2>
             <p>Evolve your application's UX. Reach out to the Sprinter team to integrate today.</p>
             <Link
