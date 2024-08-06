@@ -16,12 +16,12 @@ function HomepageHeader() {
           {siteConfig.title}
         </Heading>
         <p className={clsx('hero__subtitle', styles.heroSubtitle)}>
-          <span className={styles.highlight}>Multichain</span> interactions that <span className={styles.highlight}>feel </span> like <span className={styles.highlight}>one</span>
+          <span className={styles.highlight}>Multichain</span> interactions that <span className={styles.highlight}>feel</span> like <span className={styles.highlight}>one</span>
         </p>
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="/docs/intro">
+            to="/docs/introduction">
             Get Started
           </Link>
         </div>

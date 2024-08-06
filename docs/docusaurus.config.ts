@@ -62,12 +62,7 @@ const config: Config = {
         //  label: 'Docs',
         // }
         {
-          href: 'https://poc.sprinter.buildwithsygma.com/',
-          label: 'POC',
-          position: 'left',
-        },
-        {
-          to: 'docs/gettingstarted',
+          to: 'docs/quickstart',
           position: 'left',
           label: 'Learn',
         },
@@ -75,6 +70,16 @@ const config: Config = {
           to: 'docs/api/api-usage',
           position: 'left',
           label: 'API',
+        },
+        {
+          href: 'https://poc.sprinter.buildwithsygma.com/',
+          label: 'POC',
+          position: 'left',
+        },
+        {
+          href: 'https://api.test.sprinter.buildwithsygma.com/swagger/index.html',
+          label: 'Swagger',
+          position: 'right',
         },
         {
           href: 'https://github.com/ChainSafe/sprinter-ts',
@@ -114,6 +119,10 @@ const config: Config = {
               label: 'Discord',
               href: 'https://discord.gg/Qdf6GyNB5J',
             },
+            {
+              label: 'YouTube',
+              href: 'https://youtube.com/@buildwithsygma',
+            },
           ],
         },
         {
@@ -126,6 +135,10 @@ const config: Config = {
             {
               label: 'GitHub',
               href: 'https://github.com/ChainSafe/sprinter-ts',
+            },
+            {
+              label: 'Swagger',
+              href: 'https://api.test.sprinter.buildwithsygma.com/swagger/index.html',
             },
             {
               label: 'Blog',
@@ -141,6 +154,17 @@ const config: Config = {
       darkTheme: prismThemes.dracula,
     },
   } satisfies Preset.ThemeConfig,
+  plugins: [
+    [
+      require.resolve("@cmfcmf/docusaurus-search-local"),
+      {
+        indexBlog: false,
+        indexPages: false,
+        indexDocs: true,
+      },
+    ],
+  ],
 };
+
 
 export default config;
