@@ -20,7 +20,7 @@ Just as the explosion of the EVM L2 ecosystem has brought about horizontal scala
 
 ## What's Next
 
-- If you're new to Sprinter, start with our [Getting Started Guide](../02-get-started.md).
+- If you're new to Sprinter, start with our [Getting Started Guide](../02-quick-start.md).
 - Explore detailed examples and advanced usage in the [SDK Documentation](../03-sdk/01-overview.md).
 - Dive into the specifics of our API in the [API Documentation](../04-api/01-api-usage.md).
 
