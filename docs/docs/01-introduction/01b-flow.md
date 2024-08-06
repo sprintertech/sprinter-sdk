@@ -1,7 +1,7 @@
 ---
 id: flow
 title: Sprinter Application Flow
-sidebar_position: 2
+sidebar_position: 5
 ---
 
 The following section showcases how cross-chain balances and transactions are managed in a Sprinter-integrated application flow.
