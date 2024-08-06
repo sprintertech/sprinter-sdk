@@ -23,6 +23,8 @@ jobs:
         run: yarn run lint
       - name: Build
         run: yarn build
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
       - name: "Unit Tests"
         run: 'yarn run test:unit'
       - name: "Integrations Tests"
