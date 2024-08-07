@@ -64,16 +64,16 @@
 				const erc20 = new web3.eth.Contract(erc20Abi, quotaRecord.sourceTokenAddress);
 
 				const allowed = await erc20.methods
-						.allowance(ownerAddress, quotaRecord.transaction.to)
-						.call(callOptions);
+					.allowance(ownerAddress, quotaRecord.transaction.to)
+					.call(callOptions);
 
 				if (BigInt(quotaRecord.amount) > BigInt(allowed)) {
 					const approval = await erc20.methods
-							.approve(quotaRecord.transaction.to, quotaRecord.amount)
-							.send({
-								...callOptions,
-								from: ownerAddress
-							});
+						.approve(quotaRecord.transaction.to, quotaRecord.amount)
+						.send({
+							...callOptions,
+							from: ownerAddress
+						});
 					if (!approval.status) throw new Error('Not Approved!'); // To stop execution
 				}
 			}
