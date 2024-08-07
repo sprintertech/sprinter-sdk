@@ -52,20 +52,27 @@
 			const callOptions: NonPayableCallOptions = { chainId: quotaRecord.sourceChain };
 
 			// Approval sniff etc...\
-			const erc20 = new web3.eth.Contract(erc20Abi, quotaRecord.sourceTokenAddress);
+			if (quotaRecord.approvals?.length > 0) {
+				for (const approval in quotaRecord.approvals) {
+					const receipt = await web3.eth.sendTransaction(approval);
+					console.warn(`Approval receipt: `, receipt);
+				}
+			} else {
+				const erc20 = new web3.eth.Contract(erc20Abi, quotaRecord.sourceTokenAddress);
 
-			const allowed = await erc20.methods
-				.allowance(ownerAddress, quotaRecord.transaction.to)
-				.call(callOptions);
+				const allowed = await erc20.methods
+						.allowance(ownerAddress, quotaRecord.transaction.to)
+						.call(callOptions);
 
-			if (BigInt(quotaRecord.amount) > BigInt(allowed)) {
-				const approval = await erc20.methods
-					.approve(quotaRecord.transaction.to, quotaRecord.amount)
-					.send({
-						...callOptions,
-						from: ownerAddress
-					});
-				if (!approval.status) throw new Error('Not Approved!'); // To stop execution
+				if (BigInt(quotaRecord.amount) > BigInt(allowed)) {
+					const approval = await erc20.methods
+							.approve(quotaRecord.transaction.to, quotaRecord.amount)
+							.send({
+								...callOptions,
+								from: ownerAddress
+							});
+					if (!approval.status) throw new Error('Not Approved!'); // To stop execution
+				}
 			}
 
 			// FINAL STEP!
