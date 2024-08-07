@@ -51,12 +51,12 @@
 			// @ts-expect-error   // chainId is missing in web3js call options type
 			const callOptions: NonPayableCallOptions = { chainId: quotaRecord.sourceChain };
 
-			console.info('Quote', quotaRecord)
+			console.info('Quote', quotaRecord);
 
 			// Approval sniff etc...\
 			if (quotaRecord.approvals?.length > 0) {
 				for (const approval in quotaRecord.approvals) {
-					console.log('Requesting approval:', approval)
+					console.log('Requesting approval:', approval);
 					const receipt = await web3.eth.sendTransaction(approval);
 					console.warn(`Approval receipt: `, receipt);
 				}
