@@ -55,7 +55,7 @@
 
 			// Approval sniff etc...\
 			if (quotaRecord.approvals?.length > 0) {
-				for (const approval in quotaRecord.approvals) {
+				for (const approval of quotaRecord.approvals) {
 					console.log('Requesting approval:', approval);
 					const receipt = await web3.eth.sendTransaction(approval);
 					console.warn(`Approval receipt: `, receipt);
