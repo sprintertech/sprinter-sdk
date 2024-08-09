@@ -1854,7 +1854,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cmfcmf/docusaurus-search-local@npm:^1.2.0":
+"@cmfcmf/docusaurus-search-local@npm:latest":
   version: 1.2.0
   resolution: "@cmfcmf/docusaurus-search-local@npm:1.2.0"
   dependencies:
@@ -7482,7 +7482,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "docs@workspace:docs"
   dependencies:
-    "@cmfcmf/docusaurus-search-local": ^1.2.0
+    "@cmfcmf/docusaurus-search-local": latest
     "@docusaurus/core": 3.4.0
     "@docusaurus/module-type-aliases": 3.4.0
     "@docusaurus/preset-classic": 3.4.0
