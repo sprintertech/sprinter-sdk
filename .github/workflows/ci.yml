@@ -18,7 +18,7 @@ jobs:
           node-version: 20
       - run: corepack enable
       - name: Install deps
-        run: yarn
+        run: yarn --immutable
       - name: Lint
         run: yarn run lint
       - name: Build

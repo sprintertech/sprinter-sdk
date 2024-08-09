@@ -32,7 +32,7 @@ jobs:
       - run: corepack enable
         if: ${{ steps.release.outputs.releases_created }}
 
-      - run: yarn install
+      - run: yarn install --immutable
         if: ${{ steps.release.outputs.releases_created }}
 
       - run: yarn build
