@@ -3,7 +3,7 @@
   "private": true,
   "author": "ChainSafe <info@chainsafe.io>",
   "license": "(MIT)",
-  "packageManager": "yarn@4.3.1",
+  "packageManager": "yarn@4.4.0",
   "workspaces": [
     "packages/*",
     "web",
