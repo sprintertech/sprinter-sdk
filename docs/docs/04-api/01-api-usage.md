@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 # API Usage
@@ -22,11 +22,13 @@ curl -X 'GET' \
 
 For more detailed information about each endpoint, please refer to the specific documents:
 
-- [Fungible Assets](03-assets.md)
+- [Fungible Assets](02-assets.md)
   - Get all assets information
   - Get specific assets information
   - Get specific network assets
-- [Networks](02-networks.md)
+- [User Assets](03-user-assets.md)
+  - Get assets for a specific user
+- [Networks](04-networks.md)
   - Get all supported networks
 - [Solutions](05-solutions.md)
   - Token aggregation
