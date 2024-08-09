@@ -1,6 +1,6 @@
 ---
 id: flow
-title: Sprinter Application Flow
+title: Sprinter x Application Flow
 sidebar_position: 3
 ---
 

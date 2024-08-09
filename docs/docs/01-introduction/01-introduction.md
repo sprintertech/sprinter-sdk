@@ -10,7 +10,7 @@ Sprinter is a **fast, smooth, interoperable intent execution engine**. Our aim i
 
 ## What's Next
 
-- If you're new to Sprinter, start with our [Getting Started Guide](../02-quick-start.md).
+- If you're new to Sprinter, begin with [Quick Start](../02-quick-start.md).
 - Explore detailed examples and advanced usage in the [SDK Documentation](../03-sdk/01-overview.md).
 - Dive into the specifics of our API in the [API Documentation](../04-api/01-api-usage.md).
 

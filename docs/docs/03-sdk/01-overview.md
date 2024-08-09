@@ -4,13 +4,7 @@ sidebar_position: 1
 
 # SDK Overview
 
-The Sprinter SDK is a powerful tool designed to simplify interaction with multiple blockchain networks. It provides a unified interface for aggregating balances and optimizing cross-chain operations, making it easier to build decentralized applications (DApps).
-
-## Key Features
-
-- **Cross-Chain Balance Aggregation**: Consolidate balances from various blockchain networks.
-- **Best Single-Hop Cross-Bridge Transactions**: Optimize transactions across different blockchains.
-- **TypeScript Support**: Ensure type safety and a better development experience with TypeScript.
+The Sprinter SDK simplifies interactions with multiple blockchain networks. It provides a unified interface for aggregating balances and optimizing cross-chain operations, making it easier to build decentralized applications (dApps).
 
 ## Installation
 
@@ -27,6 +21,10 @@ yarn add @chainsafe/sprinter-sdk
 ```
 
 ## Basic Usage
+
+:::info
+If you would like to test this without custom front-end code, you can directly do so by adding `vite` as a package. You will then need to create an `index.html` file to serve as the entry way for the following script using `<script>` tag. 
+:::
 
 Here's a quick example to get you started with the SDK:
 
@@ -92,4 +90,9 @@ sprinter.getUserBalances().then(balances => {
 }).catch(error => {
   console.error('An error occurred:', error);
 });
+
+// Mock function to represent transaction execution
+function executeTransaction(option) {
+  console.log('Executing transaction with option:', option);
+}
 ```

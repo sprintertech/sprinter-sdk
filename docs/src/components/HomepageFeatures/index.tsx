@@ -10,7 +10,7 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Unified Balance',
+    title: 'Aggregated Balance',
     Svg: require('@site/static/img/balance.svg').default,
     description: (
       <>
