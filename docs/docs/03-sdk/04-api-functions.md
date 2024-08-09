@@ -4,7 +4,7 @@ sidebar_position: 4
 
 # API Functions Reference
 
-This section provides detailed information about the API functions available in the Sprinter SDK. Use this reference to understand how to utilize the API functions in your decentralized applications (DApps).
+This section provides detailed information about the API functions available in the Sprinter SDK. Use this reference to understand how to utilize the API functions in your decentralized applications (dApps).
 
 ## API Functions
 
