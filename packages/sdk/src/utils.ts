@@ -5,7 +5,7 @@ export function getEnv(envName: string, defaultValue: string): string {
       variable = process.env[envName];
     else if ("env" in import.meta) {
       const env =
-        // @ts-expect-error
+        // @ts-expect-error @typescript-eslint/ban-ts-comment
         (import.meta.env as { [key: string]: string | undefined }) || {};
       variable = env[envName];
     }

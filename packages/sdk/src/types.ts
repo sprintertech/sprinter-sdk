@@ -1,4 +1,4 @@
-import { ChainType } from "./enums";
+import type { ChainType } from "./enums";
 
 export type Address = `0x${string}`;
 
@@ -76,6 +76,7 @@ export interface Solution {
     name: string;
   };
   transaction: Transaction;
+  approvals?: Transaction[];
 }
 
 export interface Transaction {
