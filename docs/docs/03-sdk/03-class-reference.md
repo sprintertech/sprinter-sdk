@@ -4,11 +4,9 @@ sidebar_position: 3
 
 # Sprinter Class Reference
 
-This section provides detailed information about the `Sprinter` class available in the Sprinter SDK. Use this reference to understand how to utilize the `Sprinter` class in your decentralized applications (DApps).
+This section details the methods available to the `Sprinter` class in the Sprinter SDK. Use this reference to understand how to utilize the `Sprinter` class in your decentralized applications (dApps).
 
-## Sprinter Class
-
-The main class provided by the Sprinter SDK. It includes methods for interacting with multiple blockchain networks.
+## Methods
 
 ### `constructor(provider: EIP1193Provider)`
 
@@ -20,8 +18,25 @@ Initializes the SDK with the given Ethereum provider.
 
 #### Example
 
+window.ethereum:
 ```typescript
 const sprinter = new Sprinter(window.ethereum);
+```
+
+WalletConnect:
+```ts
+import WalletConnectProvider from "@walletconnect/web3-provider";
+
+// Create a WalletConnect provider
+const walletConnectProvider = new WalletConnectProvider({
+  infuraId: "YOUR_INFURA_PROJECT_ID", // Required
+});
+
+// Enable session (triggers QR Code modal)
+await walletConnectProvider.enable();
+
+// Pass the WalletConnect provider to the Sprinter constructor
+const sprinter = new Sprinter(walletConnectProvider);
 ```
 
 ### `getAvailableTokens(): Promise<FungibleToken[]>`
