@@ -18,25 +18,8 @@ Initializes the SDK with the given Ethereum provider.
 
 #### Example
 
-window.ethereum:
 ```typescript
 const sprinter = new Sprinter(window.ethereum);
-```
-
-WalletConnect:
-```ts
-import WalletConnectProvider from "@walletconnect/web3-provider";
-
-// Create a WalletConnect provider
-const walletConnectProvider = new WalletConnectProvider({
-  infuraId: "YOUR_INFURA_PROJECT_ID", // Required
-});
-
-// Enable session (triggers QR Code modal)
-await walletConnectProvider.enable();
-
-// Pass the WalletConnect provider to the Sprinter constructor
-const sprinter = new Sprinter(walletConnectProvider);
 ```
 
 ### `getAvailableTokens(): Promise<FungibleToken[]>`
