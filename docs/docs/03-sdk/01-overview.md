@@ -90,9 +90,4 @@ sprinter.getUserBalances().then(balances => {
 }).catch(error => {
   console.error('An error occurred:', error);
 });
-
-// Mock function to represent transaction execution
-function executeTransaction(option) {
-  console.log('Executing transaction with option:', option);
-}
 ```
