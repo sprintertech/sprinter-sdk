@@ -44,6 +44,7 @@ const config: Config = {
       logo: {
         alt: 'Sprinter Temp Logo',
         src: 'img/sprinter-logo.svg',
+        srcDark: 'img/sprinter-logo-white.svg', 
       },
       items: [
         {

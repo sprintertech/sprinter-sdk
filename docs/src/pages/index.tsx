@@ -19,19 +19,19 @@ function HomepageHeader() {
           <span className={styles.highlight}>Multichain</span> interactions that <span className={styles.highlight}>feel</span> like <span className={styles.highlight}>one</span>
         </p>
         <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/introduction">
-            Get Started
-          </Link>
+        <Link
+          className={clsx("button button--secondary button--lg", styles.customButton)}
+          to="/docs/introduction">
+          Get Started
+        </Link>
         </div>
         <br />
         <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="https://poc.sprinter.buildwithsygma.com/">
-            Try the Proof of Concept
-          </Link>
+        <Link
+          className={clsx("button button--secondary button--lg", styles.customButton)}
+          to="https://poc.sprinter.buildwithsygma.com/">
+          Try the Proof of Concept
+        </Link>
         </div>
       </div>
     </header>
@@ -47,11 +47,11 @@ function CallToActionSection() {
           <h2>
               <span className={styles.highlight}>Sprint</span> Into Action
             </h2>
-            <p>Evolve your application's UX. Reach out to the Sprinter team to integrate today.</p>
+            <p>Bring next gen UX to the finish line.</p>
             <Link
               className={clsx("button button--primary button--lg", styles.ctaButton)}
               to="mailto:requests@buildwithsygma.com">
-              Contact Us
+              Integrate
             </Link>
           </div>
           <div className="col col--6">
