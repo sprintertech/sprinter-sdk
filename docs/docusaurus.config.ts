@@ -5,7 +5,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'Sprinter',
   tagline: 'Multichain interactions that feel like one',
-  favicon: 'img/run.ico',
+  favicon: 'img/sprinter.ico',
 
   // Set the production url of your site here
   url: 'https://docs.sprinter.buildwithsygma.com/',
@@ -52,7 +52,7 @@ const config: Config = {
       title: 'Sprinter',
       logo: {
         alt: 'Sprinter Temp Logo',
-        src: 'img/run.svg',
+        src: 'img/sprinter-logo.svg',
       },
       items: [
         // {

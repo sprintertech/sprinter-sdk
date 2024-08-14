@@ -49,7 +49,7 @@ function CallToActionSection() {
             </h2>
             <p>Evolve your application's UX. Reach out to the Sprinter team to integrate today.</p>
             <Link
-              className="button button--primary button--lg"
+              className={clsx("button button--primary button--lg", styles.ctaButton)}
               to="mailto:requests@buildwithsygma.com">
               Contact Us
             </Link>
