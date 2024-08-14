@@ -5,6 +5,10 @@
  */
 
 /* You can override the default Infima variables here. */
+.navbar__title {
+  font-size: 2em; /* Adjust the size as needed */
+}
+
 :root {
   --ifm-color-primary: #2e8555;
   --ifm-color-primary-dark: #29784c;

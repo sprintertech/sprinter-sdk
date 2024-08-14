@@ -1,46 +1,28 @@
 ---
-sidebar_position: 3
+sidebar_position: 4
 ---
 
-# Sprinter Class Reference
+# API Functions Reference
 
-This section provides detailed information about the `Sprinter` class available in the Sprinter SDK. Use this reference to understand how to utilize the `Sprinter` class in your decentralized applications (DApps).
+This section provides detailed information about the API functions available in the Sprinter SDK. Use this reference to understand how to utilize the API functions in your decentralized applications (dApps).
 
-## Sprinter Class
+## API Functions
 
-The main class provided by the Sprinter SDK. It includes methods for interacting with multiple blockchain networks.
+### `setBaseUrl(url: string): void`
 
-### `constructor(provider: EIP1193Provider)`
-
-Initializes the SDK with the given Ethereum provider.
+Sets the base URL for the API.
 
 #### Parameters
 
-- `provider`: An Ethereum provider instance conforming to the EIP-1193 standard (e.g., `window.ethereum`).
+- `url`: The base URL to be used for API requests.
 
 #### Example
 
 ```typescript
-const sprinter = new Sprinter(window.ethereum);
+setBaseUrl("https://test.api.sprinter.buildwithsygma.com/");
 ```
 
-### `getAvailableTokens(): Promise<FungibleToken[]>`
-
-Fetches the available fungible tokens across supported blockchain networks.
-
-#### Returns
-
-- `Promise<FungibleToken[]>`: A promise that resolves to an array of fungible token objects.
-
-#### Example
-
-```typescript
-sprinter.getAvailableTokens().then(tokens => {
-  console.log('Available tokens:', tokens);
-});
-```
-
-### `getAvailableChains(): Promise<Chain[]>`
+### `getSupportedChains(): Promise<Chain[]>`
 
 Fetches the supported blockchain networks.
 
@@ -51,44 +33,103 @@ Fetches the supported blockchain networks.
 #### Example
 
 ```typescript
-sprinter.getAvailableChains().then(chains => {
+getSupportedChains().then(chains => {
   console.log('Supported chains:', chains);
 });
 ```
 
-### `getUserBalances(tokens?: FungibleToken[]): Promise<{ [symbol: TokenSymbol]: { balances: FungibleTokenBalance[]; total: string } }>`
+### `getChainTokens(chainID: ChainID): Promise<FungibleToken[]>`
 
-Fetches the user's balances for specified tokens across multiple blockchains. If no tokens are specified, it fetches balances for all available tokens.
+Fetches the fungible tokens available on a specific blockchain network.
 
 #### Parameters
 
-- `tokens`: An optional array of fungible token objects.
+- `chainID`: The ID of the blockchain network.
 
 #### Returns
 
-- `Promise<{ [symbol: TokenSymbol]: { balances: FungibleTokenBalance[]; total: string } }>`: A promise that resolves to an object mapping token symbols to balance information.
+- `Promise<FungibleToken[]>`: A promise that resolves to an array of fungible token objects.
 
 #### Example
 
 ```typescript
-sprinter.getUserBalances().then(balances => {
-  console.log('User balances:', balances);
+getChainTokens(42161).then(tokens => {
+  console.log('Chain tokens:', tokens);
 });
 ```
 
-### `getSolution(settings: Omit<SolutionOptions, "account">, targetAccount?: Address): Promise<SolutionResponse>`
+### `getFungibleTokens(): Promise<FungibleToken[]>`
 
-Retrieves the optimal solution for managing cross-chain transactions based on the provided settings.
+Fetches the available fungible tokens across all supported blockchain networks.
+
+#### Returns
+
+- `Promise<FungibleToken[]>`: A promise that resolves to an array of fungible token objects.
+
+#### Example
+
+```typescript
+getFungibleTokens().then(tokens => {
+  console.log('Available fungible tokens:', tokens);
+});
+```
+
+### `getFungibleToken(token: TokenSymbol): Promise<FungibleToken>`
+
+Fetches the details of a specific fungible token.
 
 #### Parameters
 
-- `settings`: An object containing the parameters for the solution request, excluding the account.
-    - `token`: The token symbol (e.g., "USDC").
+- `token`: The symbol of the token.
+
+#### Returns
+
+- `Promise<FungibleToken>`: A promise that resolves to
+
+a fungible token object.
+
+#### Example
+
+```typescript
+getFungibleToken("USDC").then(token => {
+  console.log('Fungible token:', token);
+});
+```
+
+### `getUserFungibleTokens(address: Address, token: TokenSymbol): Promise<FungibleTokenBalance[]>`
+
+Fetches the user's balances for a specific fungible token.
+
+#### Parameters
+
+- `address`: The user's Ethereum address.
+- `token`: The symbol of the token.
+
+#### Returns
+
+- `Promise<FungibleTokenBalance[]>`: A promise that resolves to an array of fungible token balance objects.
+
+#### Example
+
+```typescript
+getUserFungibleTokens("0x123...", "USDC").then(balances => {
+  console.log('User fungible token balances:', balances);
+});
+```
+
+### `getSolution(options: SolutionOptions): Promise<SolutionResponse>`
+
+Retrieves the optimal solution for managing cross-chain transactions based on the provided options.
+
+#### Parameters
+
+- `options`: An object containing the parameters for the solution request.
+    - `account`: The account address.
     - `destinationChain`: The ID of the destination blockchain.
+    - `token`: The token symbol (e.g., "USDC").
     - `amount`: The amount to be transferred.
     - `threshold?`: An optional threshold parameter.
     - `whitelistedSourceChains?`: An optional array of whitelisted source chain IDs.
-- `targetAccount`: An optional account address. If not provided, the current account will be used.
 
 #### Returns
 
@@ -97,10 +138,11 @@ Retrieves the optimal solution for managing cross-chain transactions based on th
 #### Example
 
 ```typescript
-sprinter.getSolution({
+getSolution({
+  account: "0x123...",
+  destinationChain: 42161,
   token: "USDC",
-  destinationChain: 42161,  // Destination chain ID
-  amount: 1000000000        // Amount in the smallest unit (e.g., wei)
+  amount: 1000000000
 }).then(solution => {
   console.log('Transaction solution:', solution);
 });
@@ -219,8 +261,3 @@ Represents an amount in both native and USD values.
 - `amount: string`: The amount in the smallest unit (e.g., wei).
 - `amountUSD: number`: The equivalent amount in USD.
 
-## Next Steps
-
-- **[API Functions](api-functions.md)**: Get detailed information about the API functions provided by the SDK.
-- **[Advanced Usage](advanced-usage.md)**: Explore advanced features and best practices.
-- **[Getting Started](../get-started.md)**: Review the basic setup and core concepts.

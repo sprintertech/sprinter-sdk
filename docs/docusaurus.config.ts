@@ -3,9 +3,9 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'Sprinter Docs',
-  tagline: 'Sprinter is soo cool',
-  favicon: 'img/favicon.ico',
+  title: 'Sprinter',
+  tagline: 'Multichain interactions that feel like one',
+  favicon: 'img/run.ico',
 
   // Set the production url of your site here
   url: 'https://docs.sprinter.buildwithsygma.com/',
@@ -38,7 +38,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/chainsafe/sprinter-ts',
         },
         blog: false,
       } satisfies Preset.Options,
@@ -47,23 +47,38 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
+    // image: 'img/docusaurus-social-card.jpg',
     navbar: {
       title: 'Sprinter',
       logo: {
-        alt: 'My Site Logo',
-        src: 'img/logo.svg',
+        alt: 'Sprinter Temp Logo',
+        src: 'img/run.svg',
       },
       items: [
+        // {
+        //  type: 'docSidebar',
+        //  sidebarId: 'tutorialSidebar',
+        //  position: 'left',
+        //  label: 'Docs',
+        // }
         {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          to: 'docs/quickstart',
           position: 'left',
-          label: 'Docs',
+          label: 'Learn',
+        },
+        {
+          to: 'docs/api/api-usage',
+          position: 'left',
+          label: 'API',
         },
         {
           href: 'https://poc.sprinter.buildwithsygma.com/',
           label: 'POC',
+          position: 'left',
+        },
+        {
+          href: 'https://api.test.sprinter.buildwithsygma.com/swagger/index.html',
+          label: 'Swagger',
           position: 'right',
         },
         {
@@ -83,22 +98,30 @@ const config: Config = {
               label: 'Introduction',
               to: '/docs/introduction',
             },
+            {
+              label: 'SDK',
+              to: '/docs/category/sdk',
+            },
+            {
+              label: 'API',
+              to: '/docs/category/api',
+            },
           ],
         },
         {
           title: 'Community',
           items: [
             {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+              label: 'Twitter',
+              href: 'https://twitter.com/sprinter_ux',
             },
             {
               label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
+              href: 'https://discord.gg/Qdf6GyNB5J',
             },
             {
-              label: 'Twitter',
-              href: 'https://twitter.com/docusaurus',
+              label: 'YouTube',
+              href: 'https://youtube.com/@buildwithsygma',
             },
           ],
         },
@@ -106,8 +129,20 @@ const config: Config = {
           title: 'More',
           items: [
             {
+              label: 'Website',
+              href: 'https://sprinter.box',
+            },
+            {
               label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              href: 'https://github.com/ChainSafe/sprinter-ts',
+            },
+            {
+              label: 'Swagger',
+              href: 'https://api.test.sprinter.buildwithsygma.com/swagger/index.html',
+            },
+            {
+              label: 'Blog',
+              href: 'https://blog.buildwithsygma.com',
             },
           ],
         },
@@ -119,6 +154,17 @@ const config: Config = {
       darkTheme: prismThemes.dracula,
     },
   } satisfies Preset.ThemeConfig,
+  plugins: [
+    [
+      require.resolve("@cmfcmf/docusaurus-search-local"),
+      {
+        indexBlog: false,
+        indexPages: false,
+        indexDocs: true,
+      },
+    ],
+  ],
 };
+
 
 export default config;
