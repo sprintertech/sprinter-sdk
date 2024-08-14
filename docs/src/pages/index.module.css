@@ -74,3 +74,17 @@
   width: 150px; /* Adjust this as needed */
   height: 150px; /* Adjust this as needed */
 }
+
+[data-theme="dark"] .heroTitle, 
+[data-theme="dark"] .heroSubtitle {
+  color: #fff; 
+}
+
+[data-theme="dark"] .callToActionSection {
+  color: #fff; 
+  background-color: #333; 
+}
+
+[data-theme="dark"] .highlight {
+  color: #61dafb; 
+}
