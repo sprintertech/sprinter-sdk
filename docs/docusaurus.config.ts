@@ -5,25 +5,17 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'Sprinter',
   tagline: 'Multichain interactions that feel like one',
-  favicon: 'img/run.ico',
+  favicon: 'img/sprinter.ico',
 
-  // Set the production url of your site here
   url: 'https://docs.sprinter.buildwithsygma.com/',
-  // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'ChainSafe', // Usually your GitHub org/user name.
-  projectName: 'sprinter-ts', // Usually your repo name.
+  organizationName: 'ChainSafe', 
+  projectName: 'sprinter-ts',
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
-  // Even if you don't use internationalization, you can use this field to set
-  // useful metadata like html lang. For example, if your site is Chinese, you
-  // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
@@ -41,26 +33,23 @@ const config: Config = {
             'https://github.com/chainsafe/sprinter-ts',
         },
         blog: false,
+        theme: {
+          customCss: require.resolve('./src/css/custom.css'), 
+        },
       } satisfies Preset.Options,
     ],
   ],
 
   themeConfig: {
-    // Replace with your project's social card
-    // image: 'img/docusaurus-social-card.jpg',
+    
     navbar: {
       title: 'Sprinter',
       logo: {
         alt: 'Sprinter Temp Logo',
-        src: 'img/run.svg',
+        src: 'img/sprinter-logo.svg',
+        srcDark: 'img/sprinter-logo-white.svg', 
       },
       items: [
-        // {
-        //  type: 'docSidebar',
-        //  sidebarId: 'tutorialSidebar',
-        //  position: 'left',
-        //  label: 'Docs',
-        // }
         {
           to: 'docs/quickstart',
           position: 'left',

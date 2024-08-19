@@ -5,9 +5,6 @@
  */
 
 /* You can override the default Infima variables here. */
-.navbar__title {
-  font-size: 2em; /* Adjust the size as needed */
-}
 
 :root {
   --ifm-color-primary: #2e8555;
@@ -31,4 +28,22 @@
   --ifm-color-primary-lighter: #32d8b4;
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* Default to light mode (or no mode specified) */
+.logo-dark-mode {
+  display: none;
+}
+
+.logo-light-mode {
+  display: block;
+}
+
+/* Display the dark mode logo when dark mode is active */
+[data-theme="dark"] .logo-light-mode {
+  display: none;
+}
+
+[data-theme="dark"] .logo-dark-mode {
+  display: block;
 }

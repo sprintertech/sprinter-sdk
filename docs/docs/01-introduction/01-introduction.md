@@ -4,6 +4,11 @@ title: What Is Sprinter?
 sidebar_position: 1
 ---
 
+<div class="logo-container">
+  <img src="/img/Sprinter_Logo_Horizontal_BLACK.png" class="logo-light-mode" alt="Sprinter Logo Black" />
+  <img src="/img/Sprinter_Logo_Horizontal-WHITE.png" class="logo-dark-mode" alt="Sprinter Logo White" />
+</div>
+
 # Welcome To The Sprinter Docs
 
 Sprinter is a **fast, smooth, interoperable intent execution engine**. Our aim is to make multichain interactions feel like one. In doing so, we enhance cross-chain UX *for all* as a first-class citizen in both existing and upcoming web3 technologies.
