@@ -33,6 +33,9 @@ const config: Config = {
             'https://github.com/chainsafe/sprinter-ts',
         },
         blog: false,
+        theme: {
+          customCss: require.resolve('./src/css/custom.css'), 
+        },
       } satisfies Preset.Options,
     ],
   ],
