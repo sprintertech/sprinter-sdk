@@ -13,6 +13,7 @@ import type {
   Address,
   Chain,
   ContractSolutionOptions,
+  FetchOptions,
   FungibleToken,
   FungibleTokenBalance,
   SolutionOptions,
@@ -31,26 +32,41 @@ class Sprinter {
   #tokens?: FungibleToken[];
   #chains?: Chain[];
 
-  constructor(provider: EIP1193Provider) {
+  #fetchOptions: Omit<FetchOptions, "signal">;
+
+  constructor(
+    provider: EIP1193Provider,
+    fetchOptions: Omit<FetchOptions, "signal"> = {},
+  ) {
     this.#provider = provider;
+    this.#fetchOptions = fetchOptions;
   }
 
-  public async getAvailableTokens(): Promise<FungibleToken[]> {
-    if (!this.#tokens) this.#tokens = await getFungibleTokens();
+  public async getAvailableTokens(
+    options: FetchOptions = {},
+  ): Promise<FungibleToken[]> {
+    if (!this.#tokens)
+      this.#tokens = await getFungibleTokens(this.makeFetchOptions(options));
     return this.#tokens;
   }
 
-  public async getAvailableChains(): Promise<Chain[]> {
-    if (!this.#chains) this.#chains = await getSupportedChains();
+  public async getAvailableChains(
+    options: FetchOptions = {},
+  ): Promise<Chain[]> {
+    if (!this.#chains)
+      this.#chains = await getSupportedChains(this.makeFetchOptions(options));
     return this.#chains;
   }
 
-  public async getUserBalances(tokens?: FungibleToken[]): Promise<{
+  public async getUserBalances(
+    tokens?: FungibleToken[],
+    options: FetchOptions = {},
+  ): Promise<{
     [sybol: TokenSymbol]: { balances: FungibleTokenBalance[]; total: string };
   }> {
     const account = await this.getAccount();
 
-    const tokenList = tokens || (await this.getAvailableTokens());
+    const tokenList = tokens || (await this.getAvailableTokens(options));
 
     const balances = await Promise.all(
       tokenList.map((token) =>
@@ -83,14 +99,17 @@ class Sprinter {
   public async getSolution(
     settings: Omit<ContractSolutionOptions, "account">,
     targetAccount?: Address,
+    options?: FetchOptions,
   ): Promise<SolutionResponse>;
   public async getSolution(
     settings: Omit<SolutionOptions, "account">,
     targetAccount?: Address,
+    options?: FetchOptions,
   ): Promise<SolutionResponse>;
   public async getSolution(
     settings: unknown,
     targetAccount?: Address,
+    options?: FetchOptions,
   ): Promise<SolutionResponse> {
     const account = targetAccount || (await this.getAccount());
 
@@ -98,11 +117,17 @@ class Sprinter {
       throw new Error("Missing settings object");
 
     if ("contractCall" in settings)
-      return await getContractSolution(<ContractSolutionOptions>{
-        ...settings,
-        account,
-      });
-    return await getSolution(<SolutionOptions>{ ...settings, account });
+      return await getContractSolution(
+        <ContractSolutionOptions>{
+          ...settings,
+          account,
+        },
+        this.makeFetchOptions(options || {}),
+      );
+    return await getSolution(
+      <SolutionOptions>{ ...settings, account },
+      this.makeFetchOptions(options || {}),
+    );
   }
 
   private isContractSolutionOptions(
@@ -125,6 +150,10 @@ class Sprinter {
       throw new Error("No available account! Check your provider or something");
 
     return account;
+  }
+
+  private makeFetchOptions(options: FetchOptions): FetchOptions {
+    return { ...this.#fetchOptions, ...options };
   }
 }
 
