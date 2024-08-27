@@ -88,3 +88,8 @@ export interface Transaction {
   to: Address;
   value: string;
 }
+
+export interface FetchOptions {
+  signal?: AbortSignal;
+  baseUrl?: string;
+}
