@@ -130,17 +130,6 @@ class Sprinter {
     );
   }
 
-  private isContractSolutionOptions(
-    settings: unknown,
-  ): settings is Omit<ContractSolutionOptions, "account"> {
-    return (
-      settings != undefined &&
-      typeof settings === "object" &&
-      "contractCall" in settings &&
-      typeof settings.contractCall === "object"
-    );
-  }
-
   private async getAccount(): Promise<Address> {
     const [account] = (await this.#provider.request({
       method: "eth_requestAccounts",
