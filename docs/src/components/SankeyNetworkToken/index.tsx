@@ -11,7 +11,7 @@ export default function SankeyNetworkToken({ url }: SankeyNetworkTokenProps) {
   const svgRef = useRef();
 
   useEffect(() => {
-    getData("https://api.test.sprinter.buildwithsygma.com/").then((({ data, leftNodes: ln, rightNodes: rn, leftNodesLength, rightNodesLength }) => {
+    getData(url).then((({ data, leftNodes: ln, rightNodes: rn, leftNodesLength, rightNodesLength }) => {
       const svgWidth = 350;
       const svgHeight = Math.max(leftNodesLength, rightNodesLength) * 100 + 50;
 

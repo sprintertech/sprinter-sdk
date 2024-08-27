@@ -1,18 +1,16 @@
 import {getChainTokens, getFungibleTokens, getSupportedChains} from "@chainsafe/sprinter-sdk/dist/api";
 
-export async function getData(url: string) {
-  const chains= await getSupportedChains();
+export async function getData(baseUrl: string) {
+  const chains= await getSupportedChains({ baseUrl });
   const leftNodes = chains.map(({ name, logoURI }) => ({ id: name, img: logoURI }));
   const leftNodesLength = leftNodes.length;
 
-  const tokens = await getFungibleTokens();
+  const tokens = await getFungibleTokens({ baseUrl });
   const rightNodes = tokens.map(({ name, logoURI }) => ({ id: name, img: logoURI }));
   const rightNodesLength = rightNodes.length;
 
-  const connections = await Promise.all(chains.map(async ({ chainID, name }) => ({ tokens: (await getChainTokens(chainID)), network: name })));
+  const connections = await Promise.all(chains.map(async ({ chainID, name }) => ({ tokens: (await getChainTokens(chainID, { baseUrl })), network: name })));
   const links = [];
-
-  console.log(leftNodes, rightNodes);
 
   connections.forEach((networkTokens) => {
     const source = leftNodes.findIndex(({ id }) => networkTokens.network === id);
@@ -27,8 +25,6 @@ export async function getData(url: string) {
       links.push({source, target: target + leftNodesLength, value: 1});
     });
   });
-
-  console.log(links);
 
   return {
     data: {
