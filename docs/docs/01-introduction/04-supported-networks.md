@@ -4,15 +4,24 @@ title: Supported Bridges And Networks
 sidebar_position: 4
 ---
 
+import SankeyNetworkToken from '@site/src/components/SankeyNetworkToken';
+
 :::tip
 New routes, networks, and tokens can readily be added by the Sprinter team. Please reach out at [requests@buildwithsygma.com](mailto:requests@buildwithsygma.com) to get a conversation started. 
 :::
 
-| Supported Bridges                   | Supported Networks | Supported Tokens |
-|-------------------------------------|--------------------|------------------|
-| [LI.FI](https://li.fi/)             | Ethereum Mainnet   | Native ETH       |
-| [Across](https://across.to/)        | Base               | Wrapped ETH      |
-| [Sygma](https://buildwithsygma.com) | Arbitrum           | USDC             |
-|                                     | Polygon            | USDT             |
-|                                     | Gnosis             | DAI              |
-|                                     | Cronos             |                  |
+### Supported Bridges
+
+ * [LI.FI](https://li.fi/)
+ * [Across](https://across.to/)
+ * [Sygma](https://buildwithsygma.com)
+
+### Supported Networks and Tokens
+
+:::tip
+Hover over network icon or token to show available routes
+:::
+
+| Mainet                  | Testnet    |
+|-------------------------|------------|
+| <SankeyNetworkToken url="https://api.sprinter.buildwithsygma.com/" /> | <SankeyNetworkToken url="https://api.test.sprinter.buildwithsygma.com/" /> |
