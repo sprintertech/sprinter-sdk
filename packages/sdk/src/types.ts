@@ -22,11 +22,15 @@ export interface Chain {
   rpcurls: string[];
 }
 
-export interface FungibleTokenBalance {
+export interface TokenBalance {
   balance: string /* big number as string*/;
   chainId: ChainID;
   tokenDecimals: number;
 }
+
+export type FungibleTokenBalance = TokenBalance;
+
+export type NativeTokenBalance = TokenBalance;
 
 export interface SolutionOptions {
   account: Address;

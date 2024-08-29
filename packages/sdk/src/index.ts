@@ -6,6 +6,7 @@ import {
   getContractSolution,
   getSupportedChains,
   getUserFungibleTokens,
+  getUserNativeTokens,
   setBaseUrl,
   BASE_URL,
 } from "./api";
@@ -15,9 +16,9 @@ import type {
   ContractSolutionOptions,
   FetchOptions,
   FungibleToken,
-  FungibleTokenBalance,
   SolutionOptions,
   SolutionResponse,
+  TokenBalance,
   TokenSymbol,
 } from "./types";
 
@@ -62,7 +63,7 @@ class Sprinter {
     tokens?: FungibleToken[],
     options: FetchOptions = {},
   ): Promise<{
-    [sybol: TokenSymbol]: { balances: FungibleTokenBalance[]; total: string };
+    [sybol: TokenSymbol]: { balances: TokenBalance[]; total: string };
   }> {
     const account = await this.getAccount();
 
@@ -70,12 +71,16 @@ class Sprinter {
 
     const balances = await Promise.all(
       tokenList.map((token) =>
-        getUserFungibleTokens(account, token.symbol).then((balances) => ({
-          symbol: token.symbol,
-          balances,
-        })),
+        getUserFungibleTokens(account, token.symbol, options).then(
+          (balances) => ({
+            symbol: token.symbol,
+            balances,
+          }),
+        ),
       ),
     );
+
+    const nativeTokens = await getUserNativeTokens(account, options);
 
     return balances.reduce(
       (previousValue, { symbol, balances }) => {
@@ -87,9 +92,16 @@ class Sprinter {
         };
         return previousValue;
       },
-      {} as {
+      {
+        ["native"]: {
+          total: nativeTokens
+            .reduce((prev, cur) => prev + BigInt(cur.balance), 0n)
+            .toString(),
+          balances: nativeTokens,
+        },
+      } as {
         [symbol: TokenSymbol]: {
-          balances: FungibleTokenBalance[];
+          balances: TokenBalance[];
           total: string;
         };
       },
