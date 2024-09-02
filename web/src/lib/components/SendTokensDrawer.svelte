@@ -13,9 +13,18 @@
 	import { fromWei, toWei } from 'web3-utils';
 	import { sprinter } from '$lib/stores/sprinter';
 	import { getNetworkByChainId, getTokenBySymbol } from '$lib/utils';
-	import { type FungibleToken, type FungibleTokenBalance } from '@chainsafe/sprinter-sdk';
+	import {
+		type FungibleToken,
+		type FungibleTokenBalance,
+	} from '@chainsafe/sprinter-sdk';
 
-	const tokens = $sprinter.getAvailableTokens();
+	const tokens = $sprinter.getAvailableTokens().then(tokens => [...tokens, {
+		addresses: [],
+		decimals: 18,
+		logoURI: "https://scan.buildwithsygma.com/assets/icons/evm.svg",
+		name: "Ethereum",
+		symbol: 'ETH',
+	}]);
 	const allBalances = $sprinter.getUserBalances();
 	const chains = $sprinter.getAvailableChains();
 
