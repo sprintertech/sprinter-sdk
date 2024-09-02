@@ -93,7 +93,7 @@ class Sprinter {
         return previousValue;
       },
       {
-        ["native"]: {
+        ["ETH"]: {
           total: nativeTokens
             .reduce((prev, cur) => prev + BigInt(cur.balance), 0n)
             .toString(),

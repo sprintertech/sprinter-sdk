@@ -12,7 +12,7 @@
 	const chains = $sprinter.getAvailableChains();
 
 	$: totalTokens = balances.then((b) =>
-		Object.keys(b).filter(sybols => !["WETH", "native"].includes(sybols)).reduce(
+		Object.keys(b).filter(sybols => !["WETH", "ETH"].includes(sybols)).reduce(
 			(p, cKey) => {
 				const token = b[cKey];
 				return (p += Number(fromWei(token.total, token.balances[0].tokenDecimals)))},
@@ -21,7 +21,7 @@
 	);
 
 	$: totalNative = balances.then((b) =>
-			Object.keys(b).filter(sybols => ["WETH", "native"].includes(sybols)).reduce(
+			Object.keys(b).filter(sybols => ["WETH", "ETH"].includes(sybols)).reduce(
 					(p, cKey) => {
 						const token = b[cKey];
 						return (p += Number(fromWei(token.total, token.balances[0].tokenDecimals)))},
@@ -48,7 +48,7 @@
 	const ethLogo = "https://scan.buildwithsygma.com/assets/icons/evm.svg";
 	async function handleNativeClick() {
 		const networks = await chains;
-		const selectedBalances = (await balances)["native"];
+		const selectedBalances = (await balances)["ETH"];
 
 		const modal: ModalSettings = {
 			type: 'component',
@@ -131,10 +131,10 @@
 								</div>
 							</td>
 							<td class="text-slate-700 dark:text-slate-300 text-base text-left">
-								{fromWei(balances["native"].total, 18)} ETH
+								{fromWei(balances["ETH"].total, 18)} ETH
 							</td>
 							<td class="text-slate-700 dark:text-slate-300 text-base">
-								<Facepile balances={balances["native"].balances} networks={chains} />
+								<Facepile balances={balances["ETH"].balances} networks={chains} />
 							</td>
 						</tr>
 						{#each tokens as token, i}
