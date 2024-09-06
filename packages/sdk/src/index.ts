@@ -69,18 +69,19 @@ class Sprinter {
 
     const tokenList = tokens || (await this.getAvailableTokens(options));
 
-    const balances = await Promise.all(
-      tokenList.map((token) =>
-        getUserFungibleTokens(account, token.symbol, options).then(
-          (balances) => ({
-            symbol: token.symbol,
-            balances,
-          }),
+    const [balances, nativeTokens] = await Promise.all([
+      Promise.all(
+        tokenList.map((token) =>
+          getUserFungibleTokens(account, token.symbol, options).then(
+            (balances) => ({
+              symbol: token.symbol,
+              balances,
+            }),
+          ),
         ),
       ),
-    );
-
-    const nativeTokens = await getUserNativeTokens(account, options);
+      getUserNativeTokens(account, options),
+    ]);
 
     return balances.reduce(
       (previousValue, { symbol, balances }) => {
