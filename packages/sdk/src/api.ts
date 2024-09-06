@@ -157,3 +157,39 @@ export async function getContractSolution(
   if ("error" in response) return response;
   return response.data;
 }
+
+export async function getContractCallSolution(
+  {
+    account,
+    destinationChain,
+    token,
+    amount,
+    contractCall,
+    threshold,
+    whitelistedSourceChains,
+  }: ContractSolutionOptions,
+  { baseUrl, signal }: FetchOptions = {},
+): Promise<SolutionResponse> {
+  const url = new URL("/solutions/call", baseUrl || BASE_URL);
+
+  const response = await fetch(url, {
+    signal,
+    method: "POST",
+    body: JSON.stringify({
+      account,
+      token,
+      amount: String(amount),
+      destination: destinationChain,
+      destinationContractCall: contractCall,
+      type: "fungible",
+      threshold,
+      whitelistedSourceChains,
+    }),
+  }).then(
+    (response) =>
+      response.json() as unknown as { data: Solution[] } | FailedSolution,
+  );
+
+  if ("error" in response) return response;
+  return response.data;
+}
