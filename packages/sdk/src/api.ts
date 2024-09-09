@@ -170,7 +170,7 @@ export async function getContractCallSolution(
   }: ContractSolutionOptions,
   { baseUrl, signal }: FetchOptions = {},
 ): Promise<SolutionResponse> {
-  const url = new URL("/solutions/call", baseUrl || BASE_URL);
+  const url = new URL("/solution/call", baseUrl || BASE_URL);
 
   const response = await fetch(url, {
     signal,
