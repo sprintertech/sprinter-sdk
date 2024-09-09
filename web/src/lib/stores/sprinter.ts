@@ -10,4 +10,4 @@ selectedProvider.subscribe((event) => {
 	if (event) sprinter.set(new Sprinter(event.provider));
 });
 
-export const SPRINTER_SEPOLIA_ADDRESS = '0xa8bf0d2Ad50e9B0686da8838AE7D33bEfAbc1413';
+export const SPRINTER_SEPOLIA_ADDRESS = '0xf70fb86F700E8Bb7cDf1c20197633518235c3425';

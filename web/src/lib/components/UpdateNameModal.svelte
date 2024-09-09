@@ -2,13 +2,14 @@
 	import type { SvelteComponent } from 'svelte';
 	import { getModalStore } from '@skeletonlabs/skeleton';
 	import { type Solution } from '@chainsafe/sprinter-sdk';
-	import { eth } from 'web3';
+	import { Web3} from 'web3';
 	import { selectedProvider } from '$lib/stores/wallet';
 	import { fromWei, toWei } from 'web3-utils';
 	import { sprinter, SPRINTER_SEPOLIA_ADDRESS } from '$lib/stores/sprinter';
 	import TransactionCard from '$lib/components/TransactionCard.svelte';
 	import { getNetworkByChainId, getTokenBySymbol } from '$lib/utils';
 	import SkullCrossbonesSolid from '$lib/icons/SkullCrossbonesSolid.svelte';
+	import {sprinterNameServiceAbi} from "$lib/sprinterNameService.abi";
 
 	// Props
 	/** Exposes parent props to this component. */
@@ -40,16 +41,27 @@
 		)[0];
 
 		const amount = Number(toWei(donation, 6));
-		const data = eth.abi.encodeParameters(['address', 'string'], [address, name]);
+		// const data = eth.abi.encodeParameters(['address', 'string'], [address, name]);
 
-		const response = await $sprinter.getSolution({
+		const SEPOLIA_RPC_PROVIDER = 'https://ethereum-sepolia-rpc.publicnode.com';
+		const web3 = new Web3(SEPOLIA_RPC_PROVIDER);
+
+		const sprinterNameService = new web3.eth.Contract(
+				sprinterNameServiceAbi,
+				SPRINTER_SEPOLIA_ADDRESS
+		);
+
+		const data = sprinterNameService.methods.claimName(name, address, amount).encodeABI();
+
+		const response = await $sprinter.getCallSolution({
 			amount: amount,
 			token: 'USDC',
 			destinationChain: 11155111,
 			contractCall: {
 				callData: data,
 				contractAddress: SPRINTER_SEPOLIA_ADDRESS,
-				gasLimit: 10_000_000
+				approvalAddress: SPRINTER_SEPOLIA_ADDRESS,
+				gasLimit: 1_000_000
 			}
 		});
 
