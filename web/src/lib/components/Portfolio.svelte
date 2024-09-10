@@ -12,21 +12,21 @@
 	const chains = $sprinter.getAvailableChains();
 
 	$: totalTokens = balances.then((b) =>
-		Object.keys(b).filter(sybols => !["WETH", "ETH"].includes(sybols)).reduce(
-			(p, cKey) => {
+		Object.keys(b)
+			.filter((sybols) => !['WETH', 'ETH'].includes(sybols))
+			.reduce((p, cKey) => {
 				const token = b[cKey];
-				return (p += Number(fromWei(token.total, token.balances[0].tokenDecimals)))},
-			0
-		)
+				return (p += Number(fromWei(token.total, token.balances[0].tokenDecimals)));
+			}, 0)
 	);
 
 	$: totalNative = balances.then((b) =>
-			Object.keys(b).filter(sybols => ["WETH", "ETH"].includes(sybols)).reduce(
-					(p, cKey) => {
-						const token = b[cKey];
-						return (p += Number(fromWei(token.total, token.balances[0].tokenDecimals)))},
-					0
-			)
+		Object.keys(b)
+			.filter((sybols) => ['WETH', 'ETH'].includes(sybols))
+			.reduce((p, cKey) => {
+				const token = b[cKey];
+				return (p += Number(fromWei(token.total, token.balances[0].tokenDecimals)));
+			}, 0)
 	);
 
 	async function handleListClick(index: number) {
@@ -45,18 +45,18 @@
 		modalStore.trigger(modal);
 	}
 
-	const ethLogo = "https://scan.buildwithsygma.com/assets/icons/evm.svg";
+	const ethLogo = 'https://scan.buildwithsygma.com/assets/icons/evm.svg';
 	async function handleNativeClick() {
 		const networks = await chains;
-		const selectedBalances = (await balances)["ETH"];
+		const selectedBalances = (await balances)['ETH'];
 
 		const modal: ModalSettings = {
 			type: 'component',
 			component: { ref: TokenModal },
-			title: "Ethereum",
+			title: 'Ethereum',
 			buttonTextCancel: 'close',
 			value: { networks, balances: selectedBalances.balances },
-			meta: { icon: ethLogo, sybol: "ETH", decimals: 18 }
+			meta: { icon: ethLogo, sybol: 'ETH', decimals: 18 }
 		};
 		modalStore.trigger(modal);
 	}
@@ -117,12 +117,12 @@
 						{/each}
 					{:then [tokens, balances, chains]}
 						<tr
-								class="pt-2 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-								on:click={() => handleNativeClick()}
+							class="pt-2 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+							on:click={() => handleNativeClick()}
 						>
 							<td class="flex items-center gap-2 py-2">
 								<div
-										class="relative w-6 h-6 bg-gradient-to-b from-amber-500 to-amber-300 rounded-full overflow-hidden"
+									class="relative w-6 h-6 bg-gradient-to-b from-amber-500 to-amber-300 rounded-full overflow-hidden"
 								>
 									<img class="size-6" src={ethLogo} alt={`ETH-LOGO`} />
 								</div>
@@ -131,10 +131,10 @@
 								</div>
 							</td>
 							<td class="text-slate-700 dark:text-slate-300 text-base text-left">
-								{fromWei(balances["ETH"].total, 18)} ETH
+								{fromWei(balances['ETH'].total, 18)} ETH
 							</td>
 							<td class="text-slate-700 dark:text-slate-300 text-base">
-								<Facepile balances={balances["ETH"].balances} networks={chains} />
+								<Facepile balances={balances['ETH'].balances} networks={chains} />
 							</td>
 						</tr>
 						{#each tokens as token, i}
