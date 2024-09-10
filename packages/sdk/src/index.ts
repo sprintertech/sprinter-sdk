@@ -9,6 +9,7 @@ import {
   getUserNativeTokens,
   setBaseUrl,
   BASE_URL,
+  getContractCallSolution,
 } from "./api";
 import type {
   Address,
@@ -139,6 +140,25 @@ class Sprinter {
       );
     return await getSolution(
       <SolutionOptions>{ ...settings, account },
+      this.makeFetchOptions(options || {}),
+    );
+  }
+
+  public async getCallSolution(
+    settings: Omit<ContractSolutionOptions, "account">,
+    targetAccount?: Address,
+    options?: FetchOptions,
+  ): Promise<SolutionResponse> {
+    const account = targetAccount || (await this.getAccount());
+
+    if (typeof settings !== "object" || settings === null)
+      throw new Error("Missing settings object");
+
+    return await getContractCallSolution(
+      <ContractSolutionOptions>{
+        ...settings,
+        account,
+      },
       this.makeFetchOptions(options || {}),
     );
   }
