@@ -54,9 +54,15 @@ sprinter.getAvailableChains().then(chains => {
 });
 ```
 
-### `getUserBalances(tokens?: FungibleToken[]): Promise<{ [symbol: TokenSymbol]: { balances: FungibleTokenBalance[]; total: string } }>`
+### `getUserBalances(tokens?: FungibleToken[], targetAccount?: Address): Promise<{ [symbol: TokenSymbol]: { balances: TokenBalance[]; total: string } }>`
 
 Fetches the user's balances for specified tokens across multiple blockchains. If no tokens are specified, it fetches balances for all available tokens.
+
+:::note
+
+Method will always return native tokens under `ETH` key
+
+:::
 
 #### Parameters
 

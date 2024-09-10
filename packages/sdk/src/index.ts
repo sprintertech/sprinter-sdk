@@ -62,11 +62,12 @@ class Sprinter {
 
   public async getUserBalances(
     tokens?: FungibleToken[],
+    targetAccount?: Address,
     options: FetchOptions = {},
   ): Promise<{
     [sybol: TokenSymbol]: { balances: TokenBalance[]; total: string };
   }> {
-    const account = await this.getAccount();
+    const account = targetAccount || (await this.getAccount());
 
     const tokenList = tokens || (await this.getAvailableTokens(options));
 
