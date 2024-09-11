@@ -25,9 +25,10 @@ The `Sprinter` class provides a convenient interface for interacting with the bl
 ```typescript
 import { Sprinter } from '@chainsafe/sprinter-sdk';
 
-const sprinter = new Sprinter(window.ethereum);
+const sprinter = new Sprinter();
 
-sprinter.getUserBalances().then(console.log);
+const ownerAddress = "0x3E101Ec02e7A48D16DADE204C96bFF842E7E2519";
+sprinter.getUserBalances(ownerAddress).then(console.log);
 ```
 
 ### Calling API Endpoints Directly
