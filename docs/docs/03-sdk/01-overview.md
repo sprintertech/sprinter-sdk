@@ -36,10 +36,10 @@ import { Sprinter } from '@chainsafe/sprinter-sdk';
 
 ### 2. Initialize the Sprinter SDK
 
-To initialize the SDK, create a new instance of the `Sprinter` class with an Ethereum provider:
+To initialize the SDK, create a new instance of the `Sprinter` class:
 
 ```typescript
-const sprinter = new Sprinter(window.ethereum);
+const sprinter = new Sprinter();
 ```
 
 ### 3. Fetch User Balances
@@ -47,7 +47,8 @@ const sprinter = new Sprinter(window.ethereum);
 Once initialized, you can fetch the user's balances across multiple blockchains:
 
 ```typescript
-sprinter.getUserBalances().then(console.log);
+const ownerAddress = "0x3E101Ec02e7A48D16DADE204C96bFF842E7E2519";
+sprinter.getUserBalances(ownerAddress).then(console.log);
 ```
 
 ### 4. Get Solution
@@ -69,14 +70,17 @@ Here's a more detailed example that combines all the basic operations:
 ```typescript
 import { Sprinter } from '@chainsafe/sprinter-sdk';
 
-const sprinter = new Sprinter(window.ethereum);
+const sprinter = new Sprinter();
+
+const ownerAddress = "0x3E101Ec02e7A48D16DADE204C96bFF842E7E2519";
 
 // Fetch user balances
-sprinter.getUserBalances().then(balances => {
+sprinter.getUserBalances(ownerAddress).then(balances => {
   console.log('User balances:', balances);
 
   // Get solution for transactions
   return sprinter.getSolution({
+    account: ownerAddress,
     token: "USDC",
     destinationChain: 42161,  // Destination chain ID
     amount: "1000000000"      // Amount in the smallest unit (e.g., wei)

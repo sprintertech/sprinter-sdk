@@ -14,8 +14,10 @@
 	import { sprinter } from '$lib/stores/sprinter';
 	import { getNetworkByChainId, getTokenBySymbol } from '$lib/utils';
 	import { type FungibleToken, type FungibleTokenBalance } from '@chainsafe/sprinter-sdk';
+	import { selectedAccount } from '$lib/stores/wallet';
+	import type { Address } from '@chainsafe/sprinter-sdk';
 
-	const tokens = $sprinter.getAvailableTokens().then((tokens) => [
+	const tokens = $sprinter.getAvailableTokens($selectedAccount as Address).then((tokens) => [
 		...tokens,
 		{
 			addresses: [],
@@ -76,6 +78,7 @@
 				chains: await chains,
 				balances,
 				quota: {
+					account: $selectedAccount,
 					token: selectedToken,
 					destinationChain: selectedNetwork,
 					whitelisted,

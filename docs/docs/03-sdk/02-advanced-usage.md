@@ -11,7 +11,8 @@ The dApp is responsible for handling errors that occur during the transaction pr
 ### Example
 
 ```typescript
-sprinter.getUserBalances()
+const ownerAddress = "0x3E101Ec02e7A48D16DADE204C96bFF842E7E2519";
+sprinter.getUserBalances(ownerAddress)
   .then(balances => {
     console.log('User balances:', balances);
   })
@@ -31,7 +32,9 @@ The Sprinter SDK allows you to customize requests to suit your application's nee
 ### Example
 
 ```typescript
+const ownerAddress = "0x3E101Ec02e7A48D16DADE204C96bFF842E7E2519";
 sprinter.getSolution({
+  account: ownerAddress,
   token: "USDC",
   destinationChain: 42161,  // Destination chain ID
   amount: "1000000000"      // Amount in the smallest unit (e.g., wei)
@@ -58,12 +61,13 @@ async function integrateWithWeb3() {
   const web3 = new Web3(window.ethereum);
   const accounts = await web3.eth.requestAccounts();
 
-  const sprinter = new Sprinter(window.ethereum);
+  const sprinter = new Sprinter();
 
-  const balances = await sprinter.getUserBalances();
+  const balances = await sprinter.getUserBalances(accounts[0]);
   console.log('User balances:', balances);
 
   const solution = await sprinter.getSolution({
+    account: accounts[0],
     token: "USDC",
     destinationChain: 42161,
     amount: "1000000000"

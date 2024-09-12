@@ -4,11 +4,13 @@
 	import { getModalStore, type ModalSettings } from '@skeletonlabs/skeleton';
 	import TokenModal from '$lib/components/TokenModal.svelte';
 	import { sprinter } from '$lib/stores/sprinter';
+	import { selectedAccount } from '$lib/stores/wallet';
+	import type { Address } from '@chainsafe/sprinter-sdk';
 
 	const modalStore = getModalStore();
 
 	const tokens = $sprinter.getAvailableTokens();
-	const balances = $sprinter.getUserBalances();
+	const balances = $sprinter.getUserBalances($selectedAccount as Address);
 	const chains = $sprinter.getAvailableChains();
 
 	$: totalTokens = balances.then((b) =>
