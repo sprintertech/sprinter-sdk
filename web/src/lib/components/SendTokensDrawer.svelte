@@ -14,9 +14,11 @@
 	import { sprinter } from '$lib/stores/sprinter';
 	import { getNetworkByChainId, getTokenBySymbol } from '$lib/utils';
 	import { type FungibleToken, type FungibleTokenBalance } from '@chainsafe/sprinter-sdk';
+	import { selectedAccount } from '$lib/stores/wallet';
+	import type { Address } from '@chainsafe/sprinter-sdk';
 
 	const tokens = $sprinter.getAvailableTokens();
-	const allBalances = $sprinter.getUserBalances();
+	const allBalances = $sprinter.getUserBalances($selectedAccount as Address);
 	const chains = $sprinter.getAvailableChains();
 
 	const drawerStore = getDrawerStore();
@@ -67,6 +69,7 @@
 				chains: await chains,
 				balances,
 				quota: {
+					account: $selectedAccount,
 					token: selectedToken,
 					destinationChain: selectedNetwork,
 					whitelisted,

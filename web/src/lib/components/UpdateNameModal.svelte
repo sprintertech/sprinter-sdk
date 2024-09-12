@@ -3,13 +3,14 @@
 	import { getModalStore } from '@skeletonlabs/skeleton';
 	import { type Solution } from '@chainsafe/sprinter-sdk';
 	import { Contract } from 'web3';
-	import { selectedProvider } from '$lib/stores/wallet';
 	import { fromWei, toWei } from 'web3-utils';
 	import { sprinter, SPRINTER_SEPOLIA_ADDRESS } from '$lib/stores/sprinter';
 	import TransactionCard from '$lib/components/TransactionCard.svelte';
 	import { getNetworkByChainId, getTokenBySymbol } from '$lib/utils';
 	import SkullCrossbonesSolid from '$lib/icons/SkullCrossbonesSolid.svelte';
 	import { sprinterNameServiceAbi } from '$lib/sprinterNameService.abi';
+	import { selectedAccount } from '$lib/stores/wallet';
+	import type { Address } from '@chainsafe/sprinter-sdk';
 
 	// Props
 	/** Exposes parent props to this component. */
@@ -20,7 +21,9 @@
 	const token = $sprinter
 		.getAvailableTokens()
 		.then((response) => getTokenBySymbol(response, 'USDC'));
-	const balances = $sprinter.getUserBalances().then((response) => response['USDC'].balances ?? []);
+	const balances = $sprinter
+		.getUserBalances($selectedAccount as Address)
+		.then((response) => response['USDC'].balances ?? []);
 	const chains = $sprinter.getAvailableChains();
 
 	let name = '';
@@ -36,17 +39,17 @@
 
 	async function onNameSubmit() {
 		fetching = true;
-		const address = (
-			await $selectedProvider.provider.request({ method: 'eth_requestAccounts', params: [] })
-		)[0];
 
 		const amount = Number(toWei(donation, 6));
 		const sprinterNameService = new Contract(sprinterNameServiceAbi);
 
-		const data = sprinterNameService.methods.claimName(name, address, amount).encodeABI();
+		const data = sprinterNameService.methods
+			.claimName(name, $selectedAccount as Address, amount)
+			.encodeABI();
 
 		const response = await $sprinter.getCallSolution({
 			amount: amount,
+			account: $selectedAccount as Address,
 			token: 'USDC',
 			destinationChain: 11155111,
 			contractCall: {
