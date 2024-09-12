@@ -7,6 +7,7 @@ import type {
   FetchOptions,
   FungibleToken,
   FungibleTokenBalance,
+  NativeTokenBalance,
   Solution,
   SolutionOptions,
   SolutionResponse,
@@ -83,6 +84,21 @@ export async function getUserFungibleTokens(
   const response = await fetch(url, { signal }).then(
     (response) =>
       response.json() as unknown as { data: FungibleTokenBalance[] },
+  );
+
+  return response.data;
+}
+
+export async function getUserNativeTokens(
+  address: Address,
+  { baseUrl, signal }: FetchOptions = {},
+): Promise<NativeTokenBalance[]> {
+  const url = new URL(
+    `/accounts/${address}/assets/native`,
+    baseUrl || BASE_URL,
+  );
+  const response = await fetch(url, { signal }).then(
+    (response) => response.json() as unknown as { data: NativeTokenBalance[] },
   );
 
   return response.data;

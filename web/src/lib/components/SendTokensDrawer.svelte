@@ -17,8 +17,17 @@
 	import { selectedAccount } from '$lib/stores/wallet';
 	import type { Address } from '@chainsafe/sprinter-sdk';
 
-	const tokens = $sprinter.getAvailableTokens();
-	const allBalances = $sprinter.getUserBalances($selectedAccount as Address);
+	const tokens = $sprinter.getAvailableTokens($selectedAccount as Address).then((tokens) => [
+		...tokens,
+		{
+			addresses: [],
+			decimals: 18,
+			logoURI: 'https://scan.buildwithsygma.com/assets/icons/evm.svg',
+			name: 'Ethereum',
+			symbol: 'ETH'
+		}
+	]);
+	const allBalances = $sprinter.getUserBalances();
 	const chains = $sprinter.getAvailableChains();
 
 	const drawerStore = getDrawerStore();

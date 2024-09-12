@@ -58,6 +58,12 @@ sprinter.getAvailableChains().then(chains => {
 
 Fetches the user's balances for specified tokens across multiple blockchains. If no tokens are specified, it fetches balances for all available tokens.
 
+:::note
+
+Method will always return native tokens under `ETH` key
+
+:::
+
 #### Parameters
 
 - `account`: Targeted account address.
