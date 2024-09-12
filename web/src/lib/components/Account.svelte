@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { selectedProvider } from '$lib/stores/wallet';
 	import {
 		type DrawerSettings,
 		getDrawerStore,
@@ -10,10 +9,10 @@
 	import { sprinterNameServiceAbi } from '$lib/sprinterNameService.abi';
 	import UpdateNameModal from '$lib/components/UpdateNameModal.svelte';
 	import { SPRINTER_SEPOLIA_ADDRESS } from '$lib/stores/sprinter';
+	import { selectedAccount } from '$lib/stores/wallet';
+	import type { Address } from "@chainsafe/sprinter-sdk";
 
-	$: address = $selectedProvider.provider.request({ method: 'eth_requestAccounts', params: [] });
-
-	async function getSprinterName(address: string): Promise<string> {
+	async function getSprinterName(): Promise<string> {
 		const SEPOLIA_RPC_PROVIDER = 'https://ethereum-sepolia-rpc.publicnode.com';
 		const web3 = new Web3(SEPOLIA_RPC_PROVIDER);
 
@@ -22,7 +21,7 @@
 			SPRINTER_SEPOLIA_ADDRESS
 		);
 
-		const name = await sprinterNameService.methods.names(address).call();
+		const name = await sprinterNameService.methods.names($selectedAccount as Address).call();
 		if (!name) throw new Error('Name not found!');
 		return name;
 	}
@@ -59,19 +58,13 @@
 		<div class="self-stretch justify-start items-start gap-2.5 inline-flex">
 			<div class="text-black dark:text-white text-xl font-medium font-['Inter'] leading-7">
 				Hello
-				{#await address}
-					0x....
-				{:then result}
-					{#await getSprinterName(result[0])}
-						{result[0]}
+					{#await getSprinterName()}
+						{$selectedAccount}
 					{:then name}
 						{name}
 					{:catch}
-						{result[0]}
+						{$selectedAccount}
 					{/await}
-				{:catch error}
-					- {JSON.stringify(error)}
-				{/await}
 			</div>
 		</div>
 		<div class="self-stretch justify-end items-start gap-2 inline-flex">

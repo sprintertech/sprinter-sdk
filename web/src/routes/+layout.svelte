@@ -27,7 +27,7 @@
 	// Import the header and other components
 	import Header from '$lib/components/Header.svelte';
 
-	import { providers, selectedProvider } from '$lib/stores/wallet';
+	import { providers, selectedAccount, selectedProvider } from '$lib/stores/wallet';
 	import type { EIP6963ProviderDetail } from 'mipd';
 	import DrawerManager from '$lib/components/DrawerManager.svelte';
 
@@ -37,8 +37,9 @@
 
 		selecting = true;
 		try {
-			await provider.provider.request({ method: 'eth_requestAccounts', params: [] });
+			const accounts = await provider.provider.request({ method: 'eth_requestAccounts', params: [] });
 
+			selectedAccount.set(accounts[0]);
 			selectedProvider.set(provider);
 		} finally {
 			selecting = false;
