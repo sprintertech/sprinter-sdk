@@ -15,7 +15,7 @@
 	import { getNetworkByChainId, getTokenBySymbol } from '$lib/utils';
 	import { type FungibleToken, type FungibleTokenBalance } from '@chainsafe/sprinter-sdk';
 	import { selectedAccount } from '$lib/stores/wallet';
-	import type { Address } from "@chainsafe/sprinter-sdk";
+	import type { Address } from '@chainsafe/sprinter-sdk';
 
 	const tokens = $sprinter.getAvailableTokens();
 	const allBalances = $sprinter.getUserBalances($selectedAccount as Address);

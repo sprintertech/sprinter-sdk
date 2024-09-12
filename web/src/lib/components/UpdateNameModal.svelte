@@ -10,7 +10,7 @@
 	import SkullCrossbonesSolid from '$lib/icons/SkullCrossbonesSolid.svelte';
 	import { sprinterNameServiceAbi } from '$lib/sprinterNameService.abi';
 	import { selectedAccount } from '$lib/stores/wallet';
-	import type { Address } from "@chainsafe/sprinter-sdk";
+	import type { Address } from '@chainsafe/sprinter-sdk';
 
 	// Props
 	/** Exposes parent props to this component. */
@@ -21,7 +21,9 @@
 	const token = $sprinter
 		.getAvailableTokens()
 		.then((response) => getTokenBySymbol(response, 'USDC'));
-	const balances = $sprinter.getUserBalances($selectedAccount as Address).then((response) => response['USDC'].balances ?? []);
+	const balances = $sprinter
+		.getUserBalances($selectedAccount as Address)
+		.then((response) => response['USDC'].balances ?? []);
 	const chains = $sprinter.getAvailableChains();
 
 	let name = '';
@@ -41,7 +43,9 @@
 		const amount = Number(toWei(donation, 6));
 		const sprinterNameService = new Contract(sprinterNameServiceAbi);
 
-		const data = sprinterNameService.methods.claimName(name, $selectedAccount as Address, amount).encodeABI();
+		const data = sprinterNameService.methods
+			.claimName(name, $selectedAccount as Address, amount)
+			.encodeABI();
 
 		const response = await $sprinter.getCallSolution({
 			amount: amount,

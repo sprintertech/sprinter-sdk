@@ -10,7 +10,7 @@
 	import UpdateNameModal from '$lib/components/UpdateNameModal.svelte';
 	import { SPRINTER_SEPOLIA_ADDRESS } from '$lib/stores/sprinter';
 	import { selectedAccount } from '$lib/stores/wallet';
-	import type { Address } from "@chainsafe/sprinter-sdk";
+	import type { Address } from '@chainsafe/sprinter-sdk';
 
 	async function getSprinterName(): Promise<string> {
 		const SEPOLIA_RPC_PROVIDER = 'https://ethereum-sepolia-rpc.publicnode.com';
@@ -58,13 +58,13 @@
 		<div class="self-stretch justify-start items-start gap-2.5 inline-flex">
 			<div class="text-black dark:text-white text-xl font-medium font-['Inter'] leading-7">
 				Hello
-					{#await getSprinterName()}
-						{$selectedAccount}
-					{:then name}
-						{name}
-					{:catch}
-						{$selectedAccount}
-					{/await}
+				{#await getSprinterName()}
+					{$selectedAccount}
+				{:then name}
+					{name}
+				{:catch}
+					{$selectedAccount}
+				{/await}
 			</div>
 		</div>
 		<div class="self-stretch justify-end items-start gap-2 inline-flex">

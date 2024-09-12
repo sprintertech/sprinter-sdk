@@ -5,7 +5,7 @@
 	import TokenModal from '$lib/components/TokenModal.svelte';
 	import { sprinter } from '$lib/stores/sprinter';
 	import { selectedAccount } from '$lib/stores/wallet';
-	import type { Address } from "@chainsafe/sprinter-sdk";
+	import type { Address } from '@chainsafe/sprinter-sdk';
 
 	const modalStore = getModalStore();
 

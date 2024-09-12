@@ -37,7 +37,10 @@
 
 		selecting = true;
 		try {
-			const accounts = await provider.provider.request({ method: 'eth_requestAccounts', params: [] });
+			const accounts = await provider.provider.request({
+				method: 'eth_requestAccounts',
+				params: []
+			});
 
 			selectedAccount.set(accounts[0]);
 			selectedProvider.set(provider);
