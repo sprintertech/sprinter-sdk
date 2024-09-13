@@ -64,44 +64,44 @@
 	}
 </script>
 
-<div class="w-[1024px] bg-gray-200 dark:bg-gray-800 flex flex-col items-center gap-4 rounded-xl">
+<div class="w-[1024px] bg-surface-200 dark:bg-gray-700 flex flex-col items-center gap-4 rounded-xl">
 	<!-- Balance Section -->
-	<div class="w-full p-6 rounded-xl flex justify-between items-center relative py-9">
-		<div>
-			<div class="text-slate-800 dark:text-slate-200 text-lg font-normal text-left">Balance</div>
-			<div class="text-slate-800 dark:text-slate-200 text-4xl font-semibold justify-start">
-				{#await totalTokens}
-					<div class="placeholder h-11 w-40" />
-				{:then result}
-					${result.toFixed(2)}
-				{:catch error}
-					- {JSON.stringify(error)}
-				{/await}
-			</div>
-			<div class="text-slate-800 dark:text-slate-200 text-4xl font-semibold justify-start pt-1">
-				{#await totalNative}
-					<div class="placeholder h-11 w-40" />
-				{:then result}
-					{result.toFixed(2)} ETH
-				{:catch error}
-					- {JSON.stringify(error)}
-				{/await}
-			</div>
-		</div>
-		<div
-			class="absolute right-0 top-0 bottom-0 w-[80%] bg-gradient-to-r from-transparent via-indigo-600 to-fuchsia-800 rounded-xl"
-		></div>
-	</div>
+
 	<!-- Portfolio Section -->
 	<div class="w-full flex flex-col gap-4 p-6 pt-3">
-		<div class="text-slate-800 dark:text-slate-200 text-2xl font-semibold text-left">Portfolio</div>
+		<div class="text-slate-800 pt-1 dark:text-slate-200 text-2xl font-semibold text-left">Portfolio</div>
+		<div class="w-full pt-0 pb-2 flex justify-between items-center relative py-9">
+			<div>
+				<div class="text-slate-800 dark:text-slate-200 text-lg font-normal text-left">Total Balance</div>
+				<div class="flex row-auto">
+					<div class="text-slate-800 dark:text-slate-200 text-4xl font-semibold justify-start">
+						{#await totalTokens}
+							<div class="placeholder h-10 w-40" />
+						{:then result}
+							${result.toFixed(2)}
+						{:catch error}
+							- {JSON.stringify(error)}
+						{/await}
+					</div>
+					<div class="text-slate-800 dark:text-slate-200 text-4xl font-semibold justify-start pl-10">
+						{#await totalNative}
+							<div class="placeholder h-10 w-40" />
+						{:then result}
+							{result.toFixed(2)} ETH
+						{:catch error}
+							- {JSON.stringify(error)}
+						{/await}
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="table-container">
 			<!-- Native Table Element -->
 			<table
 				class="table table-hover bg-white dark:bg-gray-800 text-slate-800 dark:text-slate-200 rounded-lg overflow-hidden"
 			>
 				<thead>
-					<tr class="bg-gray-100 dark:bg-gray-700 font-medium">
+					<tr class="bg-gray-100 dark:bg-gray-800 font-medium">
 						<th class="p-2">ASSET</th>
 						<th class="p-2">BALANCE</th>
 						<th class="p-2">DISTRIBUTION</th>

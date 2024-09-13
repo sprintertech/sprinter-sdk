@@ -4,7 +4,7 @@
 	import logoLight from '$lib/assets/sprinter-logo-white.svg';
 </script>
 
-<AppBar class="bg-white dark:bg-gray-800">
+<AppBar class="bg-surface-200 dark:bg-gray-800">
 	<svelte:fragment slot="lead">
 		<div class="h-10 px-2.5 justify-start items-center gap-2.5 flex">
 			<div class="w-10 h-10 relative bg-slate-200 dark:bg-slate-700 overflow-hidden bg-transparent">
