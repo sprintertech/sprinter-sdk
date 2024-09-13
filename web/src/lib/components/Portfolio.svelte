@@ -69,10 +69,14 @@
 
 	<!-- Portfolio Section -->
 	<div class="w-full flex flex-col gap-4 p-6 pt-3">
-		<div class="text-slate-800 pt-1 dark:text-slate-200 text-2xl font-semibold text-left">Portfolio</div>
+		<div class="text-slate-800 pt-1 dark:text-slate-200 text-2xl font-semibold text-left">
+			Portfolio
+		</div>
 		<div class="w-full pt-0 pb-2 flex justify-between items-center relative py-9">
 			<div>
-				<div class="text-slate-800 dark:text-slate-200 text-lg font-normal text-left">Total Balance</div>
+				<div class="text-slate-800 dark:text-slate-200 text-lg font-normal text-left">
+					Total Balance
+				</div>
 				<div class="flex row-auto">
 					<div class="text-slate-800 dark:text-slate-200 text-4xl font-semibold justify-start">
 						{#await totalTokens}
@@ -83,7 +87,9 @@
 							- {JSON.stringify(error)}
 						{/await}
 					</div>
-					<div class="text-slate-800 dark:text-slate-200 text-4xl font-semibold justify-start pl-10">
+					<div
+						class="text-slate-800 dark:text-slate-200 text-4xl font-semibold justify-start pl-10"
+					>
 						{#await totalNative}
 							<div class="placeholder h-10 w-40" />
 						{:then result}

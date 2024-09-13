@@ -228,7 +228,7 @@
 									{#each balances as balance}
 										{@const network = getNetworkByChainId(networks, balance.chainId)}
 										<ListBoxItem
-												active="bg-primary-400 dark:bg-primary-500 hover:dark:bg-primary-700 text-black"
+											active="bg-primary-400 dark:bg-primary-500 hover:dark:bg-primary-700 text-black"
 											bind:group={whitelisted}
 											name={getNetworkByChainId(networks, balance.chainId).name}
 											value={String(balance.chainId)}
@@ -261,9 +261,7 @@
 			class="self-stretch h-[60px] p-2.5 bg-primary-400 dark:bg-primary-500 rounded-[10px] shadow border border-zinc-200 dark:border-gray-600 justify-center items-center gap-1 inline-flex"
 		>
 			<div class="px-1 justify-center items-center flex">
-				<div
-					class="text-black text-base font-semibold font-['Inter'] leading-normal"
-				>
+				<div class="text-black text-base font-semibold font-['Inter'] leading-normal">
 					Get Quota
 				</div>
 			</div>
