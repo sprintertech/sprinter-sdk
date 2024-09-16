@@ -11,7 +11,7 @@
 	import { sprinterNameServiceAbi } from '$lib/sprinterNameService.abi';
 	import { selectedAccount } from '$lib/stores/wallet';
 	import type { Address } from '@chainsafe/sprinter-sdk';
-	import { formatWei } from "$lib/formatters";
+	import { formatWei } from '$lib/formatters';
 
 	// Props
 	/** Exposes parent props to this component. */

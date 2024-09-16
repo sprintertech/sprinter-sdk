@@ -16,7 +16,7 @@
 	import { type FungibleToken, type FungibleTokenBalance } from '@chainsafe/sprinter-sdk';
 	import { selectedAccount } from '$lib/stores/wallet';
 	import type { Address } from '@chainsafe/sprinter-sdk';
-	import { formatWei } from "$lib/formatters";
+	import { formatWei } from '$lib/formatters';
 
 	const tokens = $sprinter.getAvailableTokens($selectedAccount as Address).then((tokens) => [
 		...tokens,

@@ -4,7 +4,7 @@
 	import { getNetworkByChainId, getTokenBySymbol } from '$lib/utils';
 	import SkullCrossbonesSolid from '$lib/icons/SkullCrossbonesSolid.svelte';
 	import TransactionCard from '$lib/components/TransactionCard.svelte';
-	import { formatWei } from "$lib/formatters";
+	import { formatWei } from '$lib/formatters';
 
 	const drawerStore = getDrawerStore();
 	$: quota = $sprinter.getSolution($drawerStore.meta.quota);

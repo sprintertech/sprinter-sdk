@@ -2,7 +2,7 @@
 	import type { SvelteComponent } from 'svelte';
 	import { getModalStore } from '@skeletonlabs/skeleton';
 	import { getNetworkByChainId } from '$lib/utils';
-	import { formatWei } from "$lib/formatters";
+	import { formatWei } from '$lib/formatters';
 
 	// Props
 	/** Exposes parent props to this component. */

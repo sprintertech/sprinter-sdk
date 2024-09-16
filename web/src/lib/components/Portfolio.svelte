@@ -6,7 +6,7 @@
 	import { sprinter } from '$lib/stores/sprinter';
 	import { selectedAccount } from '$lib/stores/wallet';
 	import type { Address } from '@chainsafe/sprinter-sdk';
-	import { formatWei } from "$lib/formatters";
+	import { formatWei } from '$lib/formatters';
 
 	const modalStore = getModalStore();
 
