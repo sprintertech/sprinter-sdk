@@ -6,6 +6,7 @@
 	import { sprinter } from '$lib/stores/sprinter';
 	import { selectedAccount } from '$lib/stores/wallet';
 	import type { Address } from '@chainsafe/sprinter-sdk';
+	import { formatWei } from "$lib/formatters";
 
 	const modalStore = getModalStore();
 
@@ -139,7 +140,7 @@
 								</div>
 							</td>
 							<td class="text-slate-700 dark:text-slate-300 text-base text-left">
-								{fromWei(balances['ETH'].total, 18)} ETH
+								{formatWei(balances['ETH'].total, 18)} ETH
 							</td>
 							<td class="text-slate-700 dark:text-slate-300 text-base">
 								<Facepile balances={balances['ETH'].balances} networks={chains} />
@@ -161,7 +162,7 @@
 									</div>
 								</td>
 								<td class="text-slate-700 dark:text-slate-300 text-base text-left">
-									{fromWei(balances[token.symbol].total, token.decimals)}
+									{formatWei(balances[token.symbol].total, token.decimals)}
 									{token.symbol}
 								</td>
 								<td class="text-slate-700 dark:text-slate-300 text-base">

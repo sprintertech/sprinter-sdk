@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { SvelteComponent } from 'svelte';
 	import { getModalStore } from '@skeletonlabs/skeleton';
-	import { fromWei } from 'web3-utils';
 	import { getNetworkByChainId } from '$lib/utils';
+	import { formatWei } from "$lib/formatters";
 
 	// Props
 	/** Exposes parent props to this component. */
@@ -42,7 +42,7 @@
 							<tr>
 								<td><img class="size-7" src={network.logoURI} alt="{network.name}-logo" /></td>
 								<td>{network.name}</td>
-								<td>{fromWei(balance.balance, $modalStore[0].meta.decimals)}</td>
+								<td>{formatWei(balance.balance, $modalStore[0].meta.decimals)}</td>
 							</tr>
 						{/each}
 					</tbody>

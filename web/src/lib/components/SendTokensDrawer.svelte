@@ -10,12 +10,13 @@
 		type DrawerSettings
 	} from '@skeletonlabs/skeleton';
 	import { onMount } from 'svelte';
-	import { fromWei, toWei } from 'web3-utils';
+	import { toWei } from 'web3-utils';
 	import { sprinter } from '$lib/stores/sprinter';
 	import { getNetworkByChainId, getTokenBySymbol } from '$lib/utils';
 	import { type FungibleToken, type FungibleTokenBalance } from '@chainsafe/sprinter-sdk';
 	import { selectedAccount } from '$lib/stores/wallet';
 	import type { Address } from '@chainsafe/sprinter-sdk';
+	import { formatWei } from "$lib/formatters";
 
 	const tokens = $sprinter.getAvailableTokens($selectedAccount as Address).then((tokens) => [
 		...tokens,
@@ -238,7 +239,7 @@
 											</svelte:fragment>
 											{network.name}
 											<svelte:fragment slot="trail">
-												{fromWei(balance.balance, tokenInfo.decimals)}
+												{formatWei(balance.balance, tokenInfo.decimals)}
 											</svelte:fragment>
 										</ListBoxItem>
 									{/each}

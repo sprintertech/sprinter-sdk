@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { fromWei, toHex } from 'web3-utils';
-	import { formatDuration } from '$lib/formatters.js';
+	import { toHex } from 'web3-utils';
+	import { formatDuration, formatWei } from '$lib/formatters.js';
 	import { type Chain, type FungibleToken, type Solution } from '@chainsafe/sprinter-sdk';
 	import { selectedProvider } from '$lib/stores/wallet';
 	import { type NonPayableCallOptions, Web3 } from 'web3';
@@ -95,7 +95,7 @@
 		<img src={chain.logoURI} alt="Source Chain Icon" class="w-8 h-8 mr-2" />
 		<div>
 			<p class="text-lg font-semibold text-black dark:text-white">
-				{fromWei(data.amount, token.decimals)}
+				{formatWei(data.amount, token.decimals)}
 				{token.name} on {chain.name}
 			</p>
 			<p class="text-sm text-gray-600 dark:text-gray-400">

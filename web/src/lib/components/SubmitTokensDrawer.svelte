@@ -4,7 +4,7 @@
 	import { getNetworkByChainId, getTokenBySymbol } from '$lib/utils';
 	import SkullCrossbonesSolid from '$lib/icons/SkullCrossbonesSolid.svelte';
 	import TransactionCard from '$lib/components/TransactionCard.svelte';
-	import { fromWei } from 'web3-utils';
+	import { formatWei } from "$lib/formatters";
 
 	const drawerStore = getDrawerStore();
 	$: quota = $sprinter.getSolution($drawerStore.meta.quota);
@@ -48,7 +48,7 @@
 						{data}
 						chain={network}
 						{token}
-						balance={fromWei(balance.balance, token.decimals)}
+						balance={formatWei(balance.balance, token.decimals)}
 					/>
 				{/each}
 			{/if}
