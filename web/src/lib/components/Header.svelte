@@ -7,7 +7,7 @@
 <AppBar class="bg-surface-200 dark:bg-gray-800">
 	<svelte:fragment slot="lead">
 		<div class="h-10 px-2.5 justify-start items-center gap-2.5 flex">
-			<div class="w-10 h-10 relative bg-slate-200 dark:bg-slate-700 overflow-hidden bg-transparent">
+			<div class="w-10 h-10 relative overflow-hidden bg-transparent">
 				<img src={$modeCurrent ? logoDark : logoLight} alt="SprinterLogo" />
 			</div>
 			<div class="text-black dark:text-white text-xl font-medium font-['Inter'] leading-7">
