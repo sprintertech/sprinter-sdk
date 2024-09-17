@@ -3,7 +3,7 @@
 	import { getModalStore } from '@skeletonlabs/skeleton';
 	import { type Solution } from '@chainsafe/sprinter-sdk';
 	import { Contract } from 'web3';
-	import { fromWei, toWei } from 'web3-utils';
+	import { toWei } from 'web3-utils';
 	import { sprinter, SPRINTER_SEPOLIA_ADDRESS } from '$lib/stores/sprinter';
 	import TransactionCard from '$lib/components/TransactionCard.svelte';
 	import { getNetworkByChainId, getTokenBySymbol } from '$lib/utils';
@@ -11,6 +11,7 @@
 	import { sprinterNameServiceAbi } from '$lib/sprinterNameService.abi';
 	import { selectedAccount } from '$lib/stores/wallet';
 	import type { Address } from '@chainsafe/sprinter-sdk';
+	import { formatWei } from '$lib/formatters';
 
 	// Props
 	/** Exposes parent props to this component. */
@@ -90,7 +91,7 @@
 								{data}
 								chain={network}
 								token={_token}
-								balance={fromWei((balance || { balance: '0' }).balance, _token.decimals)}
+								balance={formatWei((balance || { balance: '0' }).balance, _token.decimals)}
 							/>
 						{/each}
 					</ul>
