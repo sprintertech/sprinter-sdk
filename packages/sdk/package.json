@@ -15,5 +15,8 @@
     "@types/node": "18.19.42",
     "eslint": "^8.57.0",
     "typescript": "^5.0.3"
+  },
+  "dependencies": {
+    "viem": "^2.21.9"
   }
 }
