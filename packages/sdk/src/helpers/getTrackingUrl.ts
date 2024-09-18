@@ -20,6 +20,13 @@ export async function experimental_getTrackingUrl(
       );
       return url.toString();
     }
+    case "Sygma-Testnet": {
+      const url = new URL(
+        `api/transfers/txHash/${transactionHash}`,
+        "https://api.test.buildwithsygma.com/",
+      );
+      return url.toString();
+    }
     case "Across": {
       const rpcUrl =
         chain.rpcURLs[Math.floor(Math.random() * chain.rpcURLs.length)];
