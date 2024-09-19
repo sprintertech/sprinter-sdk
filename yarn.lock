@@ -16117,6 +16117,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "react@workspace:packages/react"
   dependencies:
+    "@chainsafe/sprinter-sdk": "workspace:^"
     "@eslint/js": "npm:^9.9.0"
     "@types/react": "npm:^18.3.3"
     "@types/react-dom": "npm:^18.3.0"
