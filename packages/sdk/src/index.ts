@@ -11,6 +11,7 @@ import {
 } from "./api";
 import type {
   Address,
+  AggregateBalances,
   Chain,
   ContractSolutionOptions,
   FetchOptions,
@@ -56,9 +57,7 @@ class Sprinter {
     account: Address,
     tokens?: FungibleToken[],
     options: FetchOptions = {},
-  ): Promise<{
-    [sybol: TokenSymbol]: { balances: TokenBalance[]; total: string };
-  }> {
+  ): Promise<AggregateBalances> {
     const tokenList = tokens || (await this.getAvailableTokens(options));
 
     const [balances, nativeTokens] = await Promise.all([

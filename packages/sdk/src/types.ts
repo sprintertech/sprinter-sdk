@@ -28,6 +28,10 @@ export interface TokenBalance {
   tokenDecimals: number;
 }
 
+export type AggregateBalances = {
+  [symbol: TokenSymbol]: { balances: TokenBalance[]; total: string };
+};
+
 export type FungibleTokenBalance = TokenBalance;
 
 export type NativeTokenBalance = TokenBalance;
