@@ -1,27 +1,28 @@
 import {
   Address,
-  ChainID,
+  ChainID, ContractCallSolutionOptions,
   type SolutionResponse,
   Sprinter,
   TokenSymbol
 } from "@chainsafe/sprinter-sdk";
 import {useCallback} from "react";
-import {useAsyncRequest} from "./useAsyncRequest.ts";
+import { useAsyncRequest} from "./useAsyncRequest.ts";
 
-export function useSolution(sprinter: Sprinter) {
-  const { state: solution, makeRequest } = useAsyncRequest<SolutionResponse>();
+export function useCallSolution(sprinter: Sprinter) {
+  const { state: callSolution, makeRequest } = useAsyncRequest<SolutionResponse>();
 
-  const getSolution = useCallback((account: Address,
+  const getCallSolution = useCallback((account: Address,
                                    destinationChain: ChainID,
                                    token: TokenSymbol,
                                    amount: number,
+                                   contractCall: ContractCallSolutionOptions,
                                    threshold?: number,
                                    whitelistedSourceChains?: ChainID[],
   ) => {
     makeRequest(sprinter.getCallSolution({
-      account, destinationChain, token, amount, threshold, whitelistedSourceChains,
+      account, destinationChain, token, amount, threshold, whitelistedSourceChains, contractCall
     }));
   }, [sprinter, makeRequest]);
 
-  return { solution, getSolution };
+  return { callSolution, getCallSolution };
 }

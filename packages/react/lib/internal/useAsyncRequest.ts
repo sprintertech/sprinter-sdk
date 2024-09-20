@@ -7,7 +7,7 @@ const initialState = {
 };
 
 export function useAsyncRequest<T>() {
-    const [state, dispatch] = useReducer(fetchReducer, initialState);
+    const [state, dispatch] = useReducer(fetchReducer<T>, initialState);
 
   const makeRequest = useCallback((request: Promise<T>) => {
     dispatch({ type: RequestAction.INIT });
@@ -28,18 +28,18 @@ enum RequestAction {
   FAILURE = "REQUEST_FAILURE",
 }
 
-interface RequestState<T> {
+export interface AsyncRequestState<T> {
   data: T | null;
   loading: boolean;
   error: string | null;
 }
 
-type RequestActions<T> =
+type AsyncRequestActions<T> =
   | { type: RequestAction.INIT }
   | { type: RequestAction.SUCCESS; payload: T }
   | { type: RequestAction.FAILURE; error: string };
 
-const fetchReducer = <T>(state: RequestState<T>, action: RequestActions<T>): RequestState<T> => {
+const fetchReducer = <T>(state: AsyncRequestState<T>, action: AsyncRequestActions<T>): AsyncRequestState<T> => {
   switch (action.type) {
     case RequestAction.INIT:
       return {
