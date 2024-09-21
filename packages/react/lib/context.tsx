@@ -8,7 +8,7 @@ import {useBalances} from "./internal/useBalances.ts";
 
 type SprinterContext = ReturnType<typeof useBalances> & ReturnType<typeof useTokens> & ReturnType<typeof useChains> & ReturnType<typeof useSolution> & ReturnType<typeof useCallSolution>;
 
-const Context = createContext<SprinterContext | null>(null);
+export const Context = createContext<SprinterContext | null>(null);
 
 interface SprinterContextProps {
   children?: ReactNode | undefined;
@@ -30,7 +30,7 @@ export function SprinterContext({ children, fetchOptions }: SprinterContextProps
   /** Solutions */
   const { solution, getSolution } = useSolution(sprinter);
 
-  /** Call */
+  /** Call Solution */
   const { callSolution, getCallSolution } = useCallSolution(sprinter);
 
   /** Initialization */

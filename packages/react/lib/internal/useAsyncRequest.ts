@@ -7,7 +7,7 @@ const initialState = {
 };
 
 export function useAsyncRequest<T>() {
-    const [state, dispatch] = useReducer(fetchReducer<T>, initialState);
+    const [state, dispatch] = useReducer(fetchReducer<T>, initialState as AsyncRequestState<T>);
 
   const makeRequest = useCallback((request: Promise<T>) => {
     dispatch({ type: RequestAction.INIT });

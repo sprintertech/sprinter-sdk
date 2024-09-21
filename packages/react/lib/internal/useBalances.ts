@@ -25,20 +25,20 @@ enum BalanceAction {
   FAILURE = "REQUEST_FAILURE",
 }
 
-interface BalancesEntry {
+export interface BalancesEntry {
   data: AggregateBalances | null;
   loading: boolean;
   error: string | null;
 }
 
-type BalancesState = Record<Address, BalancesEntry>
+type BalancesState = Record<Address, BalancesEntry>;
 
 type BalanceActions =
   | { type: BalanceAction.INIT; address: Address }
   | { type: BalanceAction.SUCCESS; payload: AggregateBalances; address: Address }
   | { type: BalanceAction.FAILURE; error: string; address: Address };
 
-function balancesReducer(state: BalancesState, action: BalanceActions) {
+function balancesReducer(state: BalancesState, action: BalanceActions): BalancesState {
   switch (action.type) {
     case BalanceAction.INIT:
       return {
