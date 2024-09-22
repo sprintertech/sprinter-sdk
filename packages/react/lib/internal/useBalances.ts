@@ -7,6 +7,8 @@ export function useBalances(sprinter: Sprinter) {
   const [balances, dispatch] = useReducer(balancesReducer, initialState);
 
   const getUserBalances = useCallback((account: Address) => {
+    if (balances[account]?.loading) return;
+
     dispatch({ type: BalanceAction.INIT, address: account });
 
     sprinter.getUserBalances(account).then(result => {
@@ -14,7 +16,7 @@ export function useBalances(sprinter: Sprinter) {
     }).catch((error: Error) => {
       dispatch({ type: BalanceAction.FAILURE, error: error.message, address: account });
     });
-  }, [sprinter]);
+  }, [sprinter, dispatch, balances]);
 
   return {balances, getUserBalances};
 }
