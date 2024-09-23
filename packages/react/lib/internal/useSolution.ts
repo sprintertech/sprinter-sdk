@@ -11,12 +11,13 @@ import {useAsyncRequest} from "./useAsyncRequest.ts";
 export function useSolution(sprinter: Sprinter) {
   const { state: solution, makeRequest } = useAsyncRequest<SolutionResponse>();
 
-  const getSolution = useCallback((account: Address,
-  destinationChain: ChainID,
-  token: TokenSymbol,
-  amount: number,
-  threshold?: number,
-  whitelistedSourceChains?: ChainID[],
+  const getSolution = useCallback((
+    account: Address,
+    destinationChain: ChainID,
+    token: TokenSymbol,
+    amount: number,
+    threshold?: number,
+    whitelistedSourceChains?: ChainID[],
   ) => {
     makeRequest(sprinter.getSolution({
       account, destinationChain, token, amount, threshold, whitelistedSourceChains,

@@ -12,12 +12,12 @@ export function useCallSolution(sprinter: Sprinter) {
   const { state: callSolution, makeRequest } = useAsyncRequest<SolutionResponse>();
 
   const getCallSolution = useCallback((account: Address,
-                                   destinationChain: ChainID,
-                                   token: TokenSymbol,
-                                   amount: number,
-                                   contractCall: ContractCallSolutionOptions,
-                                   threshold?: number,
-                                   whitelistedSourceChains?: ChainID[],
+    destinationChain: ChainID,
+    token: TokenSymbol,
+    amount: number,
+    contractCall: ContractCallSolutionOptions,
+    threshold?: number,
+    whitelistedSourceChains?: ChainID[],
   ) => {
     makeRequest(sprinter.getCallSolution({
       account, destinationChain, token, amount, threshold, whitelistedSourceChains, contractCall
