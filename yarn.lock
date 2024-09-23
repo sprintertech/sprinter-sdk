@@ -1853,7 +1853,7 @@ __metadata:
     react-dom: "npm:^18.3.1"
     typescript: "npm:^5.5.3"
     typescript-eslint: "npm:^8.0.1"
-    vite: "npm:^5.4.1"
+    vite: "npm:^5.4.6"
     vite-plugin-dts: "npm:^4.2.1"
   peerDependencies:
     react: ^18.3.1
@@ -19051,7 +19051,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.0.0, vite@npm:^5.3.5":
+"vite@npm:^5.0.0":
   version: 5.4.0
   resolution: "vite@npm:5.4.0"
   dependencies:
@@ -19094,7 +19094,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.4.1":
+"vite@npm:^5.4.6":
   version: 5.4.7
   resolution: "vite@npm:5.4.7"
   dependencies:
@@ -19532,7 +19532,7 @@ __metadata:
     tailwindcss: "npm:3.4.7"
     tslib: "npm:^2.6.3"
     typescript: "npm:^5.0.0"
-    vite: "npm:^5.3.5"
+    vite: "npm:^5.4.6"
     vite-plugin-tailwind-purgecss: "npm:0.3.3"
     vitest: "npm:^1.6.0"
     web3: "npm:^4.11.1"
