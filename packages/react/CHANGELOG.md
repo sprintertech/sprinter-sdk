@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/ChainSafe/sprinter-ts/compare/sprinter-react-v0.2.0...sprinter-react-v0.2.1) (2024-09-23)
+
+
+### Bug Fixes
+
+* react package should not be private ([#54](https://github.com/ChainSafe/sprinter-ts/issues/54)) ([ed8a5e0](https://github.com/ChainSafe/sprinter-ts/commit/ed8a5e011661e0e18e0b50d360bb16406692d3da))
+
 ## [0.2.0](https://github.com/ChainSafe/sprinter-ts/compare/sprinter-react-v0.1.0...sprinter-react-v0.2.0) (2024-09-23)
 
 
