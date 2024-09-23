@@ -40,12 +40,10 @@ import { useSprinterBalances, useSprinterTokens } from '@chainsafe/sprinter-reac
 const YourComponent = () => {
   const ownerAddress = "0xYourAddressHere";
   const { balances, getUserBalances } = useSprinterBalances(ownerAddress);
-  const { tokens, getAvailableTokens } = useSprinterTokens();
 
   useEffect(() => {
     getUserBalances();
-    getAvailableTokens();
-  }, [getUserBalances, getAvailableTokens]);
+  }, [getUserBalances]);
 
   return (
     <div>
