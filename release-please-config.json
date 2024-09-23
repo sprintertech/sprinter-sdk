@@ -9,6 +9,15 @@
         "bumpPatchForMinorPreMajor": false,
         "changelogPath": "CHANGELOG.md",
         "versioning": "default"
+      },
+      "packages/react": {
+        "releaseType": "node",
+        "draft": false,
+        "prerelease": false,
+        "bumpMinorPreMajor": false,
+        "bumpPatchForMinorPreMajor": false,
+        "changelogPath": "CHANGELOG.md",
+        "versioning": "default"
       }
     }
   }
