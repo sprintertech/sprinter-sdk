@@ -37,5 +37,9 @@
   },
   "dependencies": {
     "@chainsafe/sprinter-sdk": "workspace:^"
+  },
+  "volta": {
+    "node": "20.17.0",
+    "yarn": "4.3.1"
   }
 }
