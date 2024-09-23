@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { selectedProvider } from '$lib/stores/wallet';
 	import {
 		type DrawerSettings,
 		getDrawerStore,
@@ -10,10 +9,10 @@
 	import { sprinterNameServiceAbi } from '$lib/sprinterNameService.abi';
 	import UpdateNameModal from '$lib/components/UpdateNameModal.svelte';
 	import { SPRINTER_SEPOLIA_ADDRESS } from '$lib/stores/sprinter';
+	import { selectedAccount } from '$lib/stores/wallet';
+	import type { Address } from '@chainsafe/sprinter-sdk';
 
-	$: address = $selectedProvider.provider.request({ method: 'eth_requestAccounts', params: [] });
-
-	async function getSprinterName(address: string): Promise<string> {
+	async function getSprinterName(): Promise<string> {
 		const SEPOLIA_RPC_PROVIDER = 'https://ethereum-sepolia-rpc.publicnode.com';
 		const web3 = new Web3(SEPOLIA_RPC_PROVIDER);
 
@@ -22,7 +21,7 @@
 			SPRINTER_SEPOLIA_ADDRESS
 		);
 
-		const name = await sprinterNameService.methods.names(address).call();
+		const name = await sprinterNameService.methods.names($selectedAccount as Address).call();
 		if (!name) throw new Error('Name not found!');
 		return name;
 	}
@@ -54,44 +53,38 @@
 
 <div class="w-[1024px] h-full py-[15px] flex-col justify-start items-center gap-2.5 inline-flex">
 	<div
-		class="self-stretch h-[152px] px-[22px] py-[23px] bg-gray-200 dark:bg-gray-700 rounded-xl flex-col justify-start items-center gap-[34px] flex"
+		class="self-stretch h-[152px] px-[22px] py-[23px] bg-surface-200 dark:bg-gray-700 rounded-xl flex-col justify-start items-center gap-[34px] flex"
 	>
 		<div class="self-stretch justify-start items-start gap-2.5 inline-flex">
 			<div class="text-black dark:text-white text-xl font-medium font-['Inter'] leading-7">
 				Hello
-				{#await address}
-					0x....
-				{:then result}
-					{#await getSprinterName(result[0])}
-						{result[0]}
-					{:then name}
-						{name}
-					{:catch}
-						{result[0]}
-					{/await}
-				{:catch error}
-					- {JSON.stringify(error)}
+				{#await getSprinterName()}
+					{$selectedAccount}
+				{:then name}
+					{name}
+				{:catch}
+					{$selectedAccount}
 				{/await}
 			</div>
 		</div>
 		<div class="self-stretch justify-end items-start gap-2 inline-flex">
 			<div
-				class="p-2.5 bg-black dark:bg-gray-200 rounded-full justify-center items-center gap-2 flex"
+				class="p-3 px-4 bg-primary-400 dark:bg-primary-500 rounded-full justify-center items-center gap-2 flex"
 			>
 				<button
 					type="button"
-					class="text-white dark:text-black text-base font-medium font-['Inter'] leading-normal"
+					class="text-black text-base font-medium font-['Inter'] leading-normal"
 					on:click={openSendDrawer}
 				>
 					Send
 				</button>
 			</div>
 			<div
-				class="p-2.5 bg-black dark:bg-gray-200 rounded-full justify-center items-center gap-2 flex"
+				class="p-3 px-4 bg-primary-400 dark:bg-primary-500 rounded-full justify-center items-center gap-2 flex"
 			>
 				<button
 					type="button"
-					class="text-white dark:text-black text-base font-medium font-['Inter'] leading-normal"
+					class="text-black text-base font-medium font-['Inter'] leading-normal"
 					on:click={openUpdateNameModal}
 				>
 					Change Display Name

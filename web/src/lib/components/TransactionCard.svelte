@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { fromWei, toHex } from 'web3-utils';
-	import { formatDuration } from '$lib/formatters.js';
+	import { toHex } from 'web3-utils';
+	import { formatDuration, formatWei } from '$lib/formatters.js';
 	import { type Chain, type FungibleToken, type Solution } from '@chainsafe/sprinter-sdk';
 	import { selectedProvider } from '$lib/stores/wallet';
 	import { type NonPayableCallOptions, Web3 } from 'web3';
@@ -51,21 +51,31 @@
 			// @ts-expect-error   // chainId is missing in web3js call options type
 			const callOptions: NonPayableCallOptions = { chainId: quotaRecord.sourceChain };
 
+			console.info('Quote', quotaRecord);
+
 			// Approval sniff etc...\
-			const erc20 = new web3.eth.Contract(erc20Abi, quotaRecord.sourceTokenAddress);
+			if (quotaRecord.approvals?.length > 0) {
+				for (const approval of quotaRecord.approvals) {
+					console.log('Requesting approval:', approval);
+					const receipt = await web3.eth.sendTransaction(approval);
+					console.warn(`Approval receipt: `, receipt);
+				}
+			} else {
+				const erc20 = new web3.eth.Contract(erc20Abi, quotaRecord.sourceTokenAddress);
 
-			const allowed = await erc20.methods
-				.allowance(ownerAddress, quotaRecord.transaction.to)
-				.call(callOptions);
+				const allowed = await erc20.methods
+					.allowance(ownerAddress, quotaRecord.transaction.to)
+					.call(callOptions);
 
-			if (BigInt(quotaRecord.amount) > BigInt(allowed)) {
-				const approval = await erc20.methods
-					.approve(quotaRecord.transaction.to, quotaRecord.amount)
-					.send({
-						...callOptions,
-						from: ownerAddress
-					});
-				if (!approval.status) throw new Error('Not Approved!'); // To stop execution
+				if (BigInt(quotaRecord.amount) > BigInt(allowed)) {
+					const approval = await erc20.methods
+						.approve(quotaRecord.transaction.to, quotaRecord.amount)
+						.send({
+							...callOptions,
+							from: ownerAddress
+						});
+					if (!approval.status) throw new Error('Not Approved!'); // To stop execution
+				}
 			}
 
 			// FINAL STEP!
@@ -85,7 +95,7 @@
 		<img src={chain.logoURI} alt="Source Chain Icon" class="w-8 h-8 mr-2" />
 		<div>
 			<p class="text-lg font-semibold text-black dark:text-white">
-				{fromWei(data.amount, token.decimals)}
+				{formatWei(data.amount, token.decimals)}
 				{token.name} on {chain.name}
 			</p>
 			<p class="text-sm text-gray-600 dark:text-gray-400">

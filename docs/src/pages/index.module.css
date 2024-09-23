@@ -1,23 +1,139 @@
-/**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
- */
-
-.heroBanner {
-  padding: 4rem 0;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
 @media screen and (max-width: 996px) {
   .heroBanner {
     padding: 2rem;
   }
 }
 
+.heroBanner {
+  background-color: #282c34;
+  padding: 4rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.heroTitle {
+  font-size: 4rem;
+  font-weight: bold;
+}
+
+[data-theme="dark"] .heroTitle {
+  font-size: 4rem;
+  font-weight: bold;
+}
+
+.heroSubtitle {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+[data-theme="dark"] .heroSubtitle {
+  color: #e9e6de;
+}
+
+.highlight {
+  color: #61dafb; 
+}
+
 .buttons {
+  margin-top: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #e9e6de;
+}
+
+.callToActionSection {
+  padding: 4rem 0;
+  background-color: #e9e6de;
+}
+
+.callToActionSection h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.callToActionSection p {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.callToActionSection img.ctaImage {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%; 
+  height: auto; 
+  width: 200px; 
+}
+
+.svg-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+}
+
+.icon {
+  width: 150px; 
+  height: 150px; 
+}
+
+[data-theme="dark"] .heroTitle, 
+[data-theme="dark"] .heroSubtitle {
+  color: #fff; 
+}
+
+[data-theme="dark"] .callToActionSection {
+  color: #fff; 
+  background-color: #333; 
+}
+
+[data-theme="dark"] .highlight {
+  color: #61dafb; 
+}
+
+.customButton {
+  background-color: #e9e6de; 
+  border-color: #e9e6de; 
+  color: #000; 
+}
+
+.customButton:hover {
+  background-color: #d3d1c8; 
+  border-color: #d3d1c8;
+}
+
+[data-theme="dark"] .customButton {
+  background-color: #e9e6de; 
+  border-color: #e9e6de; 
+  color: #000;
+}
+
+[data-theme="dark"] .customButton:hover {
+  background-color: #d3d1c8; 
+  border-color: #d3d1c8;
+}
+
+.ctaButton {
+  background-color: #61dafb; 
+  border-color: #61dafb;
+  color: #fff; 
+}
+
+.ctaButton:hover {
+  background-color: #4da9d9; 
+  border-color: #4da9d9;
+}
+
+[data-theme="dark"] .ctaButton {
+  background-color: #61dafb; 
+  border-color: #61dafb;
+  color: #000; 
+}
+
+[data-theme="dark"] .ctaButton:hover {
+  background-color: #4da9d9; 
+  border-color: #4da9d9;
 }

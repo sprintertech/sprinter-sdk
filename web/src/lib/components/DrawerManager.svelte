@@ -11,7 +11,7 @@
 
 <Drawer>
 	<div
-		class="w-full h-full bg-white dark:bg-gray-800 rounded-xl shadow border border-gray-300 dark:border-gray-600 flex-col justify-start items-start inline-flex"
+		class="w-full h-full bg-white dark:bg-gray-800 rounded-xl shadow flex-col justify-start items-start inline-flex"
 	>
 		<div
 			class="w-full h-16 p-5 bg-white dark:bg-gray-700 justify-start items-center gap-3 inline-flex"

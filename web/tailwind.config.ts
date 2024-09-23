@@ -3,6 +3,7 @@ import type { Config } from 'tailwindcss';
 import forms from '@tailwindcss/forms';
 import typography from '@tailwindcss/typography';
 import { skeleton } from '@skeletonlabs/tw-plugin';
+import { sprinterTheme } from './sprinter.theme';
 
 export default {
 	darkMode: 'class',
@@ -18,6 +19,7 @@ export default {
 		typography,
 		skeleton({
 			themes: {
+				custom: [sprinterTheme],
 				preset: [
 					{
 						name: 'skeleton',

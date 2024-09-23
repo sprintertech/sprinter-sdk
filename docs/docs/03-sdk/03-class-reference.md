@@ -4,24 +4,22 @@ sidebar_position: 3
 
 # Sprinter Class Reference
 
-This section provides detailed information about the `Sprinter` class available in the Sprinter SDK. Use this reference to understand how to utilize the `Sprinter` class in your decentralized applications (DApps).
+This section details the methods available to the `Sprinter` class in the Sprinter SDK. Use this reference to understand how to utilize the `Sprinter` class in your decentralized applications (dApps).
 
-## Sprinter Class
+## Methods
 
-The main class provided by the Sprinter SDK. It includes methods for interacting with multiple blockchain networks.
-
-### `constructor(provider: EIP1193Provider)`
+### `constructor(fetchOptions: Omit<FetchOptions, "signal">)`
 
 Initializes the SDK with the given Ethereum provider.
 
 #### Parameters
 
-- `provider`: An Ethereum provider instance conforming to the EIP-1193 standard (e.g., `window.ethereum`).
+- `fetchOptions`: TODO :Sad:
 
 #### Example
 
 ```typescript
-const sprinter = new Sprinter(window.ethereum);
+const sprinter = new Sprinter();
 ```
 
 ### `getAvailableTokens(): Promise<FungibleToken[]>`
@@ -56,12 +54,19 @@ sprinter.getAvailableChains().then(chains => {
 });
 ```
 
-### `getUserBalances(tokens?: FungibleToken[]): Promise<{ [symbol: TokenSymbol]: { balances: FungibleTokenBalance[]; total: string } }>`
+### `getUserBalances(account: Address, tokens?: FungibleToken[]): Promise<{ [symbol: TokenSymbol]: { balances: FungibleTokenBalance[]; total: string } }>`
 
 Fetches the user's balances for specified tokens across multiple blockchains. If no tokens are specified, it fetches balances for all available tokens.
 
+:::note
+
+Method will always return native tokens under `ETH` key
+
+:::
+
 #### Parameters
 
+- `account`: Targeted account address.
 - `tokens`: An optional array of fungible token objects.
 
 #### Returns
@@ -71,24 +76,25 @@ Fetches the user's balances for specified tokens across multiple blockchains. If
 #### Example
 
 ```typescript
-sprinter.getUserBalances().then(balances => {
+const ownerAddress = "0x3E101Ec02e7A48D16DADE204C96bFF842E7E2519";
+sprinter.getUserBalances(ownerAddress).then(balances => {
   console.log('User balances:', balances);
 });
 ```
 
-### `getSolution(settings: Omit<SolutionOptions, "account">, targetAccount?: Address): Promise<SolutionResponse>`
+### `getSolution(settings: SolutionOptions): Promise<SolutionResponse>`
 
 Retrieves the optimal solution for managing cross-chain transactions based on the provided settings.
 
 #### Parameters
 
 - `settings`: An object containing the parameters for the solution request, excluding the account.
-    - `token`: The token symbol (e.g., "USDC").
-    - `destinationChain`: The ID of the destination blockchain.
-    - `amount`: The amount to be transferred.
-    - `threshold?`: An optional threshold parameter.
-    - `whitelistedSourceChains?`: An optional array of whitelisted source chain IDs.
-- `targetAccount`: An optional account address. If not provided, the current account will be used.
+  - `account`: Targeted account address.
+  - `token`: The token symbol (e.g., "USDC").
+  - `destinationChain`: The ID of the destination blockchain.
+  - `amount`: The amount to be transferred.
+  - `threshold?`: An optional threshold parameter.
+  - `whitelistedSourceChains?`: An optional array of whitelisted source chain IDs.
 
 #### Returns
 
@@ -97,7 +103,9 @@ Retrieves the optimal solution for managing cross-chain transactions based on th
 #### Example
 
 ```typescript
+const ownerAddress = "0x3E101Ec02e7A48D16DADE204C96bFF842E7E2519";
 sprinter.getSolution({
+  account: ownerAddress,
   token: "USDC",
   destinationChain: 42161,  // Destination chain ID
   amount: 1000000000        // Amount in the smallest unit (e.g., wei)
@@ -218,9 +226,3 @@ Represents an amount in both native and USD values.
 
 - `amount: string`: The amount in the smallest unit (e.g., wei).
 - `amountUSD: number`: The equivalent amount in USD.
-
-## Next Steps
-
-- **[API Functions](api-functions.md)**: Get detailed information about the API functions provided by the SDK.
-- **[Advanced Usage](advanced-usage.md)**: Explore advanced features and best practices.
-- **[Getting Started](../get-started.md)**: Review the basic setup and core concepts.

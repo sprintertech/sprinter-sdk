@@ -4,13 +4,7 @@ sidebar_position: 1
 
 # SDK Overview
 
-The Sprinter SDK is a powerful tool designed to simplify interaction with multiple blockchain networks. It provides a unified interface for aggregating balances and optimizing cross-chain operations, making it easier to build decentralized applications (DApps).
-
-## Key Features
-
-- **Cross-Chain Balance Aggregation**: Consolidate balances from various blockchain networks.
-- **Best Single-Hop Cross-Bridge Transactions**: Optimize transactions across different blockchains.
-- **TypeScript Support**: Ensure type safety and a better development experience with TypeScript.
+The Sprinter SDK simplifies interactions with multiple blockchain networks. It provides a unified interface for aggregating balances and optimizing cross-chain operations, making it easier to build decentralized applications (dApps).
 
 ## Installation
 
@@ -28,6 +22,10 @@ yarn add @chainsafe/sprinter-sdk
 
 ## Basic Usage
 
+:::info
+If you would like to test this without custom front-end code, you can directly do so by adding `vite` as a package. You will then need to create an `index.html` file to serve as the entry way for the following script using `<script>` tag. 
+:::
+
 Here's a quick example to get you started with the SDK:
 
 ### 1. Import the Sprinter SDK
@@ -38,10 +36,10 @@ import { Sprinter } from '@chainsafe/sprinter-sdk';
 
 ### 2. Initialize the Sprinter SDK
 
-To initialize the SDK, create a new instance of the `Sprinter` class with an Ethereum provider:
+To initialize the SDK, create a new instance of the `Sprinter` class:
 
 ```typescript
-const sprinter = new Sprinter(window.ethereum);
+const sprinter = new Sprinter();
 ```
 
 ### 3. Fetch User Balances
@@ -49,7 +47,8 @@ const sprinter = new Sprinter(window.ethereum);
 Once initialized, you can fetch the user's balances across multiple blockchains:
 
 ```typescript
-sprinter.getUserBalances().then(console.log);
+const ownerAddress = "0x3E101Ec02e7A48D16DADE204C96bFF842E7E2519";
+sprinter.getUserBalances(ownerAddress).then(console.log);
 ```
 
 ### 4. Get Solution
@@ -71,14 +70,17 @@ Here's a more detailed example that combines all the basic operations:
 ```typescript
 import { Sprinter } from '@chainsafe/sprinter-sdk';
 
-const sprinter = new Sprinter(window.ethereum);
+const sprinter = new Sprinter();
+
+const ownerAddress = "0x3E101Ec02e7A48D16DADE204C96bFF842E7E2519";
 
 // Fetch user balances
-sprinter.getUserBalances().then(balances => {
+sprinter.getUserBalances(ownerAddress).then(balances => {
   console.log('User balances:', balances);
 
   // Get solution for transactions
   return sprinter.getSolution({
+    account: ownerAddress,
     token: "USDC",
     destinationChain: 42161,  // Destination chain ID
     amount: "1000000000"      // Amount in the smallest unit (e.g., wei)
@@ -93,10 +95,3 @@ sprinter.getUserBalances().then(balances => {
   console.error('An error occurred:', error);
 });
 ```
-
-## Next Steps
-
-- **[Core Concepts](../get-started.md)**: Understand the fundamental concepts and operations of the Sprinter SDK.
-- **[Advanced Usage](advanced-usage.md)**: Explore advanced features and best practices.
-- **[Class API Reference](class-reference.md)**: Get detailed information about the classes and methods provided by the SDK.
-- **[API Reference](api-functions.md)**: Get detailed information about the classes and methods provided by the SDK.

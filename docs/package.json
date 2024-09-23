@@ -15,18 +15,24 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@docusaurus/core": "3.4.0",
-    "@docusaurus/preset-classic": "3.4.0",
+    "@chainsafe/sprinter-sdk": "workspace:^",
+    "@cmfcmf/docusaurus-search-local": "latest",
+    "@docusaurus/core": "^3.5.2",
+    "@docusaurus/preset-classic": "^3.5.2",
     "@mdx-js/react": "^3.0.1",
     "clsx": "^2.1.1",
+    "d3": "^7.9.0",
+    "d3-sankey": "^0.12.3",
     "prism-react-renderer": "^2.3.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "3.4.0",
-    "@docusaurus/tsconfig": "3.4.0",
-    "@docusaurus/types": "3.4.0",
+    "@docusaurus/module-type-aliases": "^3.5.2",
+    "@docusaurus/tsconfig": "^3.5.2",
+    "@docusaurus/types": "^3.5.2",
+    "@types/d3": "^7",
+    "@types/d3-sankey": "^0",
     "typescript": "~5.2.2"
   },
   "browserslist": {

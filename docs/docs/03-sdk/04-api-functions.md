@@ -4,7 +4,7 @@ sidebar_position: 4
 
 # API Functions Reference
 
-This section provides detailed information about the API functions available in the Sprinter SDK. Use this reference to understand how to utilize the API functions in your decentralized applications (DApps).
+This section provides detailed information about the API functions available in the Sprinter SDK. Use this reference to understand how to utilize the API functions in your decentralized applications (dApps).
 
 ## API Functions
 
@@ -261,8 +261,3 @@ Represents an amount in both native and USD values.
 - `amount: string`: The amount in the smallest unit (e.g., wei).
 - `amountUSD: number`: The equivalent amount in USD.
 
-## Next Steps
-
-- **[Sprinter Class](class-reference.md)**: Get detailed information about the Sprinter class provided by the SDK.
-- **[Advanced Usage](advanced-usage.md)**: Explore advanced features and best practices.
-- **[Getting Started](../get-started.md)**: Review the basic setup and core concepts.

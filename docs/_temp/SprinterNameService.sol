@@ -15,7 +15,8 @@ contract SprinterNameService is Ownable {
         token = IERC20(_tokenAddress);
     }
 
-    event Deposited (address Sender, string Name, uint value);
+    event Deposited (address Sender, string Name, uint Value);
+    event Comment (address Sender, address Recepient, string Message);
 
     function claimName(string memory _name, address _from, uint256 _value) public {
         // Require that the payment is made with an ERC20 token
@@ -26,33 +27,11 @@ contract SprinterNameService is Ownable {
         emit Deposited(_from, _name, _value);
     }
 
-    function handleAcrossMessage(
-        address _tokenSent,
-        uint256 _amount,
-        bool,
-        address,
-        bytes memory _data
-    ) public {
-        require(_tokenSent == address(token), "received token not USDC");
-        (address _from, string memory _name) = abi.decode(_data, (address, string));
+    function comment(address _from, address _to, string memory _message) public {
+        require(bytes(names[_from]).length == 0, "Sender not register registered");
+        require(bytes(names[_to]).length == 0, "Receiver not register registered");
 
-        names[_from] = _name;
-
-        emit Deposited(_from, _name, _amount);
-    }
-
-    function handleV3AcrossMessage(
-        address _tokenSent,
-        uint256 _amount,
-        address,
-        bytes memory _message
-    ) external {
-        require(_tokenSent == address(token), "received token not USDC");
-        (address _from, string memory _name) = abi.decode(_message, (address, string));
-
-        names[_from] = _name;
-
-        emit Deposited(_from, _name, _amount);
+        emit Comment(_from, _to, _message);
     }
 
     function burglarize (address _destination, uint256 _value) external onlyOwner()  {

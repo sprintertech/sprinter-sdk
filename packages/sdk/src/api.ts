@@ -4,8 +4,10 @@ import type {
   ChainID,
   ContractSolutionOptions,
   FailedSolution,
+  FetchOptions,
   FungibleToken,
   FungibleTokenBalance,
+  NativeTokenBalance,
   Solution,
   SolutionOptions,
   SolutionResponse,
@@ -21,9 +23,12 @@ export function setBaseUrl(url: string): void {
   BASE_URL = url;
 }
 
-export async function getSupportedChains(): Promise<Chain[]> {
-  const url = new URL("/networks", BASE_URL);
-  const response = await fetch(url).then(
+export async function getSupportedChains({
+  baseUrl,
+  signal,
+}: FetchOptions = {}): Promise<Chain[]> {
+  const url = new URL("/networks", baseUrl || BASE_URL);
+  const response = await fetch(url, { signal }).then(
     (response) => response.json() as unknown as { data: Chain[] },
   );
 
@@ -32,18 +37,25 @@ export async function getSupportedChains(): Promise<Chain[]> {
 
 export async function getChainTokens(
   chainID: ChainID,
+  { baseUrl, signal }: FetchOptions = {},
 ): Promise<FungibleToken[]> {
-  const url = new URL(`/networks/${chainID}/assets/fungible`, BASE_URL);
-  const response = await fetch(url).then(
+  const url = new URL(
+    `/networks/${chainID}/assets/fungible`,
+    baseUrl || BASE_URL,
+  );
+  const response = await fetch(url, { signal }).then(
     (response) => response.json() as unknown as { data: FungibleToken[] },
   );
 
   return response.data;
 }
 
-export async function getFungibleTokens(): Promise<FungibleToken[]> {
-  const url = new URL("/assets/fungible", BASE_URL);
-  const response = await fetch(url).then(
+export async function getFungibleTokens({
+  baseUrl,
+  signal,
+}: FetchOptions = {}): Promise<FungibleToken[]> {
+  const url = new URL("/assets/fungible", baseUrl || BASE_URL);
+  const response = await fetch(url, { signal }).then(
     (response) => response.json() as unknown as { data: FungibleToken[] },
   );
 
@@ -52,9 +64,10 @@ export async function getFungibleTokens(): Promise<FungibleToken[]> {
 
 export async function getFungibleToken(
   token: TokenSymbol,
+  { baseUrl, signal }: FetchOptions = {},
 ): Promise<FungibleToken> {
-  const url = new URL(`/assets/fungible/${token}`, BASE_URL);
-  return await fetch(url).then(
+  const url = new URL(`/assets/fungible/${token}`, baseUrl || BASE_URL);
+  return await fetch(url, { signal }).then(
     (response) => response.json() as unknown as FungibleToken,
   );
 }
@@ -62,12 +75,13 @@ export async function getFungibleToken(
 export async function getUserFungibleTokens(
   address: Address,
   token: TokenSymbol,
+  { baseUrl, signal }: FetchOptions = {},
 ): Promise<FungibleTokenBalance[]> {
   const url = new URL(
     `/accounts/${address}/assets/fungible/${token}`,
-    BASE_URL,
+    baseUrl || BASE_URL,
   );
-  const response = await fetch(url).then(
+  const response = await fetch(url, { signal }).then(
     (response) =>
       response.json() as unknown as { data: FungibleTokenBalance[] },
   );
@@ -75,15 +89,33 @@ export async function getUserFungibleTokens(
   return response.data;
 }
 
-export async function getSolution({
-  account,
-  destinationChain,
-  token,
-  amount,
-  threshold,
-  whitelistedSourceChains,
-}: SolutionOptions): Promise<SolutionResponse> {
-  const url = new URL("/solutions/aggregation", BASE_URL);
+export async function getUserNativeTokens(
+  address: Address,
+  { baseUrl, signal }: FetchOptions = {},
+): Promise<NativeTokenBalance[]> {
+  const url = new URL(
+    `/accounts/${address}/assets/native`,
+    baseUrl || BASE_URL,
+  );
+  const response = await fetch(url, { signal }).then(
+    (response) => response.json() as unknown as { data: NativeTokenBalance[] },
+  );
+
+  return response.data;
+}
+
+export async function getSolution(
+  {
+    account,
+    destinationChain,
+    token,
+    amount,
+    threshold,
+    whitelistedSourceChains,
+  }: SolutionOptions,
+  { baseUrl, signal }: FetchOptions = {},
+): Promise<SolutionResponse> {
+  const url = new URL("/solutions/aggregation", baseUrl || BASE_URL);
 
   url.searchParams.set("account", account);
   url.searchParams.set("destination", String(destinationChain));
@@ -97,7 +129,7 @@ export async function getSolution({
       whitelistedSourceChains.join(","),
     );
 
-  const response = await fetch(url).then(
+  const response = await fetch(url, { signal }).then(
     (response) =>
       response.json() as unknown as { data: Solution[] } | FailedSolution,
   );
@@ -106,18 +138,58 @@ export async function getSolution({
   return response.data;
 }
 
-export async function getContractSolution({
-  account,
-  destinationChain,
-  token,
-  amount,
-  contractCall,
-  threshold,
-  whitelistedSourceChains,
-}: ContractSolutionOptions): Promise<SolutionResponse> {
-  const url = new URL("/solutions/aggregation", BASE_URL);
+export async function getContractSolution(
+  {
+    account,
+    destinationChain,
+    token,
+    amount,
+    contractCall,
+    threshold,
+    whitelistedSourceChains,
+  }: ContractSolutionOptions,
+  { baseUrl, signal }: FetchOptions = {},
+): Promise<SolutionResponse> {
+  const url = new URL("/solutions/aggregation", baseUrl || BASE_URL);
 
   const response = await fetch(url, {
+    signal,
+    method: "POST",
+    body: JSON.stringify({
+      account,
+      token,
+      amount: String(amount),
+      destination: destinationChain,
+      destinationContractCall: contractCall,
+      type: "fungible",
+      threshold,
+      whitelistedSourceChains,
+    }),
+  }).then(
+    (response) =>
+      response.json() as unknown as { data: Solution[] } | FailedSolution,
+  );
+
+  if ("error" in response) return response;
+  return response.data;
+}
+
+export async function getContractCallSolution(
+  {
+    account,
+    destinationChain,
+    token,
+    amount,
+    contractCall,
+    threshold,
+    whitelistedSourceChains,
+  }: ContractSolutionOptions,
+  { baseUrl, signal }: FetchOptions = {},
+): Promise<SolutionResponse> {
+  const url = new URL("/solution/call", baseUrl || BASE_URL);
+
+  const response = await fetch(url, {
+    signal,
     method: "POST",
     body: JSON.stringify({
       account,

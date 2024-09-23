@@ -4,16 +4,15 @@ sidebar_position: 2
 
 # Advanced Usage
 
-This section explores advanced features and best practices for using the Sprinter SDK in your decentralized applications (DApps).
-
 ## Handling Errors
 
-The DApp is responsible for handling errors that occur during the transaction process. Ensure to implement proper error handling mechanisms to provide a smooth user experience.
+The dApp is responsible for handling errors that occur during the transaction process. Ensure to implement proper error handling mechanisms to provide a smooth user experience.
 
 ### Example
 
 ```typescript
-sprinter.getUserBalances()
+const ownerAddress = "0x3E101Ec02e7A48D16DADE204C96bFF842E7E2519";
+sprinter.getUserBalances(ownerAddress)
   .then(balances => {
     console.log('User balances:', balances);
   })
@@ -33,7 +32,9 @@ The Sprinter SDK allows you to customize requests to suit your application's nee
 ### Example
 
 ```typescript
+const ownerAddress = "0x3E101Ec02e7A48D16DADE204C96bFF842E7E2519";
 sprinter.getSolution({
+  account: ownerAddress,
   token: "USDC",
   destinationChain: 42161,  // Destination chain ID
   amount: "1000000000"      // Amount in the smallest unit (e.g., wei)
@@ -46,9 +47,9 @@ sprinter.getSolution({
 
 - **token, destinationChain, amount**: These parameters specify the token, destination chain, and amount for the transaction.
 
-## Integrating with Other Libraries
+## Integrating With Other Libraries
 
-You can integrate the Sprinter SDK with other libraries and tools in your DApp to enhance functionality.
+You can integrate the Sprinter SDK with other libraries and tools in your dApp to enhance functionality.
 
 ### Example with Web3.js v4
 
@@ -60,12 +61,13 @@ async function integrateWithWeb3() {
   const web3 = new Web3(window.ethereum);
   const accounts = await web3.eth.requestAccounts();
 
-  const sprinter = new Sprinter(window.ethereum);
+  const sprinter = new Sprinter();
 
-  const balances = await sprinter.getUserBalances();
+  const balances = await sprinter.getUserBalances(accounts[0]);
   console.log('User balances:', balances);
 
   const solution = await sprinter.getSolution({
+    account: accounts[0],
     token: "USDC",
     destinationChain: 42161,
     amount: "1000000000"
@@ -93,18 +95,3 @@ integrateWithWeb3().catch(console.error);
 
 - **Web3.js v4**: A library for interacting with the Ethereum blockchain, used here to manage accounts and send transactions.
 - **solution[0].transaction**: The transaction object provided by Sprinter's solution that is used to execute the transaction.
-
-## Best Practices
-
-Follow these best practices to ensure smooth and efficient integration of the Sprinter SDK in your DApp:
-
-- **Error Handling**: Always implement comprehensive error handling to manage issues gracefully.
-- **User Experience**: Provide clear feedback to users about the status of their transactions and any errors that occur.
-- **Security**: Ensure that your application handles sensitive information securely and follows best practices for interacting with blockchain networks.
-- **Optimization**: Use the SDK’s features to optimize cross-chain transactions and minimize costs.
-
-## Next Steps
-
-- **[Class API Reference](class-reference.md)**: Get detailed information about the classes and methods provided by the SDK.
-- **[API Reference](api-functions.md)**: Get detailed information about the classes and methods provided by the SDK.
-- **[Getting Started](../get-started.md)**: Review the basic setup and core concepts.
