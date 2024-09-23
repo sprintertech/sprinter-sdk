@@ -16,6 +16,9 @@
     "eslint": "^8.57.0",
     "typescript": "^5.0.3"
   },
+  "dependencies": {
+    "viem": "^2.21.9"
+  },
   "volta": {
     "node": "20.17.0",
     "yarn": "4.3.1"

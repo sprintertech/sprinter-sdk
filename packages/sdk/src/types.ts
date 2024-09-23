@@ -19,7 +19,7 @@ export interface Chain {
   chainType: ChainType;
   name: string;
   logoURI: string;
-  rpcurls: string[];
+  rpcURLs: string[];
 }
 
 export interface TokenBalance {
@@ -65,6 +65,11 @@ export interface FailedSolution {
   error: string;
 }
 
+export interface Tool {
+  logoURI: string;
+  name: string;
+}
+
 export interface Solution {
   destinationChain: ChainID;
   destinationTokenAddress: Address;
@@ -75,10 +80,7 @@ export interface Solution {
   sourceChain: ChainID;
   sourceTokenAddress: Address;
   amount: string;
-  tool: {
-    logoURI: string;
-    name: string;
-  };
+  tool: Tool;
   transaction: Transaction;
   approvals?: Transaction[];
 }
