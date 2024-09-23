@@ -11,6 +11,7 @@ import {
 } from "./api";
 import type {
   Address,
+  AggregateBalances,
   Chain,
   ContractSolutionOptions,
   FetchOptions,
@@ -29,6 +30,7 @@ class Sprinter {
   // in memory "cache"
   #tokens?: FungibleToken[];
   #chains?: Chain[];
+  #requests: Record<string, Promise<unknown>> = {};
 
   #fetchOptions: Omit<FetchOptions, "signal">;
 
@@ -40,7 +42,9 @@ class Sprinter {
     options: FetchOptions = {},
   ): Promise<FungibleToken[]> {
     if (!this.#tokens)
-      this.#tokens = await getFungibleTokens(this.makeFetchOptions(options));
+      this.#tokens = await this.deferredRequest("tokens", () =>
+        getFungibleTokens(this.makeFetchOptions(options)),
+      );
     return this.#tokens;
   }
 
@@ -48,7 +52,9 @@ class Sprinter {
     options: FetchOptions = {},
   ): Promise<Chain[]> {
     if (!this.#chains)
-      this.#chains = await getSupportedChains(this.makeFetchOptions(options));
+      this.#chains = await this.deferredRequest("chains", () =>
+        getSupportedChains(this.makeFetchOptions(options)),
+      );
     return this.#chains;
   }
 
@@ -56,25 +62,26 @@ class Sprinter {
     account: Address,
     tokens?: FungibleToken[],
     options: FetchOptions = {},
-  ): Promise<{
-    [sybol: TokenSymbol]: { balances: TokenBalance[]; total: string };
-  }> {
+  ): Promise<AggregateBalances> {
     const tokenList = tokens || (await this.getAvailableTokens(options));
 
-    const [balances, nativeTokens] = await Promise.all([
-      Promise.all(
-        tokenList.map((token) =>
-          getUserFungibleTokens(account, token.symbol, options).then(
-            (balances) => ({
-              symbol: token.symbol,
-              balances,
-            }),
+    const [balances, nativeTokens] = await this.deferredRequest(
+      `balances-${account}`,
+      () =>
+        Promise.all([
+          Promise.all(
+            tokenList.map((token) =>
+              getUserFungibleTokens(account, token.symbol, options).then(
+                (balances) => ({
+                  symbol: token.symbol,
+                  balances,
+                }),
+              ),
+            ),
           ),
-        ),
-      ),
-      getUserNativeTokens(account, options),
-    ]);
-
+          getUserNativeTokens(account, options),
+        ]),
+    );
     return balances.reduce(
       (previousValue, { symbol, balances }) => {
         previousValue[symbol] = {
@@ -138,6 +145,22 @@ class Sprinter {
       settings,
       this.makeFetchOptions(options || {}),
     );
+  }
+
+  private deferredRequest<T>(
+    name: string,
+    request: () => Promise<T>,
+  ): Promise<T> {
+    if (!(name in this.#requests)) {
+      this.#requests[name] = request();
+      void this.#requests[name].finally(() => {
+        void setTimeout(() => {
+          delete this.#requests[name];
+        }, 1000);
+      });
+    }
+
+    return this.#requests[name] as Promise<T>;
   }
 
   private makeFetchOptions(options: FetchOptions): FetchOptions {

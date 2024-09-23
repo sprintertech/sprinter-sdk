@@ -1,3 +1,4 @@
 {
-    "packages/sdk": "0.1.0"
+    "packages/sdk": "0.1.0",
+    "packages/react": "0.0.0"
 }
