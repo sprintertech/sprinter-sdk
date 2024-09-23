@@ -18,12 +18,10 @@ export function useSolution(sprinter: Sprinter) {
   threshold?: number,
   whitelistedSourceChains?: ChainID[],
   ) => {
-    if (solution.loading) return;
-
     makeRequest(sprinter.getSolution({
       account, destinationChain, token, amount, threshold, whitelistedSourceChains,
     }));
-  }, [sprinter, makeRequest, solution]);
+  }, [sprinter, makeRequest]);
 
   return { solution, getSolution };
 }

@@ -6,10 +6,8 @@ export function useChains(sprinter: Sprinter) {
   const { state: chains, makeRequest } = useAsyncRequest<Chain[]>();
 
   const getAvailableChains = useCallback(() => {
-    if (chains.loading) return;
-
     makeRequest(sprinter.getAvailableChains());
-  }, [sprinter, makeRequest, chains]);
+  }, [sprinter, makeRequest]);
 
   return { chains, getAvailableChains };
 }

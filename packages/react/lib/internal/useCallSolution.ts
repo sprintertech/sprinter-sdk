@@ -19,12 +19,10 @@ export function useCallSolution(sprinter: Sprinter) {
                                    threshold?: number,
                                    whitelistedSourceChains?: ChainID[],
   ) => {
-    if (callSolution.loading) return;
-
     makeRequest(sprinter.getCallSolution({
       account, destinationChain, token, amount, threshold, whitelistedSourceChains, contractCall
     }));
-  }, [sprinter, makeRequest, callSolution]);
+  }, [sprinter, makeRequest]);
 
   return { callSolution, getCallSolution };
 }

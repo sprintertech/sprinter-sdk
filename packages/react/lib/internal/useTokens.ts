@@ -6,10 +6,8 @@ export function useTokens(sprinter: Sprinter) {
   const { state: tokens, makeRequest } = useAsyncRequest<FungibleToken[]>();
 
   const getAvailableTokens = useCallback(() => {
-    if (tokens.loading) return;
-
     makeRequest(sprinter.getAvailableTokens());
-  }, [sprinter, makeRequest, tokens]);
+  }, [sprinter, makeRequest]);
 
   return { tokens, getAvailableTokens };
 }
