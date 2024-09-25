@@ -6,15 +6,21 @@ sidebar_position: 3
 
 This section details the methods available to the `Sprinter` class in the Sprinter SDK. Use this reference to understand how to utilize the `Sprinter` class in your decentralized applications (dApps).
 
+:::tip
+`FetchOptions` is an object that contains settings for configuring how the fetch requests are made by the SDK. You can include options like headers, credentials, or a base URL for the requests.
+`AggregateBalances` represents the user's token balances across multiple blockchains. It maps a token symbol to the balance information, which includes the total balance and an array of token balances for each chain.
+:::
+
 ## Methods
 
 ### `constructor(fetchOptions: Omit<FetchOptions, "signal">)`
 
-Initializes the SDK with the given Ethereum provider.
+Initializes the SDK with the given fetch options. These options are used to configure how requests are made to the Sprinter API.
 
 #### Parameters
 
-- `fetchOptions`: TODO :Sad:
+- `fetchOptions: Omit<FetchOptions, "signal">`: An object that allows specifying additional fetch options, excluding the signal property.
+- `fetchOptions` allows you to configure options like headers, credentials, and more for the requests made by the SDK. This configuration is essential when integrating with secured or custom endpoints.
 
 #### Example
 
@@ -54,7 +60,7 @@ sprinter.getAvailableChains().then(chains => {
 });
 ```
 
-### `getUserBalances(account: Address, tokens?: FungibleToken[]): Promise<{ [symbol: TokenSymbol]: { balances: FungibleTokenBalance[]; total: string } }>`
+### `getUserBalances(account: Address, tokens?: FungibleToken[], options?: FetchOptions): Promise<AggregateBalances>`
 
 Fetches the user's balances for specified tokens across multiple blockchains. If no tokens are specified, it fetches balances for all available tokens.
 
@@ -68,10 +74,11 @@ Method will always return native tokens under `ETH` key
 
 - `account`: Targeted account address.
 - `tokens`: An optional array of fungible token objects.
+- `options?: FetchOptions`: An optional parameter for configuring the request. It can include headers, credentials, or any other custom fetch settings.
 
 #### Returns
 
-- `Promise<{ [symbol: TokenSymbol]: { balances: FungibleTokenBalance[]; total: string } }>`: A promise that resolves to an object mapping token symbols to balance information.
+- `Promise<AggregateBalances>`: A promise that resolves to an object mapping token symbols to balance information. The balance information contains the total balance and an array of token balances on different chains.
 
 #### Example
 
@@ -82,9 +89,12 @@ sprinter.getUserBalances(ownerAddress).then(balances => {
 });
 ```
 
-### `getSolution(settings: SolutionOptions): Promise<SolutionResponse>`
+### `getSolution(settings: SolutionOptions | ContractSolutionOptions, options?: FetchOptions): Promise<SolutionResponse>`
 
-Retrieves the optimal solution for managing cross-chain transactions based on the provided settings.
+There are two variations of this method. One is used for general cross-chain transactions, and another handles contract call solutions:
+- `SolutionOptions`: For standard cross-chain transfers.
+- `ContractSolutionOptions`: For contract call solutions.
+You can specify options to control how the request is made, including custom headers, credentials, or other fetch settings.
 
 #### Parameters
 
@@ -103,14 +113,54 @@ Retrieves the optimal solution for managing cross-chain transactions based on th
 #### Example
 
 ```typescript
-const ownerAddress = "0x3E101Ec02e7A48D16DADE204C96bFF842E7E2519";
-sprinter.getSolution({
+const solutionSettings = {
   account: ownerAddress,
   token: "USDC",
   destinationChain: 42161,  // Destination chain ID
   amount: 1000000000        // Amount in the smallest unit (e.g., wei)
-}).then(solution => {
+};
+
+sprinter.getSolution(solutionSettings).then(solution => {
   console.log('Transaction solution:', solution);
+});
+
+// For contract call solution
+const contractSolutionSettings = {
+  contractCall: true,
+  // Other contract call-specific options...
+};
+
+sprinter.getSolution(contractSolutionSettings).then(contractSolution => {
+  console.log('Contract call solution:', contractSolution);
+});
+```
+
+### `getCallSolution(settings: ContractSolutionOptions, options?: FetchOptions): Promise<SolutionResponse>`
+
+Retrieves a solution for executing a contract call across chains.
+
+#### Parameters
+
+- `settings: ContractSolutionOptions`: The options required for creating a cross-chain contract call solution.
+- `options: FetchOptions`: Optional fetch options to configure how the request is made.
+
+#### Returns
+
+- `Promise<SolutionResponse>`: A promise that resolves to a solution response object containing details about the contract call execution.
+
+#### Example
+
+```ts
+const contractCallSettings = {
+  account: ownerAddress,
+  contractCall: true,
+  token: "USDC",
+  destinationChain: 42161,  // Destination chain ID
+  amount: 1000000000        // Amount in the smallest unit (e.g., wei)
+};
+
+sprinter.getCallSolution(contractCallSettings).then(callSolution => {
+  console.log('Contract call solution:', callSolution);
 });
 ```
 

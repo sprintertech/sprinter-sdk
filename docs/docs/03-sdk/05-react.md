@@ -12,7 +12,9 @@ To install the package, use npm or yarn:
 
 ```bash
 npm install @chainsafe/sprinter-react
+```
 or
+```bash
 yarn add @chainsafe/sprinter-react
 ```
 
@@ -65,12 +67,12 @@ export default YourComponent;
 
 The following hooks are provided by the SDK:
 
-`useSprinter()`: Access everything from the Sprinter context.
-`useSprinterBalances(account: Address)`: Retrieve user balances for a given account.
-`useSprinterTokens()`: Retrieve available tokens.
-`useSprinterChains()`: Retrieve available blockchain chains.
-`useSprinterSolution()`: Retrieve solutions for asset transfers.
-`useSprinterCallSolution()`: Call solutions for transferring assets.
+- `useSprinter()`: Access everything from the Sprinter context.
+- `useSprinterBalances(account: Address)`: Retrieve user balances for a given account.
+- `useSprinterTokens()`: Retrieve available tokens.
+- `useSprinterChains()`: Retrieve available blockchain chains.
+- `useSprinterSolution()`: Retrieve solutions for asset transfers.
+- `useSprinterCallSolution()`: Call solutions for transferring assets.
 
 ### Custom Fetch Options
 
