@@ -23,5 +23,5 @@ Hover over network icon or token to show available routes
 :::
 
 | Mainnet                  | Testnet    |
-|-------------------------|------------|
+|--------------------------|------------|
 | <SankeyNetworkToken url="https://api.sprinter.buildwithsygma.com/" /> | <SankeyNetworkToken url="https://api.test.sprinter.buildwithsygma.com/" /> |
