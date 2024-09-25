@@ -22,12 +22,12 @@ The request body should be a JSON object containing the following fields:
 
 - `account`: The account address.
 - `destinationChain`: The ID of the destination blockchain.
-- `destinationContractCall`: <!-- TODO>
+- `destinationContractCall`: TODO
 - `token`: The token symbol (e.g., "USDC").
 - `amount`: The amount to be transferred.
 - `threshold?`: An optional threshold parameter.
-- `type`: <!-- TODO>
-- `recipient`: <!-- TODO>
+- `type`: TODO
+- `recipient`: TODO
 - `whitelistedSourceChains?`: An optional array of whitelisted source chain IDs.
 
 ### Example Request
