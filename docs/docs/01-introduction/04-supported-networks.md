@@ -22,6 +22,6 @@ New routes, networks, and tokens can readily be added by the Sprinter team. Plea
 Hover over network icon or token to show available routes
 :::
 
-| Mainet                  | Testnet    |
+| Mainnet                  | Testnet    |
 |-------------------------|------------|
 | <SankeyNetworkToken url="https://api.sprinter.buildwithsygma.com/" /> | <SankeyNetworkToken url="https://api.test.sprinter.buildwithsygma.com/" /> |
