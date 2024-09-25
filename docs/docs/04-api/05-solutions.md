@@ -6,6 +6,108 @@ sidebar_position: 5
 
 This section explains how to get solutions for specific actions using the Sprinter API.
 
+## POST - /solution/call
+
+### Description
+
+This endpoint returns a single-hop solution along with a contract call.
+
+### Endpoint
+
+`POST /solution/call`
+
+### Request Body
+
+The request body should be a JSON object containing the following fields:
+
+- `account`: The account address.
+- `destinationChain`: The ID of the destination blockchain.
+- `destinationContractCall`: <!-- TODO>
+- `token`: The token symbol (e.g., "USDC").
+- `amount`: The amount to be transferred.
+- `threshold?`: An optional threshold parameter.
+- `type`: <!-- TODO>
+- `recipient`: <!-- TODO>
+- `whitelistedSourceChains?`: An optional array of whitelisted source chain IDs.
+
+### Example Request
+
+```shell
+curl -X 'POST' \
+  'https://api.sprinter.buildwithsygma.com/solution/call' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "account": "string",
+  "amount": "string",
+  "destination": 1,
+  "destinationContractCall": {
+    "approvalAddress": "string",
+    "callData": "string",
+    "contractAddress": "string",
+    "gasLimit": 0,
+    "outputTokenAddress": "string"
+  },
+  "recipient": "string",
+  "threshold": "string",
+  "token": "string",
+  "type": "fungible",
+  "whitelistedSourceChains": [
+    1
+  ]
+}'
+```
+
+### Example Response
+
+```json
+{
+  "data": [
+    {
+      "amount": "",
+      "approvals": [
+        {
+          "chainId": 1,
+          "data": "string",
+          "from": "string",
+          "gasLimit": "string",
+          "gasPrice": "string",
+          "to": "string",
+          "value": "string"
+        }
+      ],
+      "destinationChain": 1,
+      "destinationTokenAddress": "string",
+      "duration": 0,
+      "fee": {
+        "amount": "",
+        "amountUSD": 0
+      },
+      "gasCost": {
+        "amount": "",
+        "amountUSD": 0
+      },
+      "senderAddress": "string",
+      "sourceChain": 1,
+      "sourceTokenAddress": "string",
+      "tool": {
+        "logoURI": "string",
+        "name": "string"
+      },
+      "transaction": {
+        "chainId": 1,
+        "data": "string",
+        "from": "string",
+        "gasLimit": "string",
+        "gasPrice": "string",
+        "to": "string",
+        "value": "string"
+      }
+    }
+  ]
+}
+```
+
 ## GET - /solutions/aggregation
 
 ### Description
