@@ -7,7 +7,7 @@ sidebar_position: 3
 This section details the methods available to the `Sprinter` class in the Sprinter SDK. Use this reference to understand how to utilize the `Sprinter` class in your decentralized applications (dApps).
 
 :::tip
-`FetchOptions` is an object that contains settings for configuring how the fetch requests are made by the SDK. You can include options like headers, credentials, or a base URL for the requests.
+`FetchOptions` is an object that contains settings for configuring how the fetch requests are made by the SDK. There are two parameters that can be adjusted including `signal`, which hides the request, and `baseURL`, which sets the target for either mainnet or testnet. 
 `AggregateBalances` represents the user's token balances across multiple blockchains. It maps a token symbol to the balance information, which includes the total balance and an array of token balances for each chain.
 :::
 
@@ -15,12 +15,11 @@ This section details the methods available to the `Sprinter` class in the Sprint
 
 ### `constructor(fetchOptions: Omit<FetchOptions, "signal">)`
 
-Initializes the SDK with the given fetch options. These options are used to configure how requests are made to the Sprinter API.
+Initializes the SDK with the given fetch options. The `signal` property is explicitly excluded from the fetch options because it is meant to be provided dynamically when individual requests are made, allowing developers to abort those requests if necessary.
 
 #### Parameters
 
-- `fetchOptions: Omit<FetchOptions, "signal">`: An object that allows specifying additional fetch options, excluding the signal property.
-- `fetchOptions` allows you to configure options like headers, credentials, and more for the requests made by the SDK. This configuration is essential when integrating with secured or custom endpoints.
+- `fetchOptions: Omit<FetchOptions, "signal">`: An object that allows specifying additional fetch options, excluding the `signal` property.
 
 #### Example
 
@@ -74,7 +73,7 @@ Method will always return native tokens under `ETH` key
 
 - `account`: Targeted account address.
 - `tokens`: An optional array of fungible token objects.
-- `options?: FetchOptions`: An optional parameter for configuring the request. It can include headers, credentials, or any other custom fetch settings.
+- `options?: FetchOptions`: Optional fetch options to configure how the request is made.
 
 #### Returns
 
@@ -94,7 +93,7 @@ sprinter.getUserBalances(ownerAddress).then(balances => {
 There are two variations of this method. One is used for general cross-chain transactions, and another handles contract call solutions:
 - `SolutionOptions`: For standard cross-chain transfers.
 - `ContractSolutionOptions`: For contract call solutions.
-You can specify options to control how the request is made, including custom headers, credentials, or other fetch settings.
+You can specify options to control how the request is made.
 
 #### Parameters
 
