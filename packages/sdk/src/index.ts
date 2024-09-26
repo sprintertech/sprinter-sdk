@@ -1,3 +1,6 @@
+import type { Infer } from "superstruct";
+import { assert } from "superstruct";
+
 import {
   getFungibleTokens,
   getSolution,
@@ -16,11 +19,18 @@ import type {
   ContractSolutionOptions,
   FetchOptions,
   FungibleToken,
+  SingleHopContractSolutionOptions,
   SolutionOptions,
   SolutionResponse,
   TokenBalance,
   TokenSymbol,
 } from "./types";
+import {
+  MultiHopSchema,
+  MultiHopWithContractSchema,
+  SingleHopSchema,
+  SingleHopWithContractSchema,
+} from "./validators";
 
 export type * from "./types";
 export * as api from "./api";
@@ -108,15 +118,83 @@ class Sprinter {
     );
   }
 
-  public async getSolution(
+  public async bridgeAggregateBalance(
+    settings: Infer<typeof MultiHopSchema>,
+    options?: FetchOptions,
+  ): Promise<SolutionResponse> {
+    assert(settings, MultiHopSchema);
+
+    const { sourceChains, amount, ...data } = settings;
+    return this.getSolution(
+      {
+        ...data,
+        amount: BigInt(amount),
+        whitelistedSourceChains: sourceChains,
+      } as SolutionOptions,
+      options,
+    );
+  }
+
+  public async bridgeAggregateBalanceAndCall(
+    settings: Infer<typeof MultiHopWithContractSchema>,
+    options?: FetchOptions,
+  ): Promise<SolutionResponse> {
+    assert(settings, MultiHopWithContractSchema);
+
+    const { sourceChains, amount, ...data } = settings;
+    return this.getSolution(
+      {
+        ...data,
+        amount: BigInt(amount),
+        whitelistedSourceChains: sourceChains,
+      } as SolutionOptions,
+      options,
+    );
+  }
+
+  public async bridge(
+    settings: Infer<typeof SingleHopSchema>,
+    options?: FetchOptions,
+  ): Promise<SolutionResponse> {
+    assert(settings, SingleHopSchema);
+
+    const { sourceChains, amount, ...data } = settings;
+    return this.getSingleSolution(
+      {
+        ...data,
+        amount: BigInt(amount),
+        whitelistedSourceChains: sourceChains ? [sourceChains] : [],
+      } as SolutionOptions,
+      options,
+    );
+  }
+
+  public async bridgeAndCall(
+    settings: Infer<typeof SingleHopSchema>,
+    options?: FetchOptions,
+  ): Promise<SolutionResponse> {
+    assert(settings, SingleHopWithContractSchema);
+
+    const { sourceChains, amount, ...data } = settings;
+    return this.getSingleSolution(
+      {
+        ...data,
+        amount: BigInt(amount),
+        whitelistedSourceChains: sourceChains ? [sourceChains] : [],
+      } as SolutionOptions,
+      options,
+    );
+  }
+
+  private async getSolution(
     settings: ContractSolutionOptions,
     options?: FetchOptions,
   ): Promise<SolutionResponse>;
-  public async getSolution(
+  private async getSolution(
     settings: SolutionOptions,
     options?: FetchOptions,
   ): Promise<SolutionResponse>;
-  public async getSolution(
+  private async getSolution(
     settings: unknown,
     options?: FetchOptions,
   ): Promise<SolutionResponse> {
@@ -134,8 +212,8 @@ class Sprinter {
     );
   }
 
-  public async getCallSolution(
-    settings: ContractSolutionOptions,
+  private async getSingleSolution(
+    settings: SingleHopContractSolutionOptions,
     options?: FetchOptions,
   ): Promise<SolutionResponse> {
     if (typeof settings !== "object" || settings === null)

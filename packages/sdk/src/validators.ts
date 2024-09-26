@@ -12,7 +12,7 @@ import {
   union,
 } from "superstruct";
 
-const hexString = (): Struct<string> =>
+const hexString = (): Struct<string, null> =>
   define("hexString", (value) => {
     if (typeof value !== "string") return false;
     const hexRegex = /^0x[0-9a-fA-F]+$/;
@@ -60,14 +60,14 @@ const TokenContractCallSchema = assign(
 export const SingleHopSchema = assign(
   BridgeCoreSchema,
   object({
-    sourceChains: number(), // whitelistedSourceChains
+    sourceChains: optional(number()), // whitelistedSourceChains
   }),
 );
 
 export const MultiHopSchema = assign(
   BridgeCoreSchema,
   object({
-    sourceChains: array(number()), // whitelistedSourceChains
+    sourceChains: optional(array(number())), // whitelistedSourceChains
   }),
 );
 
@@ -75,7 +75,7 @@ export const SingleHopWithContractSchema = assign(
   BridgeCoreSchema,
   object({
     contractCall: union([NativeContractCallSchema, TokenContractCallSchema]),
-    sourceChains: number(), // whitelistedSourceChains
+    sourceChains: optional(number()), // whitelistedSourceChains
   }),
 );
 
@@ -83,6 +83,6 @@ export const MultiHopWithContractSchema = assign(
   BridgeCoreSchema,
   object({
     contractCall: union([NativeContractCallSchema, TokenContractCallSchema]),
-    sourceChains: array(number()), // whitelistedSourceChains
+    sourceChains: optional(array(number())), // whitelistedSourceChains
   }),
 );

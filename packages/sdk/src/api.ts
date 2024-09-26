@@ -1,4 +1,4 @@
-import type {
+import {
   Address,
   Chain,
   ChainID,
@@ -7,7 +7,7 @@ import type {
   FetchOptions,
   FungibleToken,
   FungibleTokenBalance,
-  NativeTokenBalance,
+  NativeTokenBalance, SingleHopContractSolutionOptions,
   Solution,
   SolutionOptions,
   SolutionResponse,
@@ -183,7 +183,7 @@ export async function getContractCallSolution(
     contractCall,
     threshold,
     whitelistedSourceChains,
-  }: ContractSolutionOptions,
+  }: SingleHopContractSolutionOptions,
   { baseUrl, signal }: FetchOptions = {},
 ): Promise<SolutionResponse> {
   const url = new URL("/solution/call", baseUrl || BASE_URL);
