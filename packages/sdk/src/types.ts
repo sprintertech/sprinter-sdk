@@ -52,6 +52,7 @@ export interface ContractCallSolutionOptions {
   ///
   outputTokenAddress?: Address;
   approvalAddress?: Address;
+  recipient?: Address;
 }
 
 export interface ContractSolutionOptions extends SolutionOptions {
