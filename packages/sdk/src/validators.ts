@@ -1,42 +1,88 @@
-import { array, number, object, string, union } from "zod";
+import {
+  array,
+  assign,
+  bigint,
+  define,
+  number,
+  object,
+  optional,
+  refine,
+  string,
+  type Struct,
+  union,
+} from "superstruct";
+
+const hexString = (): Struct<string> =>
+  define("hexString", (value) => {
+    if (typeof value !== "string") return false;
+    const hexRegex = /^0x[0-9a-fA-F]+$/;
+    return hexRegex.test(value);
+  });
+
+const numberLike = refine(
+  union([number(), hexString(), bigint()]),
+  "numberLike",
+  (value) => {
+    if (typeof value === "string") return !isNaN(Number(value));
+    return true; // If it's a number or bigint, it's already valid
+  },
+);
 
 const BridgeCoreSchema = object({
-  account: string(),
+  account: hexString(),
   destinationChain: number(),
   token: string(),
-  amount: number(),
-  threshold: number().optional(),
+  amount: numberLike,
+  threshold: optional(number()),
 });
 
 const ContractCallCoreSchema = object({
-  callData: string(),
-  contractAddress: string(),
-  gasLimit: number(),
+  callData: hexString(),
+  contractAddress: hexString(),
+  gasLimit: numberLike,
 });
 
-const NativeContractCallSchema = ContractCallCoreSchema.extend({
-  recipient: string(),
-});
+const NativeContractCallSchema = assign(
+  ContractCallCoreSchema,
+  object({
+    recipient: hexString(),
+  }),
+);
 
-const TokenContractCallSchema = ContractCallCoreSchema.extend({
-  outputTokenAddress: string().optional(),
-  approvalAddress: string().optional(),
-});
+const TokenContractCallSchema = assign(
+  ContractCallCoreSchema,
+  object({
+    outputTokenAddress: optional(hexString()),
+    approvalAddress: optional(hexString()),
+  }),
+);
 
-export const SingleHopSchema = BridgeCoreSchema.extend({
-  sourceChains: number(), // whitelistedSourceChains
-});
+export const SingleHopSchema = assign(
+  BridgeCoreSchema,
+  object({
+    sourceChains: number(), // whitelistedSourceChains
+  }),
+);
 
-export const MultiHopSchema = BridgeCoreSchema.extend({
-  sourceChains: array(number()), // whitelistedSourceChains
-});
+export const MultiHopSchema = assign(
+  BridgeCoreSchema,
+  object({
+    sourceChains: array(number()), // whitelistedSourceChains
+  }),
+);
 
-export const SingleHopWithContractSchema = BridgeCoreSchema.extend({
-  contractCall: union([NativeContractCallSchema, TokenContractCallSchema]),
-  sourceChains: number(), // whitelistedSourceChains
-});
+export const SingleHopWithContractSchema = assign(
+  BridgeCoreSchema,
+  object({
+    contractCall: union([NativeContractCallSchema, TokenContractCallSchema]),
+    sourceChains: number(), // whitelistedSourceChains
+  }),
+);
 
-export const MultiHopWithContractSchema = BridgeCoreSchema.extend({
-  contractCall: union([NativeContractCallSchema, TokenContractCallSchema]),
-  sourceChains: array(number()), // whitelistedSourceChains
-});
+export const MultiHopWithContractSchema = assign(
+  BridgeCoreSchema,
+  object({
+    contractCall: union([NativeContractCallSchema, TokenContractCallSchema]),
+    sourceChains: array(number()), // whitelistedSourceChains
+  }),
+);
