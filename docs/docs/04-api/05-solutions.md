@@ -10,7 +10,7 @@ This section explains how to get solutions for specific actions using the Sprint
 
 ### Description
 
-This endpoint returns a single-hop solution along with a contract call.
+This endpoint calculates the best single-hop solution along with a contract call.
 
 ### Endpoint
 
@@ -20,14 +20,19 @@ This endpoint returns a single-hop solution along with a contract call.
 
 The request body should be a JSON object containing the following fields:
 
-- `account`: The account address.
-- `destinationChain`: The ID of the destination blockchain.
-- `destinationContractCall`: TODO
-- `token`: The token symbol (e.g., "USDC").
+- `account`: The account address initiating the transaction.
 - `amount`: The amount to be transferred.
-- `threshold?`: An optional threshold parameter.
-- `type`: TODO
-- `recipient`: TODO
+- `destinationChain`: The ID of the destination blockchain.
+- `destinationContractCall`: Represents the contract call that will be executed on the destination chain.
+  - `approvalAddress`: The address to which the token approval is granted, allowing the contract to spend a certain amount of tokens on behalf of the user.
+  - `callData`: The ABI-encoded function call data to be executed on the destination contract.
+  - `contractAddress`: The address of the contract on the destination chain that will receive the call.
+  - `gasLimit`: The maximum gas limit for the contract call. 
+  - `outputTokenAddress`: The address of the token on the destination chain where the output of the contract call is returned.
+- `recipient`: The address that will receive the final output of the transaction on the destination chain.
+- `threshold?`: An optional threshold parameter that sets limits or conditions
+- `token`: The token symbol (e.g., "USDC").
+- `type`: The type of transaction being executed (e.g., cross-chain transfer, contract interaction, etc.).
 - `whitelistedSourceChains?`: An optional array of whitelisted source chain IDs.
 
 ### Example Request
