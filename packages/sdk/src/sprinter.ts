@@ -5,10 +5,16 @@ import {
   getContractCallSolution,
   getContractSolution,
   getFungibleTokens,
+  getSolution,
   getSupportedChains,
-  getUserFungibleTokens,
-  getUserNativeTokens,
 } from "./api";
+import { formatBalances, getUserBalances } from "./internal/userBalances";
+import {
+  MultiHopSchema,
+  MultiHopWithContractSchema,
+  SingleHopSchema,
+  SingleHopWithContractSchema,
+} from "./internal/validators";
 import type {
   Address,
   AggregateBalances,
@@ -16,18 +22,9 @@ import type {
   ContractSolutionOptions,
   FetchOptions,
   FungibleToken,
-  SingleHopContractSolutionOptions,
   SolutionOptions,
   SolutionResponse,
-  TokenBalance,
-  TokenSymbol,
 } from "./types";
-import {
-  MultiHopSchema,
-  MultiHopWithContractSchema,
-  SingleHopSchema,
-  SingleHopWithContractSchema,
-} from "./validators";
 
 export class Sprinter {
   // in memory "cache"
@@ -71,44 +68,13 @@ export class Sprinter {
     const [balances, nativeTokens] = await this.deferredRequest(
       `balances-${account}`,
       () =>
-        Promise.all([
-          Promise.all(
-            tokenList.map((token) =>
-              getUserFungibleTokens(account, token.symbol, options).then(
-                (balances) => ({
-                  symbol: token.symbol,
-                  balances,
-                }),
-              ),
-            ),
-          ),
-          getUserNativeTokens(account, options),
-        ]),
+        getUserBalances(
+          account,
+          tokenList,
+          this.makeFetchOptions(options || {}),
+        ),
     );
-    return balances.reduce(
-      (previousValue, { symbol, balances }) => {
-        previousValue[symbol] = {
-          total: balances
-            .reduce((prev, cur) => prev + BigInt(cur.balance), 0n)
-            .toString(),
-          balances,
-        };
-        return previousValue;
-      },
-      {
-        ["ETH"]: {
-          total: nativeTokens
-            .reduce((prev, cur) => prev + BigInt(cur.balance), 0n)
-            .toString(),
-          balances: nativeTokens,
-        },
-      } as {
-        [symbol: TokenSymbol]: {
-          balances: TokenBalance[];
-          total: string;
-        };
-      },
-    );
+    return formatBalances([balances, nativeTokens]);
   }
 
   public async bridgeAggregateBalance(
@@ -118,7 +84,7 @@ export class Sprinter {
     assert(settings, MultiHopSchema);
 
     const { sourceChains, amount, ...data } = settings;
-    return this.getSolution(
+    return await getSolution(
       {
         ...data,
         amount: BigInt(amount),
@@ -135,12 +101,12 @@ export class Sprinter {
     assert(settings, MultiHopWithContractSchema);
 
     const { sourceChains, amount, ...data } = settings;
-    return this.getSolution(
+    return await getContractSolution(
       {
         ...data,
         amount: BigInt(amount),
         whitelistedSourceChains: sourceChains,
-      } as SolutionOptions,
+      } as ContractSolutionOptions,
       options,
     );
   }
@@ -152,7 +118,7 @@ export class Sprinter {
     assert(settings, SingleHopSchema);
 
     const { sourceChains, amount, ...data } = settings;
-    return this.getSingleSolution(
+    return await getContractCallSolution(
       {
         ...data,
         amount: BigInt(amount),
@@ -169,52 +135,13 @@ export class Sprinter {
     assert(settings, SingleHopWithContractSchema);
 
     const { sourceChains, amount, ...data } = settings;
-    return this.getSingleSolution(
+    return await getContractCallSolution(
       {
         ...data,
         amount: BigInt(amount),
         whitelistedSourceChains: sourceChains ? [sourceChains] : [],
       } as SolutionOptions,
       options,
-    );
-  }
-
-  private async getSolution(
-    settings: ContractSolutionOptions,
-    options?: FetchOptions,
-  ): Promise<SolutionResponse>;
-  private async getSolution(
-    settings: SolutionOptions,
-    options?: FetchOptions,
-  ): Promise<SolutionResponse>;
-  private async getSolution(
-    settings: unknown,
-    options?: FetchOptions,
-  ): Promise<SolutionResponse> {
-    if (typeof settings !== "object" || settings === null)
-      throw new Error("Missing settings object");
-
-    if ("contractCall" in settings)
-      return await getContractSolution(
-        <ContractSolutionOptions>settings,
-        this.makeFetchOptions(options || {}),
-      );
-    return await getSolution(
-      <SolutionOptions>settings,
-      this.makeFetchOptions(options || {}),
-    );
-  }
-
-  private async getSingleSolution(
-    settings: SingleHopContractSolutionOptions,
-    options?: FetchOptions,
-  ): Promise<SolutionResponse> {
-    if (typeof settings !== "object" || settings === null)
-      throw new Error("Missing settings object");
-
-    return await getContractCallSolution(
-      settings,
-      this.makeFetchOptions(options || {}),
     );
   }
 
