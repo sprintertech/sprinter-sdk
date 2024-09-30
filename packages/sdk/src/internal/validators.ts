@@ -20,7 +20,7 @@ const hexString = (): Struct<string, null> =>
   });
 
 const numberLike = refine(
-  union([number(), hexString(), bigint()]),
+  union([number(), string(), hexString(), bigint()]),
   "numberLike",
   (value) => {
     if (typeof value === "string") return !isNaN(Number(value));

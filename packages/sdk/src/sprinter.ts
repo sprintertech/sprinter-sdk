@@ -462,7 +462,7 @@ export class Sprinter {
    * @note If the `sourceChain` is not provided, the method will determine the best source chain for the transfer.
    */
   public async bridgeAndCall(
-    settings: Infer<typeof SingleHopSchema>,
+    settings: Infer<typeof SingleHopWithContractSchema>,
     options?: FetchOptions,
   ): Promise<SolutionResponse> {
     assert(settings, SingleHopWithContractSchema);
