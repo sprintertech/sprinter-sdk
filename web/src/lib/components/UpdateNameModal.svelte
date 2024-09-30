@@ -48,7 +48,7 @@
 			.claimName(name, $selectedAccount as Address, amount)
 			.encodeABI();
 
-		const response = await $sprinter.getCallSolution({
+		const response = await $sprinter.bridgeAndCall({
 			amount: amount,
 			account: $selectedAccount as Address,
 			token: 'USDC',
