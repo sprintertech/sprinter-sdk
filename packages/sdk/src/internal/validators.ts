@@ -60,7 +60,7 @@ const TokenContractCallSchema = assign(
 export const SingleHopSchema = assign(
   BridgeCoreSchema,
   object({
-    sourceChains: optional(number()), // whitelistedSourceChains
+    sourceChain: optional(number()), // whitelistedSourceChains
   }),
 );
 
@@ -75,7 +75,7 @@ export const SingleHopWithContractSchema = assign(
   BridgeCoreSchema,
   object({
     contractCall: union([NativeContractCallSchema, TokenContractCallSchema]),
-    sourceChains: optional(number()), // whitelistedSourceChains
+    sourceChain: optional(number()), // whitelistedSourceChains
   }),
 );
 

@@ -6,7 +6,6 @@ import type {
   FungibleToken,
   FungibleTokenBalance,
   NativeTokenBalance,
-  TokenBalance,
   TokenSymbol,
 } from "../types";
 
@@ -56,11 +55,6 @@ export function formatBalances([
           .toString(),
         balances: nativeTokens,
       },
-    } as {
-      [symbol: TokenSymbol]: {
-        balances: TokenBalance[];
-        total: string;
-      };
-    },
+    } as AggregateBalances,
   );
 }
