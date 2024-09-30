@@ -1,4 +1,4 @@
-import {
+import type {
   Address,
   Chain,
   ChainID,
@@ -7,7 +7,8 @@ import {
   FetchOptions,
   FungibleToken,
   FungibleTokenBalance,
-  NativeTokenBalance, SingleHopContractSolutionOptions,
+  NativeTokenBalance,
+  SingleHopContractSolutionOptions,
   Solution,
   SolutionOptions,
   SolutionResponse,
