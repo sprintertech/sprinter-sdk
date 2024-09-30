@@ -2,11 +2,10 @@ import {createContext, ReactNode, useEffect, useState} from "react";
 import {type FetchOptions, Sprinter} from "@chainsafe/sprinter-sdk";
 import {useTokens} from "./internal/useTokens.ts";
 import {useChains} from "./internal/useChains.ts";
-import {useSolution} from "./internal/useSolution.ts";
-import {useCallSolution} from "./internal/useCallSolution.ts";
 import {useBalances} from "./internal/useBalances.ts";
+import {useBridge} from "./internal/useBridge.ts";
 
-type SprinterContext = ReturnType<typeof useBalances> & ReturnType<typeof useTokens> & ReturnType<typeof useChains> & ReturnType<typeof useSolution> & ReturnType<typeof useCallSolution>;
+type SprinterContext = ReturnType<typeof useBalances> & ReturnType<typeof useTokens> & ReturnType<typeof useChains> & ReturnType<typeof useBridge>;
 
 export const Context = createContext<SprinterContext | null>(null);
 
@@ -28,10 +27,7 @@ export function SprinterContext({ children, fetchOptions }: SprinterContextProps
   const { chains, getAvailableChains } = useChains(sprinter);
 
   /** Solutions */
-  const { solution, getSolution } = useSolution(sprinter);
-
-  /** Call Solution */
-  const { callSolution, getCallSolution } = useCallSolution(sprinter);
+  const { solution, getBridgeAndCall, getBridgeBalance, getBridgeAggregateBalance, getBridgeAggregateBalanceAndCall } = useBridge(sprinter);
 
   /** Initialization */
   useEffect(() => {
@@ -43,7 +39,6 @@ export function SprinterContext({ children, fetchOptions }: SprinterContextProps
     balances, getUserBalances,
     tokens, getAvailableTokens,
     chains, getAvailableChains,
-    solution, getSolution,
-    callSolution, getCallSolution
+    solution, getBridgeAndCall, getBridgeBalance, getBridgeAggregateBalance, getBridgeAggregateBalanceAndCall,
   }}>{children}</Context.Provider>;
 }

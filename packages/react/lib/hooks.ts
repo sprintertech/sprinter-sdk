@@ -41,13 +41,7 @@ export function useSprinterChains() {
 }
 
 /** Solutions */
-export function useSprinterSolution() {
-  const { solution, getSolution } = useSprinter();
-  return { solution, getSolution };
-}
-
-/** Call Solution */
-export function useSprinterCallSolution() {
-  const { callSolution, getCallSolution } = useSprinter();
-  return { callSolution, getCallSolution };
+export function useSprinterBridge() {
+  const { solution, getBridgeAndCall, getBridgeBalance, getBridgeAggregateBalance, getBridgeAggregateBalanceAndCall } = useSprinter();
+  return { solution, getBridgeAndCall, getBridgeBalance, getBridgeAggregateBalance, getBridgeAggregateBalanceAndCall };
 }
