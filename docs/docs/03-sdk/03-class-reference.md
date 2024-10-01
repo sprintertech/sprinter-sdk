@@ -15,11 +15,11 @@ This section details the methods available to the `Sprinter` class in the Sprint
 
 ### `constructor(fetchOptions: Omit<FetchOptions, "signal">)`
 
-Initializes the SDK with the given fetch options. The `signal` property is explicitly excluded from the fetch options because it is meant to be provided dynamically when individual requests are made, allowing developers to abort those requests if necessary.
+Initializes the SDK with the given fetch options. The `signal` property is explicitly excluded, and only `baseURL` can be set. 
 
 #### Parameters
 
-- `fetchOptions: Omit<FetchOptions, "signal">`: An object that allows specifying additional fetch options, excluding the `signal` property.
+- `fetchOptions: Omit<FetchOptions, "signal">`: An object that allows specifying additional fetch options, excluding the `signal` property. 
 
 #### Example
 
