@@ -1856,6 +1856,7 @@ __metadata:
     vite: "npm:^5.4.1"
     vite-plugin-dts: "npm:^4.2.1"
   peerDependencies:
+    "@chainsafe/sprinter-sdk": "workspace:^"
     react: ^18.3.1
     react-dom: ^18.3.1
   languageName: unknown
