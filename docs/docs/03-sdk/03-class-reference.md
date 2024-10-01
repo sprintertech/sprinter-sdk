@@ -124,10 +124,17 @@ sprinter.getSolution(solutionSettings).then(solution => {
 });
 
 // For contract call solution
-const contractSolutionSettings = {
-  contractCall: true,
-  // Other contract call-specific options...
-};
+const settings = {
+  account: "0x3e101ec02e7a48d16dade204c96bff842e7e2519", 
+  destinationChain: 11155111, 
+  token: "USDC",
+  amount: "100000000", 
+  contractCall: { 
+    callData: "0xabcdef", // encoded contract call data 
+    contractAddress: "0x1234567890abcdef",  
+    gasLimit: 21000, 
+    recipient: "0xRecipientAddress" // for native contract call (usually is contract that will receive tokens)
+  },
 
 sprinter.getSolution(contractSolutionSettings).then(contractSolution => {
   console.log('Contract call solution:', contractSolution);
