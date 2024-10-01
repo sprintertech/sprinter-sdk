@@ -22,7 +22,7 @@ export function useBridge(sprinter: Sprinter) {
     makeRequest(sprinter.bridgeAggregateBalanceAndCall(settings));
   }, [sprinter, makeRequest]);
 
-  const getBridgeBalance = useCallback((settings: Infer<typeof SingleHopSchema>) => {
+  const getBridge = useCallback((settings: Infer<typeof SingleHopSchema>) => {
     makeRequest(sprinter.bridge(settings));
   }, [sprinter, makeRequest]);
 
@@ -30,5 +30,5 @@ export function useBridge(sprinter: Sprinter) {
     makeRequest(sprinter.bridgeAndCall(settings));
   }, [sprinter, makeRequest]);
 
-  return { solution, getBridgeBalance, getBridgeAndCall, getBridgeAggregateBalance, getBridgeAggregateBalanceAndCall };
+  return { solution, getBridge, getBridgeAndCall, getBridgeAggregateBalance, getBridgeAggregateBalanceAndCall };
 }
