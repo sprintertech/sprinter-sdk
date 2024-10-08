@@ -298,8 +298,6 @@ export class Sprinter {
    *
    * @returns {Promise<SolutionResponse>} A promise that resolves to the solution object containing the optimal bridging strategy and contract call, or a `FailedSolution` in case of an error.
    *
-   * @note This function is a work in progress and will be implemented in the future.
-   *
    * @example
    * ```ts
    * import { Sprinter } from '@chainsafe/sprinter-sdk';
@@ -331,8 +329,6 @@ export class Sprinter {
     settings: Infer<typeof MultiHopWithContractSchema>,
     options?: FetchOptions,
   ): Promise<SolutionResponse> {
-    throw new Error("TODO");
-
     assert(settings, MultiHopWithContractSchema);
 
     const { sourceChains, amount, ...data } = settings;

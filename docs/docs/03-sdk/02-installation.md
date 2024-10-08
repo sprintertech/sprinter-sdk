@@ -1,10 +1,10 @@
 ---
 id: sdk-installation
-title: SDK Installation
+title: Installation
 sidebar_position: 2
 ---
 
-# SDK Installation
+# Installation
 
 The Sprinter SDK allows developers to interact with cross-chain solutions such as balance aggregation and asset transfers across multiple blockchain networks. This guide will walk you through the installation process.
 

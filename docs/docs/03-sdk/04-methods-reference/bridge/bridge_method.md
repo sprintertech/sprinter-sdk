@@ -1,12 +1,12 @@
 ---
-id: bridge-aggregate-balance
-title: bridgeAggregateBalance
+id: bridge
+title: bridge
 sidebar_position: 1
 ---
 
-# `bridgeAggregateBalance`
+# `bridge`
 
-The `bridgeAggregateBalance` method generates a solution for aggregating fungible token balances across multiple source chains and transferring them to a specified destination chain. This method calculates the best combination of single-hop transfers from available source chains.
+The `bridge` method generates a solution for performing a single-hop cross-chain token transfer. This method returns the necessary transaction details to execute the transfer on the source chain and complete it on the destination chain.
 
 ## Usage
 
@@ -21,11 +21,11 @@ const settings = {
   account: '0xYourAddressHere',
   destinationChain: 11155111,  // Sepolia testnet
   token: 'USDC',
-  amount: 1000000,  // Targeted balance on the destination chain, in the smallest denomination
-  sourceChains: [84532, 1993],  // Optional: List of source chains to be considered
+  amount: 1000000,  // In smallest denomination (e.g., 1 USDC = 1,000,000 in USDC with 6 decimals)
+  sourceChains: [84532]  // Optional: List of source chains to be considered
 };
 
-sprinter.bridgeAggregateBalance(settings).then(solution => {
+sprinter.bridge(settings).then(solution => {
   console.log(solution);
 });
 ```
@@ -35,35 +35,36 @@ sprinter.bridgeAggregateBalance(settings).then(solution => {
 - `settings`: *(Required)* An object containing the following fields:
     - `account`: The user’s address.
     - `destinationChain`: The ID of the destination chain.
-    - `token`: The symbol of the token to be aggregated and transferred (e.g., `USDC`, `ETH`).
-    - `amount`: The target amount of the token on the destination chain, in the smallest denomination (e.g., for USDC with 6 decimals, 1 USDC = 1,000,000).
-    - `sourceChains?`: *(Optional)* An array of source chain IDs to be considered for aggregation. If omitted, Sprinter will use all available source chains.
-    - `threshold?`: *(Optional)* The minimum amount of the token to leave on the source chain, in the smallest denomination (useful for avoiding emptying the source chain completely).
+    - `token`: The symbol of the token to be transferred (e.g., `USDC`, `ETH`).
+    - `amount`: The amount of the token to be transferred in the smallest denomination (e.g., for USDC with 6 decimals, 1 USDC = 1,000,000).
+    - `sourceChains?`: *(Optional)* An array of source chain IDs to be considered for the bridge. If omitted, Sprinter will use all available chains for the solution. To limit the solution to a specific chain, provide an array containing only that chain's ID.
 
 - `fetchOptions?`: *(Optional)* An object containing `baseUrl` to override the default API endpoint for this request.
 
-### Example: Aggregating from Multiple Chains
+### Example: Using `sourceChains` for a Specific Chain
 
-In this example, balances from multiple source chains (e.g., BaseSepolia and B3Sepolia) are aggregated to the destination chain (Sepolia).
+To get a bridge solution from a specific chain (e.g., BaseSepolia with chain ID `84532`), you can set `sourceChains` to an array with that chain's ID.
 
 ```typescript
 const settings = {
   account: '0xYourAddressHere',
   destinationChain: 11155111,  // Sepolia testnet
   token: 'USDC',
-  amount: 1000000,  // Target balance on destination chain
-  sourceChains: [84532, 1993]  // BaseSepolia and B3Sepolia as source chains
+  amount: 1000000,
+  sourceChains: [84532]  // Limit to BaseSepolia as the source chain
 };
 
-sprinter.bridgeAggregateBalance(settings).then(solution => {
+sprinter.bridge(settings).then(solution => {
   console.log(solution);
 });
 ```
 
+In this example, the bridge solution will only consider `BaseSepolia` as the source chain for the transfer, rather than all available chains.
+
 ### Example: Using `fetchOptions`
 
 ```typescript
-sprinter.bridgeAggregateBalance(settings, { baseUrl: 'https://custom.api.url' }).then(solution => {
+sprinter.bridge(settings, { baseUrl: 'https://custom.api.url' }).then(solution => {
   console.log(solution);
 });
 ```

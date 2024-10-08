@@ -1,0 +1,199 @@
+---
+id: bridge-and-call
+title: bridgeAndCall
+sidebar_position: 2
+---
+
+# `bridgeAndCall`
+
+The `bridgeAndCall` method generates a solution for performing a single-hop cross-chain token transfer, followed by a contract call on the destination chain. The contract call can be either a native contract call or a token transfer with contract call. This method returns the necessary transaction details to execute both the token transfer and the contract interaction.
+
+## Usage
+
+### Example: Token Transfer with Contract Call and `transferFrom` Approval
+
+In this example, a token transfer (e.g., `USDC`) is followed by a contract call on the destination chain. You need to provide `outputTokenAddress` and `approvalAddress` to allow the contract to move tokens on behalf of the user.
+
+```typescript
+import { Sprinter } from '@chainsafe/sprinter-sdk';
+
+const sprinter = new Sprinter({
+  baseUrl: 'https://api.test.sprinter.buildwithsygma.com',  // Testnet URL
+});
+
+const settings = {
+  account: '0xYourAddressHere',
+  destinationChain: 11155111,  // Sepolia testnet
+  token: 'USDC',
+  amount: 1000000,  // In smallest denomination (e.g., 1 USDC = 1,000,000 in USDC with 6 decimals)
+  contractCall: {
+    contractAddress: '0xContractAddressHere',
+    callData: '0xSomeCallData',  // Encoded contract interaction data
+    gasLimit: 100000,
+    outputTokenAddress: '0xOutputTokenAddressHere',  // Where tokens will be sent
+    approvalAddress: '0xApprovalAddressHere'  // Contract that needs approval to transfer tokens
+  },
+  sourceChains: [84532]  // Optional: List of source chains to be considered
+};
+
+sprinter.bridgeAndCall(settings).then(solution => {
+  console.log(solution);
+});
+```
+
+### Example: Native Token Transfer with Contract Call
+
+In this example, a native token (e.g., `ETH`) is transferred to a contract on the destination chain, followed by a contract call. The contract can receive the native token in addition to executing the call.
+
+```typescript
+const settings = {
+  account: '0xYourAddressHere',
+  destinationChain: 11155111,  // Sepolia testnet
+  token: 'ETH',
+  amount: 5000000000000000000,  // 5 ETH in the smallest denomination (wei)
+  contractCall: {
+    contractAddress: '0xContractAddressHere',
+    callData: '0xSomeCallData',  // Encoded contract interaction data
+    gasLimit: 21000,  // Standard gas limit for simple ETH transfers
+    recipient: '0xRecipientAddressHere'  // The recipient of the native token transfer
+  },
+  sourceChains: [84532]  // Optional: List of source chains to be considered
+};
+
+sprinter.bridgeAndCall(settings).then(solution => {
+  console.log(solution);
+});
+```
+
+### Example: Using `sourceChains` for a Specific Chain
+
+To get a solution from a specific chain (e.g., BaseSepolia with chain ID `84532`), you can set `sourceChains` to an array with that chain's ID.
+
+```typescript
+const settings = {
+  account: '0xYourAddressHere',
+  destinationChain: 11155111,  // Sepolia testnet
+  token: 'USDC',
+  amount: 1000000,
+  contractCall: {
+    contractAddress: '0xContractAddressHere',
+    callData: '0xSomeCallData',
+    gasLimit: 100000
+  },
+  sourceChains: [84532]  // Limit to BaseSepolia as the source chain
+};
+
+sprinter.bridgeAndCall(settings).then(solution => {
+  console.log(solution);
+});
+```
+
+### Example: Using `fetchOptions`
+
+```typescript
+sprinter.bridgeAndCall(settings, { baseUrl: 'https://custom.api.url' }).then(solution => {
+  console.log(solution);
+});
+```
+
+## Parameters
+
+- `settings`: *(Required)* An object containing the following fields:
+    - `account`: The user’s address.
+    - `destinationChain`: The ID of the destination chain.
+    - `token`: The symbol of the token to be transferred (e.g., `USDC`, `ETH`).
+    - `amount`: The amount of the token to be transferred in the smallest denomination (e.g., for USDC with 6 decimals, 1 USDC = 1,000,000).
+    - `contractCall`: An object containing the contract call details, depending on the type of contract call:
+        - **Native Contract Call**:
+            - `contractAddress`: The contract address on the destination chain.
+            - `callData`: The data to interact with the contract, in hex format.
+            - `gasLimit`: The maximum amount of gas to use for the contract call.
+            - `recipient`: The recipient address for the native asset transfer.
+        - **Token Contract Call**:
+            - `contractAddress`: The contract address on the destination chain.
+            - `callData`: The data to interact with the contract, in hex format.
+            - `gasLimit`: The maximum amount of gas to use for the contract call.
+            - `outputTokenAddress?`: *(Optional)* The token address where tokens will be sent after the contract call.
+            - `approvalAddress?`: *(Optional)* The contract address that requires approval to transfer tokens (e.g., for `transferFrom`).
+    - `sourceChains?`: *(Optional)* An array of source chain IDs to be considered for the bridge. If omitted, Sprinter will use all available chains for the solution.
+
+- `fetchOptions?`: *(Optional)* An object containing `baseUrl` to override the default API endpoint for this request.
+
+## Response
+
+Returns a promise that resolves to a `SolutionResponse`.
+
+```typescript
+type SolutionResponse = Array<Solution> | FailedSolution;
+
+interface Solution {
+  destinationChain: number;
+  destinationTokenAddress: string;
+  duration: number;  // Time estimate in seconds
+  fee: Amount;
+  gasCost: Amount;
+  senderAddress: string;
+  sourceChain: number;
+  sourceTokenAddress: string;
+  amount: string;
+  tool: Tool;
+  transaction: Transaction;
+  approvals?: Array<Transaction>;
+}
+
+interface FailedSolution {
+  error: string;
+}
+```
+
+### Example Response
+
+```json
+[
+  {
+    "sourceChain": 84532,
+    "destinationChain": 11155111,
+    "sourceTokenAddress": "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+    "destinationTokenAddress": "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
+    "senderAddress": "0x3e101ec02e7a48d16dade204c96bff842e7e2519",
+    "tool": {
+      "name": "Sygma-Testnet",
+      "logoURI": "https://scan.buildwithsygma.com/assets/images/logo1.svg"
+    },
+    "gasCost": {
+      "amount": "221055913000",
+      "amountUSD": 0
+    },
+    "fee": {
+      "amount": "1000000000000000",
+      "amountUSD": 0
+    },
+    "amount": "100000000",
+    "duration": 60000000000,
+    "transaction": {
+      "data": "0x73c45c98000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000012000000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000540000000000000000000000000000000000000000000000000000000005f5e10000000000000000000000000000000000000000000000000000000000000000143e101ec02e7a48d16dade204c96bff842e7e251900000000000000000000000000000000000000000000000000000000000000000000000000000000000000023078000000000000000000000000000000000000000000000000000000000000",
+      "to": "0x9D5C332Ebe0DaE36e07a4eD552Ad4d8c5067A61F",
+      "from": "0x3E101Ec02e7A48D16DADE204C96bFF842E7E2519",
+      "value": "0x38d7ea4c68000",
+      "gasPrice": "0xf433d",
+      "gasLimit": "0x35f48",
+      "chainId": 84532
+    },
+    "approvals": [
+      {
+        "data": "0x095ea7b30000000000000000000000003b0f996c474c91de56617da13a52b22bb659d18e0000000000000000000000000000000000000000000000000000000005f5e100",
+        "to": "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+        "from": "0x3E101Ec02e7A48D16DADE204C96bFF842E7E2519",
+        "value": "0x0",
+        "gasPrice": "0xf433d",
+        "gasLimit": "0xe484",
+        "chainId": 84532
+      }
+    ]
+  }
+]
+```
+
+---
+
+For more details on other methods, check out the [Methods Reference](./methods-reference.md).

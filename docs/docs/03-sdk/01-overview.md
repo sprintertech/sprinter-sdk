@@ -1,10 +1,10 @@
 ---
 id: sdk-overview
-title: SDK Overview
+title: Overview
 sidebar_position: 1
 ---
 
-# SDK Overview
+# Overview
 
 The Sprinter SDK provides a set of tools and functionalities to interact with the Sprinter Intent Engine. It allows developers to easily retrieve intent-based solutions, such as cross-chain balance aggregation, token transfers, and contract calls, across multiple blockchain networks.
 
@@ -22,4 +22,4 @@ The Sprinter SDK provides a set of tools and functionalities to interact with th
 2. **Token Bridging**: Create bridging solutions to transfer tokens across different chains.
 3. **Contract Interactions**: Retrieve solutions for executing contract calls while bridging tokens.
 
-For more detailed usage and examples, please refer to the [Methods Reference](04-methods-reference.md) and [Examples](05-examples.md).
+For more detailed usage and examples, please refer to the [Methods Reference](04-methods-reference.md).

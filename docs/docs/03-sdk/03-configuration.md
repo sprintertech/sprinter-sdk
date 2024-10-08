@@ -1,10 +1,10 @@
 ---
 id: sdk-configuration
-title: SDK Configuration
+title: Configuration
 sidebar_position: 3
 ---
 
-# SDK Configuration
+# Configuration
 
 The Sprinter SDK provides flexible options to configure the base URL for API interactions and allows you to override these settings on a per-method basis. This guide will show you how to configure the SDK effectively.
 
