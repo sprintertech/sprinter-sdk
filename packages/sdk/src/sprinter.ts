@@ -357,7 +357,7 @@ export class Sprinter {
    * - `token`: The token symbol (e.g., "ETH", "USDC") to be bridged.
    * - `amount`: The amount of tokens to bridge (as a string or number).
    * - `threshold` (optional): The minimum amount threshold required for bridging.
-   * - `sourceChain` (optional): The source chain ID for the transfer. If not provided, the best source chain will be determined.
+   * - `sourceChains` (optional): An array of whitelisted source chain IDs for the transfer.
    *
    * @param {FetchOptions} [options] - Optional configuration for the fetch request, such as custom headers or query parameters.
    *
@@ -374,7 +374,6 @@ export class Sprinter {
    *   destinationChain: 11155111,
    *   token: "USDC",
    *   amount: "100000000",
-   *   sourceChain: 84532 // optional
    * };
    *
    * sprinter.bridge(settings).then(solution => {
@@ -383,8 +382,6 @@ export class Sprinter {
    *   console.error(error);
    * });
    * ```
-   *
-   * @note If the `sourceChain` is not provided, the method will determine the best source chain for the transfer.
    */
   public async bridge(
     settings: Infer<typeof SingleHopSchema>,
@@ -392,12 +389,12 @@ export class Sprinter {
   ): Promise<SolutionResponse> {
     assert(settings, SingleHopSchema);
 
-    const { sourceChain, amount, ...data } = settings;
+    const { sourceChains, amount, ...data } = settings;
     return await getContractCallSolution(
       {
         ...data,
         amount: BigInt(amount),
-        whitelistedSourceChains: sourceChain ? [sourceChain] : [],
+        whitelistedSourceChains: sourceChains,
       } as SolutionOptions,
       options,
     );
@@ -425,7 +422,7 @@ export class Sprinter {
    *     - `gasLimit`: The gas limit for the contract call.
    *     - `outputTokenAddress` (optional): The address of the output token (if different from the input).
    *     - `approvalAddress` (optional): The address to approve for spending tokens.
-   * - `sourceChain` (optional): The source chain ID for the transfer. If not provided, the best source chain will be determined.
+   * - `sourceChains` (optional): An array of whitelisted source chain IDs for the transfer.
    * - `threshold` (optional): The minimum amount threshold required for bridging.
    *
    * @param {FetchOptions} [options] - Optional configuration for the fetch request, such as custom headers or query parameters.
@@ -449,7 +446,6 @@ export class Sprinter {
    *     gasLimit: 21000,
    *     recipient: "0xRecipientAddress" // for native contract call
    *   },
-   *   sourceChain: 84532 // optional
    * };
    *
    * sprinter.bridgeAndCall(settings).then(solution => {
@@ -459,7 +455,6 @@ export class Sprinter {
    * });
    * ```
    *
-   * @note If the `sourceChain` is not provided, the method will determine the best source chain for the transfer.
    */
   public async bridgeAndCall(
     settings: Infer<typeof SingleHopWithContractSchema>,
@@ -467,12 +462,12 @@ export class Sprinter {
   ): Promise<SolutionResponse> {
     assert(settings, SingleHopWithContractSchema);
 
-    const { sourceChain, amount, ...data } = settings;
+    const { sourceChains, amount, ...data } = settings;
     return await getContractCallSolution(
       {
         ...data,
         amount: BigInt(amount),
-        whitelistedSourceChains: sourceChain ? [sourceChain] : [],
+        whitelistedSourceChains: sourceChains,
       } as SolutionOptions,
       options,
     );

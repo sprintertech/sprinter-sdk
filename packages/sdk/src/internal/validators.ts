@@ -34,6 +34,7 @@ const BridgeCoreSchema = object({
   token: string(),
   amount: numberLike,
   threshold: optional(number()),
+  sourceChains: optional(array(number())),
 });
 
 const ContractCallCoreSchema = object({
@@ -57,32 +58,20 @@ const TokenContractCallSchema = assign(
   }),
 );
 
-export const SingleHopSchema = assign(
-  BridgeCoreSchema,
-  object({
-    sourceChain: optional(number()), // whitelistedSourceChains
-  }),
-);
+const ContractCallSchema = object({
+  contractCall: union([NativeContractCallSchema, TokenContractCallSchema]),
+});
 
-export const MultiHopSchema = assign(
-  BridgeCoreSchema,
-  object({
-    sourceChains: optional(array(number())), // whitelistedSourceChains
-  }),
-);
+export const SingleHopSchema = BridgeCoreSchema;
+
+export const MultiHopSchema = BridgeCoreSchema;
 
 export const SingleHopWithContractSchema = assign(
   BridgeCoreSchema,
-  object({
-    contractCall: union([NativeContractCallSchema, TokenContractCallSchema]),
-    sourceChain: optional(number()), // whitelistedSourceChains
-  }),
+  ContractCallSchema,
 );
 
 export const MultiHopWithContractSchema = assign(
   BridgeCoreSchema,
-  object({
-    contractCall: union([NativeContractCallSchema, TokenContractCallSchema]),
-    sourceChains: optional(array(number())), // whitelistedSourceChains
-  }),
+  ContractCallSchema,
 );
