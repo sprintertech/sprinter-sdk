@@ -11,7 +11,6 @@ The Sprinter SDK provides a set of tools and functionalities to interact with th
 ## Key Features
 
 - **Cross-Chain Balance Retrieval**: Fetch user balances across multiple supported blockchains.
-- **Token Management**: Retrieve details about supported fungible tokens across different chains.
 - **Bridging Solutions**: Generate solutions for single-hop and multi-hop token transfers across chains.
 - **Contract Call Solutions**: Generate solutions to perform contract calls along with cross-chain transfers.
 - **Typed Methods**: TypeScript support for all SDK methods, ensuring type safety and better developer experience.
