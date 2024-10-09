@@ -76,16 +76,6 @@ interface FungibleToken {
         "1993": "0x3538f4C55893eDca690D1e4Cf9Fb61FB70cd0DD8",
         "84532": "0x4200000000000000000000000000000000000006"
       }
-    },
-    {
-      "name": "Wrapped ETH",
-      "decimals": 18,
-      "symbol": "WETH",
-      "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/8cee462de2cc16eed81ded90ced5dbd64f7145cb/blockchains/optimism/assets/0x4200000000000000000000000000000000000006/logo.png",
-      "addresses": {
-        "11155111": "0x7b79995e5f793a07bc00c21412e50ecae098e7f9",
-        "84532": "0x4200000000000000000000000000000000000006"
-      }
     }
   ]
 }
