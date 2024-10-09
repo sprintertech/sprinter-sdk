@@ -1,10 +1,10 @@
 ---
 id: react-sdk-overview
-title: Overview
-sidebar_position: 1
+title: React SDK
+sidebar_position: 4
 ---
 
-# Overview
+# React SDK Overview
 
 The **Sprinter React SDK** provides a set of tools and hooks to interact with the Sprinter Intent Engine directly within React applications. It allows developers to easily manage cross-chain balance aggregation and bridging solutions using React components.
 
