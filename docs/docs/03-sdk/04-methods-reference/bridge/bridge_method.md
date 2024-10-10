@@ -22,7 +22,6 @@ const settings = {
   destinationChain: 11155111,  // Sepolia testnet
   token: 'USDC',
   amount: 1000000,  // In smallest denomination (e.g., 1 USDC = 1,000,000 in USDC with 6 decimals)
-  sourceChains: [84532]  // Optional: List of source chains to be considered
 };
 
 sprinter.bridge(settings).then(solution => {
@@ -33,11 +32,13 @@ sprinter.bridge(settings).then(solution => {
 ## Parameters
 
 - `settings`: *(Required)* An object containing the following fields:
-    - `account`: The user’s address.
-    - `destinationChain`: The ID of the destination chain.
-    - `token`: The symbol of the token to be transferred (e.g., `USDC`, `ETH`).
-    - `amount`: The amount of the token to be transferred in the smallest denomination (e.g., for USDC with 6 decimals, 1 USDC = 1,000,000).
-    - `sourceChains?`: *(Optional)* An array of source chain IDs to be considered for the bridge. If omitted, Sprinter will use all available chains for the solution. To limit the solution to a specific chain, provide an array containing only that chain's ID.
+  - `account`: The user’s address.
+  - `destinationChain`: The ID of the destination chain.
+  - `token`: The symbol of the token to be transferred (e.g., `USDC`, `ETH`).
+  - `amount`: The amount of the token to be transferred in the smallest denomination (e.g., for USDC with 6 decimals, 1 USDC = 1,000,000).
+  - `recipient?`: *(Optional)* The address of the recipient of any leftover tokens.
+  - `sourceChains?`: *(Optional)* An array of source chain IDs to be considered for the bridge. If omitted, Sprinter will use all available chains for the solution. To limit the solution to a specific chain, provide an array containing only that chain's ID.
+  - `threshold?`: *(Optional)* The minimum amount of tokens required to trigger the bridging solution. If not met, the bridge solution will not proceed.
 
 - `fetchOptions?`: *(Optional)* An object containing `baseUrl` to override the default API endpoint for this request.
 
@@ -51,15 +52,13 @@ const settings = {
   destinationChain: 11155111,  // Sepolia testnet
   token: 'USDC',
   amount: 1000000,
-  sourceChains: [84532]  // Limit to BaseSepolia as the source chain
+  sourceChains: [84532],  // Limit to BaseSepolia as the source chain
 };
 
 sprinter.bridge(settings).then(solution => {
   console.log(solution);
 });
 ```
-
-In this example, the bridge solution will only consider `BaseSepolia` as the source chain for the transfer, rather than all available chains.
 
 ### Example: Using `fetchOptions`
 
@@ -146,8 +145,3 @@ import GasWarning from "../_gas-warning.md"
     ]
   }
 ]
-```
-
----
-
-For more details on other methods, check out the [Methods Reference](./methods-reference.md).

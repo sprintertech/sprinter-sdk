@@ -6,7 +6,7 @@ sidebar_position: 2
 
 # `bridgeAndCall`
 
-The `bridgeAndCall` method generates a solution for performing a single-hop cross-chain token transfer, followed by a contract call on the destination chain. The contract call can be either a native contract call or a token transfer with contract call. This method returns the necessary transaction details to execute both the token transfer and the contract interaction.
+The `bridgeAndCall` method generates a solution for performing a single-hop cross-chain token transfer, followed by a contract call on the destination chain. The contract call can be either a native contract call or a token transfer with a contract call. This method returns the necessary transaction details to execute both the token transfer and the contract interaction.
 
 ## Usage
 
@@ -33,6 +33,7 @@ const settings = {
     outputTokenAddress: '0xOutputTokenAddressHere',  // Where tokens will be sent
     approvalAddress: '0xApprovalAddressHere'  // Contract that needs approval to transfer tokens
   },
+  recipient: '0xRecipientAddress',  // Optional recipient of leftover tokens
   sourceChains: [84532]  // Optional: List of source chains to be considered
 };
 
@@ -55,8 +56,8 @@ const settings = {
     contractAddress: '0xContractAddressHere',
     callData: '0xSomeCallData',  // Encoded contract interaction data
     gasLimit: 21000,  // Standard gas limit for simple ETH transfers
-    recipient: '0xRecipientAddressHere'  // The recipient of the native token transfer
   },
+  recipient: '0xRecipientAddressHere',  // The recipient of the native token transfer
   sourceChains: [84532]  // Optional: List of source chains to be considered
 };
 
@@ -108,17 +109,16 @@ sprinter.bridgeAndCall(settings, { baseUrl: 'https://custom.api.url' }).then(sol
             - `contractAddress`: The contract address on the destination chain.
             - `callData`: The data to interact with the contract, in hex format.
             - `gasLimit`: The maximum amount of gas to use for the contract call.
-            - `recipient`: The recipient address for the native asset transfer.
         - **Token Contract Call**:
             - `contractAddress`: The contract address on the destination chain.
             - `callData`: The data to interact with the contract, in hex format.
             - `gasLimit`: The maximum amount of gas to use for the contract call.
             - `outputTokenAddress?`: *(Optional)* The token address where tokens will be sent after the contract call.
             - `approvalAddress?`: *(Optional)* The contract address that requires approval to transfer tokens (e.g., for `transferFrom`).
+    - `recipient?`: *(Optional)* The address of the recipient of any leftover tokens.
     - `sourceChains?`: *(Optional)* An array of source chain IDs to be considered for the bridge. If omitted, Sprinter will use all available chains for the solution.
-
+    - `threshold?`: *(Optional)* The minimum amount of tokens required to trigger the bridging solution. If not met, the bridge solution will not proceed.
 - `fetchOptions?`: *(Optional)* An object containing `baseUrl` to override the default API endpoint for this request.
-
 
 import HowToCallData from "../_how-to-calldata.md"
 
