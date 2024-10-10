@@ -119,6 +119,11 @@ sprinter.bridgeAndCall(settings, { baseUrl: 'https://custom.api.url' }).then(sol
 
 - `fetchOptions?`: *(Optional)* An object containing `baseUrl` to override the default API endpoint for this request.
 
+
+import HowToCallData from "../_how-to-calldata.md"
+
+<HowToCallData />
+
 ## Response
 
 Returns a promise that resolves to a `SolutionResponse`.

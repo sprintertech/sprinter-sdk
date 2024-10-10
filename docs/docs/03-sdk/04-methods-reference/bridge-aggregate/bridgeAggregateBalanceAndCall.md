@@ -101,6 +101,10 @@ sprinter.bridgeAggregateBalanceAndCall(settings, { baseUrl: 'https://custom.api.
 
 - `fetchOptions?`: *(Optional)* An object containing `baseUrl` to override the default API endpoint for this request.
 
+import HowToCallData from "../_how-to-calldata.md"
+
+<HowToCallData />
+
 ## Response
 
 Returns a promise that resolves to a `SolutionResponse`.
