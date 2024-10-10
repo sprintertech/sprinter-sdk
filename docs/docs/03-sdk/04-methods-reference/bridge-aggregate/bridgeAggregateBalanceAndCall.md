@@ -134,6 +134,10 @@ interface FailedSolution {
 
 ### Example Response
 
+import GasWarning from "../_gas-warning.md"
+
+<GasWarning />
+
 ```json
 [
   {
