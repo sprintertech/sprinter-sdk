@@ -54,10 +54,10 @@ export interface ContractCallSolutionOptions {
   ///
   outputTokenAddress?: Address;
   approvalAddress?: Address;
-  recipient?: Address;
 }
 
 export interface SingleHopContractSolutionOptions extends SolutionOptions {
+  recipient?: Address;
   contractCall?: ContractCallSolutionOptions;
 }
 

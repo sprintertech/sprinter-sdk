@@ -352,6 +352,7 @@ export class Sprinter {
    * - `destinationChain`: The ID of the destination blockchain.
    * - `token`: The token symbol (e.g., "ETH", "USDC") to be bridged.
    * - `amount`: The amount of tokens to bridge (as a string or number).
+   * - `recipient` (optional): The address of the recipient of any leftover tokens.
    * - `threshold` (optional): The minimum amount threshold required for bridging.
    * - `sourceChains` (optional): An array of whitelisted source chain IDs for the transfer.
    *
@@ -370,6 +371,7 @@ export class Sprinter {
    *   destinationChain: 11155111,
    *   token: "USDC",
    *   amount: "100000000",
+   *   recipient: "0xRecipientAddress", // Optional recipient of leftover tokens
    * };
    *
    * sprinter.bridge(settings).then(solution => {
@@ -402,24 +404,24 @@ export class Sprinter {
    * This method transfers tokens from a source chain to a destination chain and then executes a contract call on the destination chain.
    *
    * @param {Infer<typeof SingleHopWithContractSchema>} settings - The settings object for defining the bridging and contract call parameters:
-   * - `account`: The user's wallet address for the transaction.
-   * - `destinationChain`: The ID of the destination blockchain.
-   * - `token`: The token symbol (e.g., "ETH", "USDC") to be bridged.
-   * - `amount`: The amount of tokens to bridge (as a string or number).
-   * - `contractCall`: Defines the contract call that will be executed on the destination chain:
+   * - `account` {string}: The user's wallet address for the transaction.
+   * - `destinationChain` {number}: The ID of the destination blockchain.
+   * - `token` {string}: The token symbol (e.g., "ETH", "USDC") to be bridged.
+   * - `amount` {string | number}: The amount of tokens to bridge (in the smallest denomination).
+   * - `contractCall` {Object}: Defines the contract call that will be executed on the destination chain:
    *   - For native contract calls (`NativeContractCall`):
-   *     - `callData`: The encoded data to be sent to the contract.
-   *     - `contractAddress`: The address of the contract to call.
-   *     - `gasLimit`: The gas limit for the contract call.
-   *     - `recipient`: The address of the recipient of the call.
+   *     - `callData` {string}: The encoded data to be sent to the contract.
+   *     - `contractAddress` {string}: The address of the contract to call.
+   *     - `gasLimit` {number | string}: The gas limit for the contract call.
    *   - For token contract calls (`TokenContractCall`):
-   *     - `callData`: The encoded data to be sent to the contract.
-   *     - `contractAddress`: The address of the contract to call.
-   *     - `gasLimit`: The gas limit for the contract call.
-   *     - `outputTokenAddress` (optional): The address of the output token (if different from the input).
-   *     - `approvalAddress` (optional): The address to approve for spending tokens.
-   * - `sourceChains` (optional): An array of whitelisted source chain IDs for the transfer.
-   * - `threshold` (optional): The minimum amount threshold required for bridging.
+   *     - `callData` {string}: The encoded data to be sent to the contract.
+   *     - `contractAddress` {string}: The address of the contract to call.
+   *     - `gasLimit` {number | string}: The gas limit for the contract call.
+   *     - `outputTokenAddress` {string} (optional): The address of the output token (if different from the input).
+   *     - `approvalAddress` {string} (optional): The address to approve for spending tokens.
+   * - `recipient` {string} (optional): The address of the recipient of any leftover tokens.
+   * - `sourceChains` {Array<number>} (optional): An array of whitelisted source chain IDs for the transfer.
+   * - `threshold` {number} (optional): The minimum amount threshold required for bridging.
    *
    * @param {FetchOptions} [options] - Optional configuration for the fetch request, such as custom headers or query parameters.
    *
@@ -440,8 +442,8 @@ export class Sprinter {
    *     callData: "0xabcdef", // encoded contract call data
    *     contractAddress: "0x1234567890abcdef",
    *     gasLimit: 21000,
-   *     recipient: "0xRecipientAddress" // for native contract call
    *   },
+   *   recipient: "0xRecipientAddress", // for sending leftover tokens
    * };
    *
    * sprinter.bridgeAndCall(settings).then(solution => {
@@ -450,7 +452,6 @@ export class Sprinter {
    *   console.error(error);
    * });
    * ```
-   *
    */
   public async bridgeAndCall(
     settings: Infer<typeof SingleHopWithContractSchema>,

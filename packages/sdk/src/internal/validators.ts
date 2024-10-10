@@ -37,18 +37,20 @@ const BridgeCoreSchema = object({
   sourceChains: optional(array(number())),
 });
 
+const BridgeCoreWithRecipientSchema = assign(
+  BridgeCoreSchema,
+  object({
+    recipient: hexString(),
+  }),
+);
+
 const ContractCallCoreSchema = object({
   callData: hexString(),
   contractAddress: hexString(),
   gasLimit: numberLike,
 });
 
-const NativeContractCallSchema = assign(
-  ContractCallCoreSchema,
-  object({
-    recipient: hexString(),
-  }),
-);
+const NativeContractCallSchema = ContractCallCoreSchema;
 
 const TokenContractCallSchema = assign(
   ContractCallCoreSchema,
@@ -62,12 +64,12 @@ const ContractCallSchema = object({
   contractCall: union([NativeContractCallSchema, TokenContractCallSchema]),
 });
 
-export const SingleHopSchema = BridgeCoreSchema;
+export const SingleHopSchema = BridgeCoreWithRecipientSchema;
 
 export const MultiHopSchema = BridgeCoreSchema;
 
 export const SingleHopWithContractSchema = assign(
-  BridgeCoreSchema,
+  BridgeCoreWithRecipientSchema,
   ContractCallSchema,
 );
 
