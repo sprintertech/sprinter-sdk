@@ -12,11 +12,7 @@ To use the **Sprinter React SDK** in your project, follow these installation ins
 
 The React SDK requires the core Sprinter SDK (`@chainsafe/sprinter-sdk`) to function properly. You can install both packages using `yarn` or `npm`.
 
-```bash
-# Using yarn
-yarn add @chainsafe/sprinter-react @chainsafe/sprinter-sdk
-
-# Using npm
+```bash npm2yarn
 npm install @chainsafe/sprinter-react @chainsafe/sprinter-sdk
 ```
 
@@ -24,11 +20,7 @@ npm install @chainsafe/sprinter-react @chainsafe/sprinter-sdk
 
 Make sure your project uses **React** version 18.3.1 or higher, as it’s the minimum version supported by the React SDK.
 
-```bash
-# Using yarn
-yarn add react@^18.3.1 react-dom@^18.3.1
-
-# Using npm
+```bash npm2yarn
 npm install react@^18.3.1 react-dom@^18.3.1
 ```
 

@@ -19,16 +19,8 @@ Before installing the SDK, ensure you have the following installed:
 
 To install the SDK in your project, use either `npm` or `yarn`:
 
-### npm:
-
-```bash
+```bash npm2yarn
 npm install @chainsafe/sprinter-sdk
-```
-
-### yarn:
-
-```bash
-yarn add @chainsafe/sprinter-sdk
 ```
 
 ## Basic Setup
