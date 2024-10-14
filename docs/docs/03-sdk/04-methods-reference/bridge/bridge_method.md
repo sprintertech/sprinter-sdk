@@ -97,9 +97,9 @@ interface FailedSolution {
 
 ### Example Response
 
-import GasWarning from "../_gas-warning.md"
+import GasTip from "../_gas-tip.md"
 
-<GasWarning />
+<GasTip />
 
 ```json
 [
