@@ -38,12 +38,12 @@ jobs:
           directory: ./web/.svelte-kit/cloudflare
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.head_ref || github.ref_name }}
-      - name: Publish Docs to Cloudflare Pages
+      - name: Publish Preview Docs to Cloudflare Pages
         uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: 2238a825c5aca59233eab1f221f7aefb
-          projectName: gopher-docs
+          projectName: gopher-docs-preview
           directory: ./docs/build
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.head_ref || github.ref_name }}
