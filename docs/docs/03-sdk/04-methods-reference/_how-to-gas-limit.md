@@ -6,7 +6,7 @@ import TabItem from '@theme/TabItem';
 The following examples demonstrate how to estimate the `gasLimit` parameter required for interacting with a staking smart contract. We provide examples using different web3 libraries: Web3JS, Viem, and Ethers. 
 
 :::note
-To ensure that the transaction has enough gas, we recommend using the estimated gas limit from the provider, adding 25% as a buffer, and then adding an additional 200,000 units for fail-safe calculations. This ensures the transaction won’t run out of gas, even for complex contract interactions.
+To ensure that the transaction has enough gas, we recommend using the estimated gas limit from the provider, adding 25% as a buffer, and then adding an additional 100,000 units for fail-safe calculations. This ensures the transaction won’t run out of gas, even for complex contract interactions.
 :::
 
 <details>
@@ -105,7 +105,7 @@ To ensure that the transaction has enough gas, we recommend using the estimated 
 
     async function estimateGas() {
       const estimatedGas = await stakingContract.methods.stake(100).estimateGas({ from: account });
-      const gasLimit = Math.floor(estimatedGas * 1.25) + 200000; // Add 25% and 200k for safety
+      const gasLimit = Math.floor(estimatedGas * 1.25) + 100000; // Add 25% and 100k for safety
       console.log('Estimated Gas Limit:', gasLimit);
     }
 
