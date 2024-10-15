@@ -21,7 +21,7 @@ npm install @chainsafe/sprinter-react @chainsafe/sprinter-sdk
 Make sure your project uses **React** version 18.3.1 or higher, as it’s the minimum version supported by the React SDK.
 
 ```bash npm2yarn
-npm install react@^18.3.1 react-dom@^18.3.1
+npm install react@latest react-dom@latest
 ```
 
 ## Step 3: Wrap Your App with `SprinterContext`

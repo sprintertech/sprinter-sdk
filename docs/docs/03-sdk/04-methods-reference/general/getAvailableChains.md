@@ -105,7 +105,3 @@ interface Chain {
   ]
 }
 ```
-
----
-
-For more details on other methods, check out the [Methods Reference](./methods-reference.md).

@@ -21,4 +21,4 @@ The **Sprinter React SDK** provides a set of tools and hooks to interact with th
 2. **Token Bridging**: Create bridging solutions to transfer tokens across different chains.
 3. **Contract Interactions**: Retrieve solutions for executing contract calls while bridging tokens.
 
-For more detailed usage and examples, refer to the [Methods Reference](04-methods-reference/).
+For more detailed usage and examples, refer to the Methods Reference.

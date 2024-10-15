@@ -111,7 +111,3 @@ interface TokenBalance {
 - If you provide specific tokens, balances will be fetched only for those tokens and native assets.
 - If you provide an empty `tokens` array, only native token balances will be returned.
 - Specifying tokens or an empty array can result in faster responses, as fewer tokens need to be fetched.
-
----
-
-For more details on other methods, check out the [Methods Reference](./methods-reference.md).

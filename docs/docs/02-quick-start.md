@@ -36,7 +36,7 @@ const sprinter = new Sprinter({ baseUrl: 'https://api.sprinter.buildwithsygma.co
 sprinter.getUserBalances('0xYourAddressHere').then(console.log);
 ```
 
-For more details on using the SDK, refer to the [SDK Documentation](../old/03-sdk/01-overview.md).
+For more details on using the SDK, refer to the [SDK Documentation](./sdk).
 
 ### Using the React SDK
 
@@ -80,7 +80,7 @@ function App() {
 export default App;
 ```
 
-For detailed usage, check the [React SDK Documentation](../old/03-sdk/02-react-usage.md).
+For detailed usage, check the [React SDK Documentation](./react-sdk).
 
 ### Calling API Endpoints Directly
 
@@ -105,4 +105,4 @@ fetch(`${baseUrl}/accounts/${ownerAddress}/assets/fungible/${tokenSymbol}`)
   .catch(error => console.error('Error fetching user fungible tokens:', error));
 ```
 
-For a comprehensive list of available endpoints and how to use them, check out the [API Documentation](../old/04-api/01-api-usage.md).
+For a comprehensive list of available endpoints and how to use them, check out the [API Documentation](https://api.sprinter.buildwithsygma.com/swagger/index.html).

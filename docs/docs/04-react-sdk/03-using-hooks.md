@@ -149,5 +149,3 @@ function BridgeSolution() {
 ## Summary
 
 The Sprinter React SDK hooks provide an easy way to interact with cross-chain balances, tokens, chains, and bridging solutions. These hooks manage state for you (`loading`, `error`, and `data`) and allow you to integrate Sprinter functionality seamlessly into your React components.
-
-For more detailed method references, check out the [Methods Reference](04-methods-reference/).

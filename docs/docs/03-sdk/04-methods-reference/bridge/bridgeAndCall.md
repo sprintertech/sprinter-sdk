@@ -247,6 +247,3 @@ import GasTip from "../_gas-tip.md"
 
 </TabItem>
 </Tabs>
----
-
-For more details on other methods, check out the [Methods Reference](./methods-reference.md).

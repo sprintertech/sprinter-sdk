@@ -146,7 +146,3 @@ import GasTip from "../_gas-tip.md"
   }
 ]
 ```
-
----
-
-For more details on other methods, check out the [Methods Reference](./methods-reference.md).

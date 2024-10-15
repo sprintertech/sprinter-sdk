@@ -21,4 +21,4 @@ The Sprinter SDK provides a set of tools and functionalities to interact with th
 2. **Token Bridging**: Create bridging solutions to transfer tokens across different chains.
 3. **Contract Interactions**: Retrieve solutions for executing contract calls while bridging tokens.
 
-For more detailed usage and examples, please refer to the [Methods Reference](04-methods-reference.md).
+For more detailed usage and examples, please refer to the Methods Reference.

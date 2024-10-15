@@ -12,7 +12,7 @@ The Sprinter SDK allows developers to interact with cross-chain solutions such a
 
 Before installing the SDK, ensure you have the following installed:
 
-- **Node.js**: Version 20.17.0 or higher (recommended)
+- **Node.js**: Version 20 (recommended) or higher 
 - **npm** or **yarn**: A package manager for JavaScript
 
 ## Installation

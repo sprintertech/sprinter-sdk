@@ -13,7 +13,7 @@ const config: Config = {
   organizationName: 'ChainSafe', 
   projectName: 'sprinter-ts',
 
-  onBrokenLinks: 'ignore', // TODO: return to throw
+  onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
   i18n: {
@@ -59,11 +59,6 @@ const config: Config = {
           label: 'Learn',
         },
         {
-          to: 'docs/api/api-usage',
-          position: 'left',
-          label: 'API',
-        },
-        {
           href: 'https://poc.sprinter.buildwithsygma.com/',
           label: 'POC',
           position: 'left',
@@ -92,11 +87,11 @@ const config: Config = {
             },
             {
               label: 'SDK',
-              to: '/docs/category/sdk',
+              to: '/docs/sdk',
             },
             {
-              label: 'API',
-              to: '/docs/category/api',
+              label: 'React SDK',
+              to: '/docs/react-sdk/',
             },
           ],
         },

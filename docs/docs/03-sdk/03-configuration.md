@@ -81,7 +81,3 @@ sprinter.getAvailableTokens({ baseUrl: 'https://custom.api.url' }).then(tokens =
 ```
 
 In this example, the `baseUrl` in `fetchOptions` is used only for this specific API request, without changing the base URL for the entire `Sprinter` instance.
-
----
-
-With these configuration options, you can ensure that the Sprinter SDK interacts with the correct API server for your project’s needs.

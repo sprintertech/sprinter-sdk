@@ -98,8 +98,8 @@ Here’s an example of what the `solution.data` might look like after calling `g
 Each method accepts a `settings` parameter, which varies depending on the operation:
 
 - **`getBridge`**: See [SDK Bridge Method Reference](../../sdk/methods-reference/bridge/bridge).
-- **`getBridgeAndCall`**: See [SDK Bridge and Call Method Reference](../../sdk/methods-reference/bridge/bridgeAndCall).
-- **`getBridgeAggregateBalance`**: See [SDK Aggregate Balance Method Reference](../../sdk/methods-reference/bridge-aggregate/bridgeAggregateBalance).
-- **`getBridgeAggregateBalanceAndCall`**: See [SDK Aggregate Balance and Call Method Reference](../../sdk/methods-reference/bridge-aggregate/bridgeAggregateBalanceAndCall).
+- **`getBridgeAndCall`**: See [SDK Bridge and Call Method Reference](../../sdk/methods-reference/bridge/bridge-and-call).
+- **`getBridgeAggregateBalance`**: See [SDK Aggregate Balance Method Reference](../../sdk/methods-reference/bridge-aggregate/bridge-aggregate-balance).
+- **`getBridgeAggregateBalanceAndCall`**: See [SDK Aggregate Balance and Call Method Reference](../../sdk/methods-reference/bridge-aggregate/bridge-aggregate-balance-and-call).
 
 Each method calls the Sprinter SDK's corresponding function and returns the intent-based solution for cross-chain transfers or contract calls.
