@@ -10,8 +10,12 @@ The `bridgeAndCall` method generates a solution for performing a single-hop cros
 
 ## Usage
 
-### Example: Token Transfer with Contract Call and `transferFrom` Approval
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
+<Tabs groupId="call-type" queryString>
+  <TabItem value="token" label="Token Transfer with Contract Call">
+    
 In this example, a token transfer (e.g., `USDC`) is followed by a contract call on the destination chain. You need to provide `outputTokenAddress` and `approvalAddress` to allow the contract to move tokens on behalf of the user.
 
 ```typescript
@@ -41,8 +45,9 @@ sprinter.bridgeAndCall(settings).then(solution => {
   console.log(solution);
 });
 ```
+  </TabItem>
 
-### Example: Native Token Transfer with Contract Call
+  <TabItem value="native" label="Native Token Transfer with Contract Call">
 
 In this example, a native token (e.g., `ETH`) is transferred to a contract on the destination chain, followed by a contract call. The contract can receive the native token in addition to executing the call.
 
@@ -65,29 +70,17 @@ sprinter.bridgeAndCall(settings).then(solution => {
   console.log(solution);
 });
 ```
+  </TabItem>
+</Tabs>
 
-### Example: Using `sourceChains` for a Specific Chain
-
-To get a solution from a specific chain (e.g., BaseSepolia with chain ID `84532`), you can set `sourceChains` to an array with that chain's ID.
+:::note
+You can limit the solution to a specific source chain using the `sourceChains` field. For example, to use only `BaseSepolia` (chain ID `84532`), provide it as an array like this:
 
 ```typescript
-const settings = {
-  account: '0xYourAddressHere',
-  destinationChain: 11155111,  // Sepolia testnet
-  token: 'USDC',
-  amount: 1000000,
-  contractCall: {
-    contractAddress: '0xContractAddressHere',
-    callData: '0xSomeCallData',
-    gasLimit: 100000
-  },
-  sourceChains: [84532]  // Limit to BaseSepolia as the source chain
-};
-
-sprinter.bridgeAndCall(settings).then(solution => {
-  console.log(solution);
-});
+sourceChains: [84532];
 ```
+If omitted, Sprinter will consider all available source chains.
+:::
 
 ### Example: Using `fetchOptions`
 
@@ -157,6 +150,9 @@ import GasTip from "../_gas-tip.md"
 
 <GasTip />
 
+<Tabs groupId="call-type" queryString>
+  <TabItem value="token" label="Token Transfer with Contract Call">
+
 ```json
 [
   {
@@ -203,6 +199,48 @@ import GasTip from "../_gas-tip.md"
 ]
 ```
 
+  </TabItem>
+
+  <TabItem value="native" label="Native Token Transfer with Contract Call">
+
+```json
+[
+  {
+    "sourceChain": 84532,
+    "destinationChain": 11155111,
+    "sourceTokenAddress": "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+    "destinationTokenAddress": "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
+    "senderAddress": "0x3e101ec02e7a48d16dade204c96bff842e7e2519",
+    "tool": {
+      "name": "Sygma-Testnet",
+      "logoURI": "https://scan.buildwithsygma.com/assets/images/logo1.svg"
+    },
+    "gasCost": {
+      "amount": "221055913000",
+      "amountUSD": 0
+    },
+    "fee": {
+      "amount": "1000000000000000",
+      "amountUSD": 0
+    },
+    "amount": "100000000",
+    "duration": 60000000000,
+    "transaction": {
+      "data": "0x73c45c98000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000012000000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000540000000000000000000000000000000000000000000000000000000005f5e10000000000000000000000000000000000000000000000000000000000000000143e101ec02e7a48d16dade204c96bff842e7e251900000000000000000000000000000000000000000000000000000000000000000000000000000000000000023078000000000000000000000000000000000000000000000000000000000000",
+      "to": "0x9D5C332Ebe0DaE36e07a4eD552Ad4d8c5067A61F",
+      "from": "0x3E101Ec02e7A48D16DADE204C96bFF842E7E2519",
+      "value": "0x38d7ea4c68000",
+      "gasPrice": "0xf433d",
+      "gasLimit": "0x35f48",
+      "chainId": 84532
+    },
+    "approvals": null
+  }
+]
+```
+
+</TabItem>
+</Tabs>
 ---
 
 For more details on other methods, check out the [Methods Reference](./methods-reference.md).
