@@ -117,6 +117,12 @@ import HowToCallData from "../_how-to-calldata.md"
 
 <HowToCallData />
 
+import GasLimit from "../_how-to-gas-limit.md"
+
+<GasLimit />
+
+<hr />
+
 ## Response
 
 Returns a promise that resolves to a `SolutionResponse`.
