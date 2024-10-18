@@ -10,6 +10,13 @@ interface History {
   destinationName: string;
   amount: string;
   tokenSymbol: string;
+  status: Status;
+}
+
+export enum Status {
+  pending = "pending",
+  executed = "executed",
+  failed = "failed",
 }
 
 export async function experimental_getBridgeHistory(
@@ -68,5 +75,6 @@ function handleSygmaResponseEntry(entry: SygmaTransfer): History {
     destinationName: entry.toDomain.name,
     amount: entry.amount,
     tokenSymbol: entry.fee.tokenSymbol,
+    status: entry.status,
   };
 }

@@ -1,3 +1,5 @@
+import {Status} from "./getBridgeHistory";
+
 export interface SygmaTransfer {
   id: string;
   depositNonce: number;
@@ -10,19 +12,13 @@ export interface SygmaTransfer {
   destination: string;
   amount: string;
   timestamp?: string;
-  status: TransferStatus;
+  status: Status;
   deposit?: Deposit;
   execution?: Execution;
   fee: Fee;
   resourceID: string;
   usdValue: number;
   accountId: string;
-}
-
-export enum TransferStatus {
-  pending = "pending",
-  executed = "executed",
-  failed = "failed",
 }
 
 export interface Resource {
