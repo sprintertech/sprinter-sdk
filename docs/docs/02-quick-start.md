@@ -29,9 +29,9 @@ The Sprinter SDK provides a streamlined interface for retrieving intent-based so
 Here’s a quick example of how to use the SDK in your project:
 
 ```typescript
-import { Sprinter } from '@chainsafe/sprinter-sdk';
+import { Sprinter, Environment } from '@chainsafe/sprinter-sdk';
 
-const sprinter = new Sprinter({ baseUrl: 'https://api.sprinter.buildwithsygma.com' });
+const sprinter = new Sprinter({ baseUrl: Environment.MAINNET });
 
 sprinter.getUserBalances('0xYourAddressHere').then(console.log);
 ```
@@ -46,9 +46,10 @@ If you're building a React application, you can use the Sprinter React SDK (`@ch
 
 Here’s how to set up a simple React component to fetch user balances:
 
-```typescript
+```tsx
 import React, { useEffect } from 'react';
 import { SprinterContext, useSprinterBalances } from '@chainsafe/sprinter-react';
+import { Environment } from '@chainsafe/sprinter-sdk';
 
 function BalancesComponent() {
   const { balances, getUserBalances } = useSprinterBalances('0xYourAddressHere');
@@ -71,7 +72,7 @@ function BalancesComponent() {
 
 function App() {
   return (
-    <SprinterContext baseUrl="https://api.sprinter.buildwithsygma.com">
+    <SprinterContext baseUrl={Environment.MAINNET}>
       <BalancesComponent />
     </SprinterContext>
   );

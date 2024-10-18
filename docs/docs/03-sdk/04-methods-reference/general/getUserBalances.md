@@ -11,11 +11,9 @@ The `getUserBalances` method retrieves the aggregated balance of a user across m
 ## Usage
 
 ```typescript
-import { Sprinter } from '@chainsafe/sprinter-sdk';
+import { Sprinter, Environment } from '@chainsafe/sprinter-sdk';
 
-const sprinter = new Sprinter({
-  baseUrl: 'https://api.test.sprinter.buildwithsygma.com',  // Testnet URL
-});
+const sprinter = new Sprinter({ baseUrl: Environment.TESTNET });
 
 const ownerAddress = "0xYourAddressHere";
 sprinter.getUserBalances(ownerAddress).then(balances => {

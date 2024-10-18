@@ -6,7 +6,7 @@ sidebar_position: 2
 
 # `bridgeAndCall`
 
-The `bridgeAndCall` method generates a solution for performing a single-hop cross-chain token transfer, followed by a contract call on the destination chain. The contract call can be either a native contract call or a token transfer with a contract call. This method returns the necessary transaction details to execute both the token transfer and the contract interaction.
+The `bridgeAndCall` method generates a solution for performing a token transfer from a single source chain, followed by a contract call on the destination chain. The contract call can involve either a native token or a token transfer. This method returns the necessary transaction details to execute both the token transfer and the contract interaction.
 
 ## Usage
 
@@ -19,11 +19,9 @@ import TabItem from '@theme/TabItem';
 In this example, a token transfer (e.g., `USDC`) is followed by a contract call on the destination chain. You need to provide `outputTokenAddress` and `approvalAddress` to allow the contract to move tokens on behalf of the user.
 
 ```typescript
-import { Sprinter } from '@chainsafe/sprinter-sdk';
+import { Sprinter, Environment } from '@chainsafe/sprinter-sdk';
 
-const sprinter = new Sprinter({
-  baseUrl: 'https://api.test.sprinter.buildwithsygma.com',  // Testnet URL
-});
+const sprinter = new Sprinter({ baseUrl: Environment.TESTNET });
 
 const settings = {
   account: '0xYourAddressHere',

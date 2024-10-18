@@ -6,16 +6,14 @@ sidebar_position: 1
 
 # `bridge`
 
-The `bridge` method generates a solution for performing a single-hop cross-chain token transfer. This method returns the necessary transaction details to execute the transfer on the source chain and complete it on the destination chain.
+The `bridge` method generates a solution for performing a token transfer from a single source chain. It returns the necessary transaction details to initiate the transfer on the source chain and complete it on the destination chain.
 
 ## Usage
 
 ```typescript
-import { Sprinter } from '@chainsafe/sprinter-sdk';
+import { Sprinter, Environment } from '@chainsafe/sprinter-sdk';
 
-const sprinter = new Sprinter({
-  baseUrl: 'https://api.test.sprinter.buildwithsygma.com',  // Testnet URL
-});
+const sprinter = new Sprinter({ baseUrl: Environment.TESTNET });
 
 const settings = {
   account: '0xYourAddressHere',

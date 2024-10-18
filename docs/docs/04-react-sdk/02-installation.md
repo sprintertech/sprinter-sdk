@@ -31,10 +31,11 @@ Once the installation is complete, wrap your app’s component tree with `Sprint
 ```tsx
 import React from 'react';
 import { SprinterContext } from '@chainsafe/sprinter-react';
+import { Environment } from '@chainsafe/sprinter-sdk';
 
 function App() {
   return (
-    <SprinterContext baseUrl="https://api.test.sprinter.buildwithsygma.com">
+    <SprinterContext baseUrl={Environment.TESTNET}>
       <YourComponent />
     </SprinterContext>
   );
