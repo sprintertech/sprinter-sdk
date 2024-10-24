@@ -1,9 +1,8 @@
 import { Environment } from "../enums";
 import { getTransfers } from "../sygma/api";
-import { Status } from "../sygma/types";
+import type { Status, SygmaTransfer } from "../sygma/types";
 import type { Address } from "../types";
 
-import type { SygmaTransfer } from "../sygma/types";
 interface History {
   originTx: string;
   originName: string;
@@ -35,12 +34,12 @@ function handleSygmaResponseEntry(entry: SygmaTransfer): History {
  */
 export async function experimental_getBridgeHistory(
   address: Address,
-  environment: Environment = Environment.MAINNET
+  environment: Environment = Environment.MAINNET,
 ): Promise<History[]> {
   // TODO: add logic for all supported bridges
   const transactions = await getTransfers(address, environment).then(
     (sygmaTransfers) =>
-      sygmaTransfers.map((transfer) => handleSygmaResponseEntry(transfer))
+      sygmaTransfers.map((transfer) => handleSygmaResponseEntry(transfer)),
   );
 
   return transactions;
