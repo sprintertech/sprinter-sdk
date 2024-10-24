@@ -1,7 +1,7 @@
-import {useCallback, useContext} from "react";
-import {Context} from "./context.tsx";
-import {Address} from "@chainsafe/sprinter-sdk";
-import {BalancesEntry} from "./internal/useBalances.ts";
+import { useCallback, useContext } from "react";
+import { Context } from "./context.tsx";
+import { Address } from "@chainsafe/sprinter-sdk";
+import { BalancesEntry } from "./internal/useBalances.ts";
 
 /**
  * A hook to access the full Sprinter context, including balances, tokens, chains, and bridge solutions.
@@ -20,7 +20,7 @@ import {BalancesEntry} from "./internal/useBalances.ts";
 export function useSprinter() {
   const context = useContext(Context);
 
-  if (!context) throw new Error('Sprinter Context is not defined');
+  if (!context) throw new Error("Sprinter Context is not defined");
 
   return context;
 }
@@ -77,10 +77,14 @@ const balancesEmptyState = {
  * ```
  */
 export function useSprinterBalances(account: Address) {
-  const { balances: _balances, getUserBalances: _getUserBalances } = useSprinter();
+  const { balances: _balances, getUserBalances: _getUserBalances } =
+    useSprinter();
 
   const balances: BalancesEntry = _balances[account] || balancesEmptyState;
-  const getUserBalances = useCallback(() => _getUserBalances(account), [account]);
+  const getUserBalances = useCallback(
+    () => _getUserBalances(account),
+    [account]
+  );
 
   return { balances, getUserBalances };
 }
@@ -233,6 +237,18 @@ export function useSprinterChains() {
  * ```
  */
 export function useSprinterBridge() {
-  const { solution, getBridgeAndCall, getBridge, getBridgeAggregateBalance, getBridgeAggregateBalanceAndCall } = useSprinter();
-  return { solution, getBridgeAndCall, getBridge, getBridgeAggregateBalance, getBridgeAggregateBalanceAndCall };
+  const {
+    solution,
+    getBridgeAndCall,
+    getBridge,
+    getBridgeAggregateBalance,
+    getBridgeAggregateBalanceAndCall,
+  } = useSprinter();
+  return {
+    solution,
+    getBridgeAndCall,
+    getBridge,
+    getBridgeAggregateBalance,
+    getBridgeAggregateBalanceAndCall,
+  };
 }

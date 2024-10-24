@@ -1,4 +1,8 @@
-import {Status} from "./getBridgeHistory";
+export enum Status {
+  pending = "pending",
+  executed = "executed",
+  failed = "failed",
+}
 
 export interface SygmaTransfer {
   id: string;

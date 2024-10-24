@@ -1,8 +1,9 @@
 import { Environment } from "../enums";
+import { getTransfers } from "../sygma/api";
+import { Status } from "../sygma/types";
 import type { Address } from "../types";
 
-import type { SygmaTransfer } from "./sygmaTypes";
-
+import type { SygmaTransfer } from "../sygma/types";
 interface History {
   originTx: string;
   originName: string;
@@ -11,60 +12,6 @@ interface History {
   amount: string;
   tokenSymbol: string;
   status: Status;
-}
-
-export enum Status {
-  pending = "pending",
-  executed = "executed",
-  failed = "failed",
-}
-
-export async function experimental_getBridgeHistory(
-  address: Address,
-  environment: Environment = Environment.MAINNET,
-): Promise<History[]> {
-  const transactions: History[] = [];
-
-  switch (environment) {
-    case Environment.MAINNET: {
-      /** Sygma */
-      const url = new URL(
-        `/api/sender/${address}/transfers`,
-        "https://api.buildwithsygma.com/",
-      );
-      url.searchParams.set("limit", "100");
-
-      const response: SygmaTransfer[] = await fetch(url.toString()).then(
-        (response): Promise<SygmaTransfer[]> => response.json(),
-      );
-
-      for (const entry of response) {
-        transactions.push(handleSygmaResponseEntry(entry));
-      }
-
-      break;
-    }
-    case Environment.TESTNET: {
-      /** Sygma */
-      const url = new URL(
-        `/api/sender/${address}/transfers`,
-        "https://api.test.buildwithsygma.com/",
-      );
-      url.searchParams.set("limit", "100");
-
-      const response: SygmaTransfer[] = await fetch(url.toString()).then(
-        (response): Promise<SygmaTransfer[]> => response.json(),
-      );
-
-      for (const entry of response) {
-        transactions.push(handleSygmaResponseEntry(entry));
-      }
-
-      break;
-    }
-  }
-
-  return transactions;
 }
 
 function handleSygmaResponseEntry(entry: SygmaTransfer): History {
@@ -77,4 +24,24 @@ function handleSygmaResponseEntry(entry: SygmaTransfer): History {
     tokenSymbol: entry.fee.tokenSymbol,
     status: entry.status,
   };
+}
+
+/**
+ * Returns bridging history
+ * for an address
+ * @param {Address} address
+ * @param {Environment} environment
+ * @returns {Promise<History[]>}
+ */
+export async function experimental_getBridgeHistory(
+  address: Address,
+  environment: Environment = Environment.MAINNET
+): Promise<History[]> {
+  // TODO: add logic for all supported bridges
+  const transactions = await getTransfers(address, environment).then(
+    (sygmaTransfers) =>
+      sygmaTransfers.map((transfer) => handleSygmaResponseEntry(transfer))
+  );
+
+  return transactions;
 }
