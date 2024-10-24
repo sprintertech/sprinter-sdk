@@ -32,7 +32,7 @@ function handleSygmaResponseEntry(entry: SygmaTransfer): History {
  * @param {Environment} environment
  * @returns {Promise<History[]>}
  */
-export async function experimental_getBridgeHistory(
+export async function getBridgeHistory(
   address: Address,
   environment: Environment = Environment.MAINNET,
 ): Promise<History[]> {
