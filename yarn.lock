@@ -1856,6 +1856,7 @@ __metadata:
     vite: "npm:^5.4.1"
     vite-plugin-dts: "npm:^4.2.1"
   peerDependencies:
+    "@chainsafe/sprinter-sdk": "workspace:^"
     react: ^18.3.1
     react-dom: ^18.3.1
   languageName: unknown
@@ -1868,6 +1869,7 @@ __metadata:
     "@types/eslint": "npm:^8.56.11"
     "@types/node": "npm:18.19.42"
     eslint: "npm:^8.57.0"
+    superstruct: "npm:^2.0.2"
     typescript: "npm:^5.0.3"
     viem: "npm:^2.21.9"
   languageName: unknown
@@ -2348,6 +2350,19 @@ __metadata:
     react: ^18.0.0
     react-dom: ^18.0.0
   checksum: 10c0/ea15474b01399a7bf05d6fd8b0edbf2856ffc83baa0d726b6e90c365ffc93ed39a78ac3d5690750f43051387ff96a8b455927ffa712f4589f4e4b45a4490aaaa
+  languageName: node
+  linkType: hard
+
+"@docusaurus/remark-plugin-npm2yarn@npm:^3.5.2":
+  version: 3.5.2
+  resolution: "@docusaurus/remark-plugin-npm2yarn@npm:3.5.2"
+  dependencies:
+    mdast-util-mdx: "npm:^3.0.0"
+    npm-to-yarn: "npm:^2.2.1"
+    tslib: "npm:^2.6.0"
+    unified: "npm:^11.0.3"
+    unist-util-visit: "npm:^5.0.0"
+  checksum: 10c0/a9a7f212e0fad41c9c74184259eca37a838b6637b382f4ddee47f533036c292b0d6bdfcde93d8d7bed259baf8d4a36c7dd1456bfeb8bde5c4d92d3b4c7a99db7
   languageName: node
   linkType: hard
 
@@ -8962,6 +8977,7 @@ __metadata:
     "@docusaurus/core": "npm:^3.5.2"
     "@docusaurus/module-type-aliases": "npm:^3.5.2"
     "@docusaurus/preset-classic": "npm:^3.5.2"
+    "@docusaurus/remark-plugin-npm2yarn": "npm:^3.5.2"
     "@docusaurus/tsconfig": "npm:^3.5.2"
     "@docusaurus/types": "npm:^3.5.2"
     "@mdx-js/react": "npm:^3.0.1"
@@ -14448,6 +14464,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"npm-to-yarn@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "npm-to-yarn@npm:2.2.1"
+  checksum: 10c0/65c696a3e595facad802b6b13c04e504806ea88fd4f87ab758f8042c19f65b4c4822815a47095df944b0809a95e574c27323c33cca5533f8454515eaa6e14fac
+  languageName: node
+  linkType: hard
+
 "nprogress@npm:^0.2.0":
   version: 0.2.0
   resolution: "nprogress@npm:0.2.0"
@@ -17936,6 +17959,13 @@ __metadata:
     sucrase: bin/sucrase
     sucrase-node: bin/sucrase-node
   checksum: 10c0/ac85f3359d2c2ecbf5febca6a24ae9bf96c931f05fde533c22a94f59c6a74895e5d5f0e871878dfd59c2697a75ebb04e4b2224ef0bfc24ca1210735c2ec191ef
+  languageName: node
+  linkType: hard
+
+"superstruct@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "superstruct@npm:2.0.2"
+  checksum: 10c0/c6853db5240b4920f47b3c864dd1e23ede6819ea399ad29a65387d746374f6958c5f1c5b7e5bb152d9db117a74973e5005056d9bb83c24e26f18ec6bfae4a718
   languageName: node
   linkType: hard
 

@@ -26,6 +26,9 @@ const config: Config = {
       'classic',
       {
         docs: {
+          remarkPlugins: [
+            [require('@docusaurus/remark-plugin-npm2yarn'), {sync: true}],
+          ],
           sidebarPath: './sidebars.ts',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
@@ -56,11 +59,6 @@ const config: Config = {
           label: 'Learn',
         },
         {
-          to: 'docs/api/api-usage',
-          position: 'left',
-          label: 'API',
-        },
-        {
           href: 'https://poc.sprinter.buildwithsygma.com/',
           label: 'POC',
           position: 'left',
@@ -89,11 +87,11 @@ const config: Config = {
             },
             {
               label: 'SDK',
-              to: '/docs/category/sdk',
+              to: '/docs/sdk',
             },
             {
-              label: 'API',
-              to: '/docs/category/api',
+              label: 'React SDK',
+              to: '/docs/react-sdk/',
             },
           ],
         },

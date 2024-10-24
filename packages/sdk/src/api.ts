@@ -8,6 +8,7 @@ import type {
   FungibleToken,
   FungibleTokenBalance,
   NativeTokenBalance,
+  SingleHopContractSolutionOptions,
   Solution,
   SolutionOptions,
   SolutionResponse,
@@ -72,7 +73,7 @@ export async function getFungibleToken(
   );
 }
 
-export async function getUserFungibleTokens(
+export async function getErc20Balances(
   address: Address,
   token: TokenSymbol,
   { baseUrl, signal }: FetchOptions = {},
@@ -181,9 +182,10 @@ export async function getContractCallSolution(
     token,
     amount,
     contractCall,
+    recipient,
     threshold,
     whitelistedSourceChains,
-  }: ContractSolutionOptions,
+  }: SingleHopContractSolutionOptions,
   { baseUrl, signal }: FetchOptions = {},
 ): Promise<SolutionResponse> {
   const url = new URL("/solution/call", baseUrl || BASE_URL);
@@ -198,6 +200,7 @@ export async function getContractCallSolution(
       destination: destinationChain,
       destinationContractCall: contractCall,
       type: "fungible",
+      recipient,
       threshold,
       whitelistedSourceChains,
     }),

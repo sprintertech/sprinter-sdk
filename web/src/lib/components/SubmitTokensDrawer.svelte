@@ -7,7 +7,7 @@
 	import { formatWei } from '$lib/formatters';
 
 	const drawerStore = getDrawerStore();
-	$: quota = $sprinter.getSolution($drawerStore.meta.quota);
+	$: quota = $sprinter.poolAssetOnDestination($drawerStore.meta.quota);
 	$: token = getTokenBySymbol($drawerStore.meta.tokens, $drawerStore.meta.quota.token);
 </script>
 
@@ -63,7 +63,7 @@
 >
 	<button
 		on:click={() => {
-			quota = $sprinter.getSolution($drawerStore.meta.quota);
+			quota = $sprinter.bridgeAggregateBalance($drawerStore.meta.quota);
 		}}
 		class="w-full h-10 p-2.5 bg-white dark:bg-gray-700 rounded-[10px] shadow border border-zinc-200 dark:border-gray-600 justify-center items-center gap-1 inline-flex"
 	>

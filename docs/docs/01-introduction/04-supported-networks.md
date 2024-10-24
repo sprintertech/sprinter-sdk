@@ -4,7 +4,7 @@ title: Supported Bridges And Networks
 sidebar_position: 4
 ---
 
-import SankeyNetworkToken from '@site/src/components/SankeyNetworkToken';
+import SupportedList from '@site/src/components/SupportedList';
 
 :::tip
 New routes, networks, and tokens can readily be added by the Sprinter team. Please reach out at [requests@buildwithsygma.com](mailto:requests@buildwithsygma.com) to get a conversation started. 
@@ -22,6 +22,4 @@ New routes, networks, and tokens can readily be added by the Sprinter team. Plea
 Hover over network icon or token to show available routes
 :::
 
-| Mainnet                  | Testnet    |
-|--------------------------|------------|
-| <SankeyNetworkToken url="https://api.sprinter.buildwithsygma.com/" /> | <SankeyNetworkToken url="https://api.test.sprinter.buildwithsygma.com/" /> |
+<SupportedList />

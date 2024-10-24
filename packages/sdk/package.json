@@ -17,6 +17,7 @@
     "typescript": "^5.0.3"
   },
   "dependencies": {
+    "superstruct": "^2.0.2",
     "viem": "^2.21.9"
   },
   "volta": {
