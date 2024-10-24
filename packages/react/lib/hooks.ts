@@ -4,7 +4,7 @@ import {Address} from "@chainsafe/sprinter-sdk";
 import {BalancesEntry} from "./internal/useBalances.ts";
 
 /**
- * A hook to access the full Sprinter context, including balances, tokens, chains, and bridge solutions.
+ * A hook to access the full Sprinter context, including balances, tokens, chains, and transfer solutions.
  *
  * @returns {SprinterContext} The current context value with Sprinter functionalities.
  *
@@ -182,39 +182,65 @@ export function useSprinterChains() {
 }
 
 /**
- * A hook to retrieve bridge solutions and functions to interact with the Sprinter.
+ * A hook to retrieve transfer and pooling solutions and functions to interact with the Sprinter SDK.
  *
  * @returns {{
  *   solution: AsyncRequestState<SolutionResponse>,
- *   getBridgeAggregateBalance: (request: {
+ *   getTransfer: (request: {
  *     account: string,
  *     destinationChain: number,
  *     token: string,
  *     amount: string
+ *   }) => void,
+ *   getTransferWithHook: (request: {
+ *     account: string,
+ *     destinationChain: number,
+ *     token: string,
+ *     amount: string,
+ *     contractCall: object
+ *   }) => void,
+ *   getPoolAssetOnDestination: (request: {
+ *     account: string,
+ *     destinationChain: number,
+ *     token: string,
+ *     amount: string,
+ *     sourceChains?: number[]
+ *   }) => void,
+ *   getPoolAssetOnDestinationWithHook: (request: {
+ *     account: string,
+ *     destinationChain: number,
+ *     token: string,
+ *     amount: string,
+ *     contractCall: object,
+ *     sourceChains?: number[]
  *   }) => void
  * }}
- * - `solution`: The state of the bridge solution, including:
- *   - `data`: The bridge solution, or `null` if not yet fetched.
+ * - `solution`: The state of the solution, including:
+ *   - `data`: The solution, or `null` if not yet fetched.
  *   - `loading`: A boolean indicating if the request is in progress.
  *   - `error`: An error message, or `null` if there is no error.
- * - `getBridgeAggregateBalance`: A function to get the aggregate bridge balance based on the provided request.
+ * - `getTransfer`: A function to get a single-hop transfer solution based on the provided request.
+ * - `getTransferWithHook`: A function to get a transfer solution that includes an additional contract call on the destination chain.
+ * - `getPoolAssetOnDestination`: A function to get a solution for pooling assets from multiple chains and transferring them to the destination chain.
+ * - `getPoolAssetOnDestinationWithHook`: A function to get a solution for pooling assets and performing a contract call on the destination chain.
  *
  * @example
  * ```ts
  * import React, { useEffect } from 'react';
- * import { useSprinterBridge } from '@chainsafe/sprinter-react';
+ * import { useSprinterTransfers } from '@chainsafe/sprinter-react';
  *
- * function BridgeComponent() {
- *   const { solution, getBridgeAggregateBalance } = useSprinterBridge();
+ * function TransfersComponent() {
+ *   const { solution, getPoolAssetOnDestination } = useSprinterTransfers();
  *
  *   useEffect(() => {
- *     getBridgeAggregateBalance({
+ *     getPoolAssetOnDestination({
  *       account: "0x3e101ec02e7a48d16dade204c96bff842e7e2519",
  *       destinationChain: 11155111,
  *       token: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
  *       amount: "100000000",
+ *       sourceChains: [84532, 137],
  *     });
- *   }, [getBridgeAggregateBalance]);
+ *   }, [getPoolAssetOnDestination]);
  *
  *   if (solution.loading) {
  *     return <div>Loading...</div>;
@@ -232,7 +258,7 @@ export function useSprinterChains() {
  * }
  * ```
  */
-export function useSprinterBridge() {
-  const { solution, getBridgeAndCall, getBridge, getBridgeAggregateBalance, getBridgeAggregateBalanceAndCall } = useSprinter();
-  return { solution, getBridgeAndCall, getBridge, getBridgeAggregateBalance, getBridgeAggregateBalanceAndCall };
+export function useSprinterTransfers() {
+  const { solution, getTransfer, getTransferWithHook, getPoolAssetOnDestination, getPoolAssetOnDestinationWithHook } = useSprinter();
+  return { solution, getTransfer, getTransferWithHook, getPoolAssetOnDestination, getPoolAssetOnDestinationWithHook };
 }

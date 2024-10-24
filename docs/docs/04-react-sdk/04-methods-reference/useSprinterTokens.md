@@ -88,5 +88,3 @@ Here is an example of what the `tokens.data` might look like after calling `getA
 - **Automatic Fetch**: When `SprinterContext` is initialized, the `getAvailableTokens` function is automatically called to pre-fetch token data.
 - If the tokens have already been fetched, the hook will return the cached list to optimize performance.
 - Tokens are fetched from Sprinter’s supported blockchain networks.
-
-For further details on other hooks, check the [Methods Reference](./useSprinterBalances.md).

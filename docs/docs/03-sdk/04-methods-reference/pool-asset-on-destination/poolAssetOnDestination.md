@@ -1,12 +1,12 @@
 ---
-id: bridge-aggregate-balance
-title: bridgeAggregateBalance
+id: pool-asset-on-destination
+title: poolAssetOnDestination
 sidebar_position: 1
 ---
 
-# `bridgeAggregateBalance`
+# `poolAssetOnDestination`
 
-The `bridgeAggregateBalance` method generates a solution for aggregating fungible token balances across multiple source chains and transferring them to a specified destination chain. This method calculates the best combination of single-hop transfers from available source chains.
+The `poolAssetOnDestination` method generates a solution for pooling fungible token balances across multiple source chains and transferring them to a specified destination chain. This method calculates the best combination of multi-hop transfers from available source chains, ultimately pooling the assets on the destination chain.
 
 ## Usage
 
@@ -23,7 +23,7 @@ const settings = {
   sourceChains: [84532, 1993],  // Optional: List of source chains to be considered
 };
 
-sprinter.bridgeAggregateBalance(settings).then(solution => {
+sprinter.poolAssetOnDestination(settings).then(solution => {
   console.log(solution);
 });
 ```
@@ -31,18 +31,18 @@ sprinter.bridgeAggregateBalance(settings).then(solution => {
 ## Parameters
 
 - `settings`: *(Required)* An object containing the following fields:
-    - `account`: The user’s address.
-    - `destinationChain`: The ID of the destination chain.
-    - `token`: The symbol of the token to be aggregated and transferred (e.g., `USDC`, `ETH`).
-    - `amount`: The target amount of the token on the destination chain, in the smallest denomination (e.g., for USDC with 6 decimals, 1 USDC = 1,000,000).
-    - `sourceChains?`: *(Optional)* An array of source chain IDs to be considered for aggregation. If omitted, Sprinter will use all available source chains.
-    - `threshold?`: *(Optional)* The minimum amount of the token to leave on the source chain, in the smallest denomination (useful for avoiding emptying the source chain completely).
+  - `account`: The user’s address.
+  - `destinationChain`: The ID of the destination chain.
+  - `token`: The symbol of the token to be pooled and transferred (e.g., `USDC`, `ETH`).
+  - `amount`: The target amount of the token on the destination chain, in the smallest denomination (e.g., for USDC with 6 decimals, 1 USDC = 1,000,000).
+  - `sourceChains?`: *(Optional)* An array of source chain IDs to be considered for pooling. If omitted, Sprinter will use all available source chains.
+  - `threshold?`: *(Optional)* The minimum amount of the token to leave on the source chain, in the smallest denomination (useful for avoiding emptying the source chain completely).
 
 - `fetchOptions?`: *(Optional)* An object containing `baseUrl` to override the default API endpoint for this request.
 
-### Example: Aggregating from Multiple Chains
+### Example: Pooling from Multiple Chains
 
-In this example, balances from multiple source chains (e.g., BaseSepolia and B3Sepolia) are aggregated to the destination chain (Sepolia).
+In this example, balances from multiple source chains (e.g., BaseSepolia and B3Sepolia) are pooled to the destination chain (Sepolia).
 
 ```typescript
 const settings = {
@@ -53,7 +53,7 @@ const settings = {
   sourceChains: [84532, 1993]  // BaseSepolia and B3Sepolia as source chains
 };
 
-sprinter.bridgeAggregateBalance(settings).then(solution => {
+sprinter.poolAssetOnDestination(settings).then(solution => {
   console.log(solution);
 });
 ```
@@ -61,7 +61,7 @@ sprinter.bridgeAggregateBalance(settings).then(solution => {
 ### Example: Using `fetchOptions`
 
 ```typescript
-sprinter.bridgeAggregateBalance(settings, { baseUrl: 'https://custom.api.url' }).then(solution => {
+sprinter.poolAssetOnDestination(settings, { baseUrl: 'https://custom.api.url' }).then(solution => {
   console.log(solution);
 });
 ```

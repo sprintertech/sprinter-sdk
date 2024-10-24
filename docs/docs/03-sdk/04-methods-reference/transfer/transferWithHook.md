@@ -1,20 +1,12 @@
 ---
-id: bridge-aggregate-balance-and-call
-title: bridgeAggregateBalanceAndCall
-sidebar_position: 4
+id: transfer-with-hook
+title: transferWithHook
+sidebar_position: 2
 ---
 
-# `bridgeAggregateBalanceAndCall`
+# `transferWithHook`
 
-The `bridgeAggregateBalanceAndCall` method generates a solution for aggregating token balances from multiple source chains and transferring them to a specified destination chain, followed by a contract call on the destination chain. This method calculates the best combination of single-hop transfers from available source chains and includes a contract interaction after the token transfer.
-
-:::warning Cross-Chain Aggregation Behavior
-
-When aggregating balances from multiple chains, the contract call will be executed once per source chain. This means the same contract will be called multiple times, which may result in unintended behavior for certain use cases. Ensure that your contract can handle repeated calls, as this may not be suitable for actions like NFT minting or governance voting, where a single action is expected.
-
-This behavior is generally fine for operations like staking or liquidity deposits, where multiple transactions are acceptable.
-
-:::
+The `transferWithHook` method generates a solution for performing a token transfer from a single source chain, followed by a contract call on the destination chain. The contract call can involve either a native token or a token transfer. This method returns the necessary transaction details to execute both the token transfer and the contract interaction.
 
 ## Usage
 
@@ -23,8 +15,8 @@ import TabItem from '@theme/TabItem';
 
 <Tabs groupId="call-type" queryString>
   <TabItem value="token" label="Token Transfer with Contract Call">
-
-In this example, a token transfer (e.g., `USDC`) is aggregated from multiple source chains, followed by a contract call on the destination chain. You need to provide `outputTokenAddress` and `approvalAddress` to allow the contract to move tokens on behalf of the user.
+    
+In this example, a token transfer (e.g., `USDC`) is followed by a contract call on the destination chain. You need to provide `outputTokenAddress` and `approvalAddress` to allow the contract to move tokens on behalf of the user.
 
 ```typescript
 import { Sprinter, Environment } from '@chainsafe/sprinter-sdk';
@@ -35,7 +27,7 @@ const settings = {
   account: '0xYourAddressHere',
   destinationChain: 11155111,  // Sepolia testnet
   token: 'USDC',
-  amount: 1000000,  // Targeted balance on the destination chain, in the smallest denomination
+  amount: 1000000,  // In smallest denomination (e.g., 1 USDC = 1,000,000 in USDC with 6 decimals)
   contractCall: {
     contractAddress: '0xContractAddressHere',
     callData: '0xSomeCallData',  // Encoded contract interaction data
@@ -44,10 +36,10 @@ const settings = {
     approvalAddress: '0xApprovalAddressHere'  // Contract that needs approval to transfer tokens
   },
   recipient: '0xRecipientAddress',  // Optional recipient of leftover tokens
-  sourceChains: [84532, 1993],  // Optional: List of source chains to be considered
+  sourceChains: [84532]  // Optional: List of source chains to be considered
 };
 
-sprinter.bridgeAggregateBalanceAndCall(settings).then(solution => {
+sprinter.transferWithHook(settings).then(solution => {
   console.log(solution);
 });
 ```
@@ -55,7 +47,7 @@ sprinter.bridgeAggregateBalanceAndCall(settings).then(solution => {
 
   <TabItem value="native" label="Native Token Transfer with Contract Call">
 
-In this example, a native token (e.g., `ETH`) is aggregated from multiple source chains, followed by a contract call on the destination chain.
+In this example, a native token (e.g., `ETH`) is transferred to a contract on the destination chain, followed by a contract call. The contract can receive the native token in addition to executing the call.
 
 ```typescript
 const settings = {
@@ -66,13 +58,13 @@ const settings = {
   contractCall: {
     contractAddress: '0xContractAddressHere',
     callData: '0xSomeCallData',  // Encoded contract interaction data
-    gasLimit: 21000,  // Standard gas limit for ETH transfers
+    gasLimit: 21000,  // Standard gas limit for simple ETH transfers
   },
   recipient: '0xRecipientAddressHere',  // The recipient of the native token transfer
-  sourceChains: [84532, 1993]  // Optional: List of source chains to be considered
+  sourceChains: [84532]  // Optional: List of source chains to be considered
 };
 
-sprinter.bridgeAggregateBalanceAndCall(settings).then(solution => {
+sprinter.transferWithHook(settings).then(solution => {
   console.log(solution);
 });
 ```
@@ -80,10 +72,10 @@ sprinter.bridgeAggregateBalanceAndCall(settings).then(solution => {
 </Tabs>
 
 :::note
-You can limit the solution to a specific source chain using the `sourceChains` field. For example, to use only `BaseSepolia` (chain ID `84532`) and another chain, provide it as an array like this:
+You can limit the solution to a specific source chain using the `sourceChains` field. For example, to use only `BaseSepolia` (chain ID `84532`), provide it as an array like this:
 
 ```typescript
-sourceChains: [84532, 1993];
+sourceChains: [84532];
 ```
 If omitted, Sprinter will consider all available source chains.
 :::
@@ -91,7 +83,7 @@ If omitted, Sprinter will consider all available source chains.
 ### Example: Using `fetchOptions`
 
 ```typescript
-sprinter.bridgeAggregateBalanceAndCall(settings, { baseUrl: 'https://custom.api.url' }).then(solution => {
+sprinter.transferWithHook(settings, { baseUrl: 'https://custom.api.url' }).then(solution => {
   console.log(solution);
 });
 ```
@@ -101,8 +93,8 @@ sprinter.bridgeAggregateBalanceAndCall(settings, { baseUrl: 'https://custom.api.
 - `settings`: *(Required)* An object containing the following fields:
     - `account`: The user’s address.
     - `destinationChain`: The ID of the destination chain.
-    - `token`: The symbol of the token to be aggregated and transferred (e.g., `USDC`, `ETH`).
-    - `amount`: The target amount of the token on the destination chain, in the smallest denomination (e.g., for USDC with 6 decimals, 1 USDC = 1,000,000).
+    - `token`: The symbol of the token to be transferred (e.g., `USDC`, `ETH`).
+    - `amount`: The amount of the token to be transferred in the smallest denomination (e.g., for USDC with 6 decimals, 1 USDC = 1,000,000).
     - `contractCall`: An object containing the contract call details, depending on the type of contract call:
         - **Native Contract Call**:
             - `contractAddress`: The contract address on the destination chain.
@@ -115,8 +107,8 @@ sprinter.bridgeAggregateBalanceAndCall(settings, { baseUrl: 'https://custom.api.
             - `outputTokenAddress?`: *(Optional)* The token address where tokens will be sent after the contract call.
             - `approvalAddress?`: *(Optional)* The contract address that requires approval to transfer tokens (e.g., for `transferFrom`).
     - `recipient?`: *(Optional)* The address of the recipient of any leftover tokens.
-    - `sourceChains?`: *(Optional)* An array of source chain IDs to be considered for aggregation. If omitted, Sprinter will use all available source chains.
-    - `threshold?`: *(Optional)* The minimum amount of the token to leave on the source chain, in the smallest denomination (useful for avoiding emptying the source chain completely).
+    - `sourceChains?`: *(Optional)* An array of source chain IDs to be considered for the transfer. If omitted, Sprinter will use all available chains for the solution.
+    - `threshold?`: *(Optional)* The minimum amount of tokens required to trigger the transfer solution. If not met, the transfer solution will not proceed.
 - `fetchOptions?`: *(Optional)* An object containing `baseUrl` to override the default API endpoint for this request.
 
 import HowToCallData from "../_how-to-calldata.md"
@@ -162,8 +154,8 @@ import GasTip from "../_gas-tip.md"
 
 <GasTip />
 
-<Tabs groupId="response-type" queryString>
-  <TabItem value="token" label="Token Transfer with Contract Call Response">
+<Tabs groupId="call-type" queryString>
+  <TabItem value="token" label="Token Transfer with Contract Call">
 
 ```json
 [
@@ -194,13 +186,15 @@ import GasTip from "../_gas-tip.md"
       "value": "0x38d7ea4c68000",
       "gasPrice": "0xf433d",
       "gasLimit": "0x35f48",
-      "chainId": 84532
+      "chainId": 845
+
+32
     },
     "approvals": [
       {
         "data": "0x095ea7b30000000000000000000000003b0f996c474c91de56617da13a52b22bb659d18e0000000000000000000000000000000000000000000000000000000005f5e100",
         "to": "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
-        "from": "0x3E101Ec02e7A48D16DADE204C96bFF842E7E2519",
+        "from": "0x3E101Ec02e7a48d16dade204c96bff842e7e2519",
         "value": "0x0",
         "gasPrice": "0xf433d",
         "gasLimit": "0xe484",
@@ -213,7 +207,7 @@ import GasTip from "../_gas-tip.md"
 
   </TabItem>
 
-  <TabItem value="native" label="Native Token Transfer with Contract Call Response">
+  <TabItem value="native" label="Native Token Transfer with Contract Call">
 
 ```json
 [
@@ -240,7 +234,7 @@ import GasTip from "../_gas-tip.md"
     "transaction": {
       "data": "0x73c45c98000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000012000000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000540000000000000000000000000000000000000000000000000000000005f5e10000000000000000000000000000000000000000000000000000000000000000143e101ec02e7a48d16dade204c96bff842e7e251900000000000000000000000000000000000000000000000000000000000000000000000000000000000000023078000000000000000000000000000000000000000000000000000000000000",
       "to": "0x9D5C332Ebe0DaE36e07a4eD552Ad4d8c5067A61F",
-      "from": "0x3E101Ec02e7A48D16DADE204C96bFF842E7E2519",
+      "from": "0x3E101Ec02e7a48D16DADE204C96bFF842E7E2519",
       "value": "0x38d7ea4c68000",
       "gasPrice": "0xf433d",
       "gasLimit": "0x35f48",

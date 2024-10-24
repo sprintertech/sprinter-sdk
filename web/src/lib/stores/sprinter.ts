@@ -1,8 +1,8 @@
 import { writable } from 'svelte/store';
-import { Sprinter, setBaseUrl } from '@chainsafe/sprinter-sdk';
+import { Sprinter, setBaseUrl, Environment } from '@chainsafe/sprinter-sdk';
 import { selectedProvider } from '$lib/stores/wallet';
 
-setBaseUrl('https://api.test.sprinter.buildwithsygma.com/');
+setBaseUrl(Environment.TESTNET);
 
 export const sprinter = writable<Sprinter>();
 

@@ -40,7 +40,7 @@ const BridgeCoreSchema = object({
 const BridgeCoreWithRecipientSchema = assign(
   BridgeCoreSchema,
   object({
-    recipient: hexString(),
+    recipient: optional(hexString()),
   }),
 );
 

@@ -11,7 +11,7 @@ const noNetworkFound: Chain = {
 	chainType: ChainType.EVM,
 	name: 'none',
 	logoURI: 'https://static.thenounproject.com/png/75231-200.png',
-	rpcurls: []
+	rpcURLs: []
 };
 
 export function getNetworkByChainId(networks: Chain[], chainId: ChainID) {

@@ -168,21 +168,21 @@ export class Sprinter {
   }
 
   /**
-   * Fetches and returns the optimal bridging solution based on the provided settings for bridging tokens between multiple chains.
+   * Fetches and returns the optimal solution for pooling assets on the destination chain based on the provided settings for bridging tokens between multiple chains.
    *
-   * This method uses the provided settings to determine the best path for transferring tokens across multiple supported blockchains using a multi-hop strategy.
+   * This method uses the provided settings to determine the best path for transferring tokens across multiple supported blockchains using a multi-hop strategy, ultimately pooling the assets on the destination chain.
    *
-   * @param {Infer<typeof MultiHopSchema>} settings - The settings object for defining the bridging parameters:
+   * @param {Infer<typeof MultiHopSchema>} settings - The settings object for defining the pooling parameters:
    * - `account`: The user's wallet address for the transaction.
    * - `destinationChain`: The ID of the destination blockchain.
-   * - `token`: The token symbol (e.g., "ETH", "USDC") to be bridged.
-   * - `amount`: The amount of tokens to bridge (as a string or number).
-   * - `threshold` (optional): The minimum amount threshold required for bridging.
-   * - `sourceChains` (optional): An array of whitelisted source chain IDs for the transfer.
+   * - `token`: The token symbol (e.g., "ETH", "USDC") to be transferred.
+   * - `amount`: The amount of tokens to transfer (as a string or number).
+   * - `threshold` (optional): The minimum amount threshold required for pooling.
+   * - `sourceChains` (optional): An array of source chain IDs for the transfer.
    *
    * @param {FetchOptions} [options] - Optional configuration for the fetch request, such as custom headers or query parameters.
    *
-   * @returns {Promise<SolutionResponse>} A promise that resolves to an array of possible bridging solutions (`Solution[]`), or a `FailedSolution` object in case of an error.
+   * @returns {Promise<SolutionResponse>} A promise that resolves to an array of possible pooling solutions (`Solution[]`), or a `FailedSolution` object in case of an error.
    *
    * @example
    * ```ts
@@ -197,7 +197,7 @@ export class Sprinter {
    *   sourceChains: [84532, 137],
    * };
    *
-   * sprinter.bridgeAggregateBalance(settings).then(solution => {
+   * sprinter.poolAssetOnDestination(settings).then(solution => {
    *   console.log(solution);
    * });
    * ```
@@ -238,7 +238,7 @@ export class Sprinter {
    *       {
    *         "data": "0x095ea7b30000000000000000000000003b0f996c474c91de56617da13a52b22bb659d18e0000000000000000000000000000000000000000000000000000000005f5e100",
    *         "to": "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
-   *         "from": "0x3E101Ec02e7A48D16DADE204C96bFF842E7E2519",
+   *         "from": "0x3E101Ec02e7a48D16DADE204C96bFF842E7E2519",
    *         "value": "0x0",
    *         "gasPrice": "0xf433d",
    *         "gasLimit": "0xe484",
@@ -249,9 +249,9 @@ export class Sprinter {
    * ]
    * ```
    *
-   * @note If the bridging process encounters an error, the returned object will be of type `FailedSolution` containing an error message.
+   * @note If the pooling process encounters an error, the returned object will be of type `FailedSolution` containing an error message.
    */
-  public async bridgeAggregateBalance(
+  public async poolAssetOnDestination(
     settings: Infer<typeof MultiHopSchema>,
     options?: FetchOptions,
   ): Promise<SolutionResponse> {
@@ -269,16 +269,16 @@ export class Sprinter {
   }
 
   /**
-   * Fetches and returns the optimal bridging solution and performs a contract call on the destination chain.
+   * Fetches and returns the optimal pooling solution and performs a contract call on the destination chain.
    *
-   * This method is intended to determine the best path for transferring tokens across multiple supported blockchains
+   * This method is intended to determine the best path for pooling tokens across multiple supported blockchains
    * and then execute a contract call on the destination chain using either native or token contract interactions.
    *
-   * @param {Infer<typeof MultiHopWithContractSchema>} settings - The settings object for defining the bridging and contract call parameters:
+   * @param {Infer<typeof MultiHopWithContractSchema>} settings - The settings object for defining the pooling and contract call parameters:
    * - `account`: The user's wallet address for the transaction.
    * - `destinationChain`: The ID of the destination blockchain.
-   * - `token`: The token symbol (e.g., "ETH", "USDC") to be bridged.
-   * - `amount`: The amount of tokens to bridge (as a string or number).
+   * - `token`: The token symbol (e.g., "ETH", "USDC") to be pooled.
+   * - `amount`: The amount of tokens to transfer (as a string or number).
    * - `contractCall`: Defines the contract call that will be executed on the destination chain:
    *   - For native contract calls (`NativeContractCall`):
    *     - `callData`: The encoded data to be sent to the contract.
@@ -292,11 +292,11 @@ export class Sprinter {
    *     - `outputTokenAddress` (optional): The address of the output token (if different from the input).
    *     - `approvalAddress` (optional): The address to approve for spending tokens.
    * - `sourceChains` (optional): An array of whitelisted source chain IDs for the transfer.
-   * - `threshold` (optional): The minimum amount threshold required for bridging.
+   * - `threshold` (optional): The minimum amount threshold required for pooling.
    *
    * @param {FetchOptions} [options] - Optional configuration for the fetch request, such as custom headers or query parameters.
    *
-   * @returns {Promise<SolutionResponse>} A promise that resolves to the solution object containing the optimal bridging strategy and contract call, or a `FailedSolution` in case of an error.
+   * @returns {Promise<SolutionResponse>} A promise that resolves to the solution object containing the optimal pooling strategy and contract call, or a `FailedSolution` in case of an error.
    *
    * @example
    * ```ts
@@ -318,14 +318,14 @@ export class Sprinter {
    *   sourceChains: [84532, 137]
    * };
    *
-   * sprinter.bridgeAggregateBalanceAndCall(settings).then(solution => {
+   * sprinter.poolAssetOnDestinationWithHook(settings).then(solution => {
    *   console.log(solution);
    * }).catch(error => {
    *   console.error(error);
    * });
    * ```
    */
-  public async bridgeAggregateBalanceAndCall(
+  public async poolAssetOnDestinationWithHook(
     settings: Infer<typeof MultiHopWithContractSchema>,
     options?: FetchOptions,
   ): Promise<SolutionResponse> {
@@ -343,22 +343,22 @@ export class Sprinter {
   }
 
   /**
-   * Fetches and returns the optimal bridging solution for transferring tokens between two blockchains using a single-hop strategy.
+   * Fetches and returns the optimal transfer solution for moving tokens between two blockchains using a single-hop strategy.
    *
    * This method finds the best path for transferring tokens from a source chain to a destination chain, as specified by the provided settings.
    *
-   * @param {Infer<typeof SingleHopSchema>} settings - The settings object for defining the bridging parameters:
+   * @param {Infer<typeof SingleHopSchema>} settings - The settings object for defining the transfer parameters:
    * - `account`: The user's wallet address for the transaction.
    * - `destinationChain`: The ID of the destination blockchain.
-   * - `token`: The token symbol (e.g., "ETH", "USDC") to be bridged.
-   * - `amount`: The amount of tokens to bridge (as a string or number).
+   * - `token`: The token symbol (e.g., "ETH", "USDC") to be transferred.
+   * - `amount`: The amount of tokens to transfer (as a string or number).
    * - `recipient` (optional): The address of the recipient of any leftover tokens.
-   * - `threshold` (optional): The minimum amount threshold required for bridging.
+   * - `threshold` (optional): The minimum amount threshold required for the transfer.
    * - `sourceChains` (optional): An array of whitelisted source chain IDs for the transfer.
    *
    * @param {FetchOptions} [options] - Optional configuration for the fetch request, such as custom headers or query parameters.
    *
-   * @returns {Promise<SolutionResponse>} A promise that resolves to the solution object containing the optimal bridging strategy, or a `FailedSolution` in case of an error.
+   * @returns {Promise<SolutionResponse>} A promise that resolves to the solution object containing the optimal transfer strategy, or a `FailedSolution` in case of an error.
    *
    * @example
    * ```ts
@@ -374,14 +374,14 @@ export class Sprinter {
    *   recipient: "0xRecipientAddress", // Optional recipient of leftover tokens
    * };
    *
-   * sprinter.bridge(settings).then(solution => {
+   * sprinter.transfer(settings).then(solution => {
    *   console.log(solution);
    * }).catch(error => {
    *   console.error(error);
    * });
    * ```
    */
-  public async bridge(
+  public async transfer(
     settings: Infer<typeof SingleHopSchema>,
     options?: FetchOptions,
   ): Promise<SolutionResponse> {
@@ -399,15 +399,15 @@ export class Sprinter {
   }
 
   /**
-   * Fetches and returns the optimal bridging solution and performs a contract call on the destination chain using a single-hop strategy.
+   * Fetches and returns the optimal transfer solution and performs a contract call on the destination chain using a single-hop strategy.
    *
    * This method transfers tokens from a source chain to a destination chain and then executes a contract call on the destination chain.
    *
-   * @param {Infer<typeof SingleHopWithContractSchema>} settings - The settings object for defining the bridging and contract call parameters:
+   * @param {Infer<typeof SingleHopWithContractSchema>} settings - The settings object for defining the transfer and contract call parameters:
    * - `account` {string}: The user's wallet address for the transaction.
    * - `destinationChain` {number}: The ID of the destination blockchain.
-   * - `token` {string}: The token symbol (e.g., "ETH", "USDC") to be bridged.
-   * - `amount` {string | number}: The amount of tokens to bridge (in the smallest denomination).
+   * - `token` {string}: The token symbol (e.g., "ETH", "USDC") to be transferred.
+   * - `amount` {string | number}: The amount of tokens to transfer (in the smallest denomination).
    * - `contractCall` {Object}: Defines the contract call that will be executed on the destination chain:
    *   - For native contract calls (`NativeContractCall`):
    *     - `callData` {string}: The encoded data to be sent to the contract.
@@ -420,12 +420,12 @@ export class Sprinter {
    *     - `outputTokenAddress` {string} (optional): The address of the output token (if different from the input).
    *     - `approvalAddress` {string} (optional): The address to approve for spending tokens.
    * - `recipient` {string} (optional): The address of the recipient of any leftover tokens.
-   * - `sourceChains` {Array<number>} (optional): An array of whitelisted source chain IDs for the transfer.
-   * - `threshold` {number} (optional): The minimum amount threshold required for bridging.
+   * - `sourceChains` {Array<number>} (optional): An array of source chain IDs to be considered for the transfer.
+   * - `threshold` {number} (optional): The minimum amount threshold required for the transfer.
    *
    * @param {FetchOptions} [options] - Optional configuration for the fetch request, such as custom headers or query parameters.
    *
-   * @returns {Promise<SolutionResponse>} A promise that resolves to the solution object containing the optimal bridging strategy and contract call, or a `FailedSolution` in case of an error.
+   * @returns {Promise<SolutionResponse>} A promise that resolves to the solution object containing the optimal transfer strategy and contract call, or a `FailedSolution` in case of an error.
    *
    * @example
    * ```ts
@@ -446,14 +446,14 @@ export class Sprinter {
    *   recipient: "0xRecipientAddress", // for sending leftover tokens
    * };
    *
-   * sprinter.bridgeAndCall(settings).then(solution => {
+   * sprinter.transferWithHook(settings).then(solution => {
    *   console.log(solution);
    * }).catch(error => {
    *   console.error(error);
    * });
    * ```
    */
-  public async bridgeAndCall(
+  public async transferWithHook(
     settings: Infer<typeof SingleHopWithContractSchema>,
     options?: FetchOptions,
   ): Promise<SolutionResponse> {
