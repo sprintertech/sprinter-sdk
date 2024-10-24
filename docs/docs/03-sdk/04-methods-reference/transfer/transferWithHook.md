@@ -1,12 +1,12 @@
 ---
-id: bridge-and-call
-title: bridgeAndCall
+id: transfer-with-hook
+title: transferWithHook
 sidebar_position: 2
 ---
 
-# `bridgeAndCall`
+# `transferWithHook`
 
-The `bridgeAndCall` method generates a solution for performing a single-hop cross-chain token transfer, followed by a contract call on the destination chain. The contract call can be either a native contract call or a token transfer with a contract call. This method returns the necessary transaction details to execute both the token transfer and the contract interaction.
+The `transferWithHook` method generates a solution for performing a token transfer from a single source chain, followed by a contract call on the destination chain. The contract call can involve either a native token or a token transfer. This method returns the necessary transaction details to execute both the token transfer and the contract interaction.
 
 ## Usage
 
@@ -19,11 +19,9 @@ import TabItem from '@theme/TabItem';
 In this example, a token transfer (e.g., `USDC`) is followed by a contract call on the destination chain. You need to provide `outputTokenAddress` and `approvalAddress` to allow the contract to move tokens on behalf of the user.
 
 ```typescript
-import { Sprinter } from '@chainsafe/sprinter-sdk';
+import { Sprinter, Environment } from '@chainsafe/sprinter-sdk';
 
-const sprinter = new Sprinter({
-  baseUrl: 'https://api.test.sprinter.buildwithsygma.com',  // Testnet URL
-});
+const sprinter = new Sprinter({ baseUrl: Environment.TESTNET });
 
 const settings = {
   account: '0xYourAddressHere',
@@ -41,7 +39,7 @@ const settings = {
   sourceChains: [84532]  // Optional: List of source chains to be considered
 };
 
-sprinter.bridgeAndCall(settings).then(solution => {
+sprinter.transferWithHook(settings).then(solution => {
   console.log(solution);
 });
 ```
@@ -66,7 +64,7 @@ const settings = {
   sourceChains: [84532]  // Optional: List of source chains to be considered
 };
 
-sprinter.bridgeAndCall(settings).then(solution => {
+sprinter.transferWithHook(settings).then(solution => {
   console.log(solution);
 });
 ```
@@ -85,7 +83,7 @@ If omitted, Sprinter will consider all available source chains.
 ### Example: Using `fetchOptions`
 
 ```typescript
-sprinter.bridgeAndCall(settings, { baseUrl: 'https://custom.api.url' }).then(solution => {
+sprinter.transferWithHook(settings, { baseUrl: 'https://custom.api.url' }).then(solution => {
   console.log(solution);
 });
 ```
@@ -109,8 +107,8 @@ sprinter.bridgeAndCall(settings, { baseUrl: 'https://custom.api.url' }).then(sol
             - `outputTokenAddress?`: *(Optional)* The token address where tokens will be sent after the contract call.
             - `approvalAddress?`: *(Optional)* The contract address that requires approval to transfer tokens (e.g., for `transferFrom`).
     - `recipient?`: *(Optional)* The address of the recipient of any leftover tokens.
-    - `sourceChains?`: *(Optional)* An array of source chain IDs to be considered for the bridge. If omitted, Sprinter will use all available chains for the solution.
-    - `threshold?`: *(Optional)* The minimum amount of tokens required to trigger the bridging solution. If not met, the bridge solution will not proceed.
+    - `sourceChains?`: *(Optional)* An array of source chain IDs to be considered for the transfer. If omitted, Sprinter will use all available chains for the solution.
+    - `threshold?`: *(Optional)* The minimum amount of tokens required to trigger the transfer solution. If not met, the transfer solution will not proceed.
 - `fetchOptions?`: *(Optional)* An object containing `baseUrl` to override the default API endpoint for this request.
 
 import HowToCallData from "../_how-to-calldata.md"
@@ -188,13 +186,15 @@ import GasTip from "../_gas-tip.md"
       "value": "0x38d7ea4c68000",
       "gasPrice": "0xf433d",
       "gasLimit": "0x35f48",
-      "chainId": 84532
+      "chainId": 845
+
+32
     },
     "approvals": [
       {
         "data": "0x095ea7b30000000000000000000000003b0f996c474c91de56617da13a52b22bb659d18e0000000000000000000000000000000000000000000000000000000005f5e100",
         "to": "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
-        "from": "0x3E101Ec02e7A48D16DADE204C96bFF842E7E2519",
+        "from": "0x3E101Ec02e7a48d16dade204c96bff842e7e2519",
         "value": "0x0",
         "gasPrice": "0xf433d",
         "gasLimit": "0xe484",
@@ -234,7 +234,7 @@ import GasTip from "../_gas-tip.md"
     "transaction": {
       "data": "0x73c45c98000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000012000000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000540000000000000000000000000000000000000000000000000000000005f5e10000000000000000000000000000000000000000000000000000000000000000143e101ec02e7a48d16dade204c96bff842e7e251900000000000000000000000000000000000000000000000000000000000000000000000000000000000000023078000000000000000000000000000000000000000000000000000000000000",
       "to": "0x9D5C332Ebe0DaE36e07a4eD552Ad4d8c5067A61F",
-      "from": "0x3E101Ec02e7A48D16DADE204C96bFF842E7E2519",
+      "from": "0x3E101Ec02e7a48D16DADE204C96bFF842E7E2519",
       "value": "0x38d7ea4c68000",
       "gasPrice": "0xf433d",
       "gasLimit": "0x35f48",

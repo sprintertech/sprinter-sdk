@@ -4,5 +4,5 @@ export {
   useSprinter,
   useSprinterChains,
   useSprinterTokens,
-  useSprinterBridge,
+  useSprinterTransfers,
 } from "./hooks";

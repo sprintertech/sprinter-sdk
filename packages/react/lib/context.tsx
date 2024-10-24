@@ -3,12 +3,12 @@ import { Sprinter } from "@chainsafe/sprinter-sdk";
 import { useTokens } from "./internal/useTokens.ts";
 import { useChains } from "./internal/useChains.ts";
 import { useBalances } from "./internal/useBalances.ts";
-import { useBridge } from "./internal/useBridge.ts";
+import { useTransfers } from "./internal/useTransfers.ts";
 
 type SprinterContext = ReturnType<typeof useBalances> &
   ReturnType<typeof useTokens> &
   ReturnType<typeof useChains> &
-  ReturnType<typeof useBridge>;
+  ReturnType<typeof useTransfers>;
 
 export const Context = createContext<SprinterContext | null>(null);
 
@@ -59,11 +59,11 @@ export function SprinterContext({ children, baseUrl }: SprinterContextProps) {
   /** Solutions */
   const {
     solution,
-    getBridgeAndCall,
-    getBridge,
-    getBridgeAggregateBalance,
-    getBridgeAggregateBalanceAndCall,
-  } = useBridge(sprinter);
+    getTransfer,
+    getTransferWithHook,
+    getPoolAssetOnDestination,
+    getPoolAssetOnDestinationWithHook,
+  } = useTransfers(sprinter);
 
   /** Initialization */
   useEffect(() => {
@@ -81,10 +81,10 @@ export function SprinterContext({ children, baseUrl }: SprinterContextProps) {
         chains,
         getAvailableChains,
         solution,
-        getBridgeAndCall,
-        getBridge,
-        getBridgeAggregateBalance,
-        getBridgeAggregateBalanceAndCall,
+        getTransfer,
+        getTransferWithHook,
+        getPoolAssetOnDestination,
+        getPoolAssetOnDestinationWithHook,
       }}
     >
       {children}

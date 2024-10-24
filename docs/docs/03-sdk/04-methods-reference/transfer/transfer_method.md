@@ -1,21 +1,19 @@
 ---
-id: bridge
-title: bridge
+id: transfer
+title: transfer
 sidebar_position: 1
 ---
 
-# `bridge`
+# `transfer`
 
-The `bridge` method generates a solution for performing a single-hop cross-chain token transfer. This method returns the necessary transaction details to execute the transfer on the source chain and complete it on the destination chain.
+The `transfer` method generates a solution for performing a token transfer from a single source chain. It returns the necessary transaction details to initiate the transfer on the source chain and complete it on the destination chain.
 
 ## Usage
 
 ```typescript
-import { Sprinter } from '@chainsafe/sprinter-sdk';
+import { Sprinter, Environment } from '@chainsafe/sprinter-sdk';
 
-const sprinter = new Sprinter({
-  baseUrl: 'https://api.test.sprinter.buildwithsygma.com',  // Testnet URL
-});
+const sprinter = new Sprinter({ baseUrl: Environment.TESTNET });
 
 const settings = {
   account: '0xYourAddressHere',
@@ -24,7 +22,7 @@ const settings = {
   amount: 1000000,  // In smallest denomination (e.g., 1 USDC = 1,000,000 in USDC with 6 decimals)
 };
 
-sprinter.bridge(settings).then(solution => {
+sprinter.transfer(settings).then(solution => {
   console.log(solution);
 });
 ```
@@ -37,14 +35,14 @@ sprinter.bridge(settings).then(solution => {
   - `token`: The symbol of the token to be transferred (e.g., `USDC`, `ETH`).
   - `amount`: The amount of the token to be transferred in the smallest denomination (e.g., for USDC with 6 decimals, 1 USDC = 1,000,000).
   - `recipient?`: *(Optional)* The address of the recipient of any leftover tokens.
-  - `sourceChains?`: *(Optional)* An array of source chain IDs to be considered for the bridge. If omitted, Sprinter will use all available chains for the solution. To limit the solution to a specific chain, provide an array containing only that chain's ID.
-  - `threshold?`: *(Optional)* The minimum amount of tokens required to trigger the bridging solution. If not met, the bridge solution will not proceed.
+  - `sourceChains?`: *(Optional)* An array of source chain IDs to be considered for the transfer. If omitted, Sprinter will use all available chains for the solution. To limit the solution to a specific chain, provide an array containing only that chain's ID.
+  - `threshold?`: *(Optional)* The minimum amount of tokens required to trigger the transfer solution. If not met, the transfer solution will not proceed.
 
 - `fetchOptions?`: *(Optional)* An object containing `baseUrl` to override the default API endpoint for this request.
 
 ### Example: Using `sourceChains` for a Specific Chain
 
-To get a bridge solution from a specific chain (e.g., BaseSepolia with chain ID `84532`), you can set `sourceChains` to an array with that chain's ID.
+To get a transfer solution from a specific chain (e.g., BaseSepolia with chain ID `84532`), you can set `sourceChains` to an array with that chain's ID.
 
 ```typescript
 const settings = {
@@ -55,7 +53,7 @@ const settings = {
   sourceChains: [84532],  // Limit to BaseSepolia as the source chain
 };
 
-sprinter.bridge(settings).then(solution => {
+sprinter.transfer(settings).then(solution => {
   console.log(solution);
 });
 ```
@@ -63,7 +61,7 @@ sprinter.bridge(settings).then(solution => {
 ### Example: Using `fetchOptions`
 
 ```typescript
-sprinter.bridge(settings, { baseUrl: 'https://custom.api.url' }).then(solution => {
+sprinter.transfer(settings, { baseUrl: 'https://custom.api.url' }).then(solution => {
   console.log(solution);
 });
 ```
@@ -145,3 +143,4 @@ import GasTip from "../_gas-tip.md"
     ]
   }
 ]
+```

@@ -73,7 +73,7 @@ export async function getFungibleToken(
   );
 }
 
-export async function getUserFungibleTokens(
+export async function getErc20Balances(
   address: Address,
   token: TokenSymbol,
   { baseUrl, signal }: FetchOptions = {},

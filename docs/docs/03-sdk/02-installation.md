@@ -30,11 +30,9 @@ Once the SDK is installed, you can initialize it to interact with blockchain net
 ### Example: Initialize `Sprinter`
 
 ```typescript
-import { Sprinter } from '@chainsafe/sprinter-sdk';
+import { Sprinter, Environment } from '@chainsafe/sprinter-sdk';
 
-const sprinter = new Sprinter({
-  baseUrl: 'https://api.sprinter.buildwithsygma.com',
-});
+const sprinter = new Sprinter({ baseUrl: Environment.MAINNET });
 
 const ownerAddress = "0xYourAddressHere";
 sprinter.getUserBalances(ownerAddress).then(console.log);
@@ -50,7 +48,7 @@ import { api } from '@chainsafe/sprinter-sdk';
 const ownerAddress = "0xYourAddressHere";
 const tokenSymbol = "USDC";
 
-api.getUserFungibleTokens(ownerAddress, tokenSymbol).then(console.log);
+api.getErc20Balances(ownerAddress, tokenSymbol).then(console.log);
 ```
 
 ## Environment Configuration

@@ -107,5 +107,3 @@ Here is an example of what the `chains.data` might look like after calling `getA
 
 - **Automatic Fetch**: The `getAvailableChains` function is automatically called when `SprinterContext` is initialized, so chains will be available in your app as soon as the context is ready.
 - If the chains have already been fetched, the hook will return the cached list for better performance.
-
-For more information on other hooks, refer to the [Methods Reference](./useSprinterBalances.md).

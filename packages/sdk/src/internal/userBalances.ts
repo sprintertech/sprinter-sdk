@@ -1,4 +1,4 @@
-import { getUserFungibleTokens, getUserNativeTokens } from "../api";
+import { getErc20Balances, getUserNativeTokens } from "../api";
 import type {
   Address,
   AggregateBalances,
@@ -22,12 +22,10 @@ export function getUserBalances(
   return Promise.all([
     Promise.all(
       tokens.map((token) =>
-        getUserFungibleTokens(account, token.symbol, options).then(
-          (balances) => ({
-            symbol: token.symbol,
-            balances,
-          }),
-        ),
+        getErc20Balances(account, token.symbol, options).then((balances) => ({
+          symbol: token.symbol,
+          balances,
+        })),
       ),
     ),
     getUserNativeTokens(account, options),

@@ -29,9 +29,9 @@ The Sprinter SDK provides a streamlined interface for retrieving intent-based so
 Here’s a quick example of how to use the SDK in your project:
 
 ```typescript
-import { Sprinter } from '@chainsafe/sprinter-sdk';
+import { Sprinter, Environment } from '@chainsafe/sprinter-sdk';
 
-const sprinter = new Sprinter({ baseUrl: 'https://api.sprinter.buildwithsygma.com' });
+const sprinter = new Sprinter({ baseUrl: Environment.MAINNET });
 
 sprinter.getUserBalances('0xYourAddressHere').then(console.log);
 ```
@@ -46,9 +46,10 @@ If you're building a React application, you can use the Sprinter React SDK (`@ch
 
 Here’s how to set up a simple React component to fetch user balances:
 
-```typescript
+```tsx
 import React, { useEffect } from 'react';
 import { SprinterContext, useSprinterBalances } from '@chainsafe/sprinter-react';
+import { Environment } from '@chainsafe/sprinter-sdk';
 
 function BalancesComponent() {
   const { balances, getUserBalances } = useSprinterBalances('0xYourAddressHere');
@@ -71,7 +72,7 @@ function BalancesComponent() {
 
 function App() {
   return (
-    <SprinterContext baseUrl="https://api.sprinter.buildwithsygma.com">
+    <SprinterContext baseUrl={Environment.MAINNET}>
       <BalancesComponent />
     </SprinterContext>
   );
@@ -92,17 +93,10 @@ Calling the API directly provides the most flexibility but requires a deeper und
 
 **Quick Example**
 
-Here’s how you can call the API directly using JavaScript's Fetch API:
+Here’s how you can call the API directly using `curl`:
 
-```javascript
-const ownerAddress = "0x3E101Ec02e7A48D16DADE204C96bFF842E7E2519";
-const tokenSymbol = "USDC";
-const baseUrl = "https://api.sprinter.buildwithsygma.com/";
-
-fetch(`${baseUrl}/accounts/${ownerAddress}/assets/fungible/${tokenSymbol}`)
-  .then(response => response.json())
-  .then(data => console.log(data))
-  .catch(error => console.error('Error fetching user fungible tokens:', error));
+```bash
+curl -X GET "https://api.sprinter.buildwithsygma.com/accounts/0x3E101Ec02e7A48D16DADE204C96bFF842E7E2519/assets/fungible/USDC"
 ```
 
 For a comprehensive list of available endpoints and how to use them, check out the [API Documentation](https://api.sprinter.buildwithsygma.com/swagger/index.html).

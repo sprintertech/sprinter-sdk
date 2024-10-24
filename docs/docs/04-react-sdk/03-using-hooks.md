@@ -6,7 +6,7 @@ sidebar_position: 3
 
 # Using React SDK Hooks
 
-The Sprinter React SDK provides a set of hooks to simplify access to the core Sprinter SDK's functionality. These hooks allow you to easily retrieve and manage user balances, tokens, chains, and bridge solutions directly within your React components.
+The Sprinter React SDK provides a set of hooks to simplify access to the core Sprinter SDK's functionality. These hooks allow you to easily retrieve and manage user balances, tokens, chains, and transfer solutions directly within your React components.
 
 Each hook returns stateful data (`data`, `loading`, `error`) along with functions to interact with Sprinter’s Intent Engine.
 
@@ -27,9 +27,10 @@ function YourComponent() {
     getUserBalances,
     getAvailableTokens,
     getAvailableChains,
-    getBridgeAndCall,
-    getBridgeAggregateBalance,
-    getBridgeAggregateBalanceAndCall,
+    getTransfer,
+    getTransferWithHook,
+    getPoolAssetOnDestination,
+    getPoolAssetOnDestinationWithHook,
   } = useSprinter();
 
   // You now have access to the full Sprinter context!
@@ -89,7 +90,7 @@ function ChainList() {
 ```
 
 ### 4. `useSprinterBalances`
-This hook allows you to fetch and manage user balances across multiple blockchains.
+This hook allows you to fetch user balances across multiple blockchains.
 
 ```tsx
 import { useSprinterBalances } from '@chainsafe/sprinter-react';
@@ -116,14 +117,14 @@ function BalanceComponent({ account }) {
 }
 ```
 
-### 5. `useSprinterBridge`
-Generate cross-chain bridge and contract call solutions.
+### 5. `useSprinterTransfers`
+Generate cross-chain transfer and contract call solutions.
 
 ```tsx
-import { useSprinterBridge } from '@chainsafe/sprinter-react';
+import { useSprinterTransfers } from '@chainsafe/sprinter-react';
 
-function BridgeSolution() {
-  const { getBridgeAggregateBalance, solution } = useSprinterBridge();
+function TransferSolution() {
+  const { getPoolAssetOnDestination, solution } = useSprinterTransfers();
 
   useEffect(() => {
     const settings = {
@@ -134,13 +135,13 @@ function BridgeSolution() {
       sourceChains: [84532, 1993],  // Optional: source chains to consider
     };
 
-    getBridgeAggregateBalance(settings);
+    getPoolAssetOnDestination(settings);
   }, []);
 
-  if (solution.loading) return <div>Loading bridge solution...</div>;
+  if (solution.loading) return <div>Loading transfer solution...</div>;
   if (solution.error) return <div>Error: {solution.error}</div>;
 
-  return <div>Bridge Solution: {JSON.stringify(solution.data)}</div>;
+  return <div>Transfer Solution: {JSON.stringify(solution.data)}</div>;
 }
 ```
 
@@ -148,4 +149,4 @@ function BridgeSolution() {
 
 ## Summary
 
-The Sprinter React SDK hooks provide an easy way to interact with cross-chain balances, tokens, chains, and bridging solutions. These hooks manage state for you (`loading`, `error`, and `data`) and allow you to integrate Sprinter functionality seamlessly into your React components.
+The Sprinter React SDK hooks provide an easy way to interact with cross-chain balances, tokens, chains, and transfer solutions. These hooks manage state for you (`loading`, `error`, and `data`) and allow you to integrate Sprinter functionality seamlessly into your React components.

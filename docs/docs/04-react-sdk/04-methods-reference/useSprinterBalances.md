@@ -79,5 +79,3 @@ Here’s an example of what `balances.data` might look like after calling `getUs
 ## Parameters
 
 - `getUserBalances()`: A function that fetches the user's balances across all available tokens and native token balances for the specified account.
-
-For more details on the hook, see the [Methods Reference](./useSprinterBridge.md).

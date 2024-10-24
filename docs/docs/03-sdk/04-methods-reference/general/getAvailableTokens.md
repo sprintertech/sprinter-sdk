@@ -11,11 +11,9 @@ The `getAvailableTokens` method retrieves a list of supported fungible tokens ac
 ## Usage
 
 ```typescript
-import { Sprinter } from '@chainsafe/sprinter-sdk';
+import { Sprinter, Environment } from '@chainsafe/sprinter-sdk';
 
-const sprinter = new Sprinter({
-  baseUrl: 'https://api.test.sprinter.buildwithsygma.com',  // Testnet URL
-});
+const sprinter = new Sprinter({ baseUrl: Environment.TESTNET });
 
 sprinter.getAvailableTokens().then(tokens => {
   console.log(tokens);

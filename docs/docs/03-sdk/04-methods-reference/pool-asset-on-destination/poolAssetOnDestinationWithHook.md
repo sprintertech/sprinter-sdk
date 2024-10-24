@@ -1,16 +1,16 @@
 ---
-id: bridge-aggregate-balance-and-call
-title: bridgeAggregateBalanceAndCall
-sidebar_position: 4
+id: pool-asset-on-destination-with-hook
+title: poolAssetOnDestinationWithHook
+sidebar_position: 2
 ---
 
-# `bridgeAggregateBalanceAndCall`
+# `poolAssetOnDestinationWithHook`
 
-The `bridgeAggregateBalanceAndCall` method generates a solution for aggregating token balances from multiple source chains and transferring them to a specified destination chain, followed by a contract call on the destination chain. This method calculates the best combination of single-hop transfers from available source chains and includes a contract interaction after the token transfer.
+The `poolAssetOnDestinationWithHook` method generates a solution for pooling token balances from multiple source chains and transferring them to a specified destination chain, followed by a contract call on the destination chain. This method calculates the best combination of transfers from available source chains and includes a contract interaction after the token transfer.
 
 :::warning Cross-Chain Aggregation Behavior
 
-When aggregating balances from multiple chains, the contract call will be executed once per source chain. This means the same contract will be called multiple times, which may result in unintended behavior for certain use cases. Ensure that your contract can handle repeated calls, as this may not be suitable for actions like NFT minting or governance voting, where a single action is expected.
+When pooling balances from multiple chains, the contract call will be executed once per source chain. This means the same contract will be called multiple times, which may result in unintended behavior for certain use cases. Ensure that your contract can handle repeated calls, as this may not be suitable for actions like NFT minting or governance voting, where a single action is expected.
 
 This behavior is generally fine for operations like staking or liquidity deposits, where multiple transactions are acceptable.
 
@@ -24,14 +24,12 @@ import TabItem from '@theme/TabItem';
 <Tabs groupId="call-type" queryString>
   <TabItem value="token" label="Token Transfer with Contract Call">
 
-In this example, a token transfer (e.g., `USDC`) is aggregated from multiple source chains, followed by a contract call on the destination chain. You need to provide `outputTokenAddress` and `approvalAddress` to allow the contract to move tokens on behalf of the user.
+In this example, a token transfer (e.g., `USDC`) is pooled from multiple source chains, followed by a contract call on the destination chain. You need to provide `outputTokenAddress` and `approvalAddress` to allow the contract to move tokens on behalf of the user.
 
 ```typescript
-import { Sprinter } from '@chainsafe/sprinter-sdk';
+import { Sprinter, Environment } from '@chainsafe/sprinter-sdk';
 
-const sprinter = new Sprinter({
-  baseUrl: 'https://api.test.sprinter.buildwithsygma.com',  // Testnet URL
-});
+const sprinter = new Sprinter({ baseUrl: Environment.TESTNET });
 
 const settings = {
   account: '0xYourAddressHere',
@@ -49,7 +47,7 @@ const settings = {
   sourceChains: [84532, 1993],  // Optional: List of source chains to be considered
 };
 
-sprinter.bridgeAggregateBalanceAndCall(settings).then(solution => {
+sprinter.poolAssetOnDestinationWithHook(settings).then(solution => {
   console.log(solution);
 });
 ```
@@ -57,7 +55,7 @@ sprinter.bridgeAggregateBalanceAndCall(settings).then(solution => {
 
   <TabItem value="native" label="Native Token Transfer with Contract Call">
 
-In this example, a native token (e.g., `ETH`) is aggregated from multiple source chains, followed by a contract call on the destination chain.
+In this example, a native token (e.g., `ETH`) is pooled from multiple source chains, followed by a contract call on the destination chain.
 
 ```typescript
 const settings = {
@@ -74,7 +72,7 @@ const settings = {
   sourceChains: [84532, 1993]  // Optional: List of source chains to be considered
 };
 
-sprinter.bridgeAggregateBalanceAndCall(settings).then(solution => {
+sprinter.poolAssetOnDestinationWithHook(settings).then(solution => {
   console.log(solution);
 });
 ```
@@ -93,7 +91,7 @@ If omitted, Sprinter will consider all available source chains.
 ### Example: Using `fetchOptions`
 
 ```typescript
-sprinter.bridgeAggregateBalanceAndCall(settings, { baseUrl: 'https://custom.api.url' }).then(solution => {
+sprinter.poolAssetOnDestinationWithHook(settings, { baseUrl: 'https://custom.api.url' }).then(solution => {
   console.log(solution);
 });
 ```
@@ -103,7 +101,7 @@ sprinter.bridgeAggregateBalanceAndCall(settings, { baseUrl: 'https://custom.api.
 - `settings`: *(Required)* An object containing the following fields:
     - `account`: The user’s address.
     - `destinationChain`: The ID of the destination chain.
-    - `token`: The symbol of the token to be aggregated and transferred (e.g., `USDC`, `ETH`).
+    - `token`: The symbol of the token to be pooled and transferred (e.g., `USDC`, `ETH`).
     - `amount`: The target amount of the token on the destination chain, in the smallest denomination (e.g., for USDC with 6 decimals, 1 USDC = 1,000,000).
     - `contractCall`: An object containing the contract call details, depending on the type of contract call:
         - **Native Contract Call**:
@@ -117,7 +115,7 @@ sprinter.bridgeAggregateBalanceAndCall(settings, { baseUrl: 'https://custom.api.
             - `outputTokenAddress?`: *(Optional)* The token address where tokens will be sent after the contract call.
             - `approvalAddress?`: *(Optional)* The contract address that requires approval to transfer tokens (e.g., for `transferFrom`).
     - `recipient?`: *(Optional)* The address of the recipient of any leftover tokens.
-    - `sourceChains?`: *(Optional)* An array of source chain IDs to be considered for aggregation. If omitted, Sprinter will use all available source chains.
+    - `sourceChains?`: *(Optional)* An array of source chain IDs to be considered for pooling. If omitted, Sprinter will use all available source chains.
     - `threshold?`: *(Optional)* The minimum amount of the token to leave on the source chain, in the smallest denomination (useful for avoiding emptying the source chain completely).
 - `fetchOptions?`: *(Optional)* An object containing `baseUrl` to override the default API endpoint for this request.
 

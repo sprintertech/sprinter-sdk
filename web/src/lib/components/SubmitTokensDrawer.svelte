@@ -7,7 +7,7 @@
 	import { formatWei } from '$lib/formatters';
 
 	const drawerStore = getDrawerStore();
-	$: quota = $sprinter.bridgeAggregateBalance($drawerStore.meta.quota);
+	$: quota = $sprinter.poolAssetOnDestination($drawerStore.meta.quota);
 	$: token = getTokenBySymbol($drawerStore.meta.tokens, $drawerStore.meta.quota.token);
 </script>
 
