@@ -10,7 +10,7 @@ sidebar_position: 5
 
 ### Summary of Changes:
 - **New Methods**:
-    - `bridgeAggregateBalance`, `bridgeAggregateBalanceAndCall`, `bridge`, and `bridgeAndCall` replace the old `getSolution` and `getCallSolution` methods.
+    - `poolAssetOnDestination`, `poolAssetOnDestinationWithHook`, `transfer`, and `transferWithHook` replace the old `getSolution` and `getCallSolution` methods.
 - **Simplified API**: Each method now has a focused purpose, making it easier to understand and use.
 - **Parameter Renaming**: `whitelistedSourceChains` has been renamed to `sourceChains` for clarity.
 
@@ -29,17 +29,17 @@ These methods were generalized, accepting complex and multifaceted parameters, w
 
 The methods have been **separated and simplified** to offer more clarity and specialization. Now, there are four distinct methods:
 
-1. **`bridgeAggregateBalance`**:
+1. **`poolAssetOnDestination`**:
     - Used to **aggregate token balances** from multiple chains without contract interaction.
 
-2. **`bridgeAggregateBalanceAndCall`**:
+2. **`poolAssetOnDestinationWithHook`**:
     - Used to **aggregate balances and perform a contract call** on the destination chain.
 
-3. **`bridge`**:
-    - Focuses on a **single-hop token bridge** from one chain to another, without any contract call.
+3. **`transfer`**:
+    - Focuses on a **single-hop token transfer** from one chain to another, without any contract call.
 
-4. **`bridgeAndCall`**:
-    - Bridges tokens with an **additional contract call** on the destination chain.
+4. **`transferWithHook`**:
+    - Transfers tokens with an **additional contract call** on the destination chain.
 
 #### Impact:
 - **Simpler API**: Users no longer need to handle complex or overloaded methods like `getSolution` or `getCallSolution`. Now, they can choose the right method for their needs.
@@ -60,9 +60,9 @@ The methods have been **separated and simplified** to offer more clarity and spe
   });
   ```
 
-- **New usage (`bridgeAggregateBalanceAndCall`)**:
+- **New usage (`poolAssetOnDestinationWithHook`)**:
   ```ts
-  sprinter.bridgeAggregateBalanceAndCall({
+  sprinter.poolAssetOnDestinationWithHook({
     account: "0xYourAddressHere",
     destinationChain: 11155111,
     token: "USDC",
@@ -102,16 +102,16 @@ The methods have been **separated and simplified** to offer more clarity and spe
   });
   ```
 
-    - **New usage (`sourceChains`)**:
-      ```ts
-      sprinter.bridgeAggregateBalance({
-        account: "0xYourAddressHere",
-        destinationChain: 11155111,
-        token: "USDC",
-        amount: 1000000,
-        sourceChains: [84532, 137],
-      });
-      ```
+- **New usage (`sourceChains`)**:
+  ```ts
+  sprinter.poolAssetOnDestination({
+    account: "0xYourAddressHere",
+    destinationChain: 11155111,
+    token: "USDC",
+    amount: 1000000,
+    sourceChains: [84532, 137],
+  });
+  ```
 
 </details>
 
@@ -121,7 +121,7 @@ The methods have been **separated and simplified** to offer more clarity and spe
 
 ### Summary of Changes:
 - **New Methods**:
-    - `getBridge`, `getBridgeAndCall`, `getBridgeAggregateBalance`, and `getBridgeAggregateBalanceAndCall` replace the old `getSolution` and `getCallSolution` methods.
+    - `getTransfer`, `getTransferWithHook`, `getPoolAssetOnDestination`, and `getPoolAssetOnDestinationWithHook` replace the old `getSolution` and `getCallSolution` methods.
 - **Parameter Structure**: Methods now accept a single object as a parameter, instead of individual arguments.
 - **Parameter Renaming**: `whitelistedSourceChains` has been renamed to `sourceChains`.
 - **SDK as Peer Dependency**: The `@chainsafe/sprinter-sdk` is now a peer dependency, simplifying updates.
@@ -141,17 +141,17 @@ These methods were generalized, requiring multiple parameters, leading to confus
 
 The methods have been split into specialized methods to clarify their purpose:
 
-1. **`getBridgeAggregateBalance`**:
+1. **`getPoolAssetOnDestination`**:
     - Handles **balance aggregation** from multiple chains without contract interaction.
 
-2. **`getBridgeAggregateBalanceAndCall`**:
+2. **`getPoolAssetOnDestinationWithHook`**:
     - Handles **balance aggregation** from multiple chains with a contract call on the destination chain.
 
-3. **`getBridge`**:
-    - Used for **single-hop bridging** between chains without any contract call.
+3. **`getTransfer`**:
+    - Used for **single-hop transfers** between chains without any contract call.
 
-4. **`getBridgeAndCall`**:
-    - Used for **single-hop bridging** with a contract call on the destination chain.
+4. **`getTransferWithHook`**:
+    - Used for **single-hop transfers** with a contract call on the destination chain.
 
 #### Impact:
 - **Simplified API**: Users no longer need to manage overloaded methods. Instead, each method has a clear, focused purpose, reducing complexity.
@@ -162,9 +162,9 @@ The methods have been split into specialized methods to clarify their purpose:
   getSolution(account, destinationChain, token, amount, threshold, whitelistedSourceChains);
   ```
 
-- **New usage (`getBridgeAndCall`)**:
+- **New usage (`getTransferWithHook`)**:
   ```ts
-  getBridgeAndCall({
+  getTransferWithHook({
     account,
     destinationChain,
     token,
@@ -199,7 +199,7 @@ getSolution(
 Now, methods accept a **single object** as an argument (e.g., `settings`). This aligns with the SDK design, making it easier to manage and extend.
 
 ```typescript
-getBridge({
+getTransfer({
   account,
   destinationChain,
   token,
@@ -220,7 +220,7 @@ getBridge({
 
 - **New Usage**:
   ```typescript
-  getBridge({
+  getTransfer({
     account,
     destinationChain,
     token,
@@ -258,7 +258,7 @@ getBridge({
 
 - **New usage**:
   ```ts
-  getBridge({
+  getTransfer({
     account: "0xYourAddressHere",
     destinationChain: 11155111,
     token: "USDC",
@@ -287,11 +287,9 @@ Previously, the React SDK bundled the `@chainsafe/sprinter-sdk` as a regular dep
 ```json
 {
   "peerDependencies": {
-    "@chainsafe/sprinter-sdk": "^1.0.0"
+    "@chainsafe/sprinter-sdk": "^0.4.0"
   }
 }
 ```
 
 </details>
-
----
