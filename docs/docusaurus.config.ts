@@ -14,7 +14,7 @@ const config: Config = {
   projectName: 'sprinter-ts',
 
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+  onBrokenMarkdownLinks: 'throw',
 
   i18n: {
     defaultLocale: 'en',
