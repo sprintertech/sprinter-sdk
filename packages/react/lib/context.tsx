@@ -1,11 +1,14 @@
-import {createContext, ReactNode, useEffect, useState} from "react";
-import {Sprinter} from "@chainsafe/sprinter-sdk";
-import {useTokens} from "./internal/useTokens.ts";
-import {useChains} from "./internal/useChains.ts";
-import {useBalances} from "./internal/useBalances.ts";
-import {useTransfers} from "./internal/useTransfers.ts";
+import { createContext, ReactNode, useEffect, useState } from "react";
+import { Sprinter } from "@chainsafe/sprinter-sdk";
+import { useTokens } from "./internal/useTokens.ts";
+import { useChains } from "./internal/useChains.ts";
+import { useBalances } from "./internal/useBalances.ts";
+import { useTransfers } from "./internal/useTransfers.ts";
 
-type SprinterContext = ReturnType<typeof useBalances> & ReturnType<typeof useTokens> & ReturnType<typeof useChains> & ReturnType<typeof useTransfers>;
+type SprinterContext = ReturnType<typeof useBalances> &
+  ReturnType<typeof useTokens> &
+  ReturnType<typeof useChains> &
+  ReturnType<typeof useTransfers>;
 
 export const Context = createContext<SprinterContext | null>(null);
 
@@ -42,7 +45,7 @@ interface SprinterContextProps {
  * ```
  */
 export function SprinterContext({ children, baseUrl }: SprinterContextProps) {
-  const [sprinter] = useState(new Sprinter({baseUrl}));
+  const [sprinter] = useState(new Sprinter({ baseUrl }));
 
   /** Balances */
   const { balances, getUserBalances } = useBalances(sprinter);
@@ -54,7 +57,13 @@ export function SprinterContext({ children, baseUrl }: SprinterContextProps) {
   const { chains, getAvailableChains } = useChains(sprinter);
 
   /** Solutions */
-  const { solution, getTransfer, getTransferWithHook, getPoolAssetOnDestination, getPoolAssetOnDestinationWithHook } = useTransfers(sprinter);
+  const {
+    solution,
+    getTransfer,
+    getTransferWithHook,
+    getPoolAssetOnDestination,
+    getPoolAssetOnDestinationWithHook,
+  } = useTransfers(sprinter);
 
   /** Initialization */
   useEffect(() => {
@@ -62,10 +71,23 @@ export function SprinterContext({ children, baseUrl }: SprinterContextProps) {
     getAvailableChains();
   }, [sprinter]);
 
-  return <Context.Provider value={{
-    balances, getUserBalances,
-    tokens, getAvailableTokens,
-    chains, getAvailableChains,
-    solution, getTransfer, getTransferWithHook, getPoolAssetOnDestination, getPoolAssetOnDestinationWithHook,
-  }}>{children}</Context.Provider>;
+  return (
+    <Context.Provider
+      value={{
+        balances,
+        getUserBalances,
+        tokens,
+        getAvailableTokens,
+        chains,
+        getAvailableChains,
+        solution,
+        getTransfer,
+        getTransferWithHook,
+        getPoolAssetOnDestination,
+        getPoolAssetOnDestinationWithHook,
+      }}
+    >
+      {children}
+    </Context.Provider>
+  );
 }
