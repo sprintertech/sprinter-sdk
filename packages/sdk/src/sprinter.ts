@@ -57,11 +57,11 @@ export class Sprinter {
    * ```
    */
   public async getAvailableTokens(
-    options: FetchOptions = {}
+    options: FetchOptions = {},
   ): Promise<FungibleToken[]> {
     if (!this.#tokens)
       this.#tokens = await this.deferredRequest("tokens", () =>
-        getFungibleTokens(this.makeFetchOptions(options))
+        getFungibleTokens(this.makeFetchOptions(options)),
       );
     return this.#tokens;
   }
@@ -85,11 +85,11 @@ export class Sprinter {
    * ```
    */
   public async getAvailableChains(
-    options: FetchOptions = {}
+    options: FetchOptions = {},
   ): Promise<Chain[]> {
     if (!this.#chains)
       this.#chains = await this.deferredRequest("chains", () =>
-        getSupportedChains(this.makeFetchOptions(options))
+        getSupportedChains(this.makeFetchOptions(options)),
       );
     return this.#chains;
   }
@@ -151,7 +151,7 @@ export class Sprinter {
   public async getUserBalances(
     account: Address,
     tokens?: FungibleToken[],
-    options: FetchOptions = {}
+    options: FetchOptions = {},
   ): Promise<AggregateBalances> {
     const tokenList = tokens || (await this.getAvailableTokens(options));
 
@@ -161,8 +161,8 @@ export class Sprinter {
         getUserBalances(
           account,
           tokenList,
-          this.makeFetchOptions(options || {})
-        )
+          this.makeFetchOptions(options || {}),
+        ),
     );
     return formatBalances([balances, nativeTokens]);
   }
@@ -253,7 +253,7 @@ export class Sprinter {
    */
   public async poolAssetOnDestination(
     settings: Infer<typeof MultiHopSchema>,
-    options?: FetchOptions
+    options?: FetchOptions,
   ): Promise<SolutionResponse> {
     assert(settings, MultiHopSchema);
 
@@ -264,7 +264,7 @@ export class Sprinter {
         amount: BigInt(amount),
         whitelistedSourceChains: sourceChains,
       } as SolutionOptions,
-      options ? this.makeFetchOptions(options) : this.#fetchOptions
+      options ? this.makeFetchOptions(options) : this.#fetchOptions,
     );
   }
 
@@ -327,7 +327,7 @@ export class Sprinter {
    */
   public async poolAssetOnDestinationWithHook(
     settings: Infer<typeof MultiHopWithContractSchema>,
-    options?: FetchOptions
+    options?: FetchOptions,
   ): Promise<SolutionResponse> {
     assert(settings, MultiHopWithContractSchema);
 
@@ -338,7 +338,7 @@ export class Sprinter {
         amount: BigInt(amount),
         whitelistedSourceChains: sourceChains,
       } as ContractSolutionOptions,
-      options ? this.makeFetchOptions(options) : this.#fetchOptions
+      options ? this.makeFetchOptions(options) : this.#fetchOptions,
     );
   }
 
@@ -383,7 +383,7 @@ export class Sprinter {
    */
   public async transfer(
     settings: Infer<typeof SingleHopSchema>,
-    options?: FetchOptions
+    options?: FetchOptions,
   ): Promise<SolutionResponse> {
     assert(settings, SingleHopSchema);
 
@@ -394,7 +394,7 @@ export class Sprinter {
         amount: BigInt(amount),
         whitelistedSourceChains: sourceChains,
       } as SolutionOptions,
-      options ? this.makeFetchOptions(options) : this.#fetchOptions
+      options ? this.makeFetchOptions(options) : this.#fetchOptions,
     );
   }
 
@@ -455,7 +455,7 @@ export class Sprinter {
    */
   public async transferWithHook(
     settings: Infer<typeof SingleHopWithContractSchema>,
-    options?: FetchOptions
+    options?: FetchOptions,
   ): Promise<SolutionResponse> {
     assert(settings, SingleHopWithContractSchema);
 
@@ -466,13 +466,13 @@ export class Sprinter {
         amount: BigInt(amount),
         whitelistedSourceChains: sourceChains,
       } as SolutionOptions,
-      options ? this.makeFetchOptions(options) : this.#fetchOptions
+      options ? this.makeFetchOptions(options) : this.#fetchOptions,
     );
   }
 
   private deferredRequest<T>(
     name: string,
-    request: () => Promise<T>
+    request: () => Promise<T>,
   ): Promise<T> {
     if (!(name in this.#requests)) {
       this.#requests[name] = request();
