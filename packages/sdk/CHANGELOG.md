@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.0](https://github.com/ChainSafe/sprinter-ts/compare/sprinter-sdk-v0.3.0...sprinter-sdk-v1.0.0) (2024-10-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* All functions renamed, different API and flows, please consult docs or reach out to us directly!
+
+### Features
+
+* get bridge history for an address ([#68](https://github.com/ChainSafe/sprinter-ts/issues/68)) ([4d524c6](https://github.com/ChainSafe/sprinter-ts/commit/4d524c668393f33c7c200a81f75cab87a3114e9d))
+* refactor api ([#61](https://github.com/ChainSafe/sprinter-ts/issues/61)) ([d6b1e9c](https://github.com/ChainSafe/sprinter-ts/commit/d6b1e9caa9c4bf91442b119c19e8b7904a3f9af9))
+
 ## [0.3.0](https://github.com/ChainSafe/sprinter-ts/compare/sprinter-sdk-v0.2.0...sprinter-sdk-v0.3.0) (2024-09-23)
 
 
