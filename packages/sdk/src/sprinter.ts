@@ -264,7 +264,7 @@ export class Sprinter {
         amount: BigInt(amount),
         whitelistedSourceChains: sourceChains,
       } as SolutionOptions,
-      options,
+      this.makeFetchOptions(options),
     );
   }
 
@@ -338,7 +338,7 @@ export class Sprinter {
         amount: BigInt(amount),
         whitelistedSourceChains: sourceChains,
       } as ContractSolutionOptions,
-      options,
+      this.makeFetchOptions(options),
     );
   }
 
@@ -394,7 +394,7 @@ export class Sprinter {
         amount: BigInt(amount),
         whitelistedSourceChains: sourceChains,
       } as SolutionOptions,
-      options,
+      this.makeFetchOptions(options),
     );
   }
 
@@ -466,7 +466,7 @@ export class Sprinter {
         amount: BigInt(amount),
         whitelistedSourceChains: sourceChains,
       } as SolutionOptions,
-      options,
+      this.makeFetchOptions(options),
     );
   }
 
@@ -486,7 +486,7 @@ export class Sprinter {
     return this.#requests[name] as Promise<T>;
   }
 
-  private makeFetchOptions(options: FetchOptions): FetchOptions {
+  private makeFetchOptions(options?: FetchOptions): FetchOptions {
     return { ...this.#fetchOptions, ...options };
   }
 }
