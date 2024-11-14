@@ -66,11 +66,11 @@ const config: Config = {
           label: "Swagger",
           position: "right",
         },
-        // {
-        //   href: 'https://github.com/ChainSafe/sprinter-ts',
-        //   label: 'GitHub',
-        //   position: 'right',
-        // },
+        {
+          href: "https://github.com/ChainSafe/sprinter-ts",
+          label: "GitHub",
+          position: "right",
+        },
       ],
     },
     footer: {
