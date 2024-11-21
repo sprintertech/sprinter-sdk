@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/ChainSafe/sprinter-ts/compare/sprinter-sdk-v1.0.1...sprinter-sdk-v1.0.2) (2024-11-21)
+
+
+### Bug Fixes
+
+* trigger missed release ([#87](https://github.com/ChainSafe/sprinter-ts/issues/87)) ([db8d8d8](https://github.com/ChainSafe/sprinter-ts/commit/db8d8d8f09a2b4a47496a8cfa3ddc84c264f7066))
+
 ## [1.0.1](https://github.com/ChainSafe/sprinter-ts/compare/sprinter-sdk-v1.0.0...sprinter-sdk-v1.0.1) (2024-11-21)
 
 
