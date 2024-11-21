@@ -7,9 +7,9 @@ The Sprinter React SDK is a React wrapper for the [Sprinter SDK](https://github.
 To install the package, use npm or yarn:
 
 ```bash
-npm install @chainsafe/sprinter-react
+npm install @chainsafe/sprinter-react @chainsafe/sprinter-sdk
 # or
-yarn add @chainsafe/sprinter-react
+yarn add @chainsafe/sprinter-react @chainsafe/sprinter-sdk
 ```
 
 ## Usage

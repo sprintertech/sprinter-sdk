@@ -1,137 +1,133 @@
-import {themes as prismThemes} from 'prism-react-renderer';
-import type {Config} from '@docusaurus/types';
-import type * as Preset from '@docusaurus/preset-classic';
+import { themes as prismThemes } from "prism-react-renderer";
+import type { Config } from "@docusaurus/types";
+import type * as Preset from "@docusaurus/preset-classic";
 
 const config: Config = {
-  title: 'Sprinter',
-  tagline: 'Multichain interactions that feel like one',
-  favicon: 'img/sprinter.ico',
+  title: "Sprinter",
+  tagline: "Multichain interactions that feel like one",
+  favicon: "img/sprinter.ico",
 
-  url: 'https://docs.sprinter.buildwithsygma.com/',
-  baseUrl: '/',
+  url: "https://docs.sprinter.buildwithsygma.com/",
+  baseUrl: "/",
 
-  organizationName: 'ChainSafe', 
-  projectName: 'sprinter-ts',
+  organizationName: "ChainSafe",
+  projectName: "sprinter-ts",
 
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+  onBrokenLinks: "throw",
+  onBrokenMarkdownLinks: "warn",
 
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
+    defaultLocale: "en",
+    locales: ["en"],
   },
 
   presets: [
     [
-      'classic',
+      "classic",
       {
         docs: {
-          sidebarPath: './sidebars.ts',
+          remarkPlugins: [
+            [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }],
+          ],
+          sidebarPath: "./sidebars.ts",
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/chainsafe/sprinter-ts',
+          editUrl: "https://github.com/chainsafe/sprinter-ts",
         },
         blog: false,
         theme: {
-          customCss: require.resolve('./src/css/custom.css'), 
+          customCss: require.resolve("./src/css/custom.css"),
         },
       } satisfies Preset.Options,
     ],
   ],
 
   themeConfig: {
-    
     navbar: {
-      title: 'Sprinter',
+      title: "Sprinter",
       logo: {
-        alt: 'Sprinter Temp Logo',
-        src: 'img/sprinter-logo.svg',
-        srcDark: 'img/sprinter-logo-white.svg', 
+        alt: "Sprinter Temp Logo",
+        src: "img/sprinter-logo.svg",
+        srcDark: "img/sprinter-logo-white.svg",
       },
       items: [
         {
-          to: 'docs/quickstart',
-          position: 'left',
-          label: 'Learn',
+          to: "docs/quickstart",
+          position: "left",
+          label: "Learn",
         },
         {
-          to: 'docs/api/api-usage',
-          position: 'left',
-          label: 'API',
+          href: "https://poc.sprinter.buildwithsygma.com/",
+          label: "POC",
+          position: "left",
         },
         {
-          href: 'https://poc.sprinter.buildwithsygma.com/',
-          label: 'POC',
-          position: 'left',
+          href: "https://api.test.sprinter.buildwithsygma.com/swagger/index.html",
+          label: "Swagger",
+          position: "right",
         },
         {
-          href: 'https://api.test.sprinter.buildwithsygma.com/swagger/index.html',
-          label: 'Swagger',
-          position: 'right',
-        },
-        {
-          href: 'https://github.com/ChainSafe/sprinter-ts',
-          label: 'GitHub',
-          position: 'right',
+          href: "https://github.com/ChainSafe/sprinter-ts",
+          label: "GitHub",
+          position: "right",
         },
       ],
     },
     footer: {
-      style: 'dark',
+      style: "dark",
       links: [
         {
-          title: 'Docs',
+          title: "Docs",
           items: [
             {
-              label: 'Introduction',
-              to: '/docs/introduction',
+              label: "Introduction",
+              to: "/docs/introduction",
             },
             {
-              label: 'SDK',
-              to: '/docs/category/sdk',
+              label: "SDK",
+              to: "/docs/sdk",
             },
             {
-              label: 'API',
-              to: '/docs/category/api',
+              label: "React SDK",
+              to: "/docs/react-sdk/",
             },
           ],
         },
         {
-          title: 'Community',
+          title: "Community",
           items: [
             {
-              label: 'Twitter',
-              href: 'https://twitter.com/sprinter_ux',
+              label: "Twitter",
+              href: "https://twitter.com/sprinter_ux",
             },
             {
-              label: 'Discord',
-              href: 'https://discord.gg/Qdf6GyNB5J',
+              label: "Discord",
+              href: "https://discord.gg/Qdf6GyNB5J",
             },
             {
-              label: 'YouTube',
-              href: 'https://youtube.com/@buildwithsygma',
+              label: "YouTube",
+              href: "https://youtube.com/@buildwithsygma",
             },
           ],
         },
         {
-          title: 'More',
+          title: "More",
           items: [
             {
-              label: 'Website',
-              href: 'https://sprinter.box',
+              label: "Website",
+              href: "https://sprinter.box",
             },
             {
-              label: 'GitHub',
-              href: 'https://github.com/ChainSafe/sprinter-ts',
+              label: "GitHub",
+              href: "https://github.com/ChainSafe/sprinter-ts",
             },
             {
-              label: 'Swagger',
-              href: 'https://api.test.sprinter.buildwithsygma.com/swagger/index.html',
+              label: "Swagger",
+              href: "https://api.test.sprinter.buildwithsygma.com/swagger/index.html",
             },
             {
-              label: 'Blog',
-              href: 'https://blog.buildwithsygma.com',
+              label: "Blog",
+              href: "https://blog.buildwithsygma.com",
             },
           ],
         },
@@ -154,6 +150,5 @@ const config: Config = {
     ],
   ],
 };
-
 
 export default config;

@@ -18,7 +18,7 @@
 	import type { Address } from '@chainsafe/sprinter-sdk';
 	import { formatWei } from '$lib/formatters';
 
-	const tokens = $sprinter.getAvailableTokens($selectedAccount as Address).then((tokens) => [
+	const tokens = $sprinter.getAvailableTokens().then((tokens) => [
 		...tokens,
 		{
 			addresses: [],
@@ -28,7 +28,7 @@
 			symbol: 'ETH'
 		}
 	]);
-	const allBalances = $sprinter.getUserBalances();
+	const allBalances = $sprinter.getUserBalances($selectedAccount as Address);
 	const chains = $sprinter.getAvailableChains();
 
 	const drawerStore = getDrawerStore();
@@ -81,8 +81,8 @@
 				quota: {
 					account: $selectedAccount,
 					token: selectedToken,
-					destinationChain: selectedNetwork,
-					whitelisted,
+					destinationChain: Number(selectedNetwork),
+					sourceChains: whitelisted.map(Number),
 					amount: toWei(amount, tokenInfo.decimals),
 					threshold: threshold ? toWei(threshold, tokenInfo.decimals) : undefined
 				}

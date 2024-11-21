@@ -3,7 +3,6 @@ export {
   useSprinterBalances,
   useSprinter,
   useSprinterChains,
-  useSprinterSolution,
-  useSprinterCallSolution,
-  useSprinterTokens
+  useSprinterTokens,
+  useSprinterTransfers,
 } from "./hooks";

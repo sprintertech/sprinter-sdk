@@ -1,63 +1,75 @@
 # Sprinter SDK
 
-Sprinter SDK is a powerful library for interacting with blockchain networks, allowing you to retrieve information about fungible tokens, supported chains, and user balances, as well as finding solutions for asset transfers.
+The **Sprinter SDK** is a JavaScript/TypeScript library that simplifies cross-chain operations such as fetching balances and providing solutions for asset transfers across multiple blockchains.
+
+## Features
+
+- **Cross-Chain Balance Retrieval**: Fetch user balances across multiple supported blockchains.
+- **Bridging Solutions**: Generate solutions for single-hop and multi-hop token transfers across chains.
+- **Contract Call Solutions**: Generate solutions to perform contract calls along with cross-chain transfers.
+- **Typed Methods**: Full TypeScript support, ensuring type safety.
 
 ## Installation
 
-Install the library using npm or yarn:
+To install the Sprinter SDK in your project, you can use either `npm` or `yarn`.
+
+### npm
 
 ```bash
 npm install @chainsafe/sprinter-sdk
-# or
+```
+
+### yarn
+
+```bash
 yarn add @chainsafe/sprinter-sdk
 ```
 
-## Usage
+## Basic Usage
 
-You have two approaches: using the `Sprinter` class or calling API endpoints directly through the SDK.
+Once installed, you can initialize and use the SDK to interact with blockchain data.
 
-### Using the Sprinter Class
+### Using the `Sprinter` Class
 
-The `Sprinter` class provides a convenient interface for interacting with the blockchain using an EIP1193 provider (e.g., MetaMask).
-
-#### Example
+The `Sprinter` class provides an interface to interact with balances and chains.
 
 ```typescript
 import { Sprinter } from '@chainsafe/sprinter-sdk';
 
-const sprinter = new Sprinter();
+const sprinter = new Sprinter({
+  baseUrl: 'https://api.sprinter.buildwithsygma.com',
+});
 
-const ownerAddress = "0x3E101Ec02e7A48D16DADE204C96bFF842E7E2519";
+const ownerAddress = "0xYourAddressHere";
 sprinter.getUserBalances(ownerAddress).then(console.log);
 ```
 
-### Calling API Endpoints Directly
-
-Alternatively, you can call the API endpoints directly using the provided SDK functions.
-
-#### Example
+### Example: Fetch Available Tokens
 
 ```typescript
-import { api } from '@chainsafe/sprinter-sdk';
-
-const ownerAddress = "0x3E101Ec02e7A48D16DADE204C96bFF842E7E2519";
-const tokenSymbol = "USDC";
-
-api.getUserFungibleTokens(ownerAddress, tokenSymbol).then(console.log);
+sprinter.getAvailableTokens().then(tokens => {
+  console.log(tokens);
+});
 ```
 
-### Environment Variables
+### Example: Fetch Supported Chains
 
-The SDK uses environment variables to configure the base URL `SPRINTER_URL`. You can set this variable in your environment configuration or directly in your code.
+```typescript
+sprinter.getAvailableChains().then(chains => {
+  console.log(chains);
+});
+```
 
-#### Setting Environment Variables in Code
+### Environment Configuration
+
+You can configure the SDK using environment variables to set the base URL for API requests:
 
 ```typescript
 import { setBaseUrl } from '@chainsafe/sprinter-sdk';
 
-setBaseUrl("http://localhost:8080");
+setBaseUrl("https://api.sprinter.buildwithsygma.com");
 ```
 
-## Contributing
+## API Documentation
 
-Contributions are welcome! Please submit a pull request or open an issue to discuss any changes.
+For more detailed documentation on how to use the SDK, please visit the [API documentation](https://docs.sprinter.buildwithsygma.com/docs/sdk/overview).

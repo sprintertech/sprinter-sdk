@@ -41,14 +41,14 @@
 	async function onNameSubmit() {
 		fetching = true;
 
-		const amount = Number(toWei(donation, 6));
+		const amount = toWei(donation, 6);
 		const sprinterNameService = new Contract(sprinterNameServiceAbi);
 
 		const data = sprinterNameService.methods
 			.claimName(name, $selectedAccount as Address, amount)
 			.encodeABI();
 
-		const response = await $sprinter.getCallSolution({
+		const response = await $sprinter.transferWithHook({
 			amount: amount,
 			account: $selectedAccount as Address,
 			token: 'USDC',

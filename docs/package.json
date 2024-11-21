@@ -19,6 +19,7 @@
     "@cmfcmf/docusaurus-search-local": "latest",
     "@docusaurus/core": "^3.5.2",
     "@docusaurus/preset-classic": "^3.5.2",
+    "@docusaurus/remark-plugin-npm2yarn": "^3.5.2",
     "@mdx-js/react": "^3.0.1",
     "clsx": "^2.1.1",
     "d3": "^7.9.0",

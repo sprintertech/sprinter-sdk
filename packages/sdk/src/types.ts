@@ -36,11 +36,13 @@ export type FungibleTokenBalance = TokenBalance;
 
 export type NativeTokenBalance = TokenBalance;
 
+export type NumberLike = number | string | bigint;
+
 export interface SolutionOptions {
   account: Address;
   destinationChain: ChainID;
   token: TokenSymbol;
-  amount: number;
+  amount: NumberLike;
   threshold?: number;
   whitelistedSourceChains?: ChainID[];
 }
@@ -52,6 +54,11 @@ export interface ContractCallSolutionOptions {
   ///
   outputTokenAddress?: Address;
   approvalAddress?: Address;
+}
+
+export interface SingleHopContractSolutionOptions extends SolutionOptions {
+  recipient?: Address;
+  contractCall?: ContractCallSolutionOptions;
 }
 
 export interface ContractSolutionOptions extends SolutionOptions {
