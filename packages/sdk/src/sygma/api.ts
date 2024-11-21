@@ -1,6 +1,6 @@
-import { Environment } from "../enums";
-import { SYGMA_API_ENDPOINT } from "./constants";
+import type { Environment } from "../enums";
 
+import { SYGMA_API_ENDPOINT } from "./constants";
 import type { SygmaTransfer } from "./types";
 
 /**
