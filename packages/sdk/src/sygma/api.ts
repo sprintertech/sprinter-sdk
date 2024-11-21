@@ -1,11 +1,7 @@
 import { Environment } from "../enums";
+import { SYGMA_API_ENDPOINT } from "./constants";
 
 import type { SygmaTransfer } from "./types";
-
-const SYGMA_API_ENDPOINT: Record<Environment, string> = {
-  [Environment.MAINNET]: "https://api.buildwithsygma.com/",
-  [Environment.TESTNET]: "https://api.test.buildwithsygma.com/",
-};
 
 /**
  * Returns list of sygma transfers for an address
