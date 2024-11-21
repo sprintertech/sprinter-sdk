@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.1](https://github.com/ChainSafe/sprinter-ts/compare/sprinter-sdk-v1.0.0...sprinter-sdk-v1.0.1) (2024-11-21)
+
+
+### Bug Fixes
+
+* add make fetch options to `poolAssetOnDestination`, `poolAssetOnDestinationWithHook`, `transfer` ([#79](https://github.com/ChainSafe/sprinter-ts/issues/79)) ([2883aa7](https://github.com/ChainSafe/sprinter-ts/commit/2883aa791cbb13989b807a19f3119265707db73b))
+* trigger missed release ([#87](https://github.com/ChainSafe/sprinter-ts/issues/87)) ([db8d8d8](https://github.com/ChainSafe/sprinter-ts/commit/db8d8d8f09a2b4a47496a8cfa3ddc84c264f7066))
+
 ## [1.0.0](https://github.com/ChainSafe/sprinter-ts/compare/sprinter-sdk-v0.3.0...sprinter-sdk-v1.0.0) (2024-10-24)
 
 
