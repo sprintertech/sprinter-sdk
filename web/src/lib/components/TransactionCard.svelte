@@ -32,7 +32,7 @@
 					method: 'wallet_switchEthereumChain',
 					params: [{ chainId: toHex(quoteRecord.sourceChain) }]
 				});
-			} catch (error: any) {
+			} catch (error) {
 				if (error.code === 4902) {
 					await $selectedProvider.provider.request({
 						method: 'wallet_addEthereumChain',
