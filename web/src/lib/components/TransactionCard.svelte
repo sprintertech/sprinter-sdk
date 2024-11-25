@@ -17,14 +17,14 @@
 
 	// TODO: there is not place for this over here! refactor it to somewhere
 	async function submitTransaction(quoteRecord: Solution) {
-		if(!$selectedProvider) return;
+		if (!$selectedProvider) return;
 
 		try {
 			submitting = true;
 
-			const [ownerAddress] = await $selectedProvider.provider.request({
-				method: 'eth_requestAccounts',
-			}) as string[];
+			const [ownerAddress] = (await $selectedProvider.provider.request({
+				method: 'eth_requestAccounts'
+			})) as string[];
 
 			// Preparation /w questionable approach but will see for now
 			try {

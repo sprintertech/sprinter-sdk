@@ -41,7 +41,10 @@
 				method: 'eth_requestAccounts'
 			});
 
-			accounts && Array.isArray(accounts) && typeof accounts[0] === 'string' && selectedAccount.set(accounts[0]);
+			accounts &&
+				Array.isArray(accounts) &&
+				typeof accounts[0] === 'string' &&
+				selectedAccount.set(accounts[0]);
 			selectedProvider.set(provider);
 		} finally {
 			selecting = false;
