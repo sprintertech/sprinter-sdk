@@ -16,29 +16,30 @@
 	let successful: boolean = false;
 
 	// TODO: there is not place for this over here! refactor it to somewhere
-	async function submitTransaction(quotaRecord: Solution) {
+	async function submitTransaction(quoteRecord: Solution) {
+		if(!$selectedProvider) return;
+
 		try {
 			submitting = true;
 
 			const [ownerAddress] = await $selectedProvider.provider.request({
 				method: 'eth_requestAccounts',
-				params: []
-			});
+			}) as string[];
 
 			// Preparation /w questionable approach but will see for now
 			try {
 				await $selectedProvider.provider.request({
 					method: 'wallet_switchEthereumChain',
-					params: [{ chainId: toHex(quotaRecord.sourceChain) }]
+					params: [{ chainId: toHex(quoteRecord.sourceChain) }]
 				});
-			} catch (error) {
+			} catch (error: any) {
 				if (error.code === 4902) {
 					await $selectedProvider.provider.request({
 						method: 'wallet_addEthereumChain',
 						params: [
 							{
 								chainName: chain.name,
-								chainId: toHex(quotaRecord.sourceChain),
+								chainId: toHex(quoteRecord.sourceChain),
 								rpcUrls: chain.rpcURLs
 							}
 						]
@@ -49,27 +50,27 @@
 			const web3 = new Web3($selectedProvider.provider);
 
 			// @ts-expect-error   // chainId is missing in web3js call options type
-			const callOptions: NonPayableCallOptions = { chainId: quotaRecord.sourceChain };
+			const callOptions: NonPayableCallOptions = { chainId: quoteRecord.sourceChain };
 
-			console.info('Quote', quotaRecord);
+			console.info('Quote', quoteRecord);
 
 			// Approval sniff etc...\
-			if (quotaRecord.approvals?.length > 0) {
-				for (const approval of quotaRecord.approvals) {
+			if (quoteRecord.approvals && quoteRecord.approvals.length > 0) {
+				for (const approval of quoteRecord.approvals) {
 					console.log('Requesting approval:', approval);
 					const receipt = await web3.eth.sendTransaction(approval);
 					console.warn(`Approval receipt: `, receipt);
 				}
 			} else {
-				const erc20 = new web3.eth.Contract(erc20Abi, quotaRecord.sourceTokenAddress);
+				const erc20 = new web3.eth.Contract(erc20Abi, quoteRecord.sourceTokenAddress);
 
 				const allowed = await erc20.methods
-					.allowance(ownerAddress, quotaRecord.transaction.to)
+					.allowance(ownerAddress, quoteRecord.transaction.to)
 					.call(callOptions);
 
-				if (BigInt(quotaRecord.amount) > BigInt(allowed)) {
+				if (BigInt(quoteRecord.amount) > BigInt(allowed)) {
 					const approval = await erc20.methods
-						.approve(quotaRecord.transaction.to, quotaRecord.amount)
+						.approve(quoteRecord.transaction.to, quoteRecord.amount)
 						.send({
 							...callOptions,
 							from: ownerAddress
@@ -79,7 +80,7 @@
 			}
 
 			// FINAL STEP!
-			const receipt = await web3.eth.sendTransaction(quotaRecord.transaction);
+			const receipt = await web3.eth.sendTransaction(quoteRecord.transaction);
 
 			console.warn(`TX receipt: `, receipt);
 			successful = true;

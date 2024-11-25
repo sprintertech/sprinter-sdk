@@ -38,11 +38,10 @@
 		selecting = true;
 		try {
 			const accounts = await provider.provider.request({
-				method: 'eth_requestAccounts',
-				params: []
+				method: 'eth_requestAccounts'
 			});
 
-			selectedAccount.set(accounts[0]);
+			accounts && Array.isArray(accounts) && typeof accounts[0] === 'string' && selectedAccount.set(accounts[0]);
 			selectedProvider.set(provider);
 		} finally {
 			selecting = false;
@@ -76,14 +75,16 @@
 			<div class="space-y-10 text-center flex flex-col items-center">
 				<h2 class="h2">Welcome to Sprinter POC.</h2>
 				<br />
-				<h3 class="h3">Please select wallet</h3>
+				<h3 class="h3">Please select a wallet:</h3>
 				<article class="container mx-auto">
 					<ul class="space-y-4">
 						{#if !$providers.length}
-							No wallets Found GET ONE!
+							No wallets found. GET ONE!
 						{:else}
 							{#each $providers as provider}
 								<!-- eslint-disable-next-line svelte/valid-compile -->
+								<!-- svelte-ignore a11y-click-events-have-key-events -->
+								<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 								<li
 									on:click={() => selectWallet(provider)}
 									class="relative bg-white dark:bg-gray-800 p-4 rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-700 hover:shadow-lg transition duration-300 flex items-center cursor-pointer"

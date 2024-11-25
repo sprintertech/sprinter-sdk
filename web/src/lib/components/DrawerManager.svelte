@@ -33,7 +33,7 @@
 		</div>
 		{#if $drawerStore.id === 'SendTokens'}
 			<SendTokensDrawer />
-		{:else if $drawerStore.id === 'SubmitQuota'}
+		{:else if $drawerStore.id === 'SubmitQuote'}
 			<SubmitTokensDrawer />
 		{:else}
 			<!-- (fallback contents) -->
