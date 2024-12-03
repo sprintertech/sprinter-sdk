@@ -69,7 +69,7 @@ export function SprinterContext({ children, baseUrl }: SprinterContextProps) {
   useEffect(() => {
     getAvailableTokens();
     getAvailableChains();
-  }, [sprinter]);
+  }, [getAvailableChains, getAvailableTokens, sprinter]);
 
   return (
     <Context.Provider
