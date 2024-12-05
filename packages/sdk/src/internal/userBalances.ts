@@ -2,6 +2,7 @@ import { getErc20Balances, getUserNativeTokens } from "../api";
 import type {
   Address,
   AggregateBalances,
+  ChainID,
   FetchOptions,
   FungibleToken,
   FungibleTokenBalance,
@@ -17,18 +18,21 @@ type FetchBalancesResponse = [
 export function getUserBalances(
   account: Address,
   tokens: FungibleToken[],
-  options: FetchOptions,
+  sourceChains?: ChainID[],
+  options: FetchOptions = {},
 ): Promise<FetchBalancesResponse> {
   return Promise.all([
     Promise.all(
       tokens.map((token) =>
-        getErc20Balances(account, token.symbol, options).then((balances) => ({
-          symbol: token.symbol,
-          balances,
-        })),
+        getErc20Balances(account, token.symbol, sourceChains, options).then(
+          (balances) => ({
+            symbol: token.symbol,
+            balances,
+          }),
+        ),
       ),
     ),
-    getUserNativeTokens(account, options),
+    getUserNativeTokens(account, sourceChains, options),
   ]);
 }
 

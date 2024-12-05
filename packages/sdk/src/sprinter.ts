@@ -19,6 +19,7 @@ import type {
   Address,
   AggregateBalances,
   Chain,
+  ChainID,
   ContractSolutionOptions,
   FetchOptions,
   FungibleToken,
@@ -99,13 +100,18 @@ export class Sprinter {
    *
    * @param {Address} account - The user's wallet address for which balances are to be fetched.
    * @param {FungibleToken[]} [tokens] - An optional list of tokens to check balances for. If an empty array is provided, only native token balances (e.g., ETH) will be returned.
+   * @param {ChainID[]} [sourceChains] - An optional list of source chain IDs to filter the balances. If omitted, balances are retrieved from all available chains.
    * @param {FetchOptions} [options={}] - Optional configuration for the fetch request, which can include custom headers or query parameters.
    *
    * @returns {Promise<AggregateBalances>} A promise that resolves to the user's aggregate balances for the specified tokens and always includes native token balances (e.g., ETH).
    *
-   * @note If no tokens are provided or if an empty array is passed, the function will only return the native token balances (e.g., ETH). However, native balances are always returned regardless of the tokens specified.
+   * @note
+   * - Native token balances (e.g., ETH) are always returned, regardless of the tokens specified.
+   * - If `sourceChains` is provided, balances are limited to the specified chains. If omitted, balances are retrieved from all chains.
+   * - If no tokens are specified or an empty array is passed, only native token balances are returned.
    *
    * @example
+   * Basic Usage:
    * ```ts
    * import { Sprinter } from '@chainsafe/sprinter-sdk';
    *
@@ -113,6 +119,19 @@ export class Sprinter {
    * const account = "0xYourAddressHere";
    *
    * sprinter.getUserBalances(account).then(balances => {
+   *   console.log(balances);
+   * });
+   * ```
+   *
+   * Specify Tokens and Chains:
+   * ```ts
+   * const tokens = [
+   *   { symbol: "USDC", decimals: 6 },
+   *   { symbol: "DAI", decimals: 18 }
+   * ];
+   * const sourceChains = [1, 137]; // Ethereum and Polygon
+   *
+   * sprinter.getUserBalances(account, tokens, sourceChains).then(balances => {
    *   console.log(balances);
    * });
    * ```
@@ -151,6 +170,7 @@ export class Sprinter {
   public async getUserBalances(
     account: Address,
     tokens?: FungibleToken[],
+    sourceChains?: ChainID[],
     options: FetchOptions = {},
   ): Promise<AggregateBalances> {
     const tokenList = tokens || (await this.getAvailableTokens(options));
@@ -161,6 +181,7 @@ export class Sprinter {
         getUserBalances(
           account,
           tokenList,
+          sourceChains,
           this.makeFetchOptions(options || {}),
         ),
     );

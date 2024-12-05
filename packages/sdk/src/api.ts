@@ -76,12 +76,17 @@ export async function getFungibleToken(
 export async function getErc20Balances(
   address: Address,
   token: TokenSymbol,
+  whitelistedChains?: ChainID[],
   { baseUrl, signal }: FetchOptions = {},
 ): Promise<FungibleTokenBalance[]> {
   const url = new URL(
     `/accounts/${address}/assets/fungible/${token}`,
     baseUrl || BASE_URL,
   );
+
+  if (whitelistedChains?.length)
+    url.searchParams.set("whitelistedChains", whitelistedChains.join(","));
+
   const response = await fetch(url, { signal }).then(
     (response) =>
       response.json() as unknown as { data: FungibleTokenBalance[] },
@@ -92,12 +97,17 @@ export async function getErc20Balances(
 
 export async function getUserNativeTokens(
   address: Address,
+  whitelistedChains?: ChainID[],
   { baseUrl, signal }: FetchOptions = {},
 ): Promise<NativeTokenBalance[]> {
   const url = new URL(
     `/accounts/${address}/assets/native`,
     baseUrl || BASE_URL,
   );
+
+  if (whitelistedChains?.length)
+    url.searchParams.set("whitelistedChains", whitelistedChains.join(","));
+
   const response = await fetch(url, { signal }).then(
     (response) => response.json() as unknown as { data: NativeTokenBalance[] },
   );
