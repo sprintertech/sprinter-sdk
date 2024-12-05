@@ -16,16 +16,20 @@ import { Sprinter, Environment } from '@chainsafe/sprinter-sdk';
 const sprinter = new Sprinter({ baseUrl: Environment.TESTNET });
 
 const ownerAddress = "0xYourAddressHere";
-sprinter.getUserBalances(ownerAddress).then(balances => {
+sprinter.getUserBalances(ownerAddress).then((balances) => {
   console.log(balances);
 });
 ```
 
 ## Parameters
 
-- `account`: *(Required)* The address of the user whose balances will be retrieved.
-- `tokens?`: *(Optional)* An array of tokens for which balances will be retrieved. If omitted, the method will return balances for all tokens and native assets. If an empty array is provided, only native token balances will be returned.
-- `fetchOptions?`: *(Optional)* An object containing `baseUrl` to override the default API endpoint for this request.
+- `account`: *(Required)* The wallet address of the user whose balances will be retrieved.
+- `tokens?`: *(Optional)* An array of tokens for which balances will be retrieved. Each token should include its `symbol` and `decimals`.
+    - **If omitted**: Balances for all supported tokens and native assets will be retrieved.
+    - **If an empty array**: Only native token balances (e.g., ETH) will be returned.
+    - **If specific tokens are provided**: Balances will be fetched only for those tokens and native assets.
+- `sourceChains?`: *(Optional)* An array of chain IDs to filter balances from specific chains. If omitted, balances will be retrieved from all supported chains.
+- `fetchOptions?`: *(Optional)* An object containing options for customizing the fetch request, such as `baseUrl`.
 
 ### Example: Using `tokens` and `fetchOptions`
 
@@ -34,7 +38,7 @@ const tokens = [
   { symbol: 'USDC', decimals: 6, addresses: { '11155111': '0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238' } }
 ];
 
-sprinter.getUserBalances(ownerAddress, tokens, { baseUrl: 'https://custom.api.url' }).then(balances => {
+sprinter.getUserBalances(ownerAddress, tokens, undefined, { baseUrl: 'https://custom.api.url' }).then((balances) => {
   console.log(balances);
 });
 ```
@@ -60,9 +64,9 @@ type AggregateBalances = {
 };
 
 interface TokenBalance {
-  balance: string;
-  chainId: number;
-  tokenDecimals: number;
+  balance: string; // Token balance in its smallest denomination (e.g., wei for ETH, smallest unit for tokens)
+  chainId: number; // Chain ID where the balance is located
+  tokenDecimals: number; // Number of decimals for the token
 }
 ```
 
@@ -105,7 +109,6 @@ interface TokenBalance {
 
 ## Notes
 
-- If the `tokens` array is omitted, balances for all tokens and native assets will be returned.
-- If you provide specific tokens, balances will be fetched only for those tokens and native assets.
-- If you provide an empty `tokens` array, only native token balances will be returned.
+- Native token balances (e.g., ETH) are always included in the response, regardless of the tokens specified.
 - Specifying tokens or an empty array can result in faster responses, as fewer tokens need to be fetched.
+- Use the `sourceChains` parameter to limit balances to specific chains.
