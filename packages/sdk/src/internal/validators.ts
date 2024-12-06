@@ -2,6 +2,7 @@ import {
   array,
   assign,
   bigint,
+  boolean,
   define,
   number,
   object,
@@ -25,7 +26,7 @@ const numberLike = refine(
   (value) => {
     if (typeof value === "string") return !isNaN(Number(value));
     return true; // If it's a number or bigint, it's already valid
-  },
+  }
 );
 
 const BridgeCoreSchema = object({
@@ -35,13 +36,14 @@ const BridgeCoreSchema = object({
   amount: numberLike,
   threshold: optional(number()),
   sourceChains: optional(array(number())),
+  enableSwaps: optional(boolean()),
 });
 
 const BridgeCoreWithRecipientSchema = assign(
   BridgeCoreSchema,
   object({
     recipient: optional(hexString()),
-  }),
+  })
 );
 
 const ContractCallCoreSchema = object({
@@ -57,7 +59,7 @@ const TokenContractCallSchema = assign(
   object({
     outputTokenAddress: optional(hexString()),
     approvalAddress: optional(hexString()),
-  }),
+  })
 );
 
 const ContractCallSchema = object({
@@ -70,10 +72,10 @@ export const MultiHopSchema = BridgeCoreSchema;
 
 export const SingleHopWithContractSchema = assign(
   BridgeCoreWithRecipientSchema,
-  ContractCallSchema,
+  ContractCallSchema
 );
 
 export const MultiHopWithContractSchema = assign(
   BridgeCoreSchema,
-  ContractCallSchema,
+  ContractCallSchema
 );

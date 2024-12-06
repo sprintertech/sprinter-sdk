@@ -57,11 +57,11 @@ export class Sprinter {
    * ```
    */
   public async getAvailableTokens(
-    options: FetchOptions = {},
+    options: FetchOptions = {}
   ): Promise<FungibleToken[]> {
     if (!this.#tokens)
       this.#tokens = await this.deferredRequest("tokens", () =>
-        getFungibleTokens(this.makeFetchOptions(options)),
+        getFungibleTokens(this.makeFetchOptions(options))
       );
     return this.#tokens;
   }
@@ -85,11 +85,11 @@ export class Sprinter {
    * ```
    */
   public async getAvailableChains(
-    options: FetchOptions = {},
+    options: FetchOptions = {}
   ): Promise<Chain[]> {
     if (!this.#chains)
       this.#chains = await this.deferredRequest("chains", () =>
-        getSupportedChains(this.makeFetchOptions(options)),
+        getSupportedChains(this.makeFetchOptions(options))
       );
     return this.#chains;
   }
@@ -151,7 +151,7 @@ export class Sprinter {
   public async getUserBalances(
     account: Address,
     tokens?: FungibleToken[],
-    options: FetchOptions = {},
+    options: FetchOptions = {}
   ): Promise<AggregateBalances> {
     const tokenList = tokens || (await this.getAvailableTokens(options));
 
@@ -161,8 +161,8 @@ export class Sprinter {
         getUserBalances(
           account,
           tokenList,
-          this.makeFetchOptions(options || {}),
-        ),
+          this.makeFetchOptions(options || {})
+        )
     );
     return formatBalances([balances, nativeTokens]);
   }
@@ -253,7 +253,7 @@ export class Sprinter {
    */
   public async poolAssetOnDestination(
     settings: Infer<typeof MultiHopSchema>,
-    options?: FetchOptions,
+    options?: FetchOptions
   ): Promise<SolutionResponse> {
     assert(settings, MultiHopSchema);
 
@@ -264,7 +264,7 @@ export class Sprinter {
         amount: BigInt(amount),
         whitelistedSourceChains: sourceChains,
       } as SolutionOptions,
-      this.makeFetchOptions(options),
+      this.makeFetchOptions(options)
     );
   }
 
@@ -327,7 +327,7 @@ export class Sprinter {
    */
   public async poolAssetOnDestinationWithHook(
     settings: Infer<typeof MultiHopWithContractSchema>,
-    options?: FetchOptions,
+    options?: FetchOptions
   ): Promise<SolutionResponse> {
     assert(settings, MultiHopWithContractSchema);
 
@@ -338,7 +338,7 @@ export class Sprinter {
         amount: BigInt(amount),
         whitelistedSourceChains: sourceChains,
       } as ContractSolutionOptions,
-      this.makeFetchOptions(options),
+      this.makeFetchOptions(options)
     );
   }
 
@@ -355,6 +355,7 @@ export class Sprinter {
    * - `recipient` (optional): The address of the recipient of any leftover tokens.
    * - `threshold` (optional): The minimum amount threshold required for the transfer.
    * - `sourceChains` (optional): An array of whitelisted source chain IDs for the transfer.
+   * - `enableSwaps` {boolean} (optional): Whether to enable token swaps on the source chain.
    *
    * @param {FetchOptions} [options] - Optional configuration for the fetch request, such as custom headers or query parameters.
    *
@@ -372,6 +373,7 @@ export class Sprinter {
    *   token: "USDC",
    *   amount: "100000000",
    *   recipient: "0xRecipientAddress", // Optional recipient of leftover tokens
+   *   enableSwaps: true,  // Enabling swaps on the source chain
    * };
    *
    * sprinter.transfer(settings).then(solution => {
@@ -383,7 +385,7 @@ export class Sprinter {
    */
   public async transfer(
     settings: Infer<typeof SingleHopSchema>,
-    options?: FetchOptions,
+    options?: FetchOptions
   ): Promise<SolutionResponse> {
     assert(settings, SingleHopSchema);
 
@@ -394,7 +396,7 @@ export class Sprinter {
         amount: BigInt(amount),
         whitelistedSourceChains: sourceChains,
       } as SolutionOptions,
-      this.makeFetchOptions(options),
+      this.makeFetchOptions(options)
     );
   }
 
@@ -422,6 +424,7 @@ export class Sprinter {
    * - `recipient` {string} (optional): The address of the recipient of any leftover tokens.
    * - `sourceChains` {Array<number>} (optional): An array of source chain IDs to be considered for the transfer.
    * - `threshold` {number} (optional): The minimum amount threshold required for the transfer.
+   * - `enableSwaps` {boolean} (optional): Whether to enable token swaps on the source chain.
    *
    * @param {FetchOptions} [options] - Optional configuration for the fetch request, such as custom headers or query parameters.
    *
@@ -444,6 +447,7 @@ export class Sprinter {
    *     gasLimit: 21000,
    *   },
    *   recipient: "0xRecipientAddress", // for sending leftover tokens
+   *   enableSwaps: true,  // Enabling swaps on the source chain
    * };
    *
    * sprinter.transferWithHook(settings).then(solution => {
@@ -455,7 +459,7 @@ export class Sprinter {
    */
   public async transferWithHook(
     settings: Infer<typeof SingleHopWithContractSchema>,
-    options?: FetchOptions,
+    options?: FetchOptions
   ): Promise<SolutionResponse> {
     assert(settings, SingleHopWithContractSchema);
 
@@ -466,13 +470,13 @@ export class Sprinter {
         amount: BigInt(amount),
         whitelistedSourceChains: sourceChains,
       } as SolutionOptions,
-      this.makeFetchOptions(options),
+      this.makeFetchOptions(options)
     );
   }
 
   private deferredRequest<T>(
     name: string,
-    request: () => Promise<T>,
+    request: () => Promise<T>
   ): Promise<T> {
     if (!(name in this.#requests)) {
       this.#requests[name] = request();
