@@ -166,7 +166,7 @@ export async function getContractSolution(
       type: "fungible",
       threshold,
       whitelistedSourceChains,
-      enableSwaps
+      enableSwaps,
     }),
   }).then(
     (response) =>
