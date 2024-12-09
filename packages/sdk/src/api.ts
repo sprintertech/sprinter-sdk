@@ -148,6 +148,7 @@ export async function getContractSolution(
     contractCall,
     threshold,
     whitelistedSourceChains,
+    enableSwaps,
   }: ContractSolutionOptions,
   { baseUrl, signal }: FetchOptions = {},
 ): Promise<SolutionResponse> {
@@ -165,6 +166,7 @@ export async function getContractSolution(
       type: "fungible",
       threshold,
       whitelistedSourceChains,
+      enableSwaps
     }),
   }).then(
     (response) =>
@@ -185,6 +187,7 @@ export async function getContractCallSolution(
     recipient,
     threshold,
     whitelistedSourceChains,
+    enableSwaps,
   }: SingleHopContractSolutionOptions,
   { baseUrl, signal }: FetchOptions = {},
 ): Promise<SolutionResponse> {
@@ -203,6 +206,7 @@ export async function getContractCallSolution(
       recipient,
       threshold,
       whitelistedSourceChains,
+      enableSwaps,
     }),
   }).then(
     (response) =>

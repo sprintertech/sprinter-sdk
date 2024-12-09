@@ -355,7 +355,7 @@ export class Sprinter {
    * - `recipient` (optional): The address of the recipient of any leftover tokens.
    * - `threshold` (optional): The minimum amount threshold required for the transfer.
    * - `sourceChains` (optional): An array of whitelisted source chain IDs for the transfer.
-   * - `enableSwaps` {boolean} (optional): Whether to enable token swaps on the source chain.
+   * - `enableSwaps` {boolean} (optional): Defaults to `false`. Whether to enable token swaps on the source chain.
    *
    * @param {FetchOptions} [options] - Optional configuration for the fetch request, such as custom headers or query parameters.
    *
@@ -389,10 +389,11 @@ export class Sprinter {
   ): Promise<SolutionResponse> {
     assert(settings, SingleHopSchema);
 
-    const { sourceChains, amount, ...data } = settings;
+    const { sourceChains, amount, enableSwaps = false, ...data } = settings;
     return await getContractCallSolution(
       {
         ...data,
+        enableSwaps,
         amount: BigInt(amount),
         whitelistedSourceChains: sourceChains,
       } as SolutionOptions,
@@ -424,7 +425,7 @@ export class Sprinter {
    * - `recipient` {string} (optional): The address of the recipient of any leftover tokens.
    * - `sourceChains` {Array<number>} (optional): An array of source chain IDs to be considered for the transfer.
    * - `threshold` {number} (optional): The minimum amount threshold required for the transfer.
-   * - `enableSwaps` {boolean} (optional): Whether to enable token swaps on the source chain.
+   * - `enableSwaps` {boolean} (optional): Defaults to `false`. Whether to enable token swaps on the source chain.
    *
    * @param {FetchOptions} [options] - Optional configuration for the fetch request, such as custom headers or query parameters.
    *
@@ -463,10 +464,11 @@ export class Sprinter {
   ): Promise<SolutionResponse> {
     assert(settings, SingleHopWithContractSchema);
 
-    const { sourceChains, amount, ...data } = settings;
+    const { sourceChains, amount, enableSwaps = false, ...data } = settings;
     return await getContractCallSolution(
       {
         ...data,
+        enableSwaps,
         amount: BigInt(amount),
         whitelistedSourceChains: sourceChains,
       } as SolutionOptions,
