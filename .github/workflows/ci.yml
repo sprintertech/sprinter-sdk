@@ -52,6 +52,8 @@ jobs:
           accountId: 2238a825c5aca59233eab1f221f7aefb
           command: pages deploy ./web/.svelte-kit/cloudflare --project-name=sprinter-poc --branch=${{ env.CF_BRANCH_NAME }}
       - name: Create deployment for docs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh api repos/${{ github.repository }}/deployments \
             -X POST \
@@ -61,6 +63,8 @@ jobs:
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}"
 
       - name: Create deployment for POC
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh api repos/${{ github.repository }}/deployments \
             -X POST \
