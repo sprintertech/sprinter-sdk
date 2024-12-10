@@ -37,20 +37,6 @@ jobs:
           else
             echo "CF_BRANCH_NAME=${{ github.head_ref || github.ref_name }}" >> $GITHUB_ENV
           fi
-
-      # Deploy Docs
-      - name: Create GitHub Deployment for Docs
-        id: docs-deployment
-        uses: octokit/request-action@v2.x
-        with:
-          route: POST /repos/${{ github.repository }}/deployments
-          environment: gopher-docs-preview
-          ref: ${{ github.ref }}
-          description: Deploying Docs preview
-          auto_merge: false
-          payload: '{"project": "docs"}'
-          token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Publish Docs to Cloudflare Pages
         id: docs-publish
         uses: cloudflare/wrangler-action@v3
@@ -59,29 +45,6 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: 2238a825c5aca59233eab1f221f7aefb
           command: pages deploy ./docs/build --project-name=sprinter-docs --branch=${{ env.CF_BRANCH_NAME }}
-
-      - name: Update Docs Deployment Status
-        uses: octokit/request-action@v2.x
-        with:
-          route: POST /repos/${{ github.repository }}/deployments/${{ steps.docs-deployment.outputs.deployment_id }}/statuses
-          state: success
-          environment_url: ${{ steps.docs-publish.outputs.deployment-url }}
-          description: Docs deployed successfully
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      # Deploy POC
-      - name: Create GitHub Deployment for POC
-        id: poc-deployment
-        uses: octokit/request-action@v2.x
-        with:
-          route: POST /repos/${{ github.repository }}/deployments
-          environment: gopher-poc-preview
-          ref: ${{ github.ref }}
-          description: Deploying POC preview
-          auto_merge: false
-          payload: '{"project": "poc"}'
-          token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Publish POC to Cloudflare Pages
         id: poc-publish
         uses: cloudflare/wrangler-action@v3
@@ -90,12 +53,25 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: 2238a825c5aca59233eab1f221f7aefb
           command: pages deploy ./web/.svelte-kit/cloudflare --project-name=sprinter-poc --branch=${{ env.CF_BRANCH_NAME }}
-
-      - name: Update POC Deployment Status
-        uses: octokit/request-action@v2.x
+      - name: Generate Deployment Summary
+        run: |
+          echo "# 🚀 Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| **Project**             | **Preview URL** |" >> $GITHUB_STEP_SUMMARY
+          echo "| ----------------------- | ---------------- |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Docs**                | [View Docs](${{ steps.docs-publish.outputs.deployment-url }}) |" >> $GITHUB_STEP_SUMMARY
+          echo "| **POC**                 | [View POC](${{ steps.poc-publish.outputs.deployment-url }}) |" >> $GITHUB_STEP_SUMMARY
+      - name: Notify About Deployment
+        if: ${{ github.actor != 'dependabot[bot]' }}
+        uses: actions/github-script@v7
         with:
-          route: POST /repos/${{ github.repository }}/deployments/${{ steps.poc-deployment.outputs.deployment_id }}/statuses
-          state: success
-          environment_url: ${{ steps.poc-publish.outputs.deployment-url }}
-          description: POC deployed successfully
-          token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const docsUrl = `**Docs:** [View Deployment](${{ steps.docs-publish.outputs.deployment-url }})`;
+            const pocUrl = `**POC:** [View Deployment](${{ steps.poc-publish.outputs.deployment-url }})`;
+            const message = `🚀 **Deployment Completed**\n\n${docsUrl}\n${pocUrl}`;
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: message,
+            });
