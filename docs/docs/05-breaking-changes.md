@@ -56,30 +56,30 @@ The methods have been **separated and simplified** to offer more clarity and spe
 
   ```ts
   sprinter.getSolution({
-  	account: "0xYourAddressHere",
-  	destinationChain: 11155111,
-  	token: "USDC",
-  	amount: 1000000,
-  	contractCall: {
-  		callData: "0xabcdef",
-  		contractAddress: "0xContractAddress",
-  		gasLimit: 21000
-  	}
+    account: "0xYourAddressHere",
+    destinationChain: 11155111,
+    token: "USDC",
+    amount: 1000000,
+    contractCall: {
+      callData: "0xabcdef",
+      contractAddress: "0xContractAddress",
+      gasLimit: 21000,
+    },
   });
   ```
 
 - **New usage (`poolAssetOnDestinationWithHook`)**:
   ```ts
   sprinter.poolAssetOnDestinationWithHook({
-  	account: "0xYourAddressHere",
-  	destinationChain: 11155111,
-  	token: "USDC",
-  	amount: 1000000,
-  	contractCall: {
-  		callData: "0xabcdef",
-  		contractAddress: "0xContractAddress",
-  		gasLimit: 21000
-  	}
+    account: "0xYourAddressHere",
+    destinationChain: 11155111,
+    token: "USDC",
+    amount: 1000000,
+    contractCall: {
+      callData: "0xabcdef",
+      contractAddress: "0xContractAddress",
+      gasLimit: 21000,
+    },
   });
   ```
 
@@ -107,22 +107,22 @@ The methods have been **separated and simplified** to offer more clarity and spe
 
   ```ts
   sprinter.getSolution({
-  	account: "0xYourAddressHere",
-  	destinationChain: 11155111,
-  	token: "USDC",
-  	amount: 1000000,
-  	whitelistedSourceChains: [84532, 137]
+    account: "0xYourAddressHere",
+    destinationChain: 11155111,
+    token: "USDC",
+    amount: 1000000,
+    whitelistedSourceChains: [84532, 137],
   });
   ```
 
 - **New usage (`sourceChains`)**:
   ```ts
   sprinter.poolAssetOnDestination({
-  	account: "0xYourAddressHere",
-  	destinationChain: 11155111,
-  	token: "USDC",
-  	amount: 1000000,
-  	sourceChains: [84532, 137]
+    account: "0xYourAddressHere",
+    destinationChain: 11155111,
+    token: "USDC",
+    amount: 1000000,
+    sourceChains: [84532, 137],
   });
   ```
 
@@ -186,12 +186,12 @@ The methods have been split into specialized methods to clarify their purpose:
 - **New usage (`getTransferWithHook`)**:
   ```ts
   getTransferWithHook({
-  	account,
-  	destinationChain,
-  	token,
-  	amount,
-  	threshold,
-  	sourceChains
+    account,
+    destinationChain,
+    token,
+    amount,
+    threshold,
+    sourceChains,
   });
   ```
 
@@ -221,12 +221,12 @@ Now, methods accept a **single object** as an argument (e.g., `settings`). This 
 
 ```typescript
 getTransfer({
-	account,
-	destinationChain,
-	token,
-	amount,
-	threshold,
-	sourceChains
+  account,
+  destinationChain,
+  token,
+  amount,
+  threshold,
+  sourceChains,
 });
 ```
 
@@ -245,12 +245,12 @@ getTransfer({
 - **New Usage**:
   ```typescript
   getTransfer({
-  	account,
-  	destinationChain,
-  	token,
-  	amount,
-  	threshold,
-  	sourceChains
+    account,
+    destinationChain,
+    token,
+    amount,
+    threshold,
+    sourceChains,
   });
   ```
 
@@ -277,22 +277,22 @@ getTransfer({
 
   ```ts
   getSolution({
-  	account: "0xYourAddressHere",
-  	destinationChain: 11155111,
-  	token: "USDC",
-  	amount: 1000000,
-  	whitelistedSourceChains: [84532, 137]
+    account: "0xYourAddressHere",
+    destinationChain: 11155111,
+    token: "USDC",
+    amount: 1000000,
+    whitelistedSourceChains: [84532, 137],
   });
   ```
 
 - **New usage**:
   ```ts
   getTransfer({
-  	account: "0xYourAddressHere",
-  	destinationChain: 11155111,
-  	token: "USDC",
-  	amount: 1000000,
-  	sourceChains: [84532, 137]
+    account: "0xYourAddressHere",
+    destinationChain: 11155111,
+    token: "USDC",
+    amount: 1000000,
+    sourceChains: [84532, 137],
   });
   ```
 
@@ -317,9 +317,9 @@ Previously, the React SDK bundled the `@chainsafe/sprinter-sdk` as a regular dep
 
 ```json
 {
-	"peerDependencies": {
-		"@chainsafe/sprinter-sdk": "^0.4.0"
-	}
+  "peerDependencies": {
+    "@chainsafe/sprinter-sdk": "^0.4.0"
+  }
 }
 ```
 

@@ -24,24 +24,24 @@ import { useSprinterTransfers } from "@chainsafe/sprinter-react";
 import React, { useEffect } from "react";
 
 function TransferComponent() {
-	const { solution, getPoolAssetOnDestination } = useSprinterTransfers();
+  const { solution, getPoolAssetOnDestination } = useSprinterTransfers();
 
-	useEffect(() => {
-		const settings = {
-			account: "0xYourAddress",
-			destinationChain: 11155111, // Sepolia Testnet
-			token: "USDC",
-			amount: 1000000, // 1 USDC (smallest denomination)
-			sourceChains: [84532, 1993] // Optional: source chains to consider
-		};
+  useEffect(() => {
+    const settings = {
+      account: "0xYourAddress",
+      destinationChain: 11155111, // Sepolia Testnet
+      token: "USDC",
+      amount: 1000000, // 1 USDC (smallest denomination)
+      sourceChains: [84532, 1993], // Optional: source chains to consider
+    };
 
-		getPoolAssetOnDestination(settings); // Fetch transfer solution when the component mounts
-	}, [getPoolAssetOnDestination]);
+    getPoolAssetOnDestination(settings); // Fetch transfer solution when the component mounts
+  }, [getPoolAssetOnDestination]);
 
-	if (solution.loading) return <div>Loading transfer solution...</div>;
-	if (solution.error) return <div>Error fetching transfer solution: {solution.error}</div>;
+  if (solution.loading) return <div>Loading transfer solution...</div>;
+  if (solution.error) return <div>Error fetching transfer solution: {solution.error}</div>;
 
-	return <div>Transfer Solution: {JSON.stringify(solution.data)}</div>;
+  return <div>Transfer Solution: {JSON.stringify(solution.data)}</div>;
 }
 ```
 
@@ -66,28 +66,28 @@ Here’s an example of what the `solution.data` might look like after calling `g
 
 ```json
 [
-	{
-		"sourceChain": 84532,
-		"destinationChain": 11155111,
-		"sourceTokenAddress": "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
-		"destinationTokenAddress": "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
-		"amount": "1000000",
-		"duration": 60000,
-		"fee": { "amount": "100000", "amountUSD": 0.1 },
-		"gasCost": { "amount": "200000", "amountUSD": 0.02 },
-		"tool": {
-			"name": "Sygma",
-			"logoURI": "https://sygma.com/logo.png"
-		},
-		"transaction": {
-			"from": "0xYourAddress",
-			"to": "0xBridgeContractAddress",
-			"value": "0",
-			"data": "0x...",
-			"gasPrice": "0x...",
-			"gasLimit": "0x..."
-		}
-	}
+  {
+    "sourceChain": 84532,
+    "destinationChain": 11155111,
+    "sourceTokenAddress": "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+    "destinationTokenAddress": "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
+    "amount": "1000000",
+    "duration": 60000,
+    "fee": { "amount": "100000", "amountUSD": 0.1 },
+    "gasCost": { "amount": "200000", "amountUSD": 0.02 },
+    "tool": {
+      "name": "Sygma",
+      "logoURI": "https://sygma.com/logo.png"
+    },
+    "transaction": {
+      "from": "0xYourAddress",
+      "to": "0xBridgeContractAddress",
+      "value": "0",
+      "data": "0x...",
+      "gasPrice": "0x...",
+      "gasLimit": "0x..."
+    }
+  }
 ]
 ```
 

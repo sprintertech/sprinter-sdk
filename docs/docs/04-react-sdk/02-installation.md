@@ -34,11 +34,11 @@ import { SprinterContext } from "@chainsafe/sprinter-react";
 import { Environment } from "@chainsafe/sprinter-sdk";
 
 function App() {
-	return (
-		<SprinterContext baseUrl={Environment.TESTNET}>
-			<YourComponent />
-		</SprinterContext>
-	);
+  return (
+    <SprinterContext baseUrl={Environment.TESTNET}>
+      <YourComponent />
+    </SprinterContext>
+  );
 }
 ```
 

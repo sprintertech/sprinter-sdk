@@ -52,32 +52,32 @@ import { SprinterContext, useSprinterBalances } from "@chainsafe/sprinter-react"
 import { Environment } from "@chainsafe/sprinter-sdk";
 
 function BalancesComponent() {
-	const { balances, getUserBalances } = useSprinterBalances("0xYourAddressHere");
+  const { balances, getUserBalances } = useSprinterBalances("0xYourAddressHere");
 
-	useEffect(() => {
-		getUserBalances();
-	}, [getUserBalances]);
+  useEffect(() => {
+    getUserBalances();
+  }, [getUserBalances]);
 
-	if (balances.loading) return <div>Loading...</div>;
-	if (balances.error) return <div>Error: {balances.error}</div>;
+  if (balances.loading) return <div>Loading...</div>;
+  if (balances.error) return <div>Error: {balances.error}</div>;
 
-	return (
-		<ul>
-			{Object.entries(balances.data || {}).map(([symbol, balanceEntry]) => (
-				<li key={symbol}>
-					{symbol}: {balanceEntry.total}
-				</li>
-			))}
-		</ul>
-	);
+  return (
+    <ul>
+      {Object.entries(balances.data || {}).map(([symbol, balanceEntry]) => (
+        <li key={symbol}>
+          {symbol}: {balanceEntry.total}
+        </li>
+      ))}
+    </ul>
+  );
 }
 
 function App() {
-	return (
-		<SprinterContext baseUrl={Environment.MAINNET}>
-			<BalancesComponent />
-		</SprinterContext>
-	);
+  return (
+    <SprinterContext baseUrl={Environment.MAINNET}>
+      <BalancesComponent />
+    </SprinterContext>
+  );
 }
 
 export default App;

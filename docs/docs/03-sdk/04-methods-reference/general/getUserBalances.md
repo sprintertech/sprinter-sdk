@@ -17,7 +17,7 @@ const sprinter = new Sprinter({ baseUrl: Environment.TESTNET });
 
 const ownerAddress = "0xYourAddressHere";
 sprinter.getUserBalances(ownerAddress).then((balances) => {
-	console.log(balances);
+  console.log(balances);
 });
 ```
 
@@ -31,18 +31,18 @@ sprinter.getUserBalances(ownerAddress).then((balances) => {
 
 ```typescript
 const tokens = [
-	{
-		symbol: "USDC",
-		decimals: 6,
-		addresses: { "11155111": "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238" }
-	}
+  {
+    symbol: "USDC",
+    decimals: 6,
+    addresses: { "11155111": "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238" },
+  },
 ];
 
 sprinter
-	.getUserBalances(ownerAddress, tokens, { baseUrl: "https://custom.api.url" })
-	.then((balances) => {
-		console.log(balances);
-	});
+  .getUserBalances(ownerAddress, tokens, { baseUrl: "https://custom.api.url" })
+  .then((balances) => {
+    console.log(balances);
+  });
 ```
 
 ## Behavior of the `tokens` Parameter
@@ -59,16 +59,16 @@ Returns a promise that resolves to an `AggregateBalances` object.
 
 ```typescript
 type AggregateBalances = {
-	[symbol: string]: {
-		balances: Array<TokenBalance>;
-		total: string;
-	};
+  [symbol: string]: {
+    balances: Array<TokenBalance>;
+    total: string;
+  };
 };
 
 interface TokenBalance {
-	balance: string;
-	chainId: number;
-	tokenDecimals: number;
+  balance: string;
+  chainId: number;
+  tokenDecimals: number;
 }
 ```
 
@@ -76,36 +76,36 @@ interface TokenBalance {
 
 ```json
 {
-	"ETH": {
-		"balances": [
-			{
-				"balance": "1234567890000000000",
-				"chainId": 11155111,
-				"tokenDecimals": 18
-			},
-			{
-				"balance": "9876543210000000000",
-				"chainId": 84532,
-				"tokenDecimals": 18
-			}
-		],
-		"total": "11111111100000000000"
-	},
-	"USDC": {
-		"balances": [
-			{
-				"balance": "1000000",
-				"chainId": 11155111,
-				"tokenDecimals": 6
-			},
-			{
-				"balance": "2000000",
-				"chainId": 84532,
-				"tokenDecimals": 6
-			}
-		],
-		"total": "3000000"
-	}
+  "ETH": {
+    "balances": [
+      {
+        "balance": "1234567890000000000",
+        "chainId": 11155111,
+        "tokenDecimals": 18
+      },
+      {
+        "balance": "9876543210000000000",
+        "chainId": 84532,
+        "tokenDecimals": 18
+      }
+    ],
+    "total": "11111111100000000000"
+  },
+  "USDC": {
+    "balances": [
+      {
+        "balance": "1000000",
+        "chainId": 11155111,
+        "tokenDecimals": 6
+      },
+      {
+        "balance": "2000000",
+        "chainId": 84532,
+        "tokenDecimals": 6
+      }
+    ],
+    "total": "3000000"
+  }
 }
 ```
 

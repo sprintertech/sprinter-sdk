@@ -17,29 +17,29 @@ import { useSprinterBalances } from "@chainsafe/sprinter-react";
 import React, { useEffect } from "react";
 
 function BalancesComponent() {
-	const { balances, getUserBalances } = useSprinterBalances("0xYourAddress");
+  const { balances, getUserBalances } = useSprinterBalances("0xYourAddress");
 
-	useEffect(() => {
-		getUserBalances(); // Fetch balances when the component mounts
-	}, [getUserBalances]);
+  useEffect(() => {
+    getUserBalances(); // Fetch balances when the component mounts
+  }, [getUserBalances]);
 
-	if (balances.loading) {
-		return <div>Loading...</div>;
-	}
+  if (balances.loading) {
+    return <div>Loading...</div>;
+  }
 
-	if (balances.error) {
-		return <div>Error: {balances.error}</div>;
-	}
+  if (balances.error) {
+    return <div>Error: {balances.error}</div>;
+  }
 
-	return (
-		<ul>
-			{Object.entries(balances.data || {}).map(([symbol, balanceEntry]) => (
-				<li key={symbol}>
-					{symbol}: {balanceEntry.total}
-				</li>
-			))}
-		</ul>
-	);
+  return (
+    <ul>
+      {Object.entries(balances.data || {}).map(([symbol, balanceEntry]) => (
+        <li key={symbol}>
+          {symbol}: {balanceEntry.total}
+        </li>
+      ))}
+    </ul>
+  );
 }
 ```
 
@@ -63,17 +63,17 @@ Here’s an example of what `balances.data` might look like after calling `getUs
 
 ```json
 {
-	"ETH": {
-		"balances": [
-			{ "balance": "1000000000000000000", "chainId": 11155111, "tokenDecimals": 18 },
-			{ "balance": "500000000000000000", "chainId": 84532, "tokenDecimals": 18 }
-		],
-		"total": "1500000000000000000"
-	},
-	"USDC": {
-		"balances": [{ "balance": "2000000", "chainId": 11155111, "tokenDecimals": 6 }],
-		"total": "2000000"
-	}
+  "ETH": {
+    "balances": [
+      { "balance": "1000000000000000000", "chainId": 11155111, "tokenDecimals": 18 },
+      { "balance": "500000000000000000", "chainId": 84532, "tokenDecimals": 18 }
+    ],
+    "total": "1500000000000000000"
+  },
+  "USDC": {
+    "balances": [{ "balance": "2000000", "chainId": 11155111, "tokenDecimals": 6 }],
+    "total": "2000000"
+  }
 }
 ```
 

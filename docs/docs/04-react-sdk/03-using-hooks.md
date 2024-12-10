@@ -20,21 +20,21 @@ Access all of the context provided by `SprinterContext`. It allows you to get ac
 import { useSprinter } from "@chainsafe/sprinter-react";
 
 function YourComponent() {
-	const {
-		balances,
-		tokens,
-		chains,
-		solution,
-		getUserBalances,
-		getAvailableTokens,
-		getAvailableChains,
-		getTransfer,
-		getTransferWithHook,
-		getPoolAssetOnDestination,
-		getPoolAssetOnDestinationWithHook
-	} = useSprinter();
+  const {
+    balances,
+    tokens,
+    chains,
+    solution,
+    getUserBalances,
+    getAvailableTokens,
+    getAvailableChains,
+    getTransfer,
+    getTransferWithHook,
+    getPoolAssetOnDestination,
+    getPoolAssetOnDestinationWithHook,
+  } = useSprinter();
 
-	// You now have access to the full Sprinter context!
+  // You now have access to the full Sprinter context!
 }
 ```
 
@@ -46,18 +46,18 @@ Fetch the list of available tokens supported by Sprinter across various chains.
 import { useSprinterTokens } from "@chainsafe/sprinter-react";
 
 function TokenList() {
-	const { tokens, getAvailableTokens } = useSprinterTokens();
+  const { tokens, getAvailableTokens } = useSprinterTokens();
 
-	useEffect(() => {
-		getAvailableTokens(); // Fetch tokens on component mount
-	}, []);
+  useEffect(() => {
+    getAvailableTokens(); // Fetch tokens on component mount
+  }, []);
 
-	if (tokens.loading) return <div>Loading tokens...</div>;
-	if (tokens.error) return <div>Error: {tokens.error}</div>;
+  if (tokens.loading) return <div>Loading tokens...</div>;
+  if (tokens.error) return <div>Error: {tokens.error}</div>;
 
-	return (
-		<ul>{tokens.data && tokens.data.map((token) => <li key={token.symbol}>{token.name}</li>)}</ul>
-	);
+  return (
+    <ul>{tokens.data && tokens.data.map((token) => <li key={token.symbol}>{token.name}</li>)}</ul>
+  );
 }
 ```
 
@@ -69,18 +69,18 @@ This hook retrieves the supported blockchain networks.
 import { useSprinterChains } from "@chainsafe/sprinter-react";
 
 function ChainList() {
-	const { chains, getAvailableChains } = useSprinterChains();
+  const { chains, getAvailableChains } = useSprinterChains();
 
-	useEffect(() => {
-		getAvailableChains(); // Fetch chains on component mount
-	}, []);
+  useEffect(() => {
+    getAvailableChains(); // Fetch chains on component mount
+  }, []);
 
-	if (chains.loading) return <div>Loading chains...</div>;
-	if (chains.error) return <div>Error fetching chains: {chains.error}</div>;
+  if (chains.loading) return <div>Loading chains...</div>;
+  if (chains.error) return <div>Error fetching chains: {chains.error}</div>;
 
-	return (
-		<ul>{chains.data && chains.data.map((chain) => <li key={chain.chainID}>{chain.name}</li>)}</ul>
-	);
+  return (
+    <ul>{chains.data && chains.data.map((chain) => <li key={chain.chainID}>{chain.name}</li>)}</ul>
+  );
 }
 ```
 
@@ -92,25 +92,25 @@ This hook allows you to fetch user balances across multiple blockchains.
 import { useSprinterBalances } from "@chainsafe/sprinter-react";
 
 function BalanceComponent({ account }) {
-	const { balances, getUserBalances } = useSprinterBalances(account);
+  const { balances, getUserBalances } = useSprinterBalances(account);
 
-	useEffect(() => {
-		getUserBalances(); // Fetch balances when the component mounts
-	}, [account]);
+  useEffect(() => {
+    getUserBalances(); // Fetch balances when the component mounts
+  }, [account]);
 
-	if (balances.loading) return <div>Loading balances...</div>;
-	if (balances.error) return <div>Error fetching balances: {balances.error}</div>;
+  if (balances.loading) return <div>Loading balances...</div>;
+  if (balances.error) return <div>Error fetching balances: {balances.error}</div>;
 
-	return (
-		<ul>
-			{balances.data &&
-				balances.data.map((balance) => (
-					<li key={balance.symbol}>
-						{balance.symbol}: {balance.amount}
-					</li>
-				))}
-		</ul>
-	);
+  return (
+    <ul>
+      {balances.data &&
+        balances.data.map((balance) => (
+          <li key={balance.symbol}>
+            {balance.symbol}: {balance.amount}
+          </li>
+        ))}
+    </ul>
+  );
 }
 ```
 
@@ -122,24 +122,24 @@ Generate cross-chain transfer and contract call solutions.
 import { useSprinterTransfers } from "@chainsafe/sprinter-react";
 
 function TransferSolution() {
-	const { getPoolAssetOnDestination, solution } = useSprinterTransfers();
+  const { getPoolAssetOnDestination, solution } = useSprinterTransfers();
 
-	useEffect(() => {
-		const settings = {
-			account: "0xYourAddressHere",
-			destinationChain: 11155111, // Sepolia testnet
-			token: "USDC",
-			amount: 1000000, // 1 USDC in smallest denomination
-			sourceChains: [84532, 1993] // Optional: source chains to consider
-		};
+  useEffect(() => {
+    const settings = {
+      account: "0xYourAddressHere",
+      destinationChain: 11155111, // Sepolia testnet
+      token: "USDC",
+      amount: 1000000, // 1 USDC in smallest denomination
+      sourceChains: [84532, 1993], // Optional: source chains to consider
+    };
 
-		getPoolAssetOnDestination(settings);
-	}, []);
+    getPoolAssetOnDestination(settings);
+  }, []);
 
-	if (solution.loading) return <div>Loading transfer solution...</div>;
-	if (solution.error) return <div>Error: {solution.error}</div>;
+  if (solution.loading) return <div>Loading transfer solution...</div>;
+  if (solution.error) return <div>Error: {solution.error}</div>;
 
-	return <div>Transfer Solution: {JSON.stringify(solution.data)}</div>;
+  return <div>Transfer Solution: {JSON.stringify(solution.data)}</div>;
 }
 ```
 

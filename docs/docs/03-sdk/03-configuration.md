@@ -21,12 +21,12 @@ import { Sprinter, Environment } from "@chainsafe/sprinter-sdk";
 
 // Using a custom base URL
 const sprinter = new Sprinter({
-	baseUrl: "https://api.sprinter.buildwithsygma.com"
+  baseUrl: "https://api.sprinter.buildwithsygma.com",
 });
 
 // Or using a predefined environment URL
 const sprinterWithEnv = new Sprinter({
-	baseUrl: Environment.MAINNET // Enum that provides predefined URLs
+  baseUrl: Environment.MAINNET, // Enum that provides predefined URLs
 });
 ```
 
@@ -76,7 +76,7 @@ Every method in the SDK accepts an optional `fetchOptions` parameter, which cont
 
 ```typescript
 sprinter.getAvailableTokens({ baseUrl: "https://custom.api.url" }).then((tokens) => {
-	console.log(tokens);
+  console.log(tokens);
 });
 ```
 
