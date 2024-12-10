@@ -11,23 +11,23 @@ The `getAvailableTokens` method retrieves a list of supported fungible tokens ac
 ## Usage
 
 ```typescript
-import { Sprinter, Environment } from '@chainsafe/sprinter-sdk';
+import { Sprinter, Environment } from "@chainsafe/sprinter-sdk";
 
 const sprinter = new Sprinter({ baseUrl: Environment.TESTNET });
 
-sprinter.getAvailableTokens().then(tokens => {
+sprinter.getAvailableTokens().then((tokens) => {
   console.log(tokens);
 });
 ```
 
 ## Parameters
 
-- `fetchOptions?`: *(Optional)* An object containing `baseUrl` to override the default API endpoint for this request.
+- `fetchOptions?`: _(Optional)_ An object containing `baseUrl` to override the default API endpoint for this request.
 
 ### Example: Using `fetchOptions`
 
 ```typescript
-sprinter.getAvailableTokens({ baseUrl: 'https://custom.api.url' }).then(tokens => {
+sprinter.getAvailableTokens({ baseUrl: "https://custom.api.url" }).then((tokens) => {
   console.log(tokens);
 });
 ```

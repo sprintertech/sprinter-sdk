@@ -5,7 +5,8 @@ sidebar_position: 2
 ---
 
 Sprinter provides execution for chain abstracton providers by operating a large cluster of solvers that are designed to:
-- ⚖️ simplify cross-chain balance aggregation and transaction management 
+
+- ⚖️ simplify cross-chain balance aggregation and transaction management
 - 🔀 automatically provide optimized execution paths by determining the fastest and cheapest paths for a transfer, regardless of layer
 - 🥰 provide the ultimate UX buff to users, applications, protocols, and wallets
 - ⚙️ be unopinionated about account types (EOAs or smart contract accounts)
@@ -31,7 +32,7 @@ Sprinter provides execution for chain abstracton providers by operating a large 
 
 ## 💳 Capital Efficient
 
-The Sprinter solver engine creates capital efficiency across the cross-chain transaction flow by bearing equivocation risk for users and intent providers. In effect, this optimizes the transaction supply chain for the user since we create the destination calldata. 
+The Sprinter solver engine creates capital efficiency across the cross-chain transaction flow by bearing equivocation risk for users and intent providers. In effect, this optimizes the transaction supply chain for the user since we create the destination calldata.
 
 ## ↔️ Horizontal Scaling
 
