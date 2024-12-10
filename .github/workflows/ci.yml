@@ -41,7 +41,7 @@ jobs:
       # Deploy Docs
       - name: Create GitHub Deployment for Docs
         id: docs-deployment
-        uses: octokit/request-action@v2
+        uses: octokit/request-action@v2.x
         with:
           route: POST /repos/${{ github.repository }}/deployments
           environment: gopher-docs-preview
@@ -61,7 +61,7 @@ jobs:
           command: pages deploy ./docs/build --project-name=sprinter-docs --branch=${{ env.CF_BRANCH_NAME }}
 
       - name: Update Docs Deployment Status
-        uses: octokit/request-action@v2
+        uses: octokit/request-action@v2.x
         with:
           route: POST /repos/${{ github.repository }}/deployments/${{ steps.docs-deployment.outputs.deployment_id }}/statuses
           state: success
@@ -72,7 +72,7 @@ jobs:
       # Deploy POC
       - name: Create GitHub Deployment for POC
         id: poc-deployment
-        uses: octokit/request-action@v2
+        uses: octokit/request-action@v2.x
         with:
           route: POST /repos/${{ github.repository }}/deployments
           environment: gopher-poc-preview
@@ -92,7 +92,7 @@ jobs:
           command: pages deploy ./web/.svelte-kit/cloudflare --project-name=sprinter-poc --branch=${{ env.CF_BRANCH_NAME }}
 
       - name: Update POC Deployment Status
-        uses: octokit/request-action@v2
+        uses: octokit/request-action@v2.x
         with:
           route: POST /repos/${{ github.repository }}/deployments/${{ steps.poc-deployment.outputs.deployment_id }}/statuses
           state: success
