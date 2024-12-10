@@ -43,7 +43,6 @@ jobs:
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: 2238a825c5aca59233eab1f221f7aefb
-          environment: sprinter-docs
           command: pages deploy ./docs/build --project-name=sprinter-docs --branch=${{ env.CF_BRANCH_NAME }}
       - name: Publish POC to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
@@ -51,5 +50,21 @@ jobs:
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: 2238a825c5aca59233eab1f221f7aefb
-          environment: sprinter-poc
           command: pages deploy ./web/.svelte-kit/cloudflare --project-name=sprinter-poc --branch=${{ env.CF_BRANCH_NAME }}
+      - name: Create deployment for docs
+        run: |
+          gh api repos/${{ github.repository }}/deployments \
+            -X POST \
+            -F ref="${{ github.ref }}" \
+            -F environment="gopher-docs-preview" \
+            -F description="Deploying documentation preview" \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Create deployment for POC
+        run: |
+          gh api repos/${{ github.repository }}/deployments \
+            -X POST \
+            -F ref="${{ github.ref }}" \
+            -F environment="gopher-poc-preview" \
+            -F description="Deploying POC preview" \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}"
