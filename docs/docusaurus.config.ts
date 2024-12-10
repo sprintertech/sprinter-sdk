@@ -77,15 +77,15 @@ const config: Config = {
           items: [
             {
               label: "Introduction",
-              to: "/docs/introduction",
+              to: "/",
             },
             {
               label: "SDK",
-              to: "/docs/sdk",
+              to: "/sdk",
             },
             {
               label: "React SDK",
-              to: "/docs/react-sdk/",
+              to: "/react-sdk/",
             },
           ],
         },
