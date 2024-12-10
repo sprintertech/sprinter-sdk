@@ -1,5 +1,6 @@
 ---
 id: intro
+slug: /
 title: What Is Sprinter?
 sidebar_position: 1
 ---
