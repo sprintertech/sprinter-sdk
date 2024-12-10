@@ -13,27 +13,28 @@ The `useSprinterChains` hook allows you to fetch and manage the list of supporte
 ### Example
 
 ```tsx
-import { useSprinterChains } from '@chainsafe/sprinter-react';
+import { useSprinterChains } from "@chainsafe/sprinter-react";
 
 function ChainList() {
-  const { chains, getAvailableChains } = useSprinterChains();
+	const { chains, getAvailableChains } = useSprinterChains();
 
-  useEffect(() => {
-    getAvailableChains();  // Fetch chains on component mount
-  }, []);
+	useEffect(() => {
+		getAvailableChains(); // Fetch chains on component mount
+	}, []);
 
-  if (chains.loading) return <div>Loading chains...</div>;
-  if (chains.error) return <div>Error fetching chains: {chains.error}</div>;
+	if (chains.loading) return <div>Loading chains...</div>;
+	if (chains.error) return <div>Error fetching chains: {chains.error}</div>;
 
-  return (
-    <ul>
-      {chains.data && chains.data.map(chain => (
-        <li key={chain.chainID}>
-          {chain.name} - Chain ID: {chain.chainID}
-        </li>
-      ))}
-    </ul>
-  );
+	return (
+		<ul>
+			{chains.data &&
+				chains.data.map((chain) => (
+					<li key={chain.chainID}>
+						{chain.name} - Chain ID: {chain.chainID}
+					</li>
+				))}
+		</ul>
+	);
 }
 ```
 
@@ -42,9 +43,10 @@ function ChainList() {
 The `useSprinterChains` hook returns an object with the following properties:
 
 - **`chains`**: An object containing:
-    - `data`: The list of supported blockchain networks, or `null` if chains haven’t been loaded yet.
-    - `loading`: A boolean indicating if the chains are being fetched.
-    - `error`: A string containing the error message if the fetch fails.
+
+  - `data`: The list of supported blockchain networks, or `null` if chains haven’t been loaded yet.
+  - `loading`: A boolean indicating if the chains are being fetched.
+  - `error`: A string containing the error message if the fetch fails.
 
 - **`getAvailableChains`**: A function that triggers the retrieval of available chains.
 
@@ -54,48 +56,42 @@ Here is an example of what the `chains.data` might look like after calling `getA
 
 ```json
 [
-  {
-    "chainType": "evm",
-    "name": "Sepolia",
-    "chainID": 11155111,
-    "rpcURLs": [
-      "https://ethereum-sepolia-rpc.publicnode.com/"
-    ],
-    "logoURI": "https://scan.buildwithsygma.com/assets/icons/evm.svg",
-    "blockTime": 12000000000,
-    "nativeToken": {
-      "name": "ETH",
-      "decimals": 18
-    }
-  },
-  {
-    "chainType": "evm",
-    "name": "B3Sepolia",
-    "chainID": 1993,
-    "rpcURLs": [
-      "https://sepolia.b3.fun"
-    ],
-    "logoURI": "https://cdn.b3.fun/b3_logo.svg",
-    "blockTime": 1000000000,
-    "nativeToken": {
-      "name": "ETH",
-      "decimals": 18
-    }
-  },
-  {
-    "chainType": "evm",
-    "name": "BaseSepolia",
-    "chainID": 84532,
-    "rpcURLs": [
-      "https://sepolia.base.org"
-    ],
-    "logoURI": "https://scan.buildwithsygma.com/assets/icons/base.svg",
-    "blockTime": 12000000000,
-    "nativeToken": {
-      "name": "ETH",
-      "decimals": 18
-    }
-  }
+	{
+		"chainType": "evm",
+		"name": "Sepolia",
+		"chainID": 11155111,
+		"rpcURLs": ["https://ethereum-sepolia-rpc.publicnode.com/"],
+		"logoURI": "https://scan.buildwithsygma.com/assets/icons/evm.svg",
+		"blockTime": 12000000000,
+		"nativeToken": {
+			"name": "ETH",
+			"decimals": 18
+		}
+	},
+	{
+		"chainType": "evm",
+		"name": "B3Sepolia",
+		"chainID": 1993,
+		"rpcURLs": ["https://sepolia.b3.fun"],
+		"logoURI": "https://cdn.b3.fun/b3_logo.svg",
+		"blockTime": 1000000000,
+		"nativeToken": {
+			"name": "ETH",
+			"decimals": 18
+		}
+	},
+	{
+		"chainType": "evm",
+		"name": "BaseSepolia",
+		"chainID": 84532,
+		"rpcURLs": ["https://sepolia.base.org"],
+		"logoURI": "https://scan.buildwithsygma.com/assets/icons/base.svg",
+		"blockTime": 12000000000,
+		"nativeToken": {
+			"name": "ETH",
+			"decimals": 18
+		}
+	}
 ]
 ```
 

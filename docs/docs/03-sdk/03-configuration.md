@@ -17,16 +17,16 @@ When initializing the `Sprinter` class, you can pass a `baseUrl` configuration o
 The `baseUrl` is the API server endpoint. You can either set it manually or use the predefined `Environment` enum to simplify configuration.
 
 ```typescript
-import { Sprinter, Environment } from '@chainsafe/sprinter-sdk';
+import { Sprinter, Environment } from "@chainsafe/sprinter-sdk";
 
 // Using a custom base URL
 const sprinter = new Sprinter({
-  baseUrl: 'https://api.sprinter.buildwithsygma.com',
+	baseUrl: "https://api.sprinter.buildwithsygma.com"
 });
 
 // Or using a predefined environment URL
 const sprinterWithEnv = new Sprinter({
-  baseUrl: Environment.MAINNET, // Enum that provides predefined URLs
+	baseUrl: Environment.MAINNET // Enum that provides predefined URLs
 });
 ```
 
@@ -35,10 +35,10 @@ const sprinterWithEnv = new Sprinter({
 You can change the `baseUrl` dynamically in your application using the `setBaseUrl` function provided by the SDK. This is useful when you need to modify the API endpoint during runtime.
 
 ```typescript
-import { setBaseUrl } from '@chainsafe/sprinter-sdk';
+import { setBaseUrl } from "@chainsafe/sprinter-sdk";
 
 // Dynamically set the base URL during runtime
-setBaseUrl('https://custom.api.url');
+setBaseUrl("https://custom.api.url");
 ```
 
 ## Set Base URL Using Environment Variables
@@ -53,7 +53,7 @@ SPRINTER_URL=https://api.sprinter.buildwithsygma.com
 In your code, the SDK will use this environment variable automatically:
 
 ```typescript
-import { setBaseUrl } from '@chainsafe/sprinter-sdk';
+import { setBaseUrl } from "@chainsafe/sprinter-sdk";
 
 // Automatically set the base URL from the environment variable
 setBaseUrl(process.env.SPRINTER_URL);
@@ -75,8 +75,8 @@ Every method in the SDK accepts an optional `fetchOptions` parameter, which cont
 ### Example: Overriding `baseUrl` for a Single Request
 
 ```typescript
-sprinter.getAvailableTokens({ baseUrl: 'https://custom.api.url' }).then(tokens => {
-  console.log(tokens);
+sprinter.getAvailableTokens({ baseUrl: "https://custom.api.url" }).then((tokens) => {
+	console.log(tokens);
 });
 ```
 
