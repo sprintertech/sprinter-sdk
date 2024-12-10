@@ -12,7 +12,7 @@ The Sprinter SDK allows developers to interact with cross-chain solutions such a
 
 Before installing the SDK, ensure you have the following installed:
 
-- **Node.js**: Version 20 (recommended) or higher 
+- **Node.js**: Version 20 (recommended) or higher
 - **npm** or **yarn**: A package manager for JavaScript
 
 ## Installation
@@ -30,7 +30,7 @@ Once the SDK is installed, you can initialize it to interact with blockchain net
 ### Example: Initialize `Sprinter`
 
 ```typescript
-import { Sprinter, Environment } from '@chainsafe/sprinter-sdk';
+import { Sprinter, Environment } from "@chainsafe/sprinter-sdk";
 
 const sprinter = new Sprinter({ baseUrl: Environment.MAINNET });
 
@@ -43,7 +43,7 @@ sprinter.getUserBalances(ownerAddress).then(console.log);
 You can also call specific API endpoints directly using the SDK. Here’s an example:
 
 ```typescript
-import { api } from '@chainsafe/sprinter-sdk';
+import { api } from "@chainsafe/sprinter-sdk";
 
 const ownerAddress = "0xYourAddressHere";
 const tokenSymbol = "USDC";
@@ -58,7 +58,7 @@ You can configure the SDK using environment variables to set the base URL for AP
 ### Example: Set Base URL
 
 ```typescript
-import { setBaseUrl } from '@chainsafe/sprinter-sdk';
+import { setBaseUrl } from "@chainsafe/sprinter-sdk";
 
 setBaseUrl("https://api.sprinter.buildwithsygma.com");
 ```

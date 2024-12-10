@@ -11,32 +11,38 @@ The `getUserBalances` method retrieves the aggregated balance of a user across m
 ## Usage
 
 ```typescript
-import { Sprinter, Environment } from '@chainsafe/sprinter-sdk';
+import { Sprinter, Environment } from "@chainsafe/sprinter-sdk";
 
 const sprinter = new Sprinter({ baseUrl: Environment.TESTNET });
 
 const ownerAddress = "0xYourAddressHere";
-sprinter.getUserBalances(ownerAddress).then(balances => {
+sprinter.getUserBalances(ownerAddress).then((balances) => {
   console.log(balances);
 });
 ```
 
 ## Parameters
 
-- `account`: *(Required)* The address of the user whose balances will be retrieved.
-- `tokens?`: *(Optional)* An array of tokens for which balances will be retrieved. If omitted, the method will return balances for all tokens and native assets. If an empty array is provided, only native token balances will be returned.
-- `fetchOptions?`: *(Optional)* An object containing `baseUrl` to override the default API endpoint for this request.
+- `account`: _(Required)_ The address of the user whose balances will be retrieved.
+- `tokens?`: _(Optional)_ An array of tokens for which balances will be retrieved. If omitted, the method will return balances for all tokens and native assets. If an empty array is provided, only native token balances will be returned.
+- `fetchOptions?`: _(Optional)_ An object containing `baseUrl` to override the default API endpoint for this request.
 
 ### Example: Using `tokens` and `fetchOptions`
 
 ```typescript
 const tokens = [
-  { symbol: 'USDC', decimals: 6, addresses: { '11155111': '0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238' } }
+  {
+    symbol: "USDC",
+    decimals: 6,
+    addresses: { "11155111": "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238" },
+  },
 ];
 
-sprinter.getUserBalances(ownerAddress, tokens, { baseUrl: 'https://custom.api.url' }).then(balances => {
-  console.log(balances);
-});
+sprinter
+  .getUserBalances(ownerAddress, tokens, { baseUrl: "https://custom.api.url" })
+  .then((balances) => {
+    console.log(balances);
+  });
 ```
 
 ## Behavior of the `tokens` Parameter

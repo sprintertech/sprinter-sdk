@@ -26,7 +26,7 @@ const config: Config = {
       "classic",
       {
         docs: {
-          routeBasePath: '/',
+          routeBasePath: "/",
           remarkPlugins: [
             [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }],
           ],

@@ -13,13 +13,13 @@ The `useSprinterTokens` hook allows you to fetch and manage the list of supporte
 ### Example
 
 ```tsx
-import { useSprinterTokens } from '@chainsafe/sprinter-react';
+import { useSprinterTokens } from "@chainsafe/sprinter-react";
 
 function TokenList() {
   const { tokens, getAvailableTokens } = useSprinterTokens();
 
   useEffect(() => {
-    getAvailableTokens();  // Fetch tokens on component mount
+    getAvailableTokens(); // Fetch tokens on component mount
   }, []);
 
   if (tokens.loading) return <div>Loading tokens...</div>;
@@ -27,11 +27,12 @@ function TokenList() {
 
   return (
     <ul>
-      {tokens.data && tokens.data.map(token => (
-        <li key={token.symbol}>
-          {token.name} - {token.symbol}
-        </li>
-      ))}
+      {tokens.data &&
+        tokens.data.map((token) => (
+          <li key={token.symbol}>
+            {token.name} - {token.symbol}
+          </li>
+        ))}
     </ul>
   );
 }
@@ -42,9 +43,10 @@ function TokenList() {
 The `useSprinterTokens` hook returns an object with the following properties:
 
 - **`tokens`**: An object containing:
-    - `data`: The list of supported tokens, or `null` if tokens haven’t been loaded yet.
-    - `loading`: A boolean indicating if the tokens are being fetched.
-    - `error`: A string containing the error message if the fetch fails.
+
+  - `data`: The list of supported tokens, or `null` if tokens haven’t been loaded yet.
+  - `loading`: A boolean indicating if the tokens are being fetched.
+  - `error`: A string containing the error message if the fetch fails.
 
 - **`getAvailableTokens`**: A function that triggers the retrieval of available tokens, though it is automatically called when the context is initialized.
 

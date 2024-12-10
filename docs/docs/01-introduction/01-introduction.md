@@ -12,7 +12,7 @@ sidebar_position: 1
 
 # Welcome To The Sprinter Docs
 
-Sprinter is a **fast, smooth, interoperable intent execution engine**. Our aim is to make multichain interactions feel like one. In doing so, we enhance cross-chain UX *for all* as a first-class citizen in both existing and upcoming web3 technologies.
+Sprinter is a **fast, smooth, interoperable intent execution engine**. Our aim is to make multichain interactions feel like one. In doing so, we enhance cross-chain UX _for all_ as a first-class citizen in both existing and upcoming web3 technologies.
 
 ## What's Next
 
