@@ -11,34 +11,35 @@ The `transfer` method generates a solution for performing a token transfer from 
 ## Usage
 
 ```typescript
-import { Sprinter, Environment } from '@chainsafe/sprinter-sdk';
+import { Sprinter, Environment } from "@chainsafe/sprinter-sdk";
 
 const sprinter = new Sprinter({ baseUrl: Environment.TESTNET });
 
 const settings = {
-  account: '0xYourAddressHere',
-  destinationChain: 11155111,  // Sepolia testnet
-  token: 'USDC',
-  amount: 1000000,  // In smallest denomination (e.g., 1 USDC = 1,000,000 in USDC with 6 decimals)
+  account: "0xYourAddressHere",
+  destinationChain: 11155111, // Sepolia testnet
+  token: "USDC",
+  amount: 1000000, // In smallest denomination (e.g., 1 USDC = 1,000,000 in USDC with 6 decimals)
 };
 
-sprinter.transfer(settings).then(solution => {
+sprinter.transfer(settings).then((solution) => {
   console.log(solution);
 });
 ```
 
 ## Parameters
 
-- `settings`: *(Required)* An object containing the following fields:
+- `settings`: _(Required)_ An object containing the following fields:
+
   - `account`: The user’s address.
   - `destinationChain`: The ID of the destination chain.
   - `token`: The symbol of the token to be transferred (e.g., `USDC`, `ETH`).
   - `amount`: The amount of the token to be transferred in the smallest denomination (e.g., for USDC with 6 decimals, 1 USDC = 1,000,000).
-  - `recipient?`: *(Optional)* The address of the recipient of any leftover tokens.
-  - `sourceChains?`: *(Optional)* An array of source chain IDs to be considered for the transfer. If omitted, Sprinter will use all available chains for the solution. To limit the solution to a specific chain, provide an array containing only that chain's ID.
-  - `threshold?`: *(Optional)* The minimum amount of tokens required to trigger the transfer solution. If not met, the transfer solution will not proceed.
+  - `recipient?`: _(Optional)_ The address of the recipient of any leftover tokens.
+  - `sourceChains?`: _(Optional)_ An array of source chain IDs to be considered for the transfer. If omitted, Sprinter will use all available chains for the solution. To limit the solution to a specific chain, provide an array containing only that chain's ID.
+  - `threshold?`: _(Optional)_ The minimum amount of tokens required to trigger the transfer solution. If not met, the transfer solution will not proceed.
 
-- `fetchOptions?`: *(Optional)* An object containing `baseUrl` to override the default API endpoint for this request.
+- `fetchOptions?`: _(Optional)_ An object containing `baseUrl` to override the default API endpoint for this request.
 
 ### Example: Using `sourceChains` for a Specific Chain
 
@@ -46,14 +47,14 @@ To get a transfer solution from a specific chain (e.g., BaseSepolia with chain I
 
 ```typescript
 const settings = {
-  account: '0xYourAddressHere',
-  destinationChain: 11155111,  // Sepolia testnet
-  token: 'USDC',
+  account: "0xYourAddressHere",
+  destinationChain: 11155111, // Sepolia testnet
+  token: "USDC",
   amount: 1000000,
-  sourceChains: [84532],  // Limit to BaseSepolia as the source chain
+  sourceChains: [84532], // Limit to BaseSepolia as the source chain
 };
 
-sprinter.transfer(settings).then(solution => {
+sprinter.transfer(settings).then((solution) => {
   console.log(solution);
 });
 ```
@@ -61,7 +62,7 @@ sprinter.transfer(settings).then(solution => {
 ### Example: Using `fetchOptions`
 
 ```typescript
-sprinter.transfer(settings, { baseUrl: 'https://custom.api.url' }).then(solution => {
+sprinter.transfer(settings, { baseUrl: "https://custom.api.url" }).then((solution) => {
   console.log(solution);
 });
 ```
@@ -76,7 +77,7 @@ type SolutionResponse = Array<Solution> | FailedSolution;
 interface Solution {
   destinationChain: number;
   destinationTokenAddress: string;
-  duration: number;  // Time estimate in seconds
+  duration: number; // Time estimate in seconds
   fee: Amount;
   gasCost: Amount;
   senderAddress: string;
@@ -95,7 +96,7 @@ interface FailedSolution {
 
 ### Example Response
 
-import GasTip from "../_gas-tip.md"
+import GasTip from "../\_gas-tip.md"
 
 <GasTip />
 

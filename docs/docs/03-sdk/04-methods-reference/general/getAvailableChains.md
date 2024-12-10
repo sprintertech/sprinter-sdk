@@ -11,23 +11,23 @@ The `getAvailableChains` method retrieves a list of supported blockchain network
 ## Usage
 
 ```typescript
-import { Sprinter, Environment } from '@chainsafe/sprinter-sdk';
+import { Sprinter, Environment } from "@chainsafe/sprinter-sdk";
 
 const sprinter = new Sprinter({ baseUrl: Environment.TESTNET });
 
-sprinter.getAvailableChains().then(chains => {
+sprinter.getAvailableChains().then((chains) => {
   console.log(chains);
 });
 ```
 
 ## Parameters
 
-- `fetchOptions?`: *(Optional)* An object containing `baseUrl` to override the default API endpoint for this request.
+- `fetchOptions?`: _(Optional)_ An object containing `baseUrl` to override the default API endpoint for this request.
 
 ### Example: Using `fetchOptions`
 
 ```typescript
-sprinter.getAvailableChains({ baseUrl: 'https://custom.api.url' }).then(chains => {
+sprinter.getAvailableChains({ baseUrl: "https://custom.api.url" }).then((chains) => {
   console.log(chains);
 });
 ```
@@ -62,9 +62,7 @@ interface Chain {
       "chainType": "evm",
       "name": "Sepolia",
       "chainID": 11155111,
-      "rpcURLs": [
-        "https://ethereum-sepolia-rpc.publicnode.com/"
-      ],
+      "rpcURLs": ["https://ethereum-sepolia-rpc.publicnode.com/"],
       "logoURI": "https://scan.buildwithsygma.com/assets/icons/evm.svg",
       "blockTime": 12000000000,
       "nativeToken": {
@@ -76,9 +74,7 @@ interface Chain {
       "chainType": "evm",
       "name": "B3Sepolia",
       "chainID": 1993,
-      "rpcURLs": [
-        "https://sepolia.b3.fun"
-      ],
+      "rpcURLs": ["https://sepolia.b3.fun"],
       "logoURI": "https://cdn.b3.fun/b3_logo.svg",
       "blockTime": 1000000000,
       "nativeToken": {
@@ -90,9 +86,7 @@ interface Chain {
       "chainType": "evm",
       "name": "BaseSepolia",
       "chainID": 84532,
-      "rpcURLs": [
-        "https://sepolia.base.org"
-      ],
+      "rpcURLs": ["https://sepolia.base.org"],
       "logoURI": "https://scan.buildwithsygma.com/assets/icons/base.svg",
       "blockTime": 12000000000,
       "nativeToken": {

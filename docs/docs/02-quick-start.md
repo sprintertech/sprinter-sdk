@@ -29,11 +29,11 @@ The Sprinter SDK provides a streamlined interface for retrieving intent-based so
 Here’s a quick example of how to use the SDK in your project:
 
 ```typescript
-import { Sprinter, Environment } from '@chainsafe/sprinter-sdk';
+import { Sprinter, Environment } from "@chainsafe/sprinter-sdk";
 
 const sprinter = new Sprinter({ baseUrl: Environment.MAINNET });
 
-sprinter.getUserBalances('0xYourAddressHere').then(console.log);
+sprinter.getUserBalances("0xYourAddressHere").then(console.log);
 ```
 
 For more details on using the SDK, refer to the [SDK Documentation](./sdk).
@@ -47,12 +47,12 @@ If you're building a React application, you can use the Sprinter React SDK (`@ch
 Here’s how to set up a simple React component to fetch user balances:
 
 ```tsx
-import React, { useEffect } from 'react';
-import { SprinterContext, useSprinterBalances } from '@chainsafe/sprinter-react';
-import { Environment } from '@chainsafe/sprinter-sdk';
+import React, { useEffect } from "react";
+import { SprinterContext, useSprinterBalances } from "@chainsafe/sprinter-react";
+import { Environment } from "@chainsafe/sprinter-sdk";
 
 function BalancesComponent() {
-  const { balances, getUserBalances } = useSprinterBalances('0xYourAddressHere');
+  const { balances, getUserBalances } = useSprinterBalances("0xYourAddressHere");
 
   useEffect(() => {
     getUserBalances();
@@ -64,7 +64,9 @@ function BalancesComponent() {
   return (
     <ul>
       {Object.entries(balances.data || {}).map(([symbol, balanceEntry]) => (
-        <li key={symbol}>{symbol}: {balanceEntry.total}</li>
+        <li key={symbol}>
+          {symbol}: {balanceEntry.total}
+        </li>
       ))}
     </ul>
   );

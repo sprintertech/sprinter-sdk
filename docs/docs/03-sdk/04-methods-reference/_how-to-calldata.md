@@ -8,33 +8,33 @@ The following examples demonstrate how to create the `callData` parameter requir
 <details>
   <summary>Show Example Staking Contract and ABI</summary>
 
-  ```solidity
-  pragma solidity ^0.8.0;
+```solidity
+pragma solidity ^0.8.0;
 
-  contract StakingContract {
-      mapping(address => uint256) public stakes;
-      uint256 public totalStakes;
+contract StakingContract {
+    mapping(address => uint256) public stakes;
+    uint256 public totalStakes;
 
-      function stake(uint256 amount) public {
-          require(amount > 0, "Amount must be greater than zero");
-          stakes[msg.sender] += amount;
-          totalStakes += amount;
-      }
+    function stake(uint256 amount) public {
+        require(amount > 0, "Amount must be greater than zero");
+        stakes[msg.sender] += amount;
+        totalStakes += amount;
+    }
 
-      function withdraw(uint256 amount) public {
-          require(amount > 0 && stakes[msg.sender] >= amount, "Invalid amount");
-          stakes[msg.sender] -= amount;
-          totalStakes -= amount;
-      }
+    function withdraw(uint256 amount) public {
+        require(amount > 0 && stakes[msg.sender] >= amount, "Invalid amount");
+        stakes[msg.sender] -= amount;
+        totalStakes -= amount;
+    }
 
-      function getStake(address user) public view returns (uint256) {
-          return stakes[user];
-      }
-  }
-  ```
+    function getStake(address user) public view returns (uint256) {
+        return stakes[user];
+    }
+}
+```
 
-  ```json
-  {
+```json
+{
   "abi": [
     {
       "inputs": [
@@ -83,7 +83,8 @@ The following examples demonstrate how to create the `callData` parameter requir
     }
   ]
 }
-  ```
+```
+
 </details>
 
 <Tabs queryString="web3-libs">

@@ -14,7 +14,9 @@
   },
   "scripts": {
     "build": "yarn workspaces foreach -Avpt --topological-dev run build",
-    "lint": "yarn workspaces foreach -Avpt run lint",
+    "lint": "yarn workspaces foreach -Avpt run lint && yarn lint:docs",
+    "lint:docs": "prettier --check ./docs",
+    "format:docs": "prettier --write ./docs",
     "test:unit": "yarn workspaces foreach -Avpt run test:unit",
     "test:integrations": "yarn workspaces foreach -Avpt run test:integrations"
   },
@@ -24,7 +26,8 @@
     "@types/eslint": "^8.56.11",
     "@types/node": "18.19.42",
     "eslint": "8.57.0",
-    "typescript": "^5.0.3"
+    "typescript": "^5.0.3",
+    "prettier": "^3.4.2"
   },
   "volta": {
     "node": "20.17.0",

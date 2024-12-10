@@ -13,14 +13,14 @@ The `useSprinterBalances` hook allows you to retrieve a user's available token b
 ### Example
 
 ```tsx
-import { useSprinterBalances } from '@chainsafe/sprinter-react';
-import React, { useEffect } from 'react';
+import { useSprinterBalances } from "@chainsafe/sprinter-react";
+import React, { useEffect } from "react";
 
 function BalancesComponent() {
   const { balances, getUserBalances } = useSprinterBalances("0xYourAddress");
 
   useEffect(() => {
-    getUserBalances();  // Fetch balances when the component mounts
+    getUserBalances(); // Fetch balances when the component mounts
   }, [getUserBalances]);
 
   if (balances.loading) {
@@ -34,7 +34,9 @@ function BalancesComponent() {
   return (
     <ul>
       {Object.entries(balances.data || {}).map(([symbol, balanceEntry]) => (
-        <li key={symbol}>{symbol}: {balanceEntry.total}</li>
+        <li key={symbol}>
+          {symbol}: {balanceEntry.total}
+        </li>
       ))}
     </ul>
   );
@@ -46,11 +48,12 @@ function BalancesComponent() {
 The `useSprinterBalances` hook returns an object with the following properties:
 
 - **`balances`**: An object containing:
-    - `data`: The user's balances across chains, keyed by token symbol. Each token's balances are represented by:
-        - `balances`: An array of balances on different chains.
-        - `total`: The total balance for the token across all chains.
-    - `loading`: A boolean indicating if the balances are being fetched.
-    - `error`: A string containing the error message if the fetch fails.
+
+  - `data`: The user's balances across chains, keyed by token symbol. Each token's balances are represented by:
+    - `balances`: An array of balances on different chains.
+    - `total`: The total balance for the token across all chains.
+  - `loading`: A boolean indicating if the balances are being fetched.
+  - `error`: A string containing the error message if the fetch fails.
 
 - **`getUserBalances`**: A function that triggers the retrieval of the user's balances.
 
@@ -68,9 +71,7 @@ Here’s an example of what `balances.data` might look like after calling `getUs
     "total": "1500000000000000000"
   },
   "USDC": {
-    "balances": [
-      { "balance": "2000000", "chainId": 11155111, "tokenDecimals": 6 }
-    ],
+    "balances": [{ "balance": "2000000", "chainId": 11155111, "tokenDecimals": 6 }],
     "total": "2000000"
   }
 }

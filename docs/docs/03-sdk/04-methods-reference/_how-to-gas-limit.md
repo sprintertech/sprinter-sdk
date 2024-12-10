@@ -3,7 +3,7 @@ import TabItem from '@theme/TabItem';
 
 ### Estimating `gasLimit`
 
-The following examples demonstrate how to estimate the `gasLimit` parameter required for interacting with a staking smart contract. We provide examples using different web3 libraries: Web3JS, Viem, and Ethers. 
+The following examples demonstrate how to estimate the `gasLimit` parameter required for interacting with a staking smart contract. We provide examples using different web3 libraries: Web3JS, Viem, and Ethers.
 
 :::note
 To ensure that the transaction has enough gas, we recommend using the estimated gas limit from the provider, adding 25% as a buffer, and then adding an additional 100,000 units for fail-safe calculations. This ensures the transaction won’t run out of gas, even for complex contract interactions.
@@ -12,33 +12,33 @@ To ensure that the transaction has enough gas, we recommend using the estimated 
 <details>
   <summary>Show Example Staking Contract and ABI</summary>
 
-  ```solidity
-  pragma solidity ^0.8.0;
+```solidity
+pragma solidity ^0.8.0;
 
-  contract StakingContract {
-      mapping(address => uint256) public stakes;
-      uint256 public totalStakes;
+contract StakingContract {
+    mapping(address => uint256) public stakes;
+    uint256 public totalStakes;
 
-      function stake(uint256 amount) public {
-          require(amount > 0, "Amount must be greater than zero");
-          stakes[msg.sender] += amount;
-          totalStakes += amount;
-      }
+    function stake(uint256 amount) public {
+        require(amount > 0, "Amount must be greater than zero");
+        stakes[msg.sender] += amount;
+        totalStakes += amount;
+    }
 
-      function withdraw(uint256 amount) public {
-          require(amount > 0 && stakes[msg.sender] >= amount, "Invalid amount");
-          stakes[msg.sender] -= amount;
-          totalStakes -= amount;
-      }
+    function withdraw(uint256 amount) public {
+        require(amount > 0 && stakes[msg.sender] >= amount, "Invalid amount");
+        stakes[msg.sender] -= amount;
+        totalStakes -= amount;
+    }
 
-      function getStake(address user) public view returns (uint256) {
-          return stakes[user];
-      }
-  }
-  ```
+    function getStake(address user) public view returns (uint256) {
+        return stakes[user];
+    }
+}
+```
 
-  ```json
-  {
+```json
+{
   "abi": [
     {
       "inputs": [
@@ -87,7 +87,8 @@ To ensure that the transaction has enough gas, we recommend using the estimated 
     }
   ]
 }
-  ```
+```
+
 </details>
 
 <Tabs queryString="web3-libs">
