@@ -29,21 +29,25 @@ jobs:
         run: 'yarn run test:unit'
       - name: "Integrations Tests"
         run: 'yarn run test:integrations'
+      - name: Set branch name for Cloudflare Pages
+        id: cf-branch
+        run: |
+          if [[ "${{ github.ref_name }}" == "master" ]]; then
+            echo "CF_BRANCH_NAME=preview" >> $GITHUB_ENV
+          else
+            echo "CF_BRANCH_NAME=${{ github.head_ref || github.ref_name }}" >> $GITHUB_ENV
+          fi
+      - name: Publish Docs to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: 2238a825c5aca59233eab1f221f7aefb
+          command: pages deploy ./docs/build --project-name=sprinter-docs --branch=${{ env.CF_BRANCH_NAME }}
       - name: Publish POC to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+        uses: cloudflare/wrangler-action@v3
         with:
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: 2238a825c5aca59233eab1f221f7aefb
-          projectName: gopher-poc
-          directory: ./web/.svelte-kit/cloudflare
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.head_ref || github.ref_name }}
-      - name: Publish Preview Docs to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: 2238a825c5aca59233eab1f221f7aefb
-          projectName: gopher-docs-preview
-          directory: ./docs/build
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.head_ref || github.ref_name }}
+          command: pages deploy ./web/.svelte-kit/cloudflare --project-name=sprinter-poc --branch=${{ env.CF_BRANCH_NAME }}
