@@ -36,12 +36,12 @@ const BridgeCoreSchema = object({
   amount: numberLike,
   threshold: optional(number()),
   sourceChains: optional(array(number())),
-  enableSwaps: optional(boolean()),
 });
 
 const BridgeCoreWithRecipientSchema = assign(
   BridgeCoreSchema,
   object({
+    enableSwaps: optional(boolean()),
     recipient: optional(hexString()),
   }),
 );
