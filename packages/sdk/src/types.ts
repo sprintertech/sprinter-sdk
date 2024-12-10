@@ -45,7 +45,6 @@ export interface SolutionOptions {
   amount: NumberLike;
   threshold?: number;
   whitelistedSourceChains?: ChainID[];
-  enableSwaps?: boolean;
 }
 
 export interface ContractCallSolutionOptions {
@@ -60,6 +59,7 @@ export interface ContractCallSolutionOptions {
 export interface SingleHopContractSolutionOptions extends SolutionOptions {
   recipient?: Address;
   contractCall?: ContractCallSolutionOptions;
+  enableSwaps?: boolean;
 }
 
 export interface ContractSolutionOptions extends SolutionOptions {
