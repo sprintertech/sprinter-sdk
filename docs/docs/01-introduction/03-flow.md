@@ -37,7 +37,7 @@ Below is a simplified diagram illustrating the Sprinter application flow:
             |
             v
 +------------------------+
-| Balance Aggregation    | 
+| Balance Aggregation    |
 +-----------+------------+
             |
             v
@@ -47,11 +47,11 @@ Below is a simplified diagram illustrating the Sprinter application flow:
             |
             v
 +------------------------+
-|   Execute Transaction  | 
+|   Execute Transaction  |
 +-----------+------------+
             |
             v
 +------------------------+
-|    Error Handling      | 
+|    Error Handling      |
 +------------------------+
 ```
