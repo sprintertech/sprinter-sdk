@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/ChainSafe/sprinter-ts/compare/sprinter-react-v1.1.1...sprinter-react-v1.1.2) (2024-12-11)
+
+
+### Bug Fixes
+
+* docs deploy pipeline ([#106](https://github.com/ChainSafe/sprinter-ts/issues/106)) ([55d8b32](https://github.com/ChainSafe/sprinter-ts/commit/55d8b32919cb98693a7b5d653e10e11f3830a708))
+
 ## [1.1.1](https://github.com/ChainSafe/sprinter-ts/compare/sprinter-react-v1.1.0...sprinter-react-v1.1.1) (2024-12-11)
 
 
