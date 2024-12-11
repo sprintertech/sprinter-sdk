@@ -38,6 +38,7 @@ sprinter.transfer(settings).then((solution) => {
   - `recipient?`: _(Optional)_ The address of the recipient of any leftover tokens.
   - `sourceChains?`: _(Optional)_ An array of source chain IDs to be considered for the transfer. If omitted, Sprinter will use all available chains for the solution. To limit the solution to a specific chain, provide an array containing only that chain's ID.
   - `threshold?`: _(Optional)_ The minimum amount of tokens required to trigger the transfer solution. If not met, the transfer solution will not proceed.
+  - `enableSwaps`: _(Optional)_ Defaults to `false`. Whether to enable token swaps on the source chain.
 
 - `fetchOptions?`: _(Optional)_ An object containing `baseUrl` to override the default API endpoint for this request.
 

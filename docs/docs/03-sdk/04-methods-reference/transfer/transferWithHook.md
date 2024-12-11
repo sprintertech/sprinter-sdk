@@ -94,6 +94,7 @@ sprinter.transferWithHook(settings, { baseUrl: "https://custom.api.url" }).then(
 ## Parameters
 
 - `settings`: _(Required)_ An object containing the following fields:
+
   - `account`: The user’s address.
   - `destinationChain`: The ID of the destination chain.
   - `token`: The symbol of the token to be transferred (e.g., `USDC`, `ETH`).
@@ -112,6 +113,8 @@ sprinter.transferWithHook(settings, { baseUrl: "https://custom.api.url" }).then(
   - `recipient?`: _(Optional)_ The address of the recipient of any leftover tokens.
   - `sourceChains?`: _(Optional)_ An array of source chain IDs to be considered for the transfer. If omitted, Sprinter will use all available chains for the solution.
   - `threshold?`: _(Optional)_ The minimum amount of tokens required to trigger the transfer solution. If not met, the transfer solution will not proceed.
+  - `enableSwaps`: _(Optional)_ Defaults to `false`. Whether to enable token swaps on the source chain.
+
 - `fetchOptions?`: _(Optional)_ An object containing `baseUrl` to override the default API endpoint for this request.
 
 import HowToCallData from "../\_how-to-calldata.md"

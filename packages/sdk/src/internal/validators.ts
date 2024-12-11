@@ -2,6 +2,7 @@ import {
   array,
   assign,
   bigint,
+  boolean,
   define,
   number,
   object,
@@ -40,6 +41,7 @@ const BridgeCoreSchema = object({
 const BridgeCoreWithRecipientSchema = assign(
   BridgeCoreSchema,
   object({
+    enableSwaps: optional(boolean()),
     recipient: optional(hexString()),
   }),
 );
