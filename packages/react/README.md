@@ -79,7 +79,7 @@ You can pass custom fetch options when initializing the context:
 </SprinterContext>
 ```
 
-## Docs
+## Documentation
 For more detailed docs you can check out [SDK docs page](https://docs.sprinter.tech/docs/react-sdk/).
 
 ## Contributing
