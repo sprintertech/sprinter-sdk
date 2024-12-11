@@ -49,18 +49,11 @@ jobs:
 
       - name: Publish Docs to Cloudflare Pages
         if: ${{ steps.release.outputs.releases_created }}
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/pages-action@v1
         with:
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: 2238a825c5aca59233eab1f221f7aefb
-          command: pages deploy ./docs/build --project-name=sprinter-docs
-
-      - name: Publish POC to Cloudflare Pages
-        if: ${{ steps.release.outputs.releases_created }}
-        uses: cloudflare/wrangler-action@v3
-        with:
+          projectName: gopher-docs-preview
+          directory: ./docs/build
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: 2238a825c5aca59233eab1f221f7aefb
-          command: pages deploy ./web/.svelte-kit/cloudflare --project-name=sprinter-poc
+          branch: ${{ github.head_ref || github.ref_name }}
