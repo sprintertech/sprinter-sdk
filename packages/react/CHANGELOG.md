@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/ChainSafe/sprinter-ts/compare/sprinter-react-v1.0.0...sprinter-react-v1.1.0) (2024-12-11)
+
+
+### Features
+
+* add enableSwaps in `transferWithHook` and `transfer` ([#97](https://github.com/ChainSafe/sprinter-ts/issues/97)) ([bd21311](https://github.com/ChainSafe/sprinter-ts/commit/bd213119b2eb8f41d574cbf2fd81d63296d08816)), closes [#94](https://github.com/ChainSafe/sprinter-ts/issues/94)
+
+
+### Bug Fixes
+
+* **PoC:** readme, some errors and other nits ([#90](https://github.com/ChainSafe/sprinter-ts/issues/90)) ([f4fb199](https://github.com/ChainSafe/sprinter-ts/commit/f4fb1996b4d42db90f3c96b5869971f21cdc973e))
+
 ## [1.0.0](https://github.com/ChainSafe/sprinter-ts/compare/sprinter-react-v0.2.1...sprinter-react-v1.0.0) (2024-10-24)
 
 

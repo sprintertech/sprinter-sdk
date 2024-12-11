@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/ChainSafe/sprinter-ts/compare/sprinter-sdk-v1.0.2...sprinter-sdk-v1.1.0) (2024-12-11)
+
+
+### Features
+
+* add enableSwaps in `transferWithHook` and `transfer` ([#97](https://github.com/ChainSafe/sprinter-ts/issues/97)) ([bd21311](https://github.com/ChainSafe/sprinter-ts/commit/bd213119b2eb8f41d574cbf2fd81d63296d08816)), closes [#94](https://github.com/ChainSafe/sprinter-ts/issues/94)
+
 ## [1.0.2](https://github.com/ChainSafe/sprinter-ts/compare/sprinter-sdk-v1.0.1...sprinter-sdk-v1.0.2) (2024-11-21)
 
 
