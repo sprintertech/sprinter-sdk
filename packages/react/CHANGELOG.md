@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/ChainSafe/sprinter-ts/compare/sprinter-react-v1.1.0...sprinter-react-v1.1.1) (2024-12-11)
+
+
+### Bug Fixes
+
+* add docs urls to README ([#104](https://github.com/ChainSafe/sprinter-ts/issues/104)) ([bc94336](https://github.com/ChainSafe/sprinter-ts/commit/bc943369b89c860ef7a255da4102ef27f7dc57b4))
+
 ## [1.1.0](https://github.com/ChainSafe/sprinter-ts/compare/sprinter-react-v1.0.0...sprinter-react-v1.1.0) (2024-12-11)
 
 
