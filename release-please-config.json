@@ -1,6 +1,15 @@
 {
     "plugins": [],
     "packages": {
+      "docs": {
+        "releaseType": "node",
+        "draft": false,
+        "prerelease": false,
+        "bumpMinorPreMajor": false,
+        "bumpPatchForMinorPreMajor": false,
+        "changelogPath": "CHANGELOG.md",
+        "versioning": "default"
+      },
       "packages/sdk": {
         "releaseType": "node",
         "draft": false,

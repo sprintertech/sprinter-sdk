@@ -1,4 +1,5 @@
 {
+    "docs": "0.0.1",
     "packages/sdk": "1.1.2",
     "packages/react": "1.1.2"
 }
