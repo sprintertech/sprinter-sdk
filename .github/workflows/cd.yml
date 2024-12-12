@@ -49,11 +49,37 @@ jobs:
 
       - name: Publish Docs to Cloudflare Pages
         if: ${{ steps.release.outputs.releases_created }}
-        uses: cloudflare/pages-action@v1
+        uses: cloudflare/wrangler-action@v3
         with:
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: 2238a825c5aca59233eab1f221f7aefb
-          projectName: gopher-docs
-          directory: ./docs/build
+          command: pages deploy ./docs/build --project-name=sprinter-docs
+
+      - name: Publish POC to Cloudflare Pages
+        if: ${{ steps.release.outputs.releases_created }}
+        uses: cloudflare/wrangler-action@v3
+        with:
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.head_ref || github.ref_name }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: 2238a825c5aca59233eab1f221f7aefb
+          command: pages deploy ./web/.svelte-kit/cloudflare --project-name=sprinter-poc
+
+      # old deployment
+      - name: Publish Docs to Cloudflare Pages (old  project)
+        if: ${{ steps.release.outputs.releases_created }}
+        uses: cloudflare/wrangler-action@v3
+        with:
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: 2238a825c5aca59233eab1f221f7aefb
+          command: pages deploy ./docs/build --project-name=gopher-docs
+
+      - name: Publish POC to Cloudflare Pages (old  project)
+        if: ${{ steps.release.outputs.releases_created }}
+        uses: cloudflare/wrangler-action@v3
+        with:
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: 2238a825c5aca59233eab1f221f7aefb
+          command: pages deploy ./web/.svelte-kit/cloudflare --project-name=gopher-poc

@@ -29,21 +29,65 @@ jobs:
         run: 'yarn run test:unit'
       - name: "Integrations Tests"
         run: 'yarn run test:integrations'
+      - name: Set branch name for Cloudflare Pages
+        id: cf-branch
+        run: |
+          if [[ "${{ github.ref_name }}" == "master" ]]; then
+            echo "CF_BRANCH_NAME=preview" >> $GITHUB_ENV
+          else
+            echo "CF_BRANCH_NAME=${{ github.head_ref || github.ref_name }}" >> $GITHUB_ENV
+          fi
+      - name: Publish Docs to Cloudflare Pages
+        id: docs-publish
+        uses: cloudflare/wrangler-action@v3
+        with:
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: 2238a825c5aca59233eab1f221f7aefb
+          command: pages deploy ./docs/build --project-name=sprinter-docs --branch=${{ env.CF_BRANCH_NAME }}
       - name: Publish POC to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+        id: poc-publish
+        uses: cloudflare/wrangler-action@v3
         with:
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: 2238a825c5aca59233eab1f221f7aefb
-          projectName: gopher-poc
-          directory: ./web/.svelte-kit/cloudflare
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.head_ref || github.ref_name }}
-      - name: Publish Preview Docs to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+          command: pages deploy ./web/.svelte-kit/cloudflare --project-name=sprinter-poc --branch=${{ env.CF_BRANCH_NAME }}
+      - name: Generate Deployment Summary
+        run: |
+          echo "# 🚀 Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| **Project**             | **Preview URL** |" >> $GITHUB_STEP_SUMMARY
+          echo "| ----------------------- | ---------------- |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Docs**                | [View Docs -> ${{ steps.docs-publish.outputs.deployment-url }}](${{ steps.docs-publish.outputs.deployment-url }}) |" >> $GITHUB_STEP_SUMMARY
+          echo "| **POC**                 | [View POC -> ${{ steps.poc-publish.outputs.deployment-url }}](${{ steps.poc-publish.outputs.deployment-url }}) |" >> $GITHUB_STEP_SUMMARY
+      - name: Notify About Deployment
+        if: ${{ github.actor != 'dependabot[bot]' }}
+        uses: actions/github-script@v7
         with:
+          script: |
+            const docsUrl = `**Docs:** [View Deployment -> ${{ steps.docs-publish.outputs.deployment-url }}](${{ steps.docs-publish.outputs.deployment-url }})`;
+            const pocUrl = `**POC:** [View Deployment -> ${{ steps.poc-publish.outputs.deployment-url }}](${{ steps.poc-publish.outputs.deployment-url }})`;
+            const message = `🚀 **Deployment Completed**\n\n${docsUrl}\n${pocUrl}`;
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: message,
+            });
+
+      # old deployment
+      - name: Publish Docs to Cloudflare Pages (old  project)
+        uses: cloudflare/wrangler-action@v3
+        with:
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: 2238a825c5aca59233eab1f221f7aefb
-          projectName: gopher-docs-preview
-          directory: ./docs/build
+          command: pages deploy ./docs/build --project-name=gopher-docs --branch=${{ env.CF_BRANCH_NAME }}
+      - name: Publish POC to Cloudflare Pages (old  project)
+        uses: cloudflare/wrangler-action@v3
+        with:
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.head_ref || github.ref_name }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: 2238a825c5aca59233eab1f221f7aefb
+          command: pages deploy ./web/.svelte-kit/cloudflare --project-name=gopher-poc --branch=${{ env.CF_BRANCH_NAME }}
