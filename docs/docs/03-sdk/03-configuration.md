@@ -16,6 +16,10 @@ When initializing the `Sprinter` class, you can pass a `baseUrl` configuration o
 
 The `baseUrl` is the API server endpoint. You can either set it manually or use the predefined `Environment` enum to simplify configuration.
 
+:::note
+Test networks and main networks have different API endpoints. Make sure to use the correct one based on your needs.
+:::
+
 ```typescript
 import { Sprinter, Environment } from "@chainsafe/sprinter-sdk";
 
@@ -26,7 +30,7 @@ const sprinter = new Sprinter({
 
 // Or using a predefined environment URL
 const sprinterWithEnv = new Sprinter({
-  baseUrl: Environment.MAINNET, // Enum that provides predefined URLs
+  baseUrl: Environment.TESTNET, // Enum that provides predefined URLs, use `Environment.TESTNET` for mainnet
 });
 ```
 
@@ -61,7 +65,8 @@ setBaseUrl(process.env.SPRINTER_URL);
 
 ## Available URLs
 
-Here are the URLs you can use for the `baseUrl`:
+Here are the URLs you can use for the `baseUrl`.
+If you interract with test networks (e.g Sepolia, BaseSepolia...) use the Testnet url otherwise use the Mainnet one.
 
 - **Mainnet**: `https://api.sprinter.buildwithsygma.com/`
 - **Testnet**: `https://api.test.sprinter.buildwithsygma.com/`
