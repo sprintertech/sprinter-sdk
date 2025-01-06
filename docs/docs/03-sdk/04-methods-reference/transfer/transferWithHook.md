@@ -19,30 +19,31 @@ import TabItem from '@theme/TabItem';
 In this example, a token transfer (e.g., `USDC`) is followed by a contract call on the destination chain. You need to provide `outputTokenAddress` and `approvalAddress` to allow the contract to move tokens on behalf of the user.
 
 ```typescript
-import { Sprinter, Environment } from '@chainsafe/sprinter-sdk';
+import { Sprinter, Environment } from "@chainsafe/sprinter-sdk";
 
 const sprinter = new Sprinter({ baseUrl: Environment.TESTNET });
 
 const settings = {
-  account: '0xYourAddressHere',
-  destinationChain: 11155111,  // Sepolia testnet
-  token: 'USDC',
-  amount: 1000000,  // In smallest denomination (e.g., 1 USDC = 1,000,000 in USDC with 6 decimals)
+  account: "0xYourAddressHere",
+  destinationChain: 11155111, // Sepolia testnet
+  token: "USDC",
+  amount: 1000000, // In smallest denomination (e.g., 1 USDC = 1,000,000 in USDC with 6 decimals)
   contractCall: {
-    contractAddress: '0xContractAddressHere',
-    callData: '0xSomeCallData',  // Encoded contract interaction data
+    contractAddress: "0xContractAddressHere",
+    callData: "0xSomeCallData", // Encoded contract interaction data
     gasLimit: 100000,
-    outputTokenAddress: '0xOutputTokenAddressHere',  // Where tokens will be sent
-    approvalAddress: '0xApprovalAddressHere'  // Contract that needs approval to transfer tokens
+    outputTokenAddress: "0xOutputTokenAddressHere", // Where tokens will be sent
+    approvalAddress: "0xApprovalAddressHere", // Contract that needs approval to transfer tokens
   },
-  recipient: '0xRecipientAddress',  // Optional recipient of leftover tokens
-  sourceChains: [84532]  // Optional: List of source chains to be considered
+  recipient: "0xRecipientAddress", // Optional recipient of leftover tokens
+  sourceChains: [84532], // Optional: List of source chains to be considered
 };
 
-sprinter.transferWithHook(settings).then(solution => {
+sprinter.transferWithHook(settings).then((solution) => {
   console.log(solution);
 });
 ```
+
   </TabItem>
 
   <TabItem value="native" label="Native Token Transfer with Contract Call">
@@ -51,23 +52,24 @@ In this example, a native token (e.g., `ETH`) is transferred to a contract on th
 
 ```typescript
 const settings = {
-  account: '0xYourAddressHere',
-  destinationChain: 11155111,  // Sepolia testnet
-  token: 'ETH',
-  amount: 5000000000000000000,  // 5 ETH in the smallest denomination (wei)
+  account: "0xYourAddressHere",
+  destinationChain: 11155111, // Sepolia testnet
+  token: "ETH",
+  amount: 5000000000000000000, // 5 ETH in the smallest denomination (wei)
   contractCall: {
-    contractAddress: '0xContractAddressHere',
-    callData: '0xSomeCallData',  // Encoded contract interaction data
-    gasLimit: 21000,  // Standard gas limit for simple ETH transfers
+    contractAddress: "0xContractAddressHere",
+    callData: "0xSomeCallData", // Encoded contract interaction data
+    gasLimit: 21000, // Standard gas limit for simple ETH transfers
   },
-  recipient: '0xRecipientAddressHere',  // The recipient of the native token transfer
-  sourceChains: [84532]  // Optional: List of source chains to be considered
+  recipient: "0xRecipientAddressHere", // The recipient of the native token transfer
+  sourceChains: [84532], // Optional: List of source chains to be considered
 };
 
-sprinter.transferWithHook(settings).then(solution => {
+sprinter.transferWithHook(settings).then((solution) => {
   console.log(solution);
 });
 ```
+
   </TabItem>
 </Tabs>
 
@@ -77,45 +79,49 @@ You can limit the solution to a specific source chain using the `sourceChains` f
 ```typescript
 sourceChains: [84532];
 ```
+
 If omitted, Sprinter will consider all available source chains.
 :::
 
 ### Example: Using `fetchOptions`
 
 ```typescript
-sprinter.transferWithHook(settings, { baseUrl: 'https://custom.api.url' }).then(solution => {
+sprinter.transferWithHook(settings, { baseUrl: "https://custom.api.url" }).then((solution) => {
   console.log(solution);
 });
 ```
 
 ## Parameters
 
-- `settings`: *(Required)* An object containing the following fields:
-    - `account`: The user’s address.
-    - `destinationChain`: The ID of the destination chain.
-    - `token`: The symbol of the token to be transferred (e.g., `USDC`, `ETH`).
-    - `amount`: The amount of the token to be transferred in the smallest denomination (e.g., for USDC with 6 decimals, 1 USDC = 1,000,000).
-    - `contractCall`: An object containing the contract call details, depending on the type of contract call:
-        - **Native Contract Call**:
-            - `contractAddress`: The contract address on the destination chain.
-            - `callData`: The data to interact with the contract, in hex format.
-            - `gasLimit`: The maximum amount of gas to use for the contract call.
-        - **Token Contract Call**:
-            - `contractAddress`: The contract address on the destination chain.
-            - `callData`: The data to interact with the contract, in hex format.
-            - `gasLimit`: The maximum amount of gas to use for the contract call.
-            - `outputTokenAddress?`: *(Optional)* The token address where tokens will be sent after the contract call.
-            - `approvalAddress?`: *(Optional)* The contract address that requires approval to transfer tokens (e.g., for `transferFrom`).
-    - `recipient?`: *(Optional)* The address of the recipient of any leftover tokens.
-    - `sourceChains?`: *(Optional)* An array of source chain IDs to be considered for the transfer. If omitted, Sprinter will use all available chains for the solution.
-    - `threshold?`: *(Optional)* The minimum amount of tokens required to trigger the transfer solution. If not met, the transfer solution will not proceed.
-- `fetchOptions?`: *(Optional)* An object containing `baseUrl` to override the default API endpoint for this request.
+- `settings`: _(Required)_ An object containing the following fields:
 
-import HowToCallData from "../_how-to-calldata.md"
+  - `account`: The user’s address.
+  - `destinationChain`: The ID of the destination chain.
+  - `token`: The symbol of the token to be transferred (e.g., `USDC`, `ETH`).
+  - `amount`: The amount of the token to be transferred in the smallest denomination (e.g., for USDC with 6 decimals, 1 USDC = 1,000,000).
+  - `contractCall`: An object containing the contract call details, depending on the type of contract call:
+    - **Native Contract Call**:
+      - `contractAddress`: The contract address on the destination chain.
+      - `callData`: The data to interact with the contract, in hex format.
+      - `gasLimit`: The maximum amount of gas to use for the contract call.
+    - **Token Contract Call**:
+      - `contractAddress`: The contract address on the destination chain.
+      - `callData`: The data to interact with the contract, in hex format.
+      - `gasLimit`: The maximum amount of gas to use for the contract call.
+      - `outputTokenAddress?`: _(Optional)_ The token address where tokens will be sent after the contract call.
+      - `approvalAddress?`: _(Optional)_ The contract address that requires approval to transfer tokens (e.g., for `transferFrom`).
+  - `recipient?`: _(Optional)_ The address of the recipient of any leftover tokens.
+  - `sourceChains?`: _(Optional)_ An array of source chain IDs to be considered for the transfer. If omitted, Sprinter will use all available chains for the solution.
+  - `threshold?`: _(Optional)_ The minimum amount of tokens required to trigger the transfer solution. If not met, the transfer solution will not proceed.
+  - `enableSwaps`: _(Optional)_ Defaults to `false`. Whether to enable token swaps on the source chain.
+
+- `fetchOptions?`: _(Optional)_ An object containing `baseUrl` to override the default API endpoint for this request.
+
+import HowToCallData from "../\_how-to-calldata.md"
 
 <HowToCallData />
 
-import GasLimit from "../_how-to-gas-limit.md"
+import GasLimit from "../\_how-to-gas-limit.md"
 
 <GasLimit />
 
@@ -131,7 +137,7 @@ type SolutionResponse = Array<Solution> | FailedSolution;
 interface Solution {
   destinationChain: number;
   destinationTokenAddress: string;
-  duration: number;  // Time estimate in seconds
+  duration: number; // Time estimate in seconds
   fee: Amount;
   gasCost: Amount;
   senderAddress: string;
@@ -150,7 +156,7 @@ interface FailedSolution {
 
 ### Example Response
 
-import GasTip from "../_gas-tip.md"
+import GasTip from "../\_gas-tip.md"
 
 <GasTip />
 

@@ -66,19 +66,19 @@
 		updateWhitelistedOnTokenChange();
 	}
 
-	async function requestQuota() {
+	async function requestQuote() {
 		if (!selectedNetwork) selectedNetwork = String((await chains)[0].chainID);
 
 		const drawerSettings: DrawerSettings = {
-			id: 'SubmitQuota',
+			id: 'SubmitQuote',
 			width: 'w-[518px]',
 			position: 'right',
 			meta: {
-				title: 'Submit Quotas',
+				title: 'Submit Quotes',
 				tokens: await tokens,
 				chains: await chains,
 				balances,
-				quota: {
+				quote: {
 					account: $selectedAccount,
 					token: selectedToken,
 					destinationChain: Number(selectedNetwork),
@@ -258,12 +258,12 @@
 >
 	<div class="grow shrink basis-0 flex-col justify-center items-center gap-4 inline-flex">
 		<button
-			on:click={requestQuota}
+			on:click={requestQuote}
 			class="self-stretch h-[60px] p-2.5 bg-primary-400 dark:bg-primary-500 rounded-[10px] shadow border border-zinc-200 dark:border-gray-600 justify-center items-center gap-1 inline-flex"
 		>
 			<div class="px-1 justify-center items-center flex">
 				<div class="text-black text-base font-semibold font-['Inter'] leading-normal">
-					Get Quota
+					Get Quote
 				</div>
 			</div>
 		</button>

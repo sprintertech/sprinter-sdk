@@ -7,8 +7,8 @@
 	import { formatWei } from '$lib/formatters';
 
 	const drawerStore = getDrawerStore();
-	$: quota = $sprinter.poolAssetOnDestination($drawerStore.meta.quota);
-	$: token = getTokenBySymbol($drawerStore.meta.tokens, $drawerStore.meta.quota.token);
+	$: quote = $sprinter.poolAssetOnDestination($drawerStore.meta.quote);
+	$: token = getTokenBySymbol($drawerStore.meta.tokens, $drawerStore.meta.quote.token);
 </script>
 
 <div
@@ -17,13 +17,13 @@
 	<div
 		class="grow shrink basis-0 text-slate-400 dark:text-slate-200 text-xs font-medium font-['Inter'] uppercase leading-none tracking-wide"
 	>
-		Quotas
+		Quotes
 	</div>
 </div>
 
 <article class="container mx-auto p-4">
 	<ul class="space-y-4">
-		{#await quota}
+		{#await quote}
 			<li
 				class="bg-gray-200 dark:bg-gray-700 p-4 rounded-lg flex justify-between items-center mb-4"
 			>
@@ -63,7 +63,7 @@
 >
 	<button
 		on:click={() => {
-			quota = $sprinter.bridgeAggregateBalance($drawerStore.meta.quota);
+			quote = $sprinter.bridgeAggregateBalance($drawerStore.meta.quote);
 		}}
 		class="w-full h-10 p-2.5 bg-white dark:bg-gray-700 rounded-[10px] shadow border border-zinc-200 dark:border-gray-600 justify-center items-center gap-1 inline-flex"
 	>
@@ -72,7 +72,7 @@
 			<div
 				class="text-gray-600 dark:text-gray-200 text-sm font-medium font-['Inter'] leading-tight"
 			>
-				Get another Quota
+				Get another Quote
 			</div>
 		</div>
 	</button>

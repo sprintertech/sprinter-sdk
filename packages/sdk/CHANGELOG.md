@@ -1,5 +1,41 @@
 # Changelog
 
+## [1.1.2](https://github.com/ChainSafe/sprinter-ts/compare/sprinter-sdk-v1.1.1...sprinter-sdk-v1.1.2) (2024-12-11)
+
+
+### Bug Fixes
+
+* docs deploy pipeline ([#106](https://github.com/ChainSafe/sprinter-ts/issues/106)) ([55d8b32](https://github.com/ChainSafe/sprinter-ts/commit/55d8b32919cb98693a7b5d653e10e11f3830a708))
+
+## [1.1.1](https://github.com/ChainSafe/sprinter-ts/compare/sprinter-sdk-v1.1.0...sprinter-sdk-v1.1.1) (2024-12-11)
+
+
+### Bug Fixes
+
+* add docs urls to README ([#104](https://github.com/ChainSafe/sprinter-ts/issues/104)) ([bc94336](https://github.com/ChainSafe/sprinter-ts/commit/bc943369b89c860ef7a255da4102ef27f7dc57b4))
+
+## [1.1.0](https://github.com/ChainSafe/sprinter-ts/compare/sprinter-sdk-v1.0.2...sprinter-sdk-v1.1.0) (2024-12-11)
+
+
+### Features
+
+* add enableSwaps in `transferWithHook` and `transfer` ([#97](https://github.com/ChainSafe/sprinter-ts/issues/97)) ([bd21311](https://github.com/ChainSafe/sprinter-ts/commit/bd213119b2eb8f41d574cbf2fd81d63296d08816)), closes [#94](https://github.com/ChainSafe/sprinter-ts/issues/94)
+
+## [1.0.2](https://github.com/ChainSafe/sprinter-ts/compare/sprinter-sdk-v1.0.1...sprinter-sdk-v1.0.2) (2024-11-21)
+
+
+### Bug Fixes
+
+* trigger missed release ([#87](https://github.com/ChainSafe/sprinter-ts/issues/87)) ([db8d8d8](https://github.com/ChainSafe/sprinter-ts/commit/db8d8d8f09a2b4a47496a8cfa3ddc84c264f7066))
+
+## [1.0.1](https://github.com/ChainSafe/sprinter-ts/compare/sprinter-sdk-v1.0.0...sprinter-sdk-v1.0.1) (2024-11-21)
+
+
+### Bug Fixes
+
+* add make fetch options to `poolAssetOnDestination`, `poolAssetOnDestinationWithHook`, `transfer` ([#79](https://github.com/ChainSafe/sprinter-ts/issues/79)) ([2883aa7](https://github.com/ChainSafe/sprinter-ts/commit/2883aa791cbb13989b807a19f3119265707db73b))
+* trigger missed release ([#87](https://github.com/ChainSafe/sprinter-ts/issues/87)) ([db8d8d8](https://github.com/ChainSafe/sprinter-ts/commit/db8d8d8f09a2b4a47496a8cfa3ddc84c264f7066))
+
 ## [1.0.0](https://github.com/ChainSafe/sprinter-ts/compare/sprinter-sdk-v0.3.0...sprinter-sdk-v1.0.0) (2024-10-24)
 
 
