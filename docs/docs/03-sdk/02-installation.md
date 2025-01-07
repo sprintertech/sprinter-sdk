@@ -57,7 +57,7 @@ api.getErc20Balances(ownerAddress, tokenSymbol).then(console.log);
 
 ## Base url Configuration
 
-The base url will define the url used for API requests. If you wan to make calls to test networks (e.g Sepolia, BaseSepolia...) you should use the test endpoint available from the exported `Environment` Enum: `Environment.TESTNET`. For main networks you can use `Environment.MAINNET`.
+The base url will define the url used for API requests. If you want to make calls to test networks (e.g Sepolia, BaseSepolia...) you should use the test endpoint available from the exported `Environment` Enum: `Environment.TESTNET`. For main networks you can use `Environment.MAINNET`.
 
 ### Example: Set Base URL
 
