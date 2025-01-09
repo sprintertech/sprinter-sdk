@@ -59,6 +59,7 @@ export interface ContractCallSolutionOptions {
 export interface SingleHopContractSolutionOptions extends SolutionOptions {
   recipient?: Address;
   contractCall?: ContractCallSolutionOptions;
+  enableSwaps?: boolean;
 }
 
 export interface ContractSolutionOptions extends SolutionOptions {

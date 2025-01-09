@@ -20,32 +20,28 @@ You can trigger any of these methods via the hook to fetch a cross-chain solutio
 ### Example
 
 ```tsx
-import { useSprinterTransfers } from '@chainsafe/sprinter-react';
-import React, { useEffect } from 'react';
+import { useSprinterTransfers } from "@chainsafe/sprinter-react";
+import React, { useEffect } from "react";
 
 function TransferComponent() {
   const { solution, getPoolAssetOnDestination } = useSprinterTransfers();
 
   useEffect(() => {
     const settings = {
-      account: '0xYourAddress',
-      destinationChain: 11155111,  // Sepolia Testnet
-      token: 'USDC',
-      amount: 1000000,  // 1 USDC (smallest denomination)
-      sourceChains: [84532, 1993],  // Optional: source chains to consider
+      account: "0xYourAddress",
+      destinationChain: 11155111, // Sepolia Testnet
+      token: "USDC",
+      amount: 1000000, // 1 USDC (smallest denomination)
+      sourceChains: [84532, 1993], // Optional: source chains to consider
     };
 
-    getPoolAssetOnDestination(settings);  // Fetch transfer solution when the component mounts
+    getPoolAssetOnDestination(settings); // Fetch transfer solution when the component mounts
   }, [getPoolAssetOnDestination]);
 
   if (solution.loading) return <div>Loading transfer solution...</div>;
   if (solution.error) return <div>Error fetching transfer solution: {solution.error}</div>;
 
-  return (
-    <div>
-      Transfer Solution: {JSON.stringify(solution.data)}
-    </div>
-  );
+  return <div>Transfer Solution: {JSON.stringify(solution.data)}</div>;
 }
 ```
 
@@ -54,6 +50,7 @@ function TransferComponent() {
 The `useSprinterTransfers` hook returns an object with the following properties:
 
 - **`solution`**: An object containing:
+
   - `data`: The transfer solution, or `null` if not yet retrieved.
   - `loading`: A boolean indicating if the solution is being fetched.
   - `error`: A string containing the error message if the fetch fails.

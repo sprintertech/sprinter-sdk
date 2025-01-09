@@ -26,6 +26,7 @@ const config: Config = {
       "classic",
       {
         docs: {
+          routeBasePath: "/",
           remarkPlugins: [
             [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }],
           ],
@@ -52,25 +53,20 @@ const config: Config = {
       },
       items: [
         {
-          to: "docs/quickstart",
-          position: "left",
-          label: "Learn",
-        },
-        {
           href: "https://poc.sprinter.buildwithsygma.com/",
           label: "POC",
           position: "left",
         },
         {
-          href: "https://api.test.sprinter.buildwithsygma.com/swagger/index.html",
+          href: "https://api.sprinter.buildwithsygma.com/swagger/index.html",
           label: "Swagger",
           position: "right",
         },
-        // {
-        //   href: 'https://github.com/ChainSafe/sprinter-ts',
-        //   label: 'GitHub',
-        //   position: 'right',
-        // },
+        {
+          href: "https://github.com/ChainSafe/sprinter-ts",
+          label: "GitHub",
+          position: "right",
+        },
       ],
     },
     footer: {
@@ -81,15 +77,15 @@ const config: Config = {
           items: [
             {
               label: "Introduction",
-              to: "/docs/introduction",
+              to: "/",
             },
             {
               label: "SDK",
-              to: "/docs/sdk",
+              to: "/sdk",
             },
             {
               label: "React SDK",
-              to: "/docs/react-sdk/",
+              to: "/react-sdk/",
             },
           ],
         },

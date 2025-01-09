@@ -29,9 +29,9 @@ npm install react@latest react-dom@latest
 Once the installation is complete, wrap your app’s component tree with `SprinterContext` to provide access to Sprinter’s functionalities across your React components.
 
 ```tsx
-import React from 'react';
-import { SprinterContext } from '@chainsafe/sprinter-react';
-import { Environment } from '@chainsafe/sprinter-sdk';
+import React from "react";
+import { SprinterContext } from "@chainsafe/sprinter-react";
+import { Environment } from "@chainsafe/sprinter-sdk";
 
 function App() {
   return (

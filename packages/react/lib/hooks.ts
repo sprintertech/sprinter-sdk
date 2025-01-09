@@ -83,7 +83,7 @@ export function useSprinterBalances(account: Address) {
   const balances: BalancesEntry = _balances[account] || balancesEmptyState;
   const getUserBalances = useCallback(
     () => _getUserBalances(account),
-    [account]
+    [_getUserBalances, account]
   );
 
   return { balances, getUserBalances };
