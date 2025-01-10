@@ -66,6 +66,20 @@ export interface ContractSolutionOptions extends SolutionOptions {
   contractCall: ContractCallSolutionOptions;
 }
 
+export interface SweepSolutionOptions {
+  account: Address;
+  destinationChain: ChainID;
+  token: TokenSymbol;
+  whitelistedSourceChains?: ChainID[];
+  recipient?: Address;
+}
+
+//    Account                 string         `form:"account" binding:"required,eth_address"`
+// 		Destination             entity.ChainID `form:"destination" binding:"required,supported_chain"`
+// 		Token                   string         `form:"token" binding:"required,supported_token"`
+// 		WhitelistedSourceChains string         `form:"whitelistedSourceChains" binding:"supported_chains"`
+// 		Recipient               string         `form:"recipient" binding:"omitempty,eth_address"`
+
 interface Amount {
   amount: string;
   amountUSD: number;

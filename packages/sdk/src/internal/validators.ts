@@ -79,3 +79,11 @@ export const MultiHopWithContractSchema = assign(
   BridgeCoreSchema,
   ContractCallSchema,
 );
+
+export const SweepSchema = object({
+  account: hexString(),
+  destinationChain: number(),
+  recipient: optional(hexString()),
+  token: string(),
+  whitelistedSourceChains: optional(array(number())),
+});

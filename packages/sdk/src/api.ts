@@ -12,6 +12,7 @@ import type {
   Solution,
   SolutionOptions,
   SolutionResponse,
+  SweepSolutionOptions,
   TokenSymbol,
 } from "./types";
 import { getEnv } from "./utils";
@@ -123,8 +124,8 @@ export async function getSolution(
   url.searchParams.set("token", token);
   url.searchParams.set("amount", String(amount));
   //
-  if (threshold) url.searchParams.set("threshold", String(threshold));
-  if (whitelistedSourceChains?.length)
+  threshold && url.searchParams.set("threshold", String(threshold));
+  whitelistedSourceChains?.length &&
     url.searchParams.set(
       "whitelistedSourceChains",
       whitelistedSourceChains.join(","),
@@ -207,6 +208,37 @@ export async function getContractCallSolution(
       enableSwaps,
     }),
   }).then(
+    (response) =>
+      response.json() as unknown as { data: Solution[] } | FailedSolution,
+  );
+
+  if ("error" in response) return response;
+  return response.data;
+}
+
+export async function getSweepSolution(
+  {
+    account,
+    destinationChain,
+    recipient,
+    token,
+    whitelistedSourceChains,
+  }: SweepSolutionOptions,
+  { baseUrl, signal }: FetchOptions = {},
+): Promise<SolutionResponse> {
+  const url = new URL("/solutions/balance-sweep", baseUrl || BASE_URL);
+
+  url.searchParams.set("account", account);
+  url.searchParams.set("destination", String(destinationChain));
+  url.searchParams.set("token", token);
+  recipient && url.searchParams.set("recipient", recipient);
+  whitelistedSourceChains?.length &&
+    url.searchParams.set(
+      "whitelistedSourceChains",
+      whitelistedSourceChains.join(","),
+    );
+
+  const response = await fetch(url, { signal }).then(
     (response) =>
       response.json() as unknown as { data: Solution[] } | FailedSolution,
   );

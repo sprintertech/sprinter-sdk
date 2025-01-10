@@ -7,6 +7,7 @@ import {
   getFungibleTokens,
   getSolution,
   getSupportedChains,
+  getSweepSolution,
 } from "./api";
 import { formatBalances, getUserBalances } from "./internal/userBalances";
 import {
@@ -14,6 +15,7 @@ import {
   MultiHopWithContractSchema,
   SingleHopSchema,
   SingleHopWithContractSchema,
+  SweepSchema,
 } from "./internal/validators";
 import type {
   Address,
@@ -24,6 +26,7 @@ import type {
   FungibleToken,
   SolutionOptions,
   SolutionResponse,
+  SweepSolutionOptions,
 } from "./types";
 
 export class Sprinter {
@@ -472,6 +475,53 @@ export class Sprinter {
         amount: BigInt(amount),
         whitelistedSourceChains: sourceChains,
       } as SolutionOptions,
+      this.makeFetchOptions(options),
+    );
+  }
+
+  /**
+   * Fetches and returns a quote to transfer full token balances of source chains to a destination chain.
+   *
+   * @param {Infer<typeof SweepSchema>} settings - The settings object for defining the sweep parameters:
+   * - `account` {string}: The user's wallet address for the transaction.
+   * - `destinationChain` {number}: The ID of the destination blockchain.
+   * - `token` {string}: The token symbol (e.g., "ETH", "USDC") to be transferred.
+   * - `whitelistedSourceChains` {Array<number>} (optional): An array of source chain IDs to be considered for the transfer.
+   * - `recipient` {string} (optional): The address of the recipient of the tokens on the destination chain.
+   *
+   * @param {FetchOptions} [options] - Optional configuration for the fetch request, such as custom headers or query parameters.
+   *
+   * @returns {Promise<SolutionResponse>} A promise that resolves to the solution object containing the optimal sweep strategy and contract call, or a `FailedSolution` in case of an error.
+   *
+   * @example
+   * ```ts
+   * import { Sprinter } from '@chainsafe/sprinter-sdk';
+   *
+   * const sprinter = new Sprinter();
+   *
+   * const settings = {
+   *   account: "0x3e101ec02e7a48d16dade204c96bff842e7e2519",
+   *   destinationChain: 11155111,
+   *   whitelistedSourceChains: [84532, 137],
+   *   token: "USDC",
+   *   recipient: "0xRecipientAddress",
+   * };
+   *
+   * sprinter.sweep(settings).then(solution => {
+   *   console.log(solution);
+   * }).catch(error => {
+   *   console.error(error);
+   * });
+   * ```
+   */
+  public async sweep(
+    settings: Infer<typeof SweepSchema>,
+    options?: FetchOptions,
+  ): Promise<SolutionResponse> {
+    assert(settings, SweepSchema);
+
+    return await getSweepSolution(
+      settings as SweepSolutionOptions,
       this.makeFetchOptions(options),
     );
   }
