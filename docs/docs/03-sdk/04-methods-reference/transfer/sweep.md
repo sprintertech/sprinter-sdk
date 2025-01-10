@@ -38,7 +38,7 @@ sprinter.sweep(settings).then((solution) => {
 
 - `fetchOptions?`: _(Optional)_ An object containing `baseUrl` to override the default API endpoint for this request.
 
-### Example: Using `whitelistedSourceChains` for sweeping from specific chain
+### Example: Using `whitelistedSourceChains` for sweeping from specific chains
 
 To get a sweep solution from specific chains, you can set `whitelistedSourceChains` to an array with chain IDs.
 
