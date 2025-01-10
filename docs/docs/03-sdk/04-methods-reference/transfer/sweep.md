@@ -34,20 +34,20 @@ sprinter.sweep(settings).then((solution) => {
   - `destinationChain`: The ID of the destination chain.
   - `token`: The symbol of the token to be transferred (e.g., `USDC`, `ETH`).
   - `recipient?`: _(Optional)_ The address of the recipient of the tokens on the destination chain.
-  - `whitelistedSourceChains?`: _(Optional)_ An array of source chain IDs to be considered for the sweep. If omitted, Sprinter will use all available chains for the solution. To limit the solution to a specific chain, provide an array containing only that chain's ID.
+  - `sourceChains?`: _(Optional)_ An array of source chain IDs to be considered for the sweep. If omitted, Sprinter will use all available chains for the solution. To limit the solution to a specific chain, provide an array containing only that chain's ID.
 
 - `fetchOptions?`: _(Optional)_ An object containing `baseUrl` to override the default API endpoint for this request.
 
-### Example: Using `whitelistedSourceChains` for sweeping from specific chains
+### Example: Using `sourceChains` for sweeping from specific chains
 
-To get a sweep solution from specific chains, you can set `whitelistedSourceChains` to an array with chain IDs.
+To get a sweep solution from specific chains, you can set `sourceChains` to an array with chain IDs.
 
 ```typescript
 const settings = {
   account: "0xYourAddressHere",
   destinationChain: 11155111, // Sepolia testnet
   token: "USDC",
-  whitelistedSourceChains: [84532, 137],
+  sourceChains: [84532, 137],
 };
 
 sprinter.sweep(settings).then((solution) => {

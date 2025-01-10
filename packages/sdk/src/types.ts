@@ -70,7 +70,7 @@ export interface SweepSolutionOptions {
   account: Address;
   destinationChain: ChainID;
   token: TokenSymbol;
-  whitelistedSourceChains?: ChainID[];
+  sourceChains?: ChainID[];
   recipient?: Address;
 }
 

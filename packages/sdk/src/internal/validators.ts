@@ -85,5 +85,5 @@ export const SweepSchema = object({
   destinationChain: number(),
   recipient: optional(hexString()),
   token: string(),
-  whitelistedSourceChains: optional(array(number())),
+  sourceChains: optional(array(number())),
 });

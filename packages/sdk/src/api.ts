@@ -222,7 +222,7 @@ export async function getSweepSolution(
     destinationChain,
     recipient,
     token,
-    whitelistedSourceChains,
+    sourceChains,
   }: SweepSolutionOptions,
   { baseUrl, signal }: FetchOptions = {},
 ): Promise<SolutionResponse> {
@@ -232,11 +232,8 @@ export async function getSweepSolution(
   url.searchParams.set("destination", String(destinationChain));
   url.searchParams.set("token", token);
   recipient && url.searchParams.set("recipient", recipient);
-  whitelistedSourceChains?.length &&
-    url.searchParams.set(
-      "whitelistedSourceChains",
-      whitelistedSourceChains.join(","),
-    );
+  sourceChains?.length &&
+    url.searchParams.set("whitelistedSourceChains", sourceChains.join(","));
 
   const response = await fetch(url, { signal }).then(
     (response) =>

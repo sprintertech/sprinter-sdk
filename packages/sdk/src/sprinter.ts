@@ -486,7 +486,7 @@ export class Sprinter {
    * - `account` {string}: The user's wallet address for the transaction.
    * - `destinationChain` {number}: The ID of the destination blockchain.
    * - `token` {string}: The token symbol (e.g., "ETH", "USDC") to be transferred.
-   * - `whitelistedSourceChains` {Array<number>} (optional): An array of source chain IDs to be considered for the transfer.
+   * - `sourceChains` {Array<number>} (optional): An array of source chain IDs to be considered for the transfer.
    * - `recipient` {string} (optional): The address of the recipient of the tokens on the destination chain.
    *
    * @param {FetchOptions} [options] - Optional configuration for the fetch request, such as custom headers or query parameters.
@@ -502,7 +502,7 @@ export class Sprinter {
    * const settings = {
    *   account: "0x3e101ec02e7a48d16dade204c96bff842e7e2519",
    *   destinationChain: 11155111,
-   *   whitelistedSourceChains: [84532, 137],
+   *   sourceChains: [84532, 137],
    *   token: "USDC",
    *   recipient: "0xRecipientAddress",
    * };
