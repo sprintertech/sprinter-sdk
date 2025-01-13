@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0](https://github.com/ChainSafe/sprinter-ts/compare/sprinter-sdk-v1.1.2...sprinter-sdk-v1.2.0) (2025-01-13)
+
+
+### Features
+
+* Add sweep function ([#115](https://github.com/ChainSafe/sprinter-ts/issues/115)) ([efaaa2b](https://github.com/ChainSafe/sprinter-ts/commit/efaaa2b3d8674e46b264caddcd373218c3f552c1)), closes [#110](https://github.com/ChainSafe/sprinter-ts/issues/110)
+
+
+### Bug Fixes
+
+* webpack import meta error ([#114](https://github.com/ChainSafe/sprinter-ts/issues/114)) ([f5f6fcf](https://github.com/ChainSafe/sprinter-ts/commit/f5f6fcfda884cd70aa6ccd94f19b2641741b265b))
+
 ## [1.1.2](https://github.com/ChainSafe/sprinter-ts/compare/sprinter-sdk-v1.1.1...sprinter-sdk-v1.1.2) (2024-12-11)
 
 
