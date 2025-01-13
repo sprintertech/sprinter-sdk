@@ -12,6 +12,7 @@ The `useSprinterTransfers` hook provides a simplified interface for generating c
 - `getTransferWithHook`: Single-hop token transfers combined with a contract call on the destination chain.
 - `getPoolAssetOnDestination`: Aggregates token balances across multiple chains into a single destination.
 - `getPoolAssetOnDestinationWithHook`: Aggregates token balances and performs a contract call on the destination chain.
+- `getSweep`: A function that generates a quote to transfer the full token balances of source chains to a destination chain
 
 You can trigger any of these methods via the hook to fetch a cross-chain solution.
 
@@ -59,6 +60,7 @@ The `useSprinterTransfers` hook returns an object with the following properties:
 - **`getTransferWithHook`**: A function that generates a single-hop token transfer combined with a contract call.
 - **`getPoolAssetOnDestination`**: A function that generates a solution to aggregate balances from multiple chains into a single destination.
 - **`getPoolAssetOnDestinationWithHook`**: A function that generates a solution to aggregate balances and execute a contract call on the destination chain.
+- **`getSweep`**: A function that generates a quote to transfer the full token balances of source chains to a destination chain
 
 ## Example Response
 
@@ -99,5 +101,6 @@ Each method accepts a `settings` parameter, which varies depending on the operat
 - **`getTransferWithHook`**: See [SDK Transfer with Contract Call Method Reference](../../sdk/methods-reference/transfer/transfer-with-hook).
 - **`getPoolAssetOnDestination`**: See [SDK Pool Asset Method Reference](../../sdk/methods-reference/pool-asset-on-destination/pool-asset-on-destination).
 - **`getPoolAssetOnDestinationWithHook`**: See [SDK Pool Asset with Contract Call Method Reference](../../sdk/methods-reference/pool-asset-on-destination/pool-asset-on-destination-with-hook).
+- **`getSweep`**: See [Sweep Method Reference](../../sdk/methods-reference/transfer/sweep).
 
 Each method calls the Sprinter SDK's corresponding function and returns the intent-based solution for cross-chain transfers or contract calls.
