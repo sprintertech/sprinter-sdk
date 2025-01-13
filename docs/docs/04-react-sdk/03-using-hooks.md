@@ -28,6 +28,7 @@ function YourComponent() {
     getUserBalances,
     getAvailableTokens,
     getAvailableChains,
+    getSweep,
     getTransfer,
     getTransferWithHook,
     getPoolAssetOnDestination,
