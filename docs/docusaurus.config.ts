@@ -94,7 +94,7 @@ const config: Config = {
           items: [
             {
               label: "Twitter",
-              href: "https://twitter.com/sprinter_ux",
+              href: "https://x.com/sprinter_ux",
             },
             {
               label: "Discord",
