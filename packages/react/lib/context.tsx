@@ -63,6 +63,7 @@ export function SprinterContext({ children, baseUrl }: SprinterContextProps) {
     getTransferWithHook,
     getPoolAssetOnDestination,
     getPoolAssetOnDestinationWithHook,
+    getSweep,
   } = useTransfers(sprinter);
 
   /** Initialization */
@@ -85,6 +86,7 @@ export function SprinterContext({ children, baseUrl }: SprinterContextProps) {
         getTransferWithHook,
         getPoolAssetOnDestination,
         getPoolAssetOnDestinationWithHook,
+        getSweep,
       }}
     >
       {children}

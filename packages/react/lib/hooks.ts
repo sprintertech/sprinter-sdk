@@ -83,7 +83,7 @@ export function useSprinterBalances(account: Address) {
   const balances: BalancesEntry = _balances[account] || balancesEmptyState;
   const getUserBalances = useCallback(
     () => _getUserBalances(account),
-    [_getUserBalances, account]
+    [_getUserBalances, account],
   );
 
   return { balances, getUserBalances };
@@ -227,6 +227,7 @@ export function useSprinterChains() {
  * - `getTransferWithHook`: A function to get a transfer solution that includes an additional contract call on the destination chain.
  * - `getPoolAssetOnDestination`: A function to get a solution for pooling assets from multiple chains and transferring them to the destination chain.
  * - `getPoolAssetOnDestinationWithHook`: A function to get a solution for pooling assets and performing a contract call on the destination chain.
+ * - `getSweep`: A function to get a solution for sweeping assets from source chains to a destination chain.
  *
  * @example
  * ```ts
@@ -269,6 +270,7 @@ export function useSprinterTransfers() {
     getTransferWithHook,
     getPoolAssetOnDestination,
     getPoolAssetOnDestinationWithHook,
+    getSweep,
   } = useSprinter();
   return {
     solution,
@@ -276,5 +278,6 @@ export function useSprinterTransfers() {
     getTransferWithHook,
     getPoolAssetOnDestination,
     getPoolAssetOnDestinationWithHook,
+    getSweep,
   };
 }
