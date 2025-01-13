@@ -28,6 +28,10 @@ npm install react@latest react-dom@latest
 
 Once the installation is complete, wrap your app’s component tree with `SprinterContext` to provide access to Sprinter’s functionalities across your React components.
 
+:::note
+The `baseUrl` should be changed depending on whether you want to interract with test networks or main networks. E.g for Sepolia or BaseSepolia use `Environment.TESTNET`, otherwise use `Environment.MAINNET`
+:::
+
 ```tsx
 import React from "react";
 import { SprinterContext } from "@chainsafe/sprinter-react";
@@ -42,7 +46,7 @@ function App() {
 }
 ```
 
-By passing the `baseUrl`, you specify which environment (testnet or mainnet) to use for API calls.
+By passing the `baseUrl`, you specify which endpoint to use for API calls. If you interract with test networks (e.g Sepolia, BaseSepolia...) use the Testnet url otherwise use the Mainnet one.
 
 ### Available URLs:
 

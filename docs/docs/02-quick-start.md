@@ -31,7 +31,7 @@ Here’s a quick example of how to use the SDK in your project:
 ```typescript
 import { Sprinter, Environment } from "@chainsafe/sprinter-sdk";
 
-const sprinter = new Sprinter({ baseUrl: Environment.MAINNET });
+const sprinter = new Sprinter({ baseUrl: Environment.TESTNET });
 
 sprinter.getUserBalances("0xYourAddressHere").then(console.log);
 ```
@@ -74,7 +74,7 @@ function BalancesComponent() {
 
 function App() {
   return (
-    <SprinterContext baseUrl={Environment.MAINNET}>
+    <SprinterContext baseUrl={Environment.TESTNET}>
       <BalancesComponent />
     </SprinterContext>
   );
