@@ -6,7 +6,7 @@ sidebar_position: 5
 
 # Breaking Changes
 
-## SDK from Version 0.3.0 to 0.4.0
+## SDK from Version 0.3.0 to 1.0.0
 
 ### Summary of Changes:
 
