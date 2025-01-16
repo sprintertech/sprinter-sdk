@@ -19,8 +19,8 @@ Wrap your application in the `SprinterContext` to gain access to blockchain-rela
 ### Example
 
 ```tsx
-import React from 'react';
-import { SprinterContext } from '@chainsafe/sprinter-react';
+import React from "react";
+import { SprinterContext } from "@chainsafe/sprinter-react";
 
 const App = () => (
   <SprinterContext>
@@ -34,8 +34,11 @@ export default App;
 Inside your components, you can use the provided hooks to interact with blockchain data:
 
 ```tsx
-import React, { useEffect } from 'react';
-import { useSprinterBalances, useSprinterTokens } from '@chainsafe/sprinter-react';
+import React, { useEffect } from "react";
+import {
+  useSprinterBalances,
+  useSprinterTokens,
+} from "@chainsafe/sprinter-react";
 
 const YourComponent = () => {
   const ownerAddress = "0xYourAddressHere";
@@ -74,12 +77,15 @@ The following hooks are provided by the SDK:
 You can pass custom fetch options when initializing the context:
 
 ```tsx
-<SprinterContext fetchOptions={{ baseUrl: "https://api.test.sprinter.buildwithsygma.com/" }}>
+<SprinterContext
+  fetchOptions={{ baseUrl: "https://api.test.sprinter.buildwithsygma.com/" }}
+>
   <YourComponent />
 </SprinterContext>
 ```
 
 ## Documentation
+
 For more detailed docs you can check out [SDK docs page](https://docs.sprinter.tech/docs/react-sdk/).
 
 ## Contributing

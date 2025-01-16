@@ -1,27 +1,41 @@
-import {useCallback, useReducer} from "react";
-import {Address, AggregateBalances, Sprinter} from "@chainsafe/sprinter-sdk";
+import { useCallback, useReducer } from "react";
+import { Address, AggregateBalances, Sprinter } from "@chainsafe/sprinter-sdk";
 
 const initialState: BalancesState = {};
 
 export function useBalances(sprinter: Sprinter) {
   const [balances, dispatch] = useReducer(balancesReducer, initialState);
 
-  const getUserBalances = useCallback((account: Address) => {
-    dispatch({ type: BalanceAction.INIT, address: account });
+  const getUserBalances = useCallback(
+    (account: Address) => {
+      dispatch({ type: BalanceAction.INIT, address: account });
 
-    sprinter.getUserBalances(account).then(result => {
-      dispatch({ type: BalanceAction.SUCCESS, payload: result, address: account });
-    }).catch((error: Error) => {
-      dispatch({ type: BalanceAction.FAILURE, error: error.message, address: account });
-    });
-  }, [sprinter, dispatch]);
+      sprinter
+        .getUserBalances(account)
+        .then((result) => {
+          dispatch({
+            type: BalanceAction.SUCCESS,
+            payload: result,
+            address: account,
+          });
+        })
+        .catch((error: Error) => {
+          dispatch({
+            type: BalanceAction.FAILURE,
+            error: error.message,
+            address: account,
+          });
+        });
+    },
+    [sprinter, dispatch],
+  );
 
-  return {balances, getUserBalances};
+  return { balances, getUserBalances };
 }
 
 enum BalanceAction {
-  INIT = 'REQUEST_INIT',
-  SUCCESS = 'REQUEST_SUCCESS',
+  INIT = "REQUEST_INIT",
+  SUCCESS = "REQUEST_SUCCESS",
   FAILURE = "REQUEST_FAILURE",
 }
 
@@ -35,10 +49,17 @@ type BalancesState = Record<Address, BalancesEntry>;
 
 type BalanceActions =
   | { type: BalanceAction.INIT; address: Address }
-  | { type: BalanceAction.SUCCESS; payload: AggregateBalances; address: Address }
+  | {
+      type: BalanceAction.SUCCESS;
+      payload: AggregateBalances;
+      address: Address;
+    }
   | { type: BalanceAction.FAILURE; error: string; address: Address };
 
-function balancesReducer(state: BalancesState, action: BalanceActions): BalancesState {
+function balancesReducer(
+  state: BalancesState,
+  action: BalanceActions,
+): BalancesState {
   switch (action.type) {
     case BalanceAction.INIT:
       return {
@@ -47,8 +68,8 @@ function balancesReducer(state: BalancesState, action: BalanceActions): Balances
           ...state[action.address],
           loading: true,
           error: null,
-        }
-      }
+        },
+      };
     case BalanceAction.SUCCESS:
       return {
         ...state,
@@ -56,8 +77,8 @@ function balancesReducer(state: BalancesState, action: BalanceActions): Balances
           ...state[action.address],
           loading: false,
           data: action.payload,
-        }
-      }
+        },
+      };
     case BalanceAction.FAILURE:
       return {
         ...state,
@@ -65,9 +86,9 @@ function balancesReducer(state: BalancesState, action: BalanceActions): Balances
           ...state[action.address],
           loading: false,
           error: action.error,
-        }
-      }
+        },
+      };
     default:
-      throw Error('Unknown action type');
+      throw Error("Unknown action type");
   }
 }

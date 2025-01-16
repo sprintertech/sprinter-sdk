@@ -34,10 +34,10 @@ Once installed, you can initialize and use the SDK to interact with blockchain d
 The `Sprinter` class provides an interface to interact with balances and chains.
 
 ```typescript
-import { Sprinter } from '@chainsafe/sprinter-sdk';
+import { Sprinter } from "@chainsafe/sprinter-sdk";
 
 const sprinter = new Sprinter({
-  baseUrl: 'https://api.sprinter.buildwithsygma.com',
+  baseUrl: "https://api.sprinter.buildwithsygma.com",
 });
 
 const ownerAddress = "0xYourAddressHere";
@@ -47,7 +47,7 @@ sprinter.getUserBalances(ownerAddress).then(console.log);
 ### Example: Fetch Available Tokens
 
 ```typescript
-sprinter.getAvailableTokens().then(tokens => {
+sprinter.getAvailableTokens().then((tokens) => {
   console.log(tokens);
 });
 ```
@@ -55,7 +55,7 @@ sprinter.getAvailableTokens().then(tokens => {
 ### Example: Fetch Supported Chains
 
 ```typescript
-sprinter.getAvailableChains().then(chains => {
+sprinter.getAvailableChains().then((chains) => {
   console.log(chains);
 });
 ```
@@ -65,12 +65,13 @@ sprinter.getAvailableChains().then(chains => {
 You can configure the SDK using environment variables to set the base URL for API requests:
 
 ```typescript
-import { setBaseUrl } from '@chainsafe/sprinter-sdk';
+import { setBaseUrl } from "@chainsafe/sprinter-sdk";
 
 setBaseUrl("https://api.sprinter.buildwithsygma.com");
 ```
 
 ## Documentation
+
 For more detailed docs you can check out [SDK docs page](https://docs.sprinter.tech/docs/sdk/).
 
 ## API Documentation

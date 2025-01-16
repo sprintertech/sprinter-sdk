@@ -3,9 +3,9 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Select deployment environment'
+        description: "Select deployment environment"
         required: true
-        default: 'preview'
+        default: "preview"
         type: choice
         options:
           - production
@@ -15,13 +15,12 @@ jobs:
   manual-deploy-docs:
     runs-on: ubuntu-latest
     steps:
-
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          registry-url: 'https://registry.npmjs.org'
+          registry-url: "https://registry.npmjs.org"
 
       - run: corepack enable
 
