@@ -3,16 +3,17 @@
 ## Table of Contents
 
 - [Sprinter TS - Cross-Chain Developer Toolkit](#sprinter-ts---cross-chain-developer-toolkit)
-    - [Introduction](#introduction)
-    - [Prerequisites](#prerequisites)
-    - [Getting Started](#getting-started)
-    - [Building](#building)
-    - [Testing](#testing)
-    - [Linting and Formatting](#linting-and-formatting)
+  - [Introduction](#introduction)
+  - [Prerequisites](#prerequisites)
+  - [Getting Started](#getting-started)
+  - [Building](#building)
+  - [Testing](#testing)
+  - [Linting and Formatting](#linting-and-formatting)
 
 ---
 
 <a name="introduction"></a>
+
 ## Introduction
 
 Sprinter TS is a powerful developer toolkit designed to simplify cross-chain integrations and enhance the developer experience. It includes:
@@ -26,6 +27,7 @@ Whether you're building cross-chain applications or experimenting with decentral
 ---
 
 <a name="prerequisites"></a>
+
 ## Prerequisites
 
 Before you begin, ensure you have the following installed:
@@ -36,26 +38,31 @@ Before you begin, ensure you have the following installed:
 ---
 
 <a name="getting-started"></a>
+
 ## Getting Started
 
 To get started with the project:
 
 1. Clone the repository:
+
    ```shell
    git clone https://github.com/ChainSafe/sprinter-ts.git
    ```
 
 2. Navigate to the project root:
+
    ```shell
    cd sprinter-ts
    ```
 
 3. Set Node.js to the compatible version _(skip if you use a manual approach)_:
+
    ```shell
    nvm use
    ```
 
 4. Enable Corepack:
+
    ```shell
    corepack enable
    ```
@@ -68,6 +75,7 @@ To get started with the project:
 ---
 
 <a name="building"></a>
+
 ## Building
 
 To build all packages, run:
@@ -83,6 +91,7 @@ Here's the corrected and updated **Testing** and **Linting and Formatting** docu
 ---
 
 <a name="testing"></a>
+
 ## Testing
 
 ### Run Unit Tests
@@ -104,6 +113,7 @@ This command executes integration tests in all packages where they are defined.
 ---
 
 <a name="linting-and-formatting"></a>
+
 ## Linting and Formatting
 
 This project uses [ESLint](https://eslint.org/) to enforce code style and formatting. To ensure consistent code quality, you can use the following command:
@@ -115,4 +125,3 @@ yarn lint
 ```
 
 This command runs the linter across all workspaces to identify any issues.
-
