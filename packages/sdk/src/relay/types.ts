@@ -41,38 +41,61 @@ interface Fees {
 }
 
 interface TransactionData {
-  block: number;
-  chainId: number;
-  data: any;
   fee: string;
-  hash: string;
+  data: any;
   stateChanges: any;
-  timestamp: number;
+  hash: string;
+  block: number;
   type: string;
+  chainId: number;
+  timestamp: number;
 }
 
 export interface RelayRequest {
+  id: string;
+  status: RequestStatus;
+  user: string;
+  recipient: string;
   createdAt: string;
+  updatedAt: string;
+
   data: {
-    id: string;
-    recipient: string;
-    status: RequestStatus;
-    updatedAt: string;
-    user: string;
+    failReason: FailureReason;
+    fees: Fees;
+    feesUsd: Fees;
+    inTxs: Array<TransactionData>;
+    currency: string;
+    currencyObject: Currency;
+    feeCurrency: string;
+    feeCurrencyObject: Currency;
     appFees: Array<{
       amount: string;
       recipient: string;
     }>;
-    currency: string;
-    currencyObject: Currency;
-    failReason: FailureReason;
-    feeCurrency: string;
-    feeCurrencyObject: Currency;
-    fees: Fees;
-    feesUsd: Fees;
-    inTxs: Array<TransactionData>;
-    outTxs: Array<TransactionData>;
+    metadata: {
+      sender: string;
+      recipient: string;
+      currencyIn: {
+        currency: Currency;
+        amount: string;
+        amountFormatted: string;
+        amountUsd: string;
+        minimumAmount: string;
+      };
+      currencyOut: {
+        currency: Currency;
+        amount: string;
+        amountFormatted: string;
+        amountUsd: string;
+        minimumAmount: string;
+      };
+      rate: string;
+    };
     price: string;
+    usesExternalLiquidity: boolean;
+    timeEstimate: number;
+    outTxs: Array<TransactionData>;
+
     refundCurrencyData: {
       amount: string;
       amountFormatted: string;
@@ -80,8 +103,6 @@ export interface RelayRequest {
       currency: Currency;
       minimumAmount: string;
     };
-    timeEstimate: number;
-    usesExternalLiquidity: boolean;
   };
 }
 

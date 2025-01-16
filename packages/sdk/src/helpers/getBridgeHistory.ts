@@ -1,13 +1,14 @@
 import { Environment } from "../enums";
+import { getRequests, RelayRequest } from "../relay";
 import { getTransfers } from "../sygma/api";
-import type { Status, SygmaTransfer } from "../sygma/types";
+import { Status, SygmaTransfer } from "../sygma/types";
 import type { Address } from "../types";
 
 interface History {
   originTx: string;
-  originName: string;
+  originChainId: number;
   destinationTx?: string;
-  destinationName: string;
+  destinationChainId: number;
   amount: string;
   tokenSymbol: string;
   status: Status;
@@ -16,12 +17,31 @@ interface History {
 function handleSygmaResponseEntry(entry: SygmaTransfer): History {
   return {
     originTx: entry.deposit?.txHash || "0x0",
-    originName: entry.fromDomain.name,
+    originChainId: Number(entry.fromDomain.id),
     destinationTx: entry.execution?.txHash,
-    destinationName: entry.toDomain.name,
+    destinationChainId: Number(entry.toDomain.name),
     amount: entry.amount,
     tokenSymbol: entry.fee.tokenSymbol,
     status: entry.status,
+  };
+}
+
+function handleRelayResponseEntry(entry: RelayRequest): History {
+  // * sprinter SDK offers only 3 statuses
+  // ? should this be done?
+  let status = ["delayed", "waiting", "pending"].includes(entry.status)
+    ? Status.pending
+    : entry.status === "success"
+      ? Status.executed
+      : Status.failed;
+
+  return {
+    originTx: entry.id,
+    originChainId: entry.data.inTxs[0].chainId,
+    destinationChainId: entry.data.outTxs[0].chainId,
+    amount: entry.data.metadata.currencyIn.amountFormatted,
+    tokenSymbol: entry.data.currencyObject.symbol,
+    status,
   };
 }
 
@@ -40,6 +60,12 @@ export async function getBridgeHistory(
   const transactions = await getTransfers(address, environment).then(
     (sygmaTransfers) =>
       sygmaTransfers.map((transfer) => handleSygmaResponseEntry(transfer)),
+  );
+
+  transactions.push(
+    ...(await getRequests(address, environment).then((response) =>
+      response.requests.map((request) => handleRelayResponseEntry(request)),
+    )),
   );
 
   return transactions;
