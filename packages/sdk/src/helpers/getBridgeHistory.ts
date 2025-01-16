@@ -28,6 +28,7 @@ function handleSygmaResponseEntry(entry: SygmaTransfer): History {
 
 function handleRelayResponseEntry(entry: RelayRequest): History {
   // * sprinter SDK offers only 3 statuses
+  // * through "Status" enum
   // ? should this be done?
   let status = ["delayed", "waiting", "pending"].includes(entry.status)
     ? Status.pending

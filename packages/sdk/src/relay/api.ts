@@ -6,7 +6,6 @@ import { RelayRequestsResponse } from "./types";
  * Returns list of transfers from
  * Relay protocol
  *
- *
  * https://docs.relay.link/references/api/get-requests?playground=open
  * @param {Environment} environment
  */
