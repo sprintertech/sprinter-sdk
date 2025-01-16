@@ -19,6 +19,10 @@ New routes, networks, and tokens can readily be added by the Sprinter team. Plea
 
 ### Supported Networks and Tokens
 
+:::note
+Test networks and main networks have different API endpoints. Make sure to use the correct one based on your needs.
+:::
+
 :::tip
 Hover over network icon or token to show available routes
 :::

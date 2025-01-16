@@ -66,6 +66,14 @@ export interface ContractSolutionOptions extends SolutionOptions {
   contractCall: ContractCallSolutionOptions;
 }
 
+export interface SweepSolutionOptions {
+  account: Address;
+  destinationChain: ChainID;
+  token: TokenSymbol;
+  sourceChains?: ChainID[];
+  recipient?: Address;
+}
+
 interface Amount {
   amount: string;
   amountUSD: number;
