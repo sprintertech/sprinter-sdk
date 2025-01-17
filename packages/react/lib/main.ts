@@ -1,4 +1,4 @@
-export { SprinterContext } from './context';
+export { SprinterContext } from "./context";
 export {
   useSprinterBalances,
   useSprinter,

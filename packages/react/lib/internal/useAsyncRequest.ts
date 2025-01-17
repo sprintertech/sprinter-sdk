@@ -1,4 +1,4 @@
-import {useCallback, useReducer} from "react";
+import { useCallback, useReducer } from "react";
 
 const initialState = {
   data: null,
@@ -7,24 +7,32 @@ const initialState = {
 };
 
 export function useAsyncRequest<T>() {
-    const [state, dispatch] = useReducer(fetchReducer<T>, initialState as AsyncRequestState<T>);
+  const [state, dispatch] = useReducer(
+    fetchReducer<T>,
+    initialState as AsyncRequestState<T>,
+  );
 
-  const makeRequest = useCallback((request: Promise<T>) => {
-    dispatch({ type: RequestAction.INIT });
+  const makeRequest = useCallback(
+    (request: Promise<T>) => {
+      dispatch({ type: RequestAction.INIT });
 
-    request.then(result => {
-      dispatch({ type: RequestAction.SUCCESS, payload: result });
-    }).catch((error: Error) => {
-      dispatch({ type: RequestAction.FAILURE, error: error.message });
-    });
-  }, [dispatch]);
+      request
+        .then((result) => {
+          dispatch({ type: RequestAction.SUCCESS, payload: result });
+        })
+        .catch((error: Error) => {
+          dispatch({ type: RequestAction.FAILURE, error: error.message });
+        });
+    },
+    [dispatch],
+  );
 
   return { state, makeRequest };
 }
 
 enum RequestAction {
-  INIT = 'REQUEST_INIT',
-  SUCCESS = 'REQUEST_SUCCESS',
+  INIT = "REQUEST_INIT",
+  SUCCESS = "REQUEST_SUCCESS",
   FAILURE = "REQUEST_FAILURE",
 }
 
@@ -39,7 +47,10 @@ type AsyncRequestActions<T> =
   | { type: RequestAction.SUCCESS; payload: T }
   | { type: RequestAction.FAILURE; error: string };
 
-const fetchReducer = <T>(state: AsyncRequestState<T>, action: AsyncRequestActions<T>): AsyncRequestState<T> => {
+const fetchReducer = <T>(
+  state: AsyncRequestState<T>,
+  action: AsyncRequestActions<T>,
+): AsyncRequestState<T> => {
   switch (action.type) {
     case RequestAction.INIT:
       return {
@@ -60,6 +71,6 @@ const fetchReducer = <T>(state: AsyncRequestState<T>, action: AsyncRequestAction
         error: action.error,
       };
     default:
-      throw new Error('Unknown action type');
+      throw new Error("Unknown action type");
   }
 };
