@@ -1,5 +1,6 @@
 import { Environment } from "../enums";
 import { getRequests, RelayRequest } from "../relay";
+import { RELAY_STATUSES_MAPPING } from "../relay/constants";
 import { getTransfers } from "../sygma/api";
 import { Status, SygmaTransfer } from "../sygma/types";
 import type { Address } from "../types";
@@ -27,17 +28,15 @@ function handleSygmaResponseEntry(entry: SygmaTransfer): History {
 }
 
 function handleRelayResponseEntry(entry: RelayRequest): History {
-  // * sprinter SDK offers only 3 statuses
-  // * through "Status" enum
-  // ? should this be done?
-  let status = ["delayed", "waiting", "pending"].includes(entry.status)
-    ? Status.pending
-    : entry.status === "success"
-      ? Status.executed
-      : Status.failed;
-
+  // * mapping statuses from relay to "sprinter" statuses
+  // * inTxs and outTxs contain information about the
+  // * transfer. e.g chain ID and amount of tokens
+  let status = RELAY_STATUSES_MAPPING.get(entry.status);
+  // ! throw error if data is not available
+  if (!status || entry.data.inTxs.length <= 0 || entry.data.outTxs.length <= 0)
+    throw new Error("Missing transaction information");
   return {
-    originTx: entry.id,
+    originTx: entry.data.inTxs[0].hash,
     originChainId: entry.data.inTxs[0].chainId,
     destinationChainId: entry.data.outTxs[0].chainId,
     amount: entry.data.metadata.currencyIn.amountFormatted,
