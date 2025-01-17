@@ -14,7 +14,6 @@ New routes, networks, and tokens can readily be added by the Sprinter team. Plea
 
 - [LI.FI](https://li.fi/)
 - [Across](https://across.to/)
-- [Sygma](https://buildwithsygma.com)
 - [Relay](https://relay.link/)
 
 ### Supported Networks and Tokens
