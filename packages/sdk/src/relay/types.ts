@@ -12,7 +12,7 @@ enum FailureReason {
   NA = "N/A",
 }
 
-enum RequestStatus {
+export enum RelayRequestStatus {
   Refund = "refund",
   Delayed = "delayed",
   Waiting = "waiting",
@@ -53,7 +53,7 @@ interface TransactionData {
 
 export interface RelayRequest {
   id: string;
-  status: RequestStatus;
+  status: RelayRequestStatus;
   user: string;
   recipient: string;
   createdAt: string;
