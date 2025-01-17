@@ -6,7 +6,7 @@ on:
       - master
   pull_request:
     branches:
-      - '**'
+      - "**"
 
 jobs:
   unified:
@@ -26,9 +26,9 @@ jobs:
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
       - name: "Unit Tests"
-        run: 'yarn run test:unit'
+        run: "yarn run test:unit"
       - name: "Integrations Tests"
-        run: 'yarn run test:integrations'
+        run: "yarn run test:integrations"
       - name: Set branch name for Cloudflare Pages
         id: cf-branch
         run: |
