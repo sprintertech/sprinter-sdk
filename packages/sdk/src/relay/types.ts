@@ -42,7 +42,11 @@ interface Fees {
 
 interface TransactionData {
   fee: string;
+  // * relay documentation marks these as any
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   data: any;
+  // * relay documentation marks these as any
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   stateChanges: any;
   hash: string;
   block: number;

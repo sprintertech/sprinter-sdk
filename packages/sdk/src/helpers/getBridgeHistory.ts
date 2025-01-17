@@ -1,8 +1,9 @@
 import { Environment } from "../enums";
-import { getRequests, RelayRequest } from "../relay";
+import type { RelayRequest } from "../relay";
+import { getRequests } from "../relay";
 import { RELAY_STATUSES_MAPPING } from "../relay/constants";
 import { getTransfers } from "../sygma/api";
-import { Status, SygmaTransfer } from "../sygma/types";
+import type { Status, SygmaTransfer } from "../sygma/types";
 import type { Address } from "../types";
 
 interface History {
@@ -31,7 +32,7 @@ function handleRelayResponseEntry(entry: RelayRequest): History {
   // * mapping statuses from relay to "sprinter" statuses
   // * inTxs and outTxs contain information about the
   // * transfer. e.g chain ID and amount of tokens
-  let status = RELAY_STATUSES_MAPPING.get(entry.status);
+  const status = RELAY_STATUSES_MAPPING.get(entry.status);
   // ! throw error if data is not available
   if (!status || entry.data.inTxs.length <= 0 || entry.data.outTxs.length <= 0)
     throw new Error("Missing transaction information");

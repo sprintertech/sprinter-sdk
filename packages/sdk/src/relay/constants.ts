@@ -1,5 +1,6 @@
 import { Environment } from "../enums";
 import { Status } from "../sygma";
+
 import { RelayRequestStatus } from "./types";
 
 export const RELAY_API_ENDPOINTS: Record<Environment, string> = {

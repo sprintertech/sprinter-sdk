@@ -1,6 +1,7 @@
-import { Environment } from "../enums";
+import type { Environment } from "../enums";
+
 import { RELAY_API_ENDPOINTS } from "./constants";
-import { RelayRequestsResponse } from "./types";
+import type { RelayRequestsResponse } from "./types";
 
 /**
  * Returns list of transfers from
@@ -9,7 +10,10 @@ import { RelayRequestsResponse } from "./types";
  * https://docs.relay.link/references/api/get-requests?playground=open
  * @param {Environment} environment
  */
-export async function getRequests(address: string, environment: Environment) {
+export async function getRequests(
+  address: string,
+  environment: Environment,
+): Promise<RelayRequestsResponse> {
   const requestsPath = `/requests/v2`;
   const url = new URL(RELAY_API_ENDPOINTS[environment], requestsPath);
   url.searchParams.set("user", address);
