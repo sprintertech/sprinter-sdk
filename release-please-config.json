@@ -1,5 +1,6 @@
 {
   "plugins": [],
+  "last-release-sha": "ceeac88f4cbfddd534c6c7fe3f8c0a55016d06ca",
   "packages": {
     "docs": {
       "releaseType": "node",
