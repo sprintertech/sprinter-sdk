@@ -6,6 +6,8 @@ on:
       - opened
       - edited
       - synchronize
+    branches-ignore:
+      - release-please--branches--master
 
 jobs:
   main:
