@@ -6,3 +6,4 @@ yarn.lock
 docs/.docusaurus
 docs/build
 docs/_temp
+docs/CHANGELOG.md
