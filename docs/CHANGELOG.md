@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.1.0...docs-v0.1.1) (2025-01-21)
+
+
+### Bug Fixes
+
+* release `1.3.0` ([aaa6938](https://github.com/sprintertech/sprinter-sdk/commit/aaa69388e4910f92d53fe14ea08785cd63ef4176))
+
 ## [0.1.0](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.0.1...docs-v0.1.0) (2025-01-21)
 
 

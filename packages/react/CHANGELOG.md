@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/sprintertech/sprinter-sdk/compare/sprinter-react-v1.2.0...sprinter-react-v1.2.1) (2025-01-21)
+
+
+### Bug Fixes
+
+* release `1.3.0` ([aaa6938](https://github.com/sprintertech/sprinter-sdk/commit/aaa69388e4910f92d53fe14ea08785cd63ef4176))
+
 ## [1.2.0](https://github.com/sprintertech/sprinter-sdk/compare/sprinter-react-v1.1.2...sprinter-react-v1.2.0) (2025-01-21)
 
 
