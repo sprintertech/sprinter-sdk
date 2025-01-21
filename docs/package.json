@@ -1,6 +1,10 @@
 {
   "name": "docs",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sprintertech/sprinter-sdk.git"
+  },
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
