@@ -62,7 +62,7 @@ jobs:
           echo "| **Docs**                | [View Docs -> ${{ steps.docs-publish.outputs.deployment-url }}](${{ steps.docs-publish.outputs.deployment-url }}) |" >> $GITHUB_STEP_SUMMARY
           echo "| **POC**                 | [View POC -> ${{ steps.poc-publish.outputs.deployment-url }}](${{ steps.poc-publish.outputs.deployment-url }}) |" >> $GITHUB_STEP_SUMMARY
       - name: Notify About Deployment
-        if: ${{ github.actor != 'dependabot[bot]' }}
+        if: ${{ github.actor != 'dependabot[bot]' && github.ref_name != 'master' }}
         uses: actions/github-script@v7
         with:
           script: |
