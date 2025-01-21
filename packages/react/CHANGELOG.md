@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0](https://github.com/sprintertech/sprinter-sdk/compare/sprinter-react-v1.1.2...sprinter-react-v1.2.0) (2025-01-21)
+
+
+### Features
+
+* Add sweep function ([#115](https://github.com/sprintertech/sprinter-sdk/issues/115)) ([efaaa2b](https://github.com/sprintertech/sprinter-sdk/commit/efaaa2b3d8674e46b264caddcd373218c3f552c1)), closes [#110](https://github.com/sprintertech/sprinter-sdk/issues/110)
+
+
+### Bug Fixes
+
+* `package.json` - repository ([#127](https://github.com/sprintertech/sprinter-sdk/issues/127)) ([21c7007](https://github.com/sprintertech/sprinter-sdk/commit/21c70077d2e5ef83730f730990e849f8d54ec8c0))
+
 ## [1.2.0](https://github.com/ChainSafe/sprinter-ts/compare/sprinter-react-v1.1.2...sprinter-react-v1.2.0) (2025-01-13)
 
 ### Features
