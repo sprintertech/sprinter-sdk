@@ -47,6 +47,7 @@ createAppKit({
   }
 })
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const BASE_URL = Environment.TESTNET
 
 function App() {
