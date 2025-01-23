@@ -2,8 +2,11 @@
 pnpm-lock.yaml
 package-lock.json
 yarn.lock
+web/.yarn
 
 docs/.docusaurus
 docs/build
 docs/_temp
 docs/CHANGELOG.md
+packages/react/CHANGELOG.md
+packages/sdk/CHANGELOG.md
