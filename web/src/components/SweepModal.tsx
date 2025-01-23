@@ -111,7 +111,10 @@ export const SweepModal = ({
           setSweepError(res.error)
         }
       })
-      .catch(console.error)
+      .catch((e) => {
+        console.error(e)
+        setSweepError(JSON.stringify(e))
+      })
       .finally(() => setSweepLoading(false))
   }, [
     address,
@@ -166,7 +169,10 @@ export const SweepModal = ({
               console.log('now waiting for approval', receipt.blockHash)
               await receipt.wait()
             })
-            .catch(console.error)
+            .catch((e) => {
+              console.error(e)
+              setSweepError(JSON.stringify(e))
+            })
         }
       }
 
@@ -187,7 +193,10 @@ export const SweepModal = ({
           console.log('now waiting', receipt.blockHash)
           setIsDone(true)
         })
-        .catch(console.error)
+        .catch((e) => {
+          console.error(e)
+          setSweepError(JSON.stringify(e))
+        })
         .finally(() => {
           setSweepLoading(false)
         })

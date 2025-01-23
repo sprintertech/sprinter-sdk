@@ -10,9 +10,15 @@ type Props = {
   solutions: Solution[]
   token: string
   onSuccess: () => void
+  onError: (error: string) => void
 }
 
-export const SendContent = ({ solutions, token, onSuccess }: Props) => {
+export const SendContent = ({
+  solutions,
+  token,
+  onSuccess,
+  onError
+}: Props) => {
   const { chainId: currentChainId } = useAppKitNetwork()
   const { ethersProvider, signer } = useEthers()
   const [isLoading, setIsLoading] = useState(false)
@@ -72,7 +78,10 @@ export const SendContent = ({ solutions, token, onSuccess }: Props) => {
               value: BigInt(value)
             })
             .then(async (receipt) => await receipt.wait())
-            .catch(console.error)
+            .catch((e) => {
+              onError(JSON.stringify(e))
+              console.error(e)
+            })
         }
       }
 
@@ -93,12 +102,15 @@ export const SendContent = ({ solutions, token, onSuccess }: Props) => {
           await receipt.wait()
           onSuccess()
         })
-        .catch(console.error)
+        .catch((e) => {
+          onError(JSON.stringify(e))
+          console.error(e)
+        })
         .finally(() => {
           setIsLoading(false)
         })
     }
-  }, [currentChainId, ethersProvider, onSuccess, signer, solutions])
+  }, [currentChainId, ethersProvider, onError, onSuccess, signer, solutions])
 
   return (
     <div>

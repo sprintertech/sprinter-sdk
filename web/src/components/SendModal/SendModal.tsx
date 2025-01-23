@@ -22,6 +22,7 @@ type Props = {
 }
 
 export const SendModal = ({ onOpenChange, open }: Props) => {
+  const [error, setError] = useState('')
   const { structuredTokenData, chains } = useChainTokens()
   const [selectedToken, setSelectedToken] = useState('')
   const [selectedDestinationChain, setSelectedDestinationChain] = useState<
@@ -81,6 +82,7 @@ export const SendModal = ({ onOpenChange, open }: Props) => {
   }, [selectedToken, structuredTokenData])
 
   const onGetQuote = useCallback(() => {
+    setError('')
     if (
       !address ||
       !structuredTokenData[selectedToken].chainBalances?.[0] ||
@@ -122,6 +124,7 @@ export const SendModal = ({ onOpenChange, open }: Props) => {
     setStep('getQuotes')
     setRequestedQuotes(false)
     setReceivedsolutions(null)
+    setError('')
   }, [])
 
   if (!selectedToken) return
@@ -208,10 +211,10 @@ export const SendModal = ({ onOpenChange, open }: Props) => {
                   )
                 })}
               </div>
-              {solutionError && (
+              {(!solutionError || !error) && (
                 <div className="pt-6">
                   <div className="text-sm text-red-500">
-                    Error: {solutionError}
+                    Error: {solutionError ?? error}
                   </div>
                 </div>
               )}
@@ -234,6 +237,7 @@ export const SendModal = ({ onOpenChange, open }: Props) => {
                 solutions={receivedSolutions}
                 token={selectedToken}
                 onSuccess={() => setStep('success')}
+                onError={(error) => setError(error)}
               />
               <div className="mt-4 text-center">
                 <span
