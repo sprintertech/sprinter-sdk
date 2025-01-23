@@ -1,55 +1,33 @@
-# Sprinter PoC
+# Poc interface for Sprinter-sdk
 
-Install dependencies.
+## Developing
 
-```bash
-pnpm install
-```
-
-Serve with hot reload at <http://localhost:5173>.
+Install dependancies with
 
 ```bash
-pnpm dev
+yarn
 ```
 
-### Lint
+Make sure you build the entire sprinter-ts packages, with
 
 ```bash
-pnpm lint
+cd ..
+yarn build
 ```
 
-### Typecheck
+Start a development server:
 
 ```bash
-pnpm typecheck
+yarn dev
+
+# or start the server and open the app in a new browser tab
+yarn dev -- --open
 ```
 
-### Build
+## Building
+
+To create a production version of your app:
 
 ```bash
-pnpm build
+yarn build
 ```
-
-### Test
-
-```bash
-pnpm test
-```
-
-View and interact with your tests via UI.
-
-```bash
-pnpm test:ui
-```
-
-### Install new component with shadcn
-
-The list of components is available at [here](https://ui.shadcn.com/docs/components/sheet).
-
-```bash
-pnpm dlx shadcn@latest add your_new_component
-```
-
-## License
-
-This project is licensed under the MIT License.
