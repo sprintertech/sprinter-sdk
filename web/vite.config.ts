@@ -1,17 +1,14 @@
-import { sentrySvelteKit } from '@sentry/sveltekit';
-import { purgeCss } from 'vite-plugin-tailwind-purgecss';
-import { sveltekit } from '@sveltejs/kit/vite';
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react-swc'
+import tsconfigPaths from 'vite-tsconfig-paths'
+import path from 'path'
 
+// https://vitejs.dev/config https://vitest.dev/config
 export default defineConfig({
-	plugins: [
-		sentrySvelteKit({
-			sourceMapsUploadOptions: {
-				org: 'chainsafe-hy',
-				project: 'typescript-sveltekit'
-			}
-		}),
-		sveltekit(),
-		purgeCss()
-	]
-});
+  plugins: [react(), tsconfigPaths()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src')
+    }
+  }
+})

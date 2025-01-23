@@ -1,37 +1,55 @@
-# Poc interface for Sprinter-ts
+# Sprinter PoC
 
-## Developing
-
-Install dependancies with
+Install dependencies.
 
 ```bash
-yarn
+pnpm install
 ```
 
-Make sure you build the entire sprinter-ts packages, with
+Serve with hot reload at <http://localhost:5173>.
 
 ```bash
-cd ..
-yarn build
+pnpm dev
 ```
 
-Start a development server:
+### Lint
 
 ```bash
-yarn dev
-
-# or start the server and open the app in a new browser tab
-yarn dev -- --open
+pnpm lint
 ```
 
-## Building
-
-To create a production version of your app:
+### Typecheck
 
 ```bash
-yarn build
+pnpm typecheck
 ```
 
-You can preview the production build with `yarn preview`.
+### Build
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+```bash
+pnpm build
+```
+
+### Test
+
+```bash
+pnpm test
+```
+
+View and interact with your tests via UI.
+
+```bash
+pnpm test:ui
+```
+
+### Install new component with shadcn
+
+The list of components is available at [here](https://ui.shadcn.com/docs/components/sheet).
+
+```bash
+pnpm dlx shadcn@latest add your_new_component
+```
+
+## License
+
+This project is licensed under the MIT License.
