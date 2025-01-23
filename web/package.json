@@ -29,7 +29,6 @@
     "@tanstack/react-query": "^5.62.8",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "cmdk": "1.0.0",
     "date-fns": "^4.1.0",
     "ethers": "^6.13.5",
     "globals": "^15.14.0",
@@ -39,8 +38,7 @@
     "react-dom": "^19.0.0",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
-    "typescript-eslint": "^8.18.1",
-    "web3-utils": "^4.3.3"
+    "typescript-eslint": "^8.18.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",

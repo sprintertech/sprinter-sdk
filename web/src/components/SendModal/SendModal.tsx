@@ -14,7 +14,7 @@ import { parseUnits } from 'ethers'
 import { SendContent } from './SendContent'
 import { useCoinPrice } from '@/hooks/useCoinPrice'
 import { ElementSelect } from '../ElementSelect'
-import { CircleCheck } from 'lucide-react'
+import { DoneScreen } from '../DoneScreen'
 
 type Props = {
   onOpenChange: (open: boolean) => void
@@ -246,23 +246,7 @@ export const SendModal = ({ onOpenChange, open }: Props) => {
             </>
           )}
           {step === 'success' && (
-            <>
-              <div className="">
-                <div className="flex flex-col items-center justify-center pt-6">
-                  <CircleCheck className="text-6xl text-green-500" size={64} />
-                  All done!
-                </div>
-              </div>
-              <div className="pt-6">
-                <Button
-                  onClick={() => onOpenChange(false)}
-                  className="w-full"
-                  variant="secondary"
-                >
-                  Close
-                </Button>
-              </div>
-            </>
+            <DoneScreen onClose={() => onOpenChange(false)} />
           )}
         </DialogHeader>
       </DialogContent>

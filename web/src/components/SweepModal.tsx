@@ -19,7 +19,7 @@ import { useAppKitAccount, useAppKitNetwork } from '@reown/appkit/react'
 import { Solution, Sprinter } from '@chainsafe/sprinter-sdk'
 import { BASE_URL } from '@/App'
 import { useEthers } from '@/context/EthersContext'
-import { CircleCheck } from 'lucide-react'
+import { DoneScreen } from './DoneScreen'
 
 type Props = {
   onOpenChange: (open: boolean) => void
@@ -212,25 +212,7 @@ export const SweepModal = ({
             </div>
             Sweep balance
           </DialogTitle>
-          {isDone && (
-            <>
-              <div className="">
-                <div className="flex flex-col items-center justify-center pt-6">
-                  <CircleCheck className="text-6xl text-green-500" size={64} />
-                  All done!
-                </div>
-              </div>
-              <div className="pt-6">
-                <Button
-                  onClick={() => onOpenChange(false)}
-                  className="w-full"
-                  variant="secondary"
-                >
-                  Close
-                </Button>
-              </div>
-            </>
-          )}
+          {isDone && <DoneScreen onClose={() => onOpenChange(false)} />}
           {!isDone && (
             <>
               <div className="pt-4 text-sm font-normal">Token</div>

@@ -1,5 +1,3 @@
-// const web3 = new Web3($selectedProvider.provider);
-
 import { useChainTokens } from '@/context/ChainTokensContext'
 import { Button } from '../ui/button'
 import { Solution } from '@chainsafe/sprinter-sdk/dist/types'
@@ -8,47 +6,6 @@ import { formatBalance } from '@/utils'
 import { useAppKitNetwork } from '@reown/appkit/react'
 import { useEthers } from '@/context/EthersContext'
 
-// import {
-//   useAccount,
-//   useSendTransaction,
-//   useSwitchChain,
-//   usePublicClient
-// } from 'wagmi'
-
-// // @ts-expect-error   // chainId is missing in web3js call options type
-// const callOptions: NonPayableCallOptions = { chainId: quoteRecord.sourceChain };
-
-// console.info('Quote', quoteRecord);
-
-// // Approval sniff etc...\
-// if (quoteRecord.approvals && quoteRecord.approvals.length > 0) {
-//   for (const approval of quoteRecord.approvals) {
-//     console.log('Requesting approval:', approval);
-//     const receipt = await web3.eth.sendTransaction(approval);
-//     console.warn(`Approval receipt: `, receipt);
-//   }
-// } else {
-//   const erc20 = new web3.eth.Contract(erc20Abi, quoteRecord.sourceTokenAddress);
-
-//   const allowed = await erc20.methods
-//     .allowance(ownerAddress, quoteRecord.transaction.to)
-//     .call(callOptions);
-
-//   if (BigInt(quoteRecord.amount) > BigInt(allowed)) {
-//     const approval = await erc20.methods
-//       .approve(quoteRecord.transaction.to, quoteRecord.amount)
-//       .send({
-//         ...callOptions,
-//         from: ownerAddress
-//       });
-//     if (!approval.status) throw new Error('Not Approved!'); // To stop execution
-//   }
-// }
-
-// // FINAL STEP!
-// const receipt = await web3.eth.sendTransaction(quoteRecord.transaction);
-
-// console.warn(`TX receipt: `, receipt);
 type Props = {
   solutions: Solution[]
   token: string
