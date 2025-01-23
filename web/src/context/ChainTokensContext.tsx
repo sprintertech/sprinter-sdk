@@ -77,7 +77,6 @@ const ChainTokensContextProvider = ({ children }: ChainTokensContextProps) => {
     return structuredRes
   }, [balances.data, chains.data, tokens])
 
-  console.log('structuredTokenData', structuredTokenData)
   useEffect(() => {
     getAvailableChains()
   }, [getAvailableChains])

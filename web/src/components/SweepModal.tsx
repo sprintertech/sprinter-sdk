@@ -85,7 +85,7 @@ export const SweepModal = ({
   )
 
   useEffect(() => {
-    if (!destinationChain) {
+    if (!destinationChain && chains.length > 0) {
       setDestinationChain(chains[0].chainID)
     }
   }, [chains, destinationChain, possibleSweepingChains])
