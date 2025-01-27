@@ -15,7 +15,7 @@ export async function getRequests(
   environment: Environment,
 ): Promise<RelayRequestsResponse> {
   const requestsPath = `/requests/v2`;
-  const url = new URL(RELAY_API_ENDPOINTS[environment], requestsPath);
+  const url = new URL(requestsPath, RELAY_API_ENDPOINTS[environment]);
   url.searchParams.set("user", address);
 
   const response: RelayRequestsResponse = await fetch(url.toString()).then(
