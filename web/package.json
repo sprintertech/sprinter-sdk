@@ -45,7 +45,7 @@
 	"dependencies": {
 		"@chainsafe/sprinter-sdk": "workspace:^",
 		"@floating-ui/dom": "^1.6.8",
-		"@sentry/sveltekit": "^8.20.0",
+		"@sentry/sveltekit": "^8.49.0",
 		"date-fns": "^3.6.0",
 		"highlight.js": "11.10.0",
 		"mipd": "^0.0.7",
