@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.4](https://github.com/sprintertech/sprinter-sdk/compare/sprinter-sdk-v1.2.3...sprinter-sdk-v1.2.4) (2025-01-29)
+
+
+### Bug Fixes
+
+* relay URL error ([#140](https://github.com/sprintertech/sprinter-sdk/issues/140)) ([4ce0b49](https://github.com/sprintertech/sprinter-sdk/commit/4ce0b499a1c44ddf7fc20c302d005b4040fdfb35))
+
 ## [1.2.3](https://github.com/sprintertech/sprinter-sdk/compare/sprinter-sdk-v1.2.2...sprinter-sdk-v1.2.3) (2025-01-22)
 
 
