@@ -21,6 +21,8 @@ jobs:
         run: yarn --immutable
       - name: Build
         run: yarn build
+        env:
+          VITE_PRICE_API_KEY: ${{ secrets.VITE_PRICE_API_KEY }}
       - name: Lint
         run: yarn run lint
         env:
@@ -52,7 +54,7 @@ jobs:
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: 2238a825c5aca59233eab1f221f7aefb
-          command: pages deploy ./web/.svelte-kit/cloudflare --project-name=sprinter-poc --branch=${{ env.CF_BRANCH_NAME }}
+          command: pages deploy ./web/dist --project-name=sprinter-poc --branch=${{ env.CF_BRANCH_NAME }}
       - name: Generate Deployment Summary
         run: |
           echo "# 🚀 Deployment Summary" >> $GITHUB_STEP_SUMMARY
@@ -90,4 +92,4 @@ jobs:
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: 2238a825c5aca59233eab1f221f7aefb
-          command: pages deploy ./web/.svelte-kit/cloudflare --project-name=gopher-poc --branch=${{ env.CF_BRANCH_NAME }}
+          command: pages deploy ./web/dist --project-name=gopher-poc --branch=${{ env.CF_BRANCH_NAME }}
