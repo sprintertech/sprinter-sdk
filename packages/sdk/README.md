@@ -1,4 +1,3 @@
-
 # Sprinter SDK
 
 The **Sprinter SDK** is a JavaScript/TypeScript library that simplifies cross-chain operations such as fetching balances and providing solutions for asset transfers across multiple blockchains.
