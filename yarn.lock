@@ -1853,7 +1853,7 @@ __metadata:
     react-dom: "npm:^18.3.1"
     typescript: "npm:^5.5.3"
     typescript-eslint: "npm:^8.0.1"
-    vite: "npm:^5.4.1"
+    vite: "npm:^5.4.17"
     vite-plugin-dts: "npm:^4.2.1"
   peerDependencies:
     "@chainsafe/sprinter-sdk": "workspace:^"
@@ -19134,9 +19134,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.4.1":
-  version: 5.4.7
-  resolution: "vite@npm:5.4.7"
+"vite@npm:^5.4.17":
+  version: 5.4.17
+  resolution: "vite@npm:5.4.17"
   dependencies:
     esbuild: "npm:^0.21.3"
     fsevents: "npm:~2.3.3"
@@ -19173,7 +19173,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10c0/0ca7ca60f71c61f3855bbabf7e33909bec32933b35914d4d281813c728183e78e7ce5be05735a7671df3a994613d3881f520a32a80715faa92effb28deee9320
+  checksum: 10c0/3322bd6d8da30cbc87b1b24cd14fdbca75abb36de81217d1062c8b4c574a1a0d28d11dfe23a3eed08b3d179d2bdc1510e0d7b9f3e1b722a45bd7631c7cec72eb
   languageName: node
   linkType: hard
 
