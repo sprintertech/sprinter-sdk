@@ -24,8 +24,6 @@ Sprinter Stash is a cross-chain credit liquidity protocol that uses a just-in-ti
 
 Sprinter Stash is powered by **Sprinter Solve**.
 
-
-
 ## Features & Utility
 
 ### For Solvers
@@ -39,8 +37,6 @@ Sprinter Stash is powered by **Sprinter Solve**.
 - Earn passive yield and solver-generated fees.
 - Participate in liquidity mining campaigns for SPRNT rewards.
 - Benefit from protocol-managed inventory strategies.
-
-
 
 ## Utilizing Sprinter Stash
 
@@ -59,19 +55,16 @@ Sprinter Stash is powered by **Sprinter Solve**.
 4. Borrow funds and execute swaps
 5. Repay liquidity post-transaction
 
-
-
 ## Stash API Endpoints
 
 ```ts
 // Example Endpoints (see Swagger for full list)
 
-GET /v1/liquidity/protocol/{protocol}/deposit/{txHash}/request
-GET /v1/liquidity/protocol/{protocol}/type/{type}/quote
+GET / v1 / liquidity / protocol / { protocol } / deposit / { txHash } / request;
+GET / v1 / liquidity / protocol / { protocol } / type / { type } / quote;
 ```
 
 ➡️ _To integrate Swagger: use `@theme/ApiDoc` component or embed link to OpenAPI spec._
-
 
 ## Supported Networks
 
@@ -86,5 +79,3 @@ GET /v1/liquidity/protocol/{protocol}/type/{type}/quote
 - Blue-Chip: WETH, WBTC
 
 Want to request support for a new chain or asset? [Submit a request](#).
-
-

@@ -10,7 +10,6 @@ sidebar_position: 1
   <img src="/img/sprinter-header.png" class="logo-dark-mode" alt="Sprinter Logo White" />
 </div>
 
-
 # What is Sprinter?
 
 Sprinter combines solving-as-a-service infrastructure with credit-based cross-chain liquidity. It enables solvers to borrow and execute on-chain actions without pre-funded inventory, while giving dApps and protocols access to best-in-class execution routes, powered by the Project Blanc advanced solving technology.

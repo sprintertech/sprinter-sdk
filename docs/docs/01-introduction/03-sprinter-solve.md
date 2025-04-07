@@ -3,6 +3,7 @@ id: solve
 title: Sprinter Solve
 sidebar_position: 3
 ---
+
 # Sprinter Solve
 
 Sprinter Solve enables efficient execution of intent-based swaps through an RFQ-based Swap API. It’s powered by the Sprinter Solver, built on top of Project Blanc.
@@ -73,7 +74,5 @@ X-API-Key: <your_key>
 ```ts
 // Reference: https://github.com/sprintertech/ass/blob/dev/swap/docs/openapi.yml
 
-GET /v2/route
+GET / v2 / route;
 ```
-
-
