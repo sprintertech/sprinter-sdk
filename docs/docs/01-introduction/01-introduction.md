@@ -6,21 +6,25 @@ sidebar_position: 1
 ---
 
 <div class="logo-container">
-  <img src="/img/Sprinter_Logo_Horizontal_BLACK.png" class="logo-light-mode" alt="Sprinter Logo Black" />
-  <img src="/img/Sprinter_Logo_Horizontal-WHITE.png" class="logo-dark-mode" alt="Sprinter Logo White" />
+  <img src="/img/sprinter-header.png" class="logo-light-mode" alt="Sprinter Logo Black" />
+  <img src="/img/sprinter-header.png" class="logo-dark-mode" alt="Sprinter Logo White" />
 </div>
 
-# Welcome To The Sprinter Docs
 
-Sprinter is a **fast, smooth, interoperable intent execution engine**. Our aim is to make multichain interactions feel like one. In doing so, we enhance cross-chain UX _for all_ as a first-class citizen in both existing and upcoming web3 technologies.
+# What is Sprinter?
 
-## What's Next
+Sprinter combines solving-as-a-service infrastructure with credit-based cross-chain liquidity. It enables solvers to borrow and execute on-chain actions without pre-funded inventory, while giving dApps and protocols access to best-in-class execution routes, powered by the Project Blanc advanced solving technology.
 
-- If you're new to Sprinter, begin with [Quick Start](../02-quick-start.md).
-- Explore detailed examples and advanced usage in the [SDK Documentation](../sdk).
+## Sprinter’s Core Products
 
-Stay tuned for the complete source code.
+### Sprinter Stash
 
-## Need Assistance?
+A cross-chain credit protocol providing liquidity access to solvers and market makers without requiring collateral. Liquidity providers deposit USDC into the protocol, earning returns through solver fees and passive yield strategies.
 
-If you have questions about Sprinter, the code, the docs, or have a business inquiry, please reach out to us on [Discord](https://discord.gg/Qdf6GyNB5J) or via email at [requests@buildwithsygma.com](mailto:requests@buildwithsygma.com).
+### Sprinter Solve
+
+A solving-as-a-service platform that offers a request-for-quote (RFQ) based swap API for our partners. It enables dApps, wallets, and protocols to improve execution quality, optimize pricing, and enhance user experience.
+
+### Need to Chat to us?
+
+If you have questions about Sprinter, the code, the docs, or have a partnership inquiry, please reach out to us on [Telegram](https://t.me/sprinter_tech/1) or via email at [hello@sprinter.tech](mailto:hello@sprinter.tech).
