@@ -78,7 +78,7 @@ const config: Config = {
             {
               label: "Introduction",
               to: "/",
-            }
+            },
           ],
         },
         {
