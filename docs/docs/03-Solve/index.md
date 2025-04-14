@@ -1,7 +1,6 @@
 ---
-id: solveapi
+id: Solve
 title: Sprinter Solve
-sidebar_position: 4
 ---
 
 # Sprinter Solve

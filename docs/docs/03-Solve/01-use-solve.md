@@ -1,7 +1,7 @@
 ---
 id: solvestart
 title: Utilizing Solve
-sidebar_position: 2
+sidebar_position: 1
 ---
 
 ## Getting Started

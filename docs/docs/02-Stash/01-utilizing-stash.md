@@ -18,7 +18,7 @@ There are two main ways to utilize Sprinter Stash. Either as a Liquidity Provide
 ### As a Solver
 
 1. Request API access via [Google Form](https://forms.gle/kgpcQK722Ley2gke7)
-2. Review [Stash API](stashApi) or visit the [Stash Swagger](https://api.test.sprinter.buildwithsygma.com/swagger/index.html#/Liquidity/get_liquidity_protocol__protocol__deposit__txHash__request)
+2. Review [Stash API](StashAPI) or visit the [Stash Swagger](https://api.test.sprinter.buildwithsygma.com/swagger/index.html#/Liquidity/get_liquidity_protocol__protocol__deposit__txHash__request)
 3. Query borrow rates
 4. Borrow funds and execute swaps
 5. Repay liquidity post-transaction
