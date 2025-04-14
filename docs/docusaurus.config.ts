@@ -78,15 +78,7 @@ const config: Config = {
             {
               label: "Introduction",
               to: "/",
-            },
-            {
-              label: "SDK",
-              to: "/sdk",
-            },
-            {
-              label: "React SDK",
-              to: "/react-sdk/",
-            },
+            }
           ],
         },
         {

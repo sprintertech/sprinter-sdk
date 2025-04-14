@@ -2,7 +2,7 @@
 id: StashAPI
 title: Stash API Endpoints
 hide_table_of_contents: true
-sidebar_position: 3
+sidebar_position: 2
 ---
 
 :::tip
