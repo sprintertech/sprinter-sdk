@@ -8,9 +8,9 @@ definitions:
       priceOracle:
         type: string
     required:
-    - pool
-    - poolAddressProvider
-    - priceOracle
+      - pool
+      - poolAddressProvider
+      - priceOracle
     type: object
   entity.Amount:
     properties:
@@ -21,37 +21,37 @@ definitions:
       amountUSD:
         type: number
     required:
-    - amount
-    - amountUSD
+      - amount
+      - amountUSD
     type: object
   entity.ChainID:
     enum:
-    - 1
-    - 42161
-    - 10
-    - 137
-    - 8453
-    - 43114
-    - 100
-    - 8333
-    - 11155111
-    - 1993
-    - 19934
-    - 84532
+      - 1
+      - 42161
+      - 10
+      - 137
+      - 8453
+      - 43114
+      - 100
+      - 8333
+      - 11155111
+      - 1993
+      - 19934
+      - 84532
     type: integer
     x-enum-varnames:
-    - Ethereum
-    - Arbitrum
-    - Optimism
-    - Polygon
-    - Base
-    - Avalanche
-    - Gnosis
-    - B3
-    - Sepolia
-    - B3Sepolia
-    - B4Sepolia
-    - BaseSepolia
+      - Ethereum
+      - Arbitrum
+      - Optimism
+      - Polygon
+      - Base
+      - Avalanche
+      - Gnosis
+      - B3
+      - Sepolia
+      - B3Sepolia
+      - B4Sepolia
+      - BaseSepolia
   entity.FungibleToken:
     properties:
       addresses:
@@ -70,11 +70,11 @@ definitions:
       symbol:
         type: string
     required:
-    - addresses
-    - decimals
-    - logoURI
-    - name
-    - symbol
+      - addresses
+      - decimals
+      - logoURI
+      - name
+      - symbol
     type: object
   entity.NativeToken:
     properties:
@@ -83,19 +83,19 @@ definitions:
       name:
         type: string
     required:
-    - decimals
-    - name
+      - decimals
+      - name
     type: object
   entity.Network:
     properties:
       aave:
-        $ref: '#/definitions/entity.Aave'
+        $ref: "#/definitions/entity.Aave"
       aaveLiquidityPool:
         type: string
       blockTime:
         type: integer
       chainID:
-        $ref: '#/definitions/entity.ChainID'
+        $ref: "#/definitions/entity.ChainID"
       chainType:
         type: string
       logoURI:
@@ -103,7 +103,7 @@ definitions:
       name:
         type: string
       nativeToken:
-        $ref: '#/definitions/entity.NativeToken'
+        $ref: "#/definitions/entity.NativeToken"
       rpcURLs:
         items:
           type: string
@@ -111,16 +111,16 @@ definitions:
       usdcLiquidityPool:
         type: string
     required:
-    - aave
-    - aaveLiquidityPool
-    - blockTime
-    - chainID
-    - chainType
-    - logoURI
-    - name
-    - nativeToken
-    - rpcURLs
-    - usdcLiquidityPool
+      - aave
+      - aaveLiquidityPool
+      - blockTime
+      - chainID
+      - chainType
+      - logoURI
+      - name
+      - nativeToken
+      - rpcURLs
+      - usdcLiquidityPool
     type: object
   entity.TokenTransferQuote:
     properties:
@@ -131,44 +131,44 @@ definitions:
       approvals:
         description: approvals that need to be executed before transaction
         items:
-          $ref: '#/definitions/entity.Transaction'
+          $ref: "#/definitions/entity.Transaction"
         type: array
       destinationChain:
-        $ref: '#/definitions/entity.ChainID'
+        $ref: "#/definitions/entity.ChainID"
       destinationTokenAddress:
         type: string
       duration:
         description: how long transfer will take in seconds
         type: number
       fee:
-        $ref: '#/definitions/entity.Amount'
+        $ref: "#/definitions/entity.Amount"
       gasCost:
-        $ref: '#/definitions/entity.Amount'
+        $ref: "#/definitions/entity.Amount"
       senderAddress:
         type: string
       sourceChain:
-        $ref: '#/definitions/entity.ChainID'
+        $ref: "#/definitions/entity.ChainID"
       sourceTokenAddress:
         type: string
       tool:
-        $ref: '#/definitions/entity.Tool'
+        $ref: "#/definitions/entity.Tool"
       transaction:
         allOf:
-        - $ref: '#/definitions/entity.Transaction'
+          - $ref: "#/definitions/entity.Transaction"
         description: transaction request to be sent to the wallet
     required:
-    - amount
-    - approvals
-    - destinationChain
-    - destinationTokenAddress
-    - duration
-    - fee
-    - gasCost
-    - senderAddress
-    - sourceChain
-    - sourceTokenAddress
-    - tool
-    - transaction
+      - amount
+      - approvals
+      - destinationChain
+      - destinationTokenAddress
+      - duration
+      - fee
+      - gasCost
+      - senderAddress
+      - sourceChain
+      - sourceTokenAddress
+      - tool
+      - transaction
     type: object
   entity.Tool:
     properties:
@@ -177,13 +177,13 @@ definitions:
       name:
         type: string
     required:
-    - logoURI
-    - name
+      - logoURI
+      - name
     type: object
   entity.Transaction:
     properties:
       chainId:
-        $ref: '#/definitions/entity.ChainID'
+        $ref: "#/definitions/entity.ChainID"
       data:
         type: string
       from:
@@ -195,30 +195,30 @@ definitions:
       value:
         type: string
     required:
-    - chainId
-    - data
-    - from
-    - gasLimit
-    - to
-    - value
+      - chainId
+      - data
+      - from
+      - gasLimit
+      - to
+      - value
     type: object
   server.AccountFungibleBalanceHandler.response:
     properties:
       data:
         items:
-          $ref: '#/definitions/server.chainBalance'
+          $ref: "#/definitions/server.chainBalance"
         type: array
     required:
-    - data
+      - data
     type: object
   server.AggregateBalanceSolutionHandler.response:
     properties:
       data:
         items:
-          $ref: '#/definitions/entity.TokenTransferQuote'
+          $ref: "#/definitions/entity.TokenTransferQuote"
         type: array
     required:
-    - data
+      - data
     type: object
   server.AggregateWithHookSolutionHandler.request:
     properties:
@@ -227,7 +227,7 @@ definitions:
       amount:
         type: string
       destination:
-        $ref: '#/definitions/entity.ChainID'
+        $ref: "#/definitions/entity.ChainID"
       destinationContractCall:
         properties:
           approvalAddress:
@@ -241,9 +241,9 @@ definitions:
           outputTokenAddress:
             type: string
         required:
-        - callData
-        - contractAddress
-        - gasLimit
+          - callData
+          - contractAddress
+          - gasLimit
         type: object
       threshold:
         type: string
@@ -251,44 +251,44 @@ definitions:
         type: string
       type:
         enum:
-        - fungible
+          - fungible
         type: string
       whitelistedSourceChains:
         items:
-          $ref: '#/definitions/entity.ChainID'
+          $ref: "#/definitions/entity.ChainID"
         type: array
       whitelistedTools:
         items:
           type: string
         type: array
     required:
-    - account
-    - amount
-    - destination
-    - destinationContractCall
-    - threshold
-    - token
-    - type
-    - whitelistedSourceChains
-    - whitelistedTools
+      - account
+      - amount
+      - destination
+      - destinationContractCall
+      - threshold
+      - token
+      - type
+      - whitelistedSourceChains
+      - whitelistedTools
     type: object
   server.AggregateWithHookSolutionHandler.response:
     properties:
       data:
         items:
-          $ref: '#/definitions/entity.TokenTransferQuote'
+          $ref: "#/definitions/entity.TokenTransferQuote"
         type: array
     required:
-    - data
+      - data
     type: object
   server.BalanceSweepHandler.response:
     properties:
       data:
         items:
-          $ref: '#/definitions/entity.TokenTransferQuote'
+          $ref: "#/definitions/entity.TokenTransferQuote"
         type: array
     required:
-    - data
+      - data
     type: object
   server.BorrowCost:
     description: Borrow cost structure with a big.Int represented as string
@@ -302,17 +302,17 @@ definitions:
       signature:
         type: string
     required:
-    - borrowCost
-    - liquidityPool
-    - nonce
-    - signature
+      - borrowCost
+      - liquidityPool
+      - nonce
+      - signature
     type: object
   server.BorrowQuote.response:
     properties:
       data:
-        $ref: '#/definitions/server.Quote'
+        $ref: "#/definitions/server.Quote"
     required:
-    - data
+      - data
     type: object
   server.ErrorResponse:
     properties:
@@ -321,35 +321,35 @@ definitions:
       error:
         type: string
     required:
-    - debug
-    - error
+      - debug
+      - error
     type: object
   server.GetFungibleTokensByChainHandler.response:
     properties:
       data:
         items:
-          $ref: '#/definitions/entity.FungibleToken'
+          $ref: "#/definitions/entity.FungibleToken"
         type: array
     required:
-    - data
+      - data
     type: object
   server.GetNetworksHandler.response:
     properties:
       data:
         items:
-          $ref: '#/definitions/entity.Network'
+          $ref: "#/definitions/entity.Network"
         type: array
     required:
-    - data
+      - data
     type: object
   server.GetSupportedFungibleTokens.response:
     properties:
       data:
         items:
-          $ref: '#/definitions/entity.FungibleToken'
+          $ref: "#/definitions/entity.FungibleToken"
         type: array
     required:
-    - data
+      - data
     type: object
   server.GetSupportedToolsHandler.response:
     properties:
@@ -358,14 +358,14 @@ definitions:
           type: string
         type: array
     required:
-    - tools
+      - tools
     type: object
   server.HealthHandler.response:
     properties:
       status:
         type: string
     required:
-    - status
+      - status
     type: object
   server.Quote:
     properties:
@@ -378,10 +378,10 @@ definitions:
       requiredOutput:
         type: string
     required:
-    - borrowCost
-    - duration
-    - requiredInput
-    - requiredOutput
+      - borrowCost
+      - duration
+      - requiredInput
+      - requiredOutput
     type: object
   server.SingleHopWithHookHandler.request:
     properties:
@@ -390,7 +390,7 @@ definitions:
       amount:
         type: string
       destination:
-        $ref: '#/definitions/entity.ChainID'
+        $ref: "#/definitions/entity.ChainID"
       destinationContractCall:
         properties:
           approvalAddress:
@@ -404,9 +404,9 @@ definitions:
           outputTokenAddress:
             type: string
         required:
-        - callData
-        - contractAddress
-        - gasLimit
+          - callData
+          - contractAddress
+          - gasLimit
         type: object
       enableSwaps:
         type: boolean
@@ -418,37 +418,37 @@ definitions:
         type: string
       type:
         enum:
-        - fungible
+          - fungible
         type: string
       whitelistedSourceChains:
         items:
-          $ref: '#/definitions/entity.ChainID'
+          $ref: "#/definitions/entity.ChainID"
         type: array
       whitelistedTools:
         items:
           type: string
         type: array
     required:
-    - account
-    - amount
-    - destination
-    - destinationContractCall
-    - enableSwaps
-    - recipient
-    - threshold
-    - token
-    - type
-    - whitelistedSourceChains
-    - whitelistedTools
+      - account
+      - amount
+      - destination
+      - destinationContractCall
+      - enableSwaps
+      - recipient
+      - threshold
+      - token
+      - type
+      - whitelistedSourceChains
+      - whitelistedTools
     type: object
   server.SingleHopWithHookHandler.response:
     properties:
       data:
         items:
-          $ref: '#/definitions/entity.TokenTransferQuote'
+          $ref: "#/definitions/entity.TokenTransferQuote"
         type: array
     required:
-    - data
+      - data
     type: object
   server.chainBalance:
     properties:
@@ -461,474 +461,119 @@ definitions:
       tokenDecimals:
         type: integer
     required:
-    - balance
-    - chainId
-    - tokenDecimals
+      - balance
+      - chainId
+      - tokenDecimals
     type: object
 info:
   contact: {}
 paths:
-  /accounts/{account}/assets/fungible/{token}:
-    get:
-      consumes:
-      - application/json
-      description: Returns cross chain account balance in lowest denomination for
-        supported fungible token
-      parameters:
-      - description: Either token name or token symbol (case insensitive)
-        in: path
-        name: token
-        required: true
-        type: string
-      - description: Account address in hex format with 0x (case insensitive)
-        in: path
-        name: account
-        required: true
-        type: string
-      - description: comma separated list of source chain ids that can be used
-        in: query
-        name: whitelistedChains
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/server.AccountFungibleBalanceHandler.response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      summary: Returns cross chain account balance for supported fungible token
-  /accounts/{account}/assets/native:
-    get:
-      consumes:
-      - application/json
-      description: Returns cross chain account balance in lowest denomination for
-        eth
-      parameters:
-      - description: Account address in hex format with 0x (case insensitive)
-        in: path
-        name: account
-        required: true
-        type: string
-      - description: comma separated list of source chain ids that can be used
-        in: query
-        name: whitelistedChains
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/server.AccountFungibleBalanceHandler.response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      summary: Returns cross chain account balance for chains with eth as native token
-  /assets/fungible:
-    get:
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/server.GetSupportedFungibleTokens.response'
-      summary: Returns supported tokens
-  /assets/fungible/{token}:
-    get:
-      consumes:
-      - application/json
-      description: Using given token name or symbol it will return fungible token
-        details
-      parameters:
-      - description: Either token name or token symbol (case insensitive)
-        in: path
-        name: token
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/entity.FungibleToken'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      summary: Returns supported fungible token details
-  /health:
-    get:
-      consumes:
-      - application/json
-      description: health check
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/server.HealthHandler.response'
-      summary: health check
   /liquidity/protocol/{protocol}/deposit/{txHash}/request:
     get:
       consumes:
-      - application/json
+        - application/json
       description: Get the borrow cost for a liquidity transaction
       parameters:
-      - description: input data (relay data)
-        in: body
-        name: Input
-        required: true
-        schema:
+        - description: input data (relay data)
+          in: body
+          name: Input
+          required: true
+          schema:
+            type: string
+        - description: caller address (solver address)
+          in: body
+          name: Caller
+          required: true
+          schema:
+            type: string
+        - description: Protocol
+          in: path
+          name: protocol
+          required: true
           type: string
-      - description: caller address (solver address)
-        in: body
-        name: Caller
-        required: true
-        schema:
+        - description: Transaction hash for the deposit
+          in: path
+          name: txHash
+          required: true
           type: string
-      - description: Protocol
-        in: path
-        name: protocol
-        required: true
-        type: string
-      - description: Transaction hash for the deposit
-        in: path
-        name: txHash
-        required: true
-        type: string
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/server.BorrowCost'
+            $ref: "#/definitions/server.BorrowCost"
         "400":
           description: Bad request due to invalid input or missing parameters
           schema:
-            $ref: '#/definitions/server.ErrorResponse'
+            $ref: "#/definitions/server.ErrorResponse"
         "500":
           description: Internal server error
           schema:
-            $ref: '#/definitions/server.ErrorResponse'
+            $ref: "#/definitions/server.ErrorResponse"
       summary: Get the borrow cost for a liquidity transaction
       tags:
-      - Liquidity
+        - Liquidity
   /liquidity/protocol/{protocol}/type/{type}/quote:
     get:
       consumes:
-      - application/json
-      description: This endpoint calculates the borrow quote for a liquidity transaction,
+        - application/json
+      description:
+        This endpoint calculates the borrow quote for a liquidity transaction,
         including the borrow cost, required input/output, and duration.
       parameters:
-      - description: Amount to borrow
-        in: body
-        name: amount
-        required: true
-        schema:
+        - description: Amount to borrow
+          in: body
+          name: amount
+          required: true
+          schema:
+            type: string
+        - description: Token address (in Ethereum address format)
+          in: body
+          name: token
+          required: true
+          schema:
+            type: string
+        - description: Network ID for the transaction
+          in: body
+          name: network
+          required: true
+          schema:
+            type: integer
+        - description: Protocol name (e.g., Across)
+          in: path
+          name: protocol
+          required: true
           type: string
-      - description: Token address (in Ethereum address format)
-        in: body
-        name: token
-        required: true
-        schema:
+        - description: Quote algorithm type (e.g., ExactInput, ExactOutput)
+          in: path
+          name: type
+          required: true
           type: string
-      - description: Network ID for the transaction
-        in: body
-        name: network
-        required: true
-        schema:
+        - description:
+            Destination Network ID (optional, defaults to the network from
+            the request body)
+          in: query
+          name: network
           type: integer
-      - description: Protocol name (e.g., Across)
-        in: path
-        name: protocol
-        required: true
-        type: string
-      - description: Quote algorithm type (e.g., ExactInput, ExactOutput)
-        in: path
-        name: type
-        required: true
-        type: string
-      - description: Destination Network ID (optional, defaults to the network from
-          the request body)
-        in: query
-        name: network
-        type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: Successfully retrieved borrow quote
           schema:
-            $ref: '#/definitions/server.BorrowQuote.response'
+            $ref: "#/definitions/server.BorrowQuote.response"
         "400":
           description: Bad request due to invalid input or missing parameters
           schema:
-            $ref: '#/definitions/server.ErrorResponse'
+            $ref: "#/definitions/server.ErrorResponse"
         "500":
           description: Internal server error
           schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      summary: Get the borrow quote for a liquidity transaction based on the input
+            $ref: "#/definitions/server.ErrorResponse"
+      summary:
+        Get the borrow quote for a liquidity transaction based on the input
         data
       tags:
-      - Liquidity
-  /networks:
-    get:
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/server.GetNetworksHandler.response'
-      summary: Returns all supported networks
-  /networks/{chainID}/assets/fungible:
-    get:
-      consumes:
-      - application/json
-      parameters:
-      - description: Chain ID
-        in: path
-        name: chainID
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/server.GetFungibleTokensByChainHandler.response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      summary: Returns supported tokens on a chain defined by given chainID
-  /solution/call:
-    post:
-      consumes:
-      - application/json
-      description: Endpoint will calculate best single-hop solution to execute crosschain
-        call.
-      parameters:
-      - description: request
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/server.SingleHopWithHookHandler.request'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/server.SingleHopWithHookHandler.response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      summary: Returns only single hop soulution to do contract call on destination
-  /solutions/aggregation:
-    get:
-      consumes:
-      - application/json
-      description: Endpoint will calculate best combination of single-hop transfers
-        to
-      parameters:
-      - description: account address in hex format with 0x which will send and receive
-          funds
-        in: query
-        name: account
-        required: true
-        type: string
-      - description: id of destination chain
-        in: query
-        name: destination
-        required: true
-        type: integer
-      - description: supported token name or symbol
-        in: query
-        name: token
-        required: true
-        type: string
-      - description: min targeted amount of tokens on destination in lowest denomination
-        in: query
-        name: amount
-        required: true
-        type: string
-      - description: min amount of tokensto leave on source in lowest denomination
-        in: query
-        name: threshold
-        type: string
-      - description: comma separated list of source chain ids that can be used
-        in: query
-        name: whitelistedSourceChains
-        type: string
-      - description: comma separated list of tools that can be used for getting quote
-        in: query
-        name: whitelistedTools
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/server.AggregateBalanceSolutionHandler.response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      summary: Returns solution to aggregate fungible token balance on destination
-    post:
-      consumes:
-      - application/json
-      description: Endpoint will calculate best combination of single-hop transfers
-        to
-      parameters:
-      - description: request
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/server.AggregateWithHookSolutionHandler.request'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/server.AggregateWithHookSolutionHandler.response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      summary: Returns solution to aggregate fungible token balance on destination
-        and invoking contract call
-  /solutions/balance-sweep:
-    get:
-      consumes:
-      - application/json
-      description: Endpoint will return quote to transfer full token balances of source
-        chains to a destination chain
-      parameters:
-      - description: account address in hex format with 0x which will send funds
-        in: query
-        name: account
-        required: true
-        type: string
-      - description: recipient address in hex format with 0x which will receive funds
-        in: query
-        name: recipient
-        type: string
-      - description: id of destination chain
-        in: query
-        name: destination
-        required: true
-        type: integer
-      - description: supported token name or symbol
-        in: query
-        name: token
-        required: true
-        type: string
-      - description: comma separated list of source chain ids that can be used
-        in: query
-        name: whitelistedSourceChains
-        type: string
-      - description: comma separated list of tools that can be used for getting quote
-        in: query
-        name: whitelistedTools
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/server.BalanceSweepHandler.response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      summary: Returns solution to sweep all token balances
-  /tools:
-    get:
-      consumes:
-      - application/json
-      description: It will return the list of tools that is currently supported in
-        sprinter
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/server.GetSupportedToolsHandler.response'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      summary: Returns supported tools for quote service
+        - Liquidity
 swagger: "2.0"

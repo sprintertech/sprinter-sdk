@@ -4,13 +4,13 @@ import type * as Preset from "@docusaurus/preset-classic";
 
 const config: Config = {
   title: "Sprinter",
-  tagline: "Multichain interactions that feel like one",
+  tagline: "The Fast Lane For Crosschain",
   favicon: "img/sprinter.ico",
 
   url: "https://docs.sprinter.buildwithsygma.com/",
   baseUrl: "/",
 
-  organizationName: "ChainSafe",
+  organizationName: "Sprinter",
   projectName: "sprinter-ts",
 
   onBrokenLinks: "throw",
@@ -50,11 +50,10 @@ const config: Config = {
         alt: "Sprinter Temp Logo",
         src: "img/sprinter-logo.svg",
         srcDark: "img/sprinter-logo-white.svg",
-        href: "sprinter.tech",
       },
       items: [
         {
-          href: "https://app.sprinter.tech",
+          href: "https://app.sprinter.tech/",
           label: "Stash",
           position: "left",
         },
@@ -64,7 +63,7 @@ const config: Config = {
           position: "right",
         },
         {
-          href: "https://github.com/ChainSafe/sprinter-ts",
+          href: "https://github.com/sprintertech",
           label: "GitHub",
           position: "right",
         },
@@ -137,32 +136,6 @@ const config: Config = {
     },
   } satisfies Preset.ThemeConfig,
   plugins: [
-    [
-      'docusaurus-plugin-openapi-docs',
-      {
-        id: 'default',
-        docsPluginId: 'classic',
-        config: {
-          stash: {
-            specPath: 'static/api/stash-openapi.yaml',
-            outputDir: 'docs/api/stash',
-            sidebarOptions: {
-              groupPathsBy: 'tag',
-              categoryLinkSource: 'tag',
-            },
-          },
-          solve: {
-            specPath: 'static/api/solve-openapi.yaml',
-            outputDir: 'docs/api/solve',
-            sidebarOptions: {
-              groupPathsBy: 'tag',
-              categoryLinkSource: 'tag',
-            },
-          },
-        },
-      },
-    ],
-  ],
     [
       require.resolve("@cmfcmf/docusaurus-search-local"),
       {

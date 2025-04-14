@@ -27,3 +27,10 @@ A solving-as-a-service platform that offers a request-for-quote (RFQ) based swap
 ### Need to Chat to us?
 
 If you have questions about Sprinter, the code, the docs, or have a partnership inquiry, please reach out to us on [Telegram](https://t.me/sprinter_tech/1) or via email at [hello@sprinter.tech](mailto:hello@sprinter.tech).
+
+### Join our Community
+
+- **Telegram:** [t.me/sprinter_tech](https://t.me/sprinter_tech)
+- **Twitter:** [@sprinter_ux](https://twitter.com/sprinter_ux)
+- **Website:** [Sprinter.tech](https://sprinter.tech)
+- **Stash:** [Stash dApp](https://app.sprinter.tech)
