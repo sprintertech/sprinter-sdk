@@ -50,11 +50,12 @@ const config: Config = {
         alt: "Sprinter Temp Logo",
         src: "img/sprinter-logo.svg",
         srcDark: "img/sprinter-logo-white.svg",
+        href: "sprinter.tech",
       },
       items: [
         {
-          href: "https://poc.sprinter.buildwithsygma.com/",
-          label: "POC",
+          href: "https://app.sprinter.tech",
+          label: "Stash",
           position: "left",
         },
         {
@@ -136,6 +137,32 @@ const config: Config = {
     },
   } satisfies Preset.ThemeConfig,
   plugins: [
+    [
+      'docusaurus-plugin-openapi-docs',
+      {
+        id: 'default',
+        docsPluginId: 'classic',
+        config: {
+          stash: {
+            specPath: 'static/api/stash-openapi.yaml',
+            outputDir: 'docs/api/stash',
+            sidebarOptions: {
+              groupPathsBy: 'tag',
+              categoryLinkSource: 'tag',
+            },
+          },
+          solve: {
+            specPath: 'static/api/solve-openapi.yaml',
+            outputDir: 'docs/api/solve',
+            sidebarOptions: {
+              groupPathsBy: 'tag',
+              categoryLinkSource: 'tag',
+            },
+          },
+        },
+      },
+    ],
+  ],
     [
       require.resolve("@cmfcmf/docusaurus-search-local"),
       {
