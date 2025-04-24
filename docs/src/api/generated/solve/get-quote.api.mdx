@@ -1,0 +1,71 @@
+---
+id: get-quote
+title: "getQuote"
+description: "Get a price estimation quote"
+sidebar_label: "getQuote"
+hide_title: true
+hide_table_of_contents: true
+api: eJztlt9v2zYQx/+VA7GHdpMb2ZHr2G+K43RGX7okBQoYXkqL54iNRCrkybVn6H8vKPpXYsfZAuxhWP1m8u745eeOp1syXaDhJLUaCtZjd0h/lJqQBUygTYws3BbrsQ9IwKEwMkFASzKvfeBhZVxww3MkNJb1RksmnctDiWbBAqZ4jqzHeK5LRbdS7cW+SRH8LugpkL5HZYE0WMwykAoEJjLnGShN9aksYDZJMeest3wSKt6E4QoGV/1W6OMBt8A3gSwZqe7gjdJgE4mK5FQmm/BvWcBoUTjN3rC+HxEad8Kfo7DRHf/2CwsYznleZM6uGe79XBBJ9e6NU+CVsSpgBh9KaVCwHpkSXwpTBYdx1td6jubqzkIYtBuUR7C1QpgsCGFAKRos840rqkQLFB5finP4LimFr+H8KxQGp3J+nFU4H/HGNG5cOmbLKKweYwvn78+bnXbUiQZn3bAb9aPognfPJt12NECBcT/qtludpggvd2jGXtpxkv8g8nHAuqS/R3hSLv5fgPthi/P4tDtptU4vB2cXYRxiux9dtjoYX3TDs9N+p/2+n7RYNXaBbKGVRevQtMJwn1DddsCWSYLWTsssW0BikBMKFrBEK0JFzosXRSaT+qGefLPOdfks9etNNN+oPFxKEXBeYEIoQJdUlLRqP1vWevINE/e/MK5BkvTKVz3MFcV/sPU8Suho9zLjrUedh6tVulhVOa/oUMLOuQAXDi29PkMDY7SBdXX4/AgkLjN7IBm76tF5OuGPM+SX9875vcy5AoNc8EmGUFtBjtbyOzzAfItXKltOp7JO1ZNicWTW1Op7bGg19wV8VrykVBv5FwpowFDNeCYFxJ+GcI+LnwB3AbYPldtQuVfgXhCaGRqv4Ce3LbcqYDlSqldjnO8cKeuxk/WQZjEpjaRFPaLFhfyIi7h0JqOx69Hr7WuHzF9q12i5FsvrRRb4r2aKXKDZfja/NOJPw4Y3eNIgfa171lNtck5g728zOcPbX+tLSTXV9UGry11/5wVMFnCecZUcjFdaFBsLcPYsYDM01ps034XvwsYEibuvWaEt5bwui5XYOyQ4OO8ut3X10ui7okI4p5Mi41K5o0qTuSA+AyPmbccBS7Ult7BcTrjFzyarKrfsRw+XFiGtKxTBelOeWTwi683VqijfwisG6IOqXSd6PKjPeFY6u3pKerW258bRIyJ2xtt/SYMf2F6U4AfArYax+2OkE1E/nGD9Alz2vGOcJFjseu01Jhdl81g/DG5YVf0AB+2RRg==
+sidebar_class_name: "get api-method"
+info_path: ../src/api/generated/solve/swap-by-blanc
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getQuote"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/quote"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Get a price estimation quote
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"query","name":"amount_in","description":"The amount of tokens to sell in decimal notation","schema":{"description":"Amount of an ERC20 token as a decimal string (no scientific notation)","type":"string","pattern":"^[0-9]+$","example":"1000000000000000000","title":"TokenAmount"},"required":true,"example":"1000000000000000000"},{"in":"query","name":"token_in","description":"The token address to sell","schema":{"description":"20 byte Ethereum address encoded as a hex with `0x` prefix","type":"string","pattern":"^0x[a-fA-F0-9]{40}$","example":"0x6B175474E89094C44Da98b954EedeAC495271d0F","title":"Address"},"required":true,"example":"0x6B175474E89094C44Da98b954EedeAC495271d0F"},{"in":"query","name":"token_out","description":"The token address to buy","schema":{"description":"20 byte Ethereum address encoded as a hex with `0x` prefix","type":"string","pattern":"^0x[a-fA-F0-9]{40}$","example":"0x6B175474E89094C44Da98b954EedeAC495271d0F","title":"Address"},"required":true,"example":"0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Quote successfully created","content":{"application/json":{"schema":{"description":"Successful quote with the expected output amount","type":"object","properties":{"amount_out":{"description":"Amount of an ERC20 token as a decimal string (no scientific notation)","type":"string","pattern":"^[0-9]+$","example":"1000000000000000000","title":"TokenAmount"}},"required":["amount_out"],"title":"QuoteResponse"}}}},"400":{"description":"Bad request","content":{"application/json":{"schema":{"description":"Error response with details","type":"object","required":["error"],"properties":{"error":{"description":"Human readable error message","type":"string","example":"insufficient output amount"}},"title":"Error"}}}},"401":{"description":"Unauthorized - Invalid API key","content":{"application/json":{"schema":{"description":"Error response with details","type":"object","required":["error"],"properties":{"error":{"description":"Human readable error message","type":"string","example":"insufficient output amount"}},"title":"Error"}}}},"500":{"description":"Internal server error","content":{"application/json":{"schema":{"description":"Error response with details","type":"object","required":["error"],"properties":{"error":{"description":"Human readable error message","type":"string","example":"insufficient output amount"}},"title":"Error"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

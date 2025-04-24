@@ -10,6 +10,7 @@ security:
 paths:
   /quote:
     get:
+      operationId: getQuote
       description: Get a price estimation quote
       parameters:
         - in: query
@@ -61,6 +62,7 @@ paths:
 
   /route:
     get:
+      operationId: getRoute
       description: Get a route for execution
       parameters:
         - in: query
@@ -119,6 +121,7 @@ paths:
 
   /v2/route:
     get:
+      operationId: getRouteV2
       description: Get a route for execution with additional parameters
       parameters:
         - in: query
