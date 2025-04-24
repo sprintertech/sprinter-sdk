@@ -10,6 +10,10 @@ sidebar_position: 1
   <img src="/img/sprinter-header.png" class="logo-dark-mode" alt="Sprinter Logo White" />
 </div>
 
+# 
+
+Sprinter envisions a decentralized, open and equitable financial system that provides opportunities for everyone. Our mission is to build the infrastructure that democratizes access to cross-chain liquidity and optimizes liquidity flows across DeFi.
+
 # What is Sprinter?
 
 Sprinter combines solving-as-a-service infrastructure with credit-based cross-chain liquidity. It enables solvers to borrow and execute on-chain actions without pre-funded inventory, while giving dApps and protocols access to best-in-class execution routes, powered by the Project Blanc advanced solving technology.

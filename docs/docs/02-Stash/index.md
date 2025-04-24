@@ -75,10 +75,6 @@ Sprinter enforces:
 - Circuit breakers triggered by irregular repayment behavior
 - Slashing (or bond requirements) for higher-risk integrations
 
-#### 4. Future Safety Module Activation
-
-Sprinter will in future, activate the Sprinter Stash Safety Module (STSM) which incentivizes solvers to stake SPRNT tokens as a safeguard against potential liquidity shortfalls (eg reorgs or defaults) or protocol insolvencies, essentially providing a security backstop to the protocol.
-
-#### 5. Bonding Pools
+#### 4. Bonding Pools
 
 Sprinter will also allow Solver Operators to create Bonding Pools, that escrow funds to vouch for their solvers, enabling more favourable borrowing conditions. Sprinter Bonding Pools will be controlled by governance and similarly allow slashing by governance for any malicious activity or violations.

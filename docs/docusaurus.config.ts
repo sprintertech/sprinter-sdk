@@ -44,6 +44,11 @@ const config: Config = {
   ],
 
   themeConfig: {
+    colorMode: {
+      defaultMode: 'dark',
+      disableSwitch: false,    // optional: hide theme toggle switch
+      respectPrefersColorScheme: false, // always force dark unless user switches
+    },
     navbar: {
       title: "Sprinter",
       logo: {
