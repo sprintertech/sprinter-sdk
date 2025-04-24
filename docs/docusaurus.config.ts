@@ -1,6 +1,7 @@
 import { themes as prismThemes } from "prism-react-renderer";
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
+import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
 
 const config: Config = {
   title: "Sprinter",
@@ -30,6 +31,7 @@ const config: Config = {
           remarkPlugins: [
             [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }],
           ],
+          docItemComponent: "@theme/ApiItem",
           sidebarPath: "./sidebars.ts",
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
@@ -45,8 +47,8 @@ const config: Config = {
 
   themeConfig: {
     colorMode: {
-      defaultMode: 'dark',
-      disableSwitch: false,    // optional: hide theme toggle switch
+      defaultMode: "dark",
+      disableSwitch: false, // optional: hide theme toggle switch
       respectPrefersColorScheme: false, // always force dark unless user switches
     },
     navbar: {
@@ -141,7 +143,41 @@ const config: Config = {
         indexDocs: true,
       },
     ],
+    [
+      "docusaurus-plugin-openapi-docs",
+      {
+        id: "openapi",
+        docsPluginId: "classic",
+        config: {
+          // petstore: { // EXAMPLE
+          //   specPath: "src/api/petstore-utf8.yaml",
+          //   outputDir: "docs/../src/api/generated/petstore",
+          //   downloadUrl:
+          //       "https://raw.githubusercontent.com/PaloAltoNetworks/docusaurus-template-openapi-docs/main/examples/petstore.yaml",
+          //   sidebarOptions: {
+          //     groupPathsBy: "tag",
+          //   },
+          // } satisfies OpenApiPlugin.Options,
+          solve: {
+            specPath: "src/api/solve-openapi.yaml",
+            outputDir: "docs/../src/api/generated/solve",
+            sidebarOptions: {
+              groupPathsBy: "tag",
+            },
+          } satisfies OpenApiPlugin.Options,
+          stash: {
+            specPath: "src/api/stash-openapi.yaml",
+            outputDir: "docs/../src/api/generated/stash",
+            sidebarOptions: {
+              groupPathsBy: "tag",
+            },
+          } satisfies OpenApiPlugin.Options,
+        },
+      },
+    ],
   ],
+
+  themes: ["docusaurus-theme-openapi-docs"],
 };
 
 export default config;
