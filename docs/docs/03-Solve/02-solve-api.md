@@ -6,7 +6,3 @@ sidebar_position: 2
 ---
 
 ## Solver API Endpoints
-
-import SwaggerUI from '@site/src/components/SwaggerUI';
-
-<SwaggerUI specUrl="/api/solve-openapi.yaml" />

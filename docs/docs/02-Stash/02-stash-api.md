@@ -20,7 +20,3 @@ You can also visit the [Stash swagger](https://api.sprinter.buildwithsygma.com/s
 → Get the borrow quote for a liquidity transaction based on the input data
 
 ---
-
-import SwaggerUI from '@site/src/components/SwaggerUI';
-
-<SwaggerUI specUrl="/api/stash-openapi.yaml" />
