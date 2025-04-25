@@ -25,7 +25,7 @@ There are two main ways to utilize Sprinter Stash. Either as a Liquidity Provide
 
 ### Supported Networks
 
-- Arbitrum
+- Arbitrum 
 - Optimism
 - Base
 - Ethereum Mainnet (coming soon)
