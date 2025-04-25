@@ -21,9 +21,7 @@ import Heading from "@theme/Heading";
 <Heading
   as={"h1"}
   className={"openapi__heading"}
-  children={
-    "Get the borrow quote for a liquidity transaction based on the input data"
-  }
+  children={"Get the borrow quote for a liquidity transaction based on the input data"}
 ></Heading>
 
 <MethodEndpoint
@@ -94,12 +92,7 @@ This endpoint calculates the borrow quote for a liquidity transaction, including
                   requiredInput: { type: "string" },
                   requiredOutput: { type: "string" },
                 },
-                required: [
-                  "borrowCost",
-                  "duration",
-                  "requiredInput",
-                  "requiredOutput",
-                ],
+                required: ["borrowCost", "duration", "requiredInput", "requiredOutput"],
                 type: "object",
               },
             },

@@ -10,7 +10,7 @@ Sprinter is currently operating in private beta and selectively partnering with 
 
 ## Who We're Looking to Partner With
 
-- **CrossChain DEXs & Intent-Based Protocolschain execution
+- \*\*CrossChain DEXs & Intent-Based Protocolschain execution
 - **Liquidity Providers** interested in sustainable, high-yield opportunities
 
 ## Get in Touch

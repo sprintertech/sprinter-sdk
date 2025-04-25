@@ -25,7 +25,7 @@ There are two main ways to utilize Sprinter Stash. Either as a Liquidity Provide
 
 ### Supported Networks
 
-- Arbitrum 
+- Arbitrum
 - Optimism
 - Base
 - Ethereum Mainnet (coming soon)
@@ -36,8 +36,6 @@ There are two main ways to utilize Sprinter Stash. Either as a Liquidity Provide
 - Blue-Chip: WETH, WBTC
 
 Want to request support for a new chain or asset? [Submit a request](https://forms.gle/an5vZrmyDkyYR8Ni7).
-
-
 
 ## Fees
 

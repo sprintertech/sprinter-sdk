@@ -11,7 +11,6 @@ sidebar_position: 1
 3. Call `/v2/route` to get quote + execution data
 4. Send transaction using `swap_call_data`
 
-
 ### Accessing the Solve API
 
 - **Mainnet:** `https://swaps.sprinter.tech/mainnet`
@@ -24,7 +23,6 @@ All requests must include:
 ```http
 X-API-Key: <your_key>
 ```
-
 
 ## Solve Fees
 
@@ -47,5 +45,3 @@ User Fee = 0.875%
 Monthly Volume = $150M
 Sprinter Fee = 0.875% * 0.05 = 0.04375% (4.375 bps)
 ```
-
-

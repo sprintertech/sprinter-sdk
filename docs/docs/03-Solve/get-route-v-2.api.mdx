@@ -19,22 +19,9 @@ import OperationTabs from "@theme/OperationTabs";
 import TabItem from "@theme/TabItem";
 import Heading from "@theme/Heading";
 
-<Heading
-  as={"h1"}
-  className={"openapi__heading"}
-  children={"getRouteV2"}
->
-</Heading>
+<Heading as={"h1"} className={"openapi__heading"} children={"getRouteV2"}></Heading>
 
-<MethodEndpoint
-  method={"get"}
-  path={"/v2/route"}
-  context={"endpoint"}
->
-  
-</MethodEndpoint>
-
-
+<MethodEndpoint method={"get"} path={"/v2/route"} context={"endpoint"}></MethodEndpoint>
 
 Get a route for execution with additional parameters
 
@@ -43,29 +30,197 @@ Get a route for execution with additional parameters
   as={"h2"}
   className={"openapi-tabs__heading"}
   children={"Request"}
->
-</Heading>
+></Heading>
 
 <ParamsDetails
-  parameters={[{"in":"query","name":"amount_in","description":"The amount of tokens to sell in decimal notation","schema":{"description":"Amount of an ERC20 token as a decimal string (no scientific notation)","type":"string","pattern":"^[0-9]+$","example":"1000000000000000000","title":"TokenAmount"},"required":true,"example":"1000000000000000000"},{"in":"query","name":"token_in","description":"The token address to sell","schema":{"description":"20 byte Ethereum address encoded as a hex with `0x` prefix","type":"string","pattern":"^0x[a-fA-F0-9]{40}$","example":"0x6B175474E89094C44Da98b954EedeAC495271d0F","title":"Address"},"required":true,"example":"0x6B175474E89094C44Da98b954EedeAC495271d0F"},{"in":"query","name":"token_out","description":"The token address to buy","schema":{"description":"20 byte Ethereum address encoded as a hex with `0x` prefix","type":"string","pattern":"^0x[a-fA-F0-9]{40}$","example":"0x6B175474E89094C44Da98b954EedeAC495271d0F","title":"Address"},"required":true,"example":"0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"},{"in":"query","name":"slippage","description":"The slippage tolerance in percentage (e.g., 0.5 for 0.5%)","schema":{"type":"number","format":"float"},"required":false,"example":0.5},{"in":"query","name":"target_duration_ms","description":"The target duration for the route search in milliseconds","schema":{"type":"integer","format":"int64"},"required":false,"example":200}]}
->
-  
-</ParamsDetails>
+  parameters={[
+    {
+      in: "query",
+      name: "amount_in",
+      description: "The amount of tokens to sell in decimal notation",
+      schema: {
+        description: "Amount of an ERC20 token as a decimal string (no scientific notation)",
+        type: "string",
+        pattern: "^[0-9]+$",
+        example: "1000000000000000000",
+        title: "TokenAmount",
+      },
+      required: true,
+      example: "1000000000000000000",
+    },
+    {
+      in: "query",
+      name: "token_in",
+      description: "The token address to sell",
+      schema: {
+        description: "20 byte Ethereum address encoded as a hex with `0x` prefix",
+        type: "string",
+        pattern: "^0x[a-fA-F0-9]{40}$",
+        example: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+        title: "Address",
+      },
+      required: true,
+      example: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+    },
+    {
+      in: "query",
+      name: "token_out",
+      description: "The token address to buy",
+      schema: {
+        description: "20 byte Ethereum address encoded as a hex with `0x` prefix",
+        type: "string",
+        pattern: "^0x[a-fA-F0-9]{40}$",
+        example: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+        title: "Address",
+      },
+      required: true,
+      example: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    },
+    {
+      in: "query",
+      name: "slippage",
+      description: "The slippage tolerance in percentage (e.g., 0.5 for 0.5%)",
+      schema: { type: "number", format: "float" },
+      required: false,
+      example: 0.5,
+    },
+    {
+      in: "query",
+      name: "target_duration_ms",
+      description: "The target duration for the route search in milliseconds",
+      schema: { type: "integer", format: "int64" },
+      required: false,
+      example: 200,
+    },
+  ]}
+></ParamsDetails>
 
-<RequestSchema
-  title={"Body"}
-  body={undefined}
->
-  
-</RequestSchema>
+<RequestSchema title={"Body"} body={undefined}></RequestSchema>
 
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{"200":{"description":"Route successfully generated","content":{"application/json":{"schema":{"description":"Successfully created route with additional details","type":"object","required":["quote_id","amount_out","min_amount_out","target","swap_call_data","rainbow_input"],"properties":{"quote_id":{"description":"Unique identifier for the quote","type":"string","example":"q_12345678"},"amount_out":{"description":"Amount of an ERC20 token as a decimal string (no scientific notation)","type":"string","pattern":"^[0-9]+$","example":"1000000000000000000","title":"TokenAmount"},"min_amount_out":{"description":"Amount of an ERC20 token as a decimal string (no scientific notation)","type":"string","pattern":"^[0-9]+$","example":"1000000000000000000","title":"TokenAmount"},"target":{"description":"20 byte Ethereum address encoded as a hex with `0x` prefix","type":"string","pattern":"^0x[a-fA-F0-9]{40}$","example":"0x6B175474E89094C44Da98b954EedeAC495271d0F","title":"Address"},"swap_call_data":{"description":"Hex encoded calldata for the swap","type":"string","pattern":"^0x[a-fA-F0-9]*$","example":"0x38ed1739"},"rainbow_input":{"description":"Input data for the rainbow swap","type":"string","example":"0x..."}},"title":"RouteResponseV2"}}}},"400":{"description":"Bad request","content":{"application/json":{"schema":{"description":"Error response with details","type":"object","required":["error"],"properties":{"error":{"description":"Human readable error message","type":"string","example":"insufficient output amount"}},"title":"Error"}}}},"401":{"description":"Unauthorized - Invalid API key","content":{"application/json":{"schema":{"description":"Error response with details","type":"object","required":["error"],"properties":{"error":{"description":"Human readable error message","type":"string","example":"insufficient output amount"}},"title":"Error"}}}},"500":{"description":"Internal server error","content":{"application/json":{"schema":{"description":"Error response with details","type":"object","required":["error"],"properties":{"error":{"description":"Human readable error message","type":"string","example":"insufficient output amount"}},"title":"Error"}}}}}}
->
-  
-</StatusCodes>
-
-
-      
+  responses={{
+    "200": {
+      description: "Route successfully generated",
+      content: {
+        "application/json": {
+          schema: {
+            description: "Successfully created route with additional details",
+            type: "object",
+            required: [
+              "quote_id",
+              "amount_out",
+              "min_amount_out",
+              "target",
+              "swap_call_data",
+              "rainbow_input",
+            ],
+            properties: {
+              quote_id: {
+                description: "Unique identifier for the quote",
+                type: "string",
+                example: "q_12345678",
+              },
+              amount_out: {
+                description:
+                  "Amount of an ERC20 token as a decimal string (no scientific notation)",
+                type: "string",
+                pattern: "^[0-9]+$",
+                example: "1000000000000000000",
+                title: "TokenAmount",
+              },
+              min_amount_out: {
+                description:
+                  "Amount of an ERC20 token as a decimal string (no scientific notation)",
+                type: "string",
+                pattern: "^[0-9]+$",
+                example: "1000000000000000000",
+                title: "TokenAmount",
+              },
+              target: {
+                description: "20 byte Ethereum address encoded as a hex with `0x` prefix",
+                type: "string",
+                pattern: "^0x[a-fA-F0-9]{40}$",
+                example: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+                title: "Address",
+              },
+              swap_call_data: {
+                description: "Hex encoded calldata for the swap",
+                type: "string",
+                pattern: "^0x[a-fA-F0-9]*$",
+                example: "0x38ed1739",
+              },
+              rainbow_input: {
+                description: "Input data for the rainbow swap",
+                type: "string",
+                example: "0x...",
+              },
+            },
+            title: "RouteResponseV2",
+          },
+        },
+      },
+    },
+    "400": {
+      description: "Bad request",
+      content: {
+        "application/json": {
+          schema: {
+            description: "Error response with details",
+            type: "object",
+            required: ["error"],
+            properties: {
+              error: {
+                description: "Human readable error message",
+                type: "string",
+                example: "insufficient output amount",
+              },
+            },
+            title: "Error",
+          },
+        },
+      },
+    },
+    "401": {
+      description: "Unauthorized - Invalid API key",
+      content: {
+        "application/json": {
+          schema: {
+            description: "Error response with details",
+            type: "object",
+            required: ["error"],
+            properties: {
+              error: {
+                description: "Human readable error message",
+                type: "string",
+                example: "insufficient output amount",
+              },
+            },
+            title: "Error",
+          },
+        },
+      },
+    },
+    "500": {
+      description: "Internal server error",
+      content: {
+        "application/json": {
+          schema: {
+            description: "Error response with details",
+            type: "object",
+            required: ["error"],
+            properties: {
+              error: {
+                description: "Human readable error message",
+                type: "string",
+                example: "insufficient output amount",
+              },
+            },
+            title: "Error",
+          },
+        },
+      },
+    },
+  }}
+></StatusCodes>
