@@ -1,0 +1,71 @@
+---
+id: solve-get-route-v2
+title: "Get Route V2"
+description: "Get a route for execution with additional parameters"
+sidebar_label: "Get Route V2"
+hide_title: true
+hide_table_of_contents: true
+api: eJztWG1vGjkQ/iuWdSclvYUsGwiBb4SQHrovVZJWJ0U5atYDuN21N34hcIj/fpr1Znmnbar70Lvybe3x+JnH48czLKjKQDMrlOxz2qZjsLfKWfgQ0YByMLEWGU7SNn0LljCicZaMlCYwg9jhHHkWdkIY5wK/WEIyplkKFrShAV37aD8sqEBXTw70nAZUshRom7JUOWkHQu7seT8B4meJGhGrPoM0xCpiIEmIkIRDLFKWEKlsHgMNqIknkDLaXmy56pRumCS9224Uen+EGcJKR8ZqIcfkRCpiYgHSipGIS/enNKB2niFmb5jHZy1o3OGvh7DSevztFxpQmLE0S9CuFu780Imw+ew9IvDI6DKgGp6c0MBp22oHX3KzDPbTmYd1iM0iZs41mJLKI7RFIRnOLZCenYAGl5ZLQcaKA/f0TWDms+BjOPtIMg0jMTvOVTh7YJVRp3KDnC3q4XKTtnB2cVVrNurNeu+yFbbq3Xr9mrUuh61GvQccOt16qxE1azy8WWOz46EdZ/IbPB8nWDn7dQwP3fz/RXA3jBjrnLeGUXR+07u8DjshNLr1m6gJnetWeHnebTYuunF0kGCTiCxjY9jL78sksSoBzWQMqAQZ6BikxfETqI6rAQmrjVynwmrj19ONAyhYky4dgqYBHSmdMkvbdJQotnURRywx6+GF1cbBtGB6DHbAndfTQWr250duRl7Mcox2AoWyGmA6nmBEqUgSYSBWkpt98IW0MN7EL6S9qB/HH4Xh8hENTKakAYMOozDczctbD8fFMRgzckkyJ2OQ+FYApwGNlbQgLa5jWZaIOA/m7JPBxYuD2X637i/WgN6KyLdfEQ6WicSsslwNP0GMd24V3QN9csrCQCCk4hnx9zIVcrAx4GlHIp9ZNohZkgw4swzdMSGH6nkgZOYsfQxopvFRtMKzU+6wE8x7KZ4cEMH9OwG6PMt8zZ77ubolT4NadF5vXDQv8bzWkP6QD9cW2z9kDEWC/FcEeivNd8L6HWZlBGiGVmX+4uJvQP9mG/r5JfBa87yVa9HG9drB0cdhsrF7seIQivWNqtUqXS5XBOSqdVuI24eILpc4W98ncFeME1QSMPb1etbTWmnyoqY+A75OuABX7qqNH949LZcySTQwzoYJkNyKpGCMfyUPUySkcaORyK8TUc4i2azI+TXe8jhKtmr7tI45O1Fa/A2cVEhfTlkiOOm865PPMP9J4DqBjX3p1pd4dVDlQE9BewQ/eVvxhs8I2Ikq2lAvNxPapmfT6CwvEfDxhthpYed5L9nJxB8w7zi0enjEsuZl+g5Z83GtG5W1E8sHaeDruAkwnhdSRSH3Z6Xzrl/xBlvvmE93T7cvu4j5PEjEFAZv8riEHKl8oyK+u2eWkeGcXCVMxnv9OQO8tCB3XvOmoI03qVXDalgZgmUoppkyNmV5ZhRgsZb0tdpuz75YZddr2/eCMAsze5YlTEhE4XSCzv35PNApbuxP6DGgE2Usji4WQ2bgvU6WSxz2xTIeGxcGc2lVnB7EfHJb5O0pecU/AXuho1ht/uMwZYlDu7wbeTW2Q331ERBrffq/hMF3nl+E4AvkV2L4npbsCLK1FvA7gL2y1zrG2L4mb4XwET+0QIi5JgUv4oKJ7z104hiydcJ3ZB+9lFL4tndPl8t/ANxtndI=
+sidebar_class_name: "get api-method"
+info_path: ../src/api/generated/solve/swap-by-blanc
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getRouteV2"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v2/route"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Get a route for execution with additional parameters
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"query","name":"amount_in","description":"The amount of tokens to sell in decimal notation","schema":{"description":"Amount of an ERC20 token as a decimal string (no scientific notation)","type":"string","pattern":"^[0-9]+$","example":"1000000000000000000","title":"TokenAmount"},"required":true,"example":"1000000000000000000"},{"in":"query","name":"token_in","description":"The token address to sell","schema":{"description":"20 byte Ethereum address encoded as a hex with `0x` prefix","type":"string","pattern":"^0x[a-fA-F0-9]{40}$","example":"0x6B175474E89094C44Da98b954EedeAC495271d0F","title":"Address"},"required":true,"example":"0x6B175474E89094C44Da98b954EedeAC495271d0F"},{"in":"query","name":"token_out","description":"The token address to buy","schema":{"description":"20 byte Ethereum address encoded as a hex with `0x` prefix","type":"string","pattern":"^0x[a-fA-F0-9]{40}$","example":"0x6B175474E89094C44Da98b954EedeAC495271d0F","title":"Address"},"required":true,"example":"0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"},{"in":"query","name":"slippage","description":"The slippage tolerance in percentage (e.g., 0.5 for 0.5%)","schema":{"type":"number","format":"float"},"required":false,"example":0.5},{"in":"query","name":"target_duration_ms","description":"The target duration for the route search in milliseconds","schema":{"type":"integer","format":"int64"},"required":false,"example":200}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Route successfully generated","content":{"application/json":{"schema":{"description":"Successfully created route with additional details","type":"object","required":["quote_id","amount_out","min_amount_out","target","swap_call_data","rainbow_input"],"properties":{"quote_id":{"description":"Unique identifier for the quote","type":"string","example":"q_12345678"},"amount_out":{"description":"Amount of an ERC20 token as a decimal string (no scientific notation)","type":"string","pattern":"^[0-9]+$","example":"1000000000000000000","title":"TokenAmount"},"min_amount_out":{"description":"Amount of an ERC20 token as a decimal string (no scientific notation)","type":"string","pattern":"^[0-9]+$","example":"1000000000000000000","title":"TokenAmount"},"target":{"description":"20 byte Ethereum address encoded as a hex with `0x` prefix","type":"string","pattern":"^0x[a-fA-F0-9]{40}$","example":"0x6B175474E89094C44Da98b954EedeAC495271d0F","title":"Address"},"swap_call_data":{"description":"Hex encoded calldata for the swap","type":"string","pattern":"^0x[a-fA-F0-9]*$","example":"0x38ed1739"},"rainbow_input":{"description":"Input data for the rainbow swap","type":"string","example":"0x..."}},"title":"RouteResponseV2"}}}},"400":{"description":"Bad request","content":{"application/json":{"schema":{"description":"Error response with details","type":"object","required":["error"],"properties":{"error":{"description":"Human readable error message","type":"string","example":"insufficient output amount"}},"title":"Error"}}}},"401":{"description":"Unauthorized - Invalid API key","content":{"application/json":{"schema":{"description":"Error response with details","type":"object","required":["error"],"properties":{"error":{"description":"Human readable error message","type":"string","example":"insufficient output amount"}},"title":"Error"}}}},"500":{"description":"Internal server error","content":{"application/json":{"schema":{"description":"Error response with details","type":"object","required":["error"],"properties":{"error":{"description":"Human readable error message","type":"string","example":"insufficient output amount"}},"title":"Error"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

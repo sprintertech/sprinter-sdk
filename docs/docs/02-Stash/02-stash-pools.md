@@ -1,12 +1,12 @@
 ---
 id: liquidity-hub-pools
-title: Liquidity Hub & Pools
+title: Sprinter Stash Pools
 sidebar_position: 4
 ---
 
-# Liquidity Hub & Liquidity Pools
+# Sprinter Stash Pools
 
-Central to both Sprinter Stash and Solve is the **Liquidity Hub**—the smart contract that manages and distributes liquidity.
+Central to both Sprinter Stash is the **Sprinter Stash Pools and Liquidity Hub**—the smart contract that manages and distributes liquidity.
 
 ## Liquidity Hub
 
@@ -34,7 +34,7 @@ Deployed across multiple chains, these on-chain vaults serve solver requests.
 
 ### Functionality
 
-- **Cross-Chain Execution:** Pools enable real-time execution of swaps and bridges.
+- **Crosschain Execution:** Pools enable real-time execution of swaps and bridges.
 - **Collateral-Free Borrowing:** Solvers access liquidity backed by hub-signed approvals.
 - **Rebalancing:** Liquidity is auto-optimized across chains.
 - **Risk Management:** Protocol maintains loan-to-value ratios to ensure solvency.

@@ -6,13 +6,13 @@ sidebar_position: 3
 
 # Sprinter Stash
 
-Sprinter Stash is a cross-chain credit liquidity protocol that uses a just-in-time liquidity management system to efficiently allocate funds across multiple blockchains.
+Sprinter Stash is a crosschain credit liquidity protocol that uses a just-in-time liquidity management system to efficiently allocate funds across multiple blockchains.
 
 ## How Sprinter Stash Works
 
 - **Liquidity Providers** deposit USDC on Base into the protocol’s liquidity hub and receive `spUSDC-LP` tokens in return.
 - **Liquidity Management** is dynamic—funds are allocated across supported chains based on solver demand.
-- **Solvers** borrow liquidity instantly, without collateral, enabling seamless cross-chain execution.
+- **Solvers** borrow liquidity instantly, without collateral, enabling seamless crosschain execution.
 - After fills are completed, the Stash receives funds on the source chain, repays the credit, and distributes profits to LPs and solvers.
 
 ## Stash Rewards

@@ -6,6 +6,13 @@
 
 /* You can override the default Infima variables here. */
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+
+
+
 :root {
   --ifm-color-primary: #2e8555;
   --ifm-color-primary-dark: #29784c;
@@ -49,6 +56,26 @@
 }
 
 /* custom.css */
+html, body {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+
+  h1 {
+    font-weight: 600;
+  }
+  
+  h2 {
+    font-weight: 500;
+  }
+  
+  h3 {
+    font-weight: 500;
+  }
+  p {
+    font-weight: 300;
+  }
+  
+}
 
 /* Container for the Swagger UI to adjust width and margins */
 .swagger-container {
