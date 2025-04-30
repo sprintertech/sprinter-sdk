@@ -1,7 +1,7 @@
 ---
 id: liquidity-hub-pools
-title: Sprinter Stash Pools
-sidebar_position: 4
+title: 🅿️ Sprinter Stash Pools
+sidebar_position: 113
 ---
 
 # Sprinter Stash Pools

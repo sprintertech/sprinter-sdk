@@ -7,7 +7,7 @@ sidebar_position: 1
 ## Getting Started
 
 1. Request an API key via the [Sprinter Solve Request Form](https://forms.gle/TCAUwcYqguQbWi3bA)
-2. Review the Solve APIs ([get route](solve-get-route), [get quote](solve-get-quote), [get route V2](solve-get-route-v2))
+2. Review the Solve APIs ([get quote](solve-get-quote), [get route](solve-get-route-v2))
 3. Call `/v2/route` to get quote + execution data
 4. Send transaction using `swap_call_data`
 

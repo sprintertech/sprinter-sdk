@@ -11,26 +11,26 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap");
 
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
+  --ifm-color-primary: #FF9B43;
+  --ifm-color-primary-dark: #FF9B43;
+  --ifm-color-primary-darker: #FF9B43;
+  --ifm-color-primary-darkest: #FF9B43;
+  --ifm-color-primary-light: #FF9B43;
+  --ifm-color-primary-lighter: #FF9B43;
+  --ifm-color-primary-lightest: #FF9B43;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme="dark"] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
+  --ifm-color-primary: #FF9B43;
+  --ifm-color-primary-dark: #FF9B43;
+  --ifm-color-primary-darker: #FF9B43;
+  --ifm-color-primary-darkest: #FF9B43;
+  --ifm-color-primary-light: #FF9B43;
+  --ifm-color-primary-lighter: #FF9B43;
+  --ifm-color-primary-lightest: #FF9B43;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
 
@@ -92,4 +92,20 @@ body {
 .swagger-container .redoc-scroll-wrap {
   max-height: 800px; /* Set max height for scrollable area */
   overflow-y: auto; /* Vertical scrolling */
+}
+
+/* Custom Tip Box (:::tip) */
+.alert--success {
+  background-color: #262627; /* Tip background color */
+  color: #f4f6f9;            /* Tip text color */
+  border-left: 4px solid #FF9B43; /* Tip border color */
+}
+/* Optional: Adjust icon */
+.alert--success .alert__icon {
+  color: #FF9B43; /* Tip icon color */
+}
+/* Style links inside TIP boxes */
+.alert--success a {
+  color: #FF9B43; /* Your link color inside tip */
+  text-decoration: underline;
 }

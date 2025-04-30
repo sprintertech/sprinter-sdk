@@ -20,11 +20,6 @@ SPRNT is the native governance and utility token of the Sprinter Protocol. It is
 - Distributed to LPs and solvers for protocol usage
 - Used to bootstrap solver routes and usage
 
-### Safety Module
-
-- SPRNT can be staked to secure the protocol
-- Rewards are earned in exchange for risk of slashing
-
 ### Bonding Pools
 
 - Solvers can create Bonding Pools, where SPRNT can be bonded
@@ -34,7 +29,7 @@ SPRNT is the native governance and utility token of the Sprinter Protocol. It is
 ## Token Supply & Allocation
 
 - **Total Supply:** 1,000,000,000 SPRNT
-- **Token Standard:** xERC20
+- **Token Standard:** ERC20
 - **Network:** Ethereum Mainnet
 
 More details on the token generation event and distribution will be released soon.

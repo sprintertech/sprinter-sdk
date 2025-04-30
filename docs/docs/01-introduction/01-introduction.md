@@ -20,15 +20,15 @@ Sprinter combines solving-as-a-service infrastructure with credit-based cross-ch
 
 ## Sprinter’s Core Products
 
-### Sprinter Stash
+### [Sprinter Stash](Stash)
 
 A crosschain credit protocol providing liquidity access to solvers and market makers without requiring collateral. Liquidity providers deposit USDC into the protocol, earning returns through solver fees and passive yield strategies.
 
-### Sprinter Solve
+### [Sprinter Solve](Solve)
 
 A solving-as-a-service platform that offers a request-for-quote (RFQ) based swap API for our partners. It enables dApps, wallets, and protocols to improve execution quality, optimize pricing, and enhance user experience.
 
-### Need to chat to us?
+## Need to chat to us?
 
 If you have questions about Sprinter, the code, the docs, or have a partnership inquiry, please reach out to us on [Telegram](https://t.me/sprinter_tech/1) or via email at [hello@sprinter.tech](mailto:hello@sprinter.tech).
 

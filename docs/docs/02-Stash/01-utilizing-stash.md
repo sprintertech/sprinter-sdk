@@ -1,68 +1,94 @@
 ---
 id: use-stash
-title: How to use Stash
+title: Stash API quick start
 sidebar_position: 1
 ---
-
 :::tip
-There are two main ways to utilize Sprinter Stash. Either as a Liquidity Provider or as a Solver.
+Request your Stash API key via [Sprinter Stash Request](https://forms.gle/kgpcQK722Ley2gke7) or contacting support@sprinter.tech
 :::
-
-## As a Liquidity Provider
-
-1. Visit [app.sprinter.tech](https://app.sprinter.tech)
-2. Connect your wallet (e.g., MetaMask)
-3. Deposit USDC and stake LP tokens
-4. Monitor rewards, pool stats, unstake or withdraw liquidity
 
 ## As a Solver
 
-1. Request Stash API access via [Sprinter Stash Request Form](https://forms.gle/kgpcQK722Ley2gke7)
-2. Review the Stash APIs ([borrow cost](borrow-cost-api), [borrow quote](borrow-quote-api)) or visit the [Stash Swagger](https://api.test.sprinter.buildwithsygma.com/swagger/index.html#/Liquidity/get_liquidity_protocol__protocol__deposit__txHash__request)
-3. Query borrow rates
-4. Borrow funds and execute swaps
-5. Repay liquidity post-transaction
+Sprinter Stash enables solvers to **borrow liquidity crosschain on-demand** to execute user intents without needing pre-funded inventory.
 
-### Supported Networks
+This guide covers:
+ 
+1. Recap of the [**Stash Fill Lifecycle**](use-stash#1-stash-fill-lifecycle)
+2. Requesting a [**Borrow Cost Estimate**](use-stash#1-request-a-borrow-cost-estimate-optional)
+3. Requesting a **Final Borrow Quote and Liquidity Authorization**
 
-- Arbitrum
-- Optimism
-- Base
-- Ethereum Mainnet (coming soon)
+### 1. Stash Fill Lifecycle
 
-### Supported Assets
 
-- Stablecoins: USDC, DAI, USDT
-- Blue-Chip: WETH, WBTC
+<div style={{ display: "flex", justifyContent: "center" }}>
 
-Want to request support for a new chain or asset? [Submit a request](https://forms.gle/an5vZrmyDkyYR8Ni7).
+```mermaid
+flowchart TD
+  A[Detect User Intent] --> B[2 - Preview an estimated borrowing cost🔗]
+  B --> C[Receive Borrow Cost Estimate]
+  C --> D{Is Cost Acceptable?}
+  D -- Yes --> E[3 - Reserve liquidity and authorize the fill🔗]
+  D -- No --> F[Abort Fill]
+  E --> G[Borrow Liquidity from Sprinter Stash]
+  G --> H[Perform Cross-Chain Swap/Bridge Execution]
+  H --> I[Repay Borrowed Liquidity + Costs]
+  I --> J[Fill Complete]
 
-## Fees
+click B "borrow-cost-api" "Borrow Cost"
+style B fill:#FF9B43,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
 
-Sprinter Stash handles crosschain liquidity fills. Revenue is generated from the spread between source and destination values.
-
-### Revenue Components
-
-- **Fill Revenue:** User deposit on source - amount bridged to destination.
-- **Borrow Costs:** Cost of liquidity borrowing and crosschain repayment.
-- **Solver Costs:** Gas fees and execution costs fronted by solvers.
-
-### Profit Calculation
+click E "borrow-quote-api" "Borrow Quote"
+style E fill:#FF9B43,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
 
 ```
-Fill Profit = Fill Revenue - Borrow Costs - Solver Costs
+</div>
+
+
+
+### 2. Request a Borrow Cost Estimate (Optional)
+
+Call the [**Borrow Cost API**](borrow-cost-api) to preview an estimated [borrowing cost](/glossary#46-borrow-cost)) for a potential fill before requesting liquidity. 
+
+
+```ts title="Fetch Borrow Cost Estimate"
+const protocol = "across";  // Example: "across", "uniswapx"
+const type = "swap";        // Example: "swap", "bridge"
+
+const response = await fetch(
+  `https://api.sprinter.tech/v1/liquidity/protocol/${protocol}/type/${type}/quote`,
+  {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "X-API-Key": "<your_api_key>",
+    },
+  }
+);
+
+const costEstimate = await response.json();
+console.log("Borrow Cost Estimate:", costEstimate);
+ ```
+
+
+###  3. Request a Final Borrow Quote
+
+If the estimated cost is acceptable, call the [**Borrow Quote API**](borrow-quote-api) to request a [borrow quote](/glossary#47-borrow-quote) to reserve liquidity and authorize the fill.
+
+```ts title="Request Final Borrow Quote"
+const protocol = "across";
+const txHash = "0xabc123"; // Related transaction hash
+
+const response = await fetch(
+  `https://api.sprinter.tech/v1/liquidity/protocol/${protocol}/deposit/${txHash}/request`,
+  {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "X-API-Key": "<your_api_key>",
+    },
+  }
+);
+
+const borrowQuote = await response.json();
+console.log("Borrow Quote:", borrowQuote);
 ```
-
-### Monthly Distribution
-
-1. Withdraw raw profits from liquidity pools.
-2. Deduct solver gas costs.
-3. Distribute monthly fill profits to:
-
-| Actor    | Description                           | Fill Profit % |
-| -------- | ------------------------------------- | ------------- |
-| Solvers  | For executing fills                   | 50%           |
-| LPs      | For providing liquidity               | 50%           |
-| Treasury | Protocol growth & sustainability fund | TBD           |
-
-➡️ _Initial fee split is reviewed monthly by governance._

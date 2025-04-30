@@ -46,6 +46,9 @@ const config: Config = {
   ],
 
   themeConfig: {
+    mermaid: {
+      theme: { light: "neutral", dark: "dark" },
+    },
     colorMode: {
       defaultMode: "dark",
       disableSwitch: false, // optional: hide theme toggle switch
@@ -177,7 +180,22 @@ const config: Config = {
     ],
   ],
 
-  themes: ["docusaurus-theme-openapi-docs"],
+
+  themes: [
+    "docusaurus-theme-openapi-docs",
+    "@docusaurus/theme-mermaid",
+  ],
+  
+
+  markdown: {
+    mermaid: true,
+  },
+  
 };
 
+
+
+  
+
 export default config;
+
