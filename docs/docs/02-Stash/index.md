@@ -3,13 +3,14 @@ id: Stash
 title: Sprinter Stash
 sidebar_position: 3
 ---
+
 :::tip
 Ready to **Stash**? Visit out the [Stash API quick start guide](use-stash)
 :::
 
 # Sprinter Stash
 
-Sprinter's crosschain credit protocol providing liquidity access to solvers and market makers without requiring collateral. 
+Sprinter's crosschain credit protocol providing liquidity access to solvers and market makers without requiring collateral.
 
 ## How Stash Works
 
@@ -19,7 +20,6 @@ Sprinter's crosschain credit protocol providing liquidity access to solvers and 
 - Once **fills are completed**, Stash receives funds on the source chain, repays the credit, and distributes profits to LPs and solvers.
 
 ### Stash Fill Lifecycle
-
 
 ```mermaid
 flowchart TD
@@ -41,8 +41,6 @@ style E fill:#FF9B43,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
 
 ```
 
-
-
 ## Features & Utility
 
 ### For Liquidity Providers
@@ -50,6 +48,7 @@ style E fill:#FF9B43,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
 - Earn passive yield, solver-generated fees and protocol incentives.
 - Participate in liquidity mining campaigns for SPRNT rewards.
 - Benefit from protocol-managed inventory strategies.
+
 ### For Solvers
 
 - Reduce capital requirements by borrowing liquidity on demand.
@@ -97,7 +96,6 @@ Sprinter enforces:
 
 Sprinter will also allow Solver Operators to create Bonding Pools, that escrow funds to vouch for their solvers, enabling more favourable borrowing conditions. Sprinter Bonding Pools will be controlled by governance and similarly allow slashing by governance for any malicious activity or violations.
 
-
 ### Supported Networks
 
 - Arbitrum
@@ -115,7 +113,6 @@ Want to request support for a new chain or asset? [Submit a request](https://for
 ## Stash Fees
 
 Sprinter Stash handles crosschain liquidity fills. Revenue is generated from the spread between between the amount the user deposited on source and the amount provided on the destination.
-
 
 ### Revenue Components
 

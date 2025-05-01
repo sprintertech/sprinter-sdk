@@ -180,22 +180,11 @@ const config: Config = {
     ],
   ],
 
-
-  themes: [
-    "docusaurus-theme-openapi-docs",
-    "@docusaurus/theme-mermaid",
-  ],
-  
+  themes: ["docusaurus-theme-openapi-docs", "@docusaurus/theme-mermaid"],
 
   markdown: {
     mermaid: true,
   },
-  
 };
 
-
-
-  
-
 export default config;
-

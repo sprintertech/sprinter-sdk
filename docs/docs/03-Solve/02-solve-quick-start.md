@@ -43,3 +43,4 @@ const res = await fetch(`https://swaps.sprinter.tech/base/v2/route`, {
 
 const quoteData = await res.json();
 console.log("Solve API Quote:", quoteData);
+```
