@@ -1,7 +1,7 @@
 ---
 id: borrow-cost-api
-title: "Get the borrow cost for a liquidity transaction"
-description: "Get the borrow cost for a liquidity transaction"
+title: "Get the borrow cost for a credit transaction"
+description: "Get the borrow cost for a credit transaction"
 sidebar_label: "Borrow Cost API "
 hide_title: true
 hide_table_of_contents: true
@@ -21,7 +21,7 @@ import Heading from "@theme/Heading";
 <Heading
   as={"h1"}
   className={"openapi__heading"}
-  children={"Preview an estimated borrowing cost before requesting liquidity."}
+  children={"Preview an estimated borrowing cost before requesting credit."}
 ></Heading>
 
 <MethodEndpoint
@@ -30,7 +30,7 @@ import Heading from "@theme/Heading";
   context={"endpoint"}
 ></MethodEndpoint>
 
-A [borrow cost](/glossary#46-borrow-cost) is the **preliminary estimated fee** a solver would incur to borrow liquidity from Sprinter Stash. It is returned off-chain via the Stash API and helps solvers determine if pursuing a fill is profitable.
+A [borrow cost](/glossary#46-borrow-cost) is the **preliminary estimated fee** a solver would incur to borrow credit from Sprinter Stash. It is returned off-chain via the Stash API and helps solvers determine if pursuing a fill is profitable.
 
 Borrow cost includes expected gas, risk premiums, protocol fees, and capital access costs — but it is not a binding or reserved price.
 

@@ -1,8 +1,8 @@
 ---
 id: solve-get-quote
-title: "Get Quote"
+title: "Get Quot API"
 description: "Get a price estimation quote"
-sidebar_label: "Get Quote"
+sidebar_label: "Get Quote API"
 hide_title: true
 hide_table_of_contents: true
 api: eJztlt9v2zYQx/+VA7GHdpMb2ZHr2G+K43RGX7okBQoYXkqL54iNRCrkybVn6H8vKPpXYsfZAuxhWP1m8u745eeOp1syXaDhJLUaCtZjd0h/lJqQBUygTYws3BbrsQ9IwKEwMkFASzKvfeBhZVxww3MkNJb1RksmnctDiWbBAqZ4jqzHeK5LRbdS7cW+SRH8LugpkL5HZYE0WMwykAoEJjLnGShN9aksYDZJMeest3wSKt6E4QoGV/1W6OMBt8A3gSwZqe7gjdJgE4mK5FQmm/BvWcBoUTjN3rC+HxEad8Kfo7DRHf/2CwsYznleZM6uGe79XBBJ9e6NU+CVsSpgBh9KaVCwHpkSXwpTBYdx1td6jubqzkIYtBuUR7C1QpgsCGFAKRos840rqkQLFB5finP4LimFr+H8KxQGp3J+nFU4H/HGNG5cOmbLKKweYwvn78+bnXbUiQZn3bAb9aPognfPJt12NECBcT/qtludpggvd2jGXtpxkv8g8nHAuqS/R3hSLv5fgPthi/P4tDtptU4vB2cXYRxiux9dtjoYX3TDs9N+p/2+n7RYNXaBbKGVRevQtMJwn1DddsCWSYLWTsssW0BikBMKFrBEK0JFzosXRSaT+qGefLPOdfks9etNNN+oPFxKEXBeYEIoQJdUlLRqP1vWevINE/e/MK5BkvTKVz3MFcV/sPU8Suho9zLjrUedh6tVulhVOa/oUMLOuQAXDi29PkMDY7SBdXX4/AgkLjN7IBm76tF5OuGPM+SX9875vcy5AoNc8EmGUFtBjtbyOzzAfItXKltOp7JO1ZNicWTW1Op7bGg19wV8VrykVBv5FwpowFDNeCYFxJ+GcI+LnwB3AbYPldtQuVfgXhCaGRqv4Ce3LbcqYDlSqldjnO8cKeuxk/WQZjEpjaRFPaLFhfyIi7h0JqOx69Hr7WuHzF9q12i5FsvrRRb4r2aKXKDZfja/NOJPw4Y3eNIgfa171lNtck5g728zOcPbX+tLSTXV9UGry11/5wVMFnCecZUcjFdaFBsLcPYsYDM01ps034XvwsYEibuvWaEt5bwui5XYOyQ4OO8ut3X10ui7okI4p5Mi41K5o0qTuSA+AyPmbccBS7Ult7BcTrjFzyarKrfsRw+XFiGtKxTBelOeWTwi683VqijfwisG6IOqXSd6PKjPeFY6u3pKerW258bRIyJ2xtt/SYMf2F6U4AfArYax+2OkE1E/nGD9Alz2vGOcJFjseu01Jhdl81g/DG5YVf0AB+2RRg==
@@ -19,11 +19,17 @@ import OperationTabs from "@theme/OperationTabs";
 import TabItem from "@theme/TabItem";
 import Heading from "@theme/Heading";
 
-<Heading as={"h1"} className={"openapi__heading"} children={"Get Quote"}></Heading>
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Get the proposed price and execution plan for filling an intent"}
+></Heading>
 
 <MethodEndpoint method={"get"} path={"/quote"} context={"endpoint"}></MethodEndpoint>
 
-Get a price estimation quote
+Get the **proposed price and execution plan** for filling an intent. It includes information such as input/output amounts, fees, and gas costs and reflects the and reflects the cost, path, and feasibility of executing a swap or cross-chain action at a given moment.
+
+Users (or integrators) evaluate quotes to determine if they're acceptable before triggering execution.
 
 <Heading
   id={"request"}

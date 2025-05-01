@@ -10,43 +10,44 @@ Request your Stash API key via [Sprinter Stash Request](https://forms.gle/kgpcQK
 
 ## As a Solver
 
-Sprinter Stash enables solvers to **borrow liquidity crosschain on-demand** to execute user intents without needing pre-funded inventory.
+Sprinter Stash enables solvers to **borrow credit crosschain on-demand** to execute user intents without needing pre-funded inventory.
 
 This guide covers:
 
-1. Recap of the [**Stash Fill Lifecycle**](use-stash#1-stash-fill-lifecycle)
-2. Requesting a [**Borrow Cost Estimate**](use-stash#2-request-a-borrow-cost-estimate-optional)
-3. Requesting a **Final Borrow Quote and Liquidity Authorization**
+1. Recap of the [Stash Solver Fill Lifecycle](use-stash#1-stash-solver-fill-lifecycle)
+2. Requesting a [Credit Borrow Cost Estimate](use-stash#2-request-a-borrow-cost-estimate-optional)
+3. Requesting a [Final Borrow Quote and Credit Authorization](use-stash#3-request-a-final-borrow-quote)
+4. Check out the [Fill Optimization Tips](use-stash#4-fill-optimization-tips)
 
-### 1. Stash Fill Lifecycle
+### 1. Stash Solver Fill Lifecycle
 
 <div style={{ display: "flex", justifyContent: "center" }}>
 
 ```mermaid
 flowchart TD
-  A[Detect User Intent] --> B[2 - Preview an estimated borrowing cost🔗]
+  A[Detect User Intent] --> B[2 - Preview an estimated borrowing cost of credit🔗]
   B --> C[Receive Borrow Cost Estimate]
   C --> D{Is Cost Acceptable?}
-  D -- Yes --> E[3 - Reserve liquidity and authorize the fill🔗]
+  D -- Yes --> E[3 - Reserve credit and authorize the fill🔗]
   D -- No --> F[Abort Fill]
   E --> G[Borrow Liquidity from Sprinter Stash]
   G --> H[Perform Cross-Chain Swap/Bridge Execution]
-  H --> I[Repay Borrowed Liquidity + Costs]
+  H --> I[Repay Borrowed Credit + Costs]
   I --> J[Fill Complete]
 
-click B "borrow-cost-api" "Borrow Cost"
+click B "use-stash#2-request-a-borrow-cost-estimate-optional" "Borrow Cost"
 style B fill:#FF9B43,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
 
-click E "borrow-quote-api" "Borrow Quote"
+click E "use-stash#3-request-a-final-borrow-quote" "Borrow Quote"
 style E fill:#FF9B43,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
 
 ```
 
 </div>
 
-### 2. Request a Borrow Cost Estimate (Optional)
+### 2. Request a Credit Borrow Cost Estimate (Optional)
 
-Call the [**Borrow Cost API**](borrow-cost-api) to preview an estimated [borrowing cost](/glossary#46-borrow-cost)) for a potential fill before requesting liquidity.
+Call the [**Borrow Cost API**](borrow-cost-api) to preview an estimated [borrowing cost](/glossary#46-borrow-cost) for a potential fill before requesting credit.
 
 ```ts title="Fetch Borrow Cost Estimate"
 const protocol = "across"; // Example: "across", "uniswapx"
@@ -69,7 +70,7 @@ console.log("Borrow Cost Estimate:", costEstimate);
 
 ### 3. Request a Final Borrow Quote
 
-If the estimated cost is acceptable, call the [**Borrow Quote API**](borrow-quote-api) to request a [borrow quote](/glossary#47-borrow-quote) to reserve liquidity and authorize the fill.
+If the estimated cost is acceptable, call the [**Borrow Quote API**](borrow-quote-api) to request a [borrow quote](/glossary#47-borrow-quote) to reserve credit and authorize the fill.
 
 ```ts title="Request Final Borrow Quote"
 const protocol = "across";
@@ -89,3 +90,17 @@ const response = await fetch(
 const borrowQuote = await response.json();
 console.log("Borrow Quote:", borrowQuote);
 ```
+
+### 4. Fill Optimization Tips
+
+Here are some tips on getting the best performance and profit from your Sprinter Stash integration:
+
+1. **Pre-fetch Borrow Cost** - Call `GET /type/{type}/quote` as early as possible (when detecting intents) to evaluate solver profitability.
+
+2. **Batch Gas Where Possible** - Bundle execution and repayment transactions to reduce gas costs.
+
+3. **Optimize for Slippage** - Query quotes close to execution time to reduce stale pricing or slippage-induced fills.
+
+4. **Handling Rate Limits** - If you hit 429s, give it a moment and retry using retry_after value. You can request higher limits via support@sprinter.tech.
+
+5. **Validate Transaction Hash Early** - Ensure the user intent transaction is final and not reverted before calling `/deposit/{txHash}/request`.

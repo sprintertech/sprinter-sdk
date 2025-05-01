@@ -5,7 +5,7 @@ sidebar_position: 3
 ---
 
 :::tip
-Ready to **Stash**? Visit out the [Stash API quick start guide](use-stash)
+Ready to **Stash**? Check out the [Stash API quick start guide](use-stash)
 :::
 
 # Sprinter Stash
@@ -14,23 +14,23 @@ Sprinter's crosschain credit protocol providing liquidity access to solvers and 
 
 ## How Stash Works
 
-- **Liquidity Providers** deposit USDC into **[Stash](https://app.sprinter.tech)**, earning yield from solver fees, passive yield and protocol incentives.
+- **Liquidity Providers** deposit USDC into **[Sprinter Stash](https://app.sprinter.tech)**, earning yield from solver fees, passive yield and protocol incentives.
 - Stash **dynamically allocates liquidity** across supported chains based on solver demand using algorithmic management and rebalancing.
-- **Solvers** request and borrow liquidity on destination instantly, [without collateral](#how-stash-enables-zero-collateral-loans), enabling seamless crosschain execution.
+- **Solvers** request and borrow credit on destination instantly, [without collateral](#how-stash-enables-zero-collateral-loans), enabling seamless crosschain execution.
 - Once **fills are completed**, Stash receives funds on the source chain, repays the credit, and distributes profits to LPs and solvers.
 
-### Stash Fill Lifecycle
+### Stash Solver Fill Lifecycle
 
 ```mermaid
 flowchart TD
-  A[Detect User Intent] --> B[Preview an estimated borrowing cost🔗]
+  A[Detect User Intent] --> B[Preview an estimated borrowing cost of credit🔗]
   B --> C[Receive Borrow Cost Estimate]
   C --> D{Is Cost Acceptable?}
-  D -- Yes --> E[Reserve liquidity and authorize the fill🔗]
+  D -- Yes --> E[Reserve credit and authorize the fill🔗]
   D -- No --> F[Abort Fill]
   E --> G[Borrow Liquidity from Sprinter Stash]
   G --> H[Perform Cross-Chain Swap/Bridge Execution]
-  H --> I[Repay Borrowed Liquidity + Costs]
+  H --> I[Repay Borrowed Credit + Costs]
   I --> J[Fill Complete]
 
 click B "borrow-cost-api" "Borrow Cost"
@@ -51,7 +51,7 @@ style E fill:#FF9B43,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
 
 ### For Solvers
 
-- Reduce capital requirements by borrowing liquidity on demand.
+- Reduce capital requirements by borrowing credit on demand.
 - Eliminate need to manage inventory across chains.
 - Improve execution efficiency with shared liquidity access.
 

@@ -186,11 +186,11 @@ Systems that facilitate communication between chains regardless of their underly
 
 ### 46. Borrow Cost
 
-A **borrow cost** is the preliminary **estimated fee** a solver would incur to borrow liquidity from Sprinter Stash. It is returned off-chain via the Stash API and helps solvers determine if pursuing a fill is profitable. Borrow cost includes expected gas, risk premiums, protocol fees, and capital access costs — but it is **not a binding or reserved price**.
+A **borrow cost** is the preliminary **estimated fee** a solver would incur to borrow credit from Sprinter Stash. It is returned off-chain via the Stash API and helps solvers determine if pursuing a fill is profitable. Borrow cost includes expected gas, risk premiums, protocol fees, and capital access costs — but it is not a binding or reserved price.
 
 ### 47. Borrow Quote
 
-A **borrow quote** is the final, **authorized borrowing offer** issued by Sprinter Stash when a solver decides to proceed with a fill. It reserves liquidity under specific conditions, allowing solvers to confidently execute the cross-chain transaction.
+A **borrow quote** is the final, **authorized borrowing offer** issued by Sprinter Stash when a solver decides to proceed with a fill. It reserves credit under specific conditions, allowing solvers to confidently execute the cross-chain transaction.
 
 ### 48. Sprinter Solve Quote
 
