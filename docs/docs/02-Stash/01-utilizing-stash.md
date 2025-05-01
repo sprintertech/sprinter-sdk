@@ -14,7 +14,7 @@ Sprinter Stash enables solvers to **borrow liquidity crosschain on-demand** to e
 This guide covers:
  
 1. Recap of the [**Stash Fill Lifecycle**](use-stash#1-stash-fill-lifecycle)
-2. Requesting a [**Borrow Cost Estimate**](use-stash#1-request-a-borrow-cost-estimate-optional)
+2. Requesting a [**Borrow Cost Estimate**](use-stash#2-request-a-borrow-cost-estimate-optional)
 3. Requesting a **Final Borrow Quote and Liquidity Authorization**
 
 ### 1. Stash Fill Lifecycle
