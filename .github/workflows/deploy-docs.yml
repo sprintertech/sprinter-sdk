@@ -31,7 +31,7 @@ jobs:
       - name: Set branch name for Cloudflare Pages
         id: cf-branch
         run: |
-          if [[ "${{ github.ref_name }}" == "production" ]]; then
+          if [[ "${{ github.event.inputs.environment }}" == "production" ]]; then
             echo "CF_BRANCH_NAME=master" >> $GITHUB_ENV
           else
             echo "CF_BRANCH_NAME=preview" >> $GITHUB_ENV
