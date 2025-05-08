@@ -6,27 +6,31 @@
 
 /* You can override the default Infima variables here. */
 
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap");
+
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
+  --ifm-color-primary: #ff9b43;
+  --ifm-color-primary-dark: #ff9b43;
+  --ifm-color-primary-darker: #ff9b43;
+  --ifm-color-primary-darkest: #ff9b43;
+  --ifm-color-primary-light: #ff9b43;
+  --ifm-color-primary-lighter: #ff9b43;
+  --ifm-color-primary-lightest: #ff9b43;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme="dark"] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
+  --ifm-color-primary: #ff9b43;
+  --ifm-color-primary-dark: #ff9b43;
+  --ifm-color-primary-darker: #ff9b43;
+  --ifm-color-primary-darkest: #ff9b43;
+  --ifm-color-primary-light: #ff9b43;
+  --ifm-color-primary-lighter: #ff9b43;
+  --ifm-color-primary-lightest: #ff9b43;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
 
@@ -46,4 +50,62 @@
 
 [data-theme="dark"] .logo-dark-mode {
   display: block;
+}
+
+/* custom.css */
+html,
+body {
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+
+  h1 {
+    font-weight: 600;
+  }
+
+  h2 {
+    font-weight: 500;
+  }
+
+  h3 {
+    font-weight: 500;
+  }
+  p {
+    font-weight: 300;
+  }
+}
+
+/* Container for the Swagger UI to adjust width and margins */
+.swagger-container {
+  max-width: 1200px; /* Set your desired max width */
+  margin: 0 auto; /* Center align */
+  padding: 20px; /* Add some padding around */
+  overflow-x: auto; /* Ensure horizontal scroll if content is too wide */
+}
+
+/* Custom Redoc styling */
+.swagger-container .redoc-wrap {
+  background-color: #f4f6f9; /* Optional: Set background color */
+  border-radius: 8px; /* Optional: Rounded corners */
+}
+
+/* Optional: Add scroll bar on long API descriptions */
+.swagger-container .redoc-scroll-wrap {
+  max-height: 800px; /* Set max height for scrollable area */
+  overflow-y: auto; /* Vertical scrolling */
+}
+
+/* Custom Tip Box (:::tip) */
+.alert--success {
+  background-color: #262627; /* Tip background color */
+  color: #f4f6f9; /* Tip text color */
+  border-left: 4px solid #ff9b43; /* Tip border color */
+}
+/* Optional: Adjust icon */
+.alert--success .alert__icon {
+  color: #ff9b43; /* Tip icon color */
+}
+/* Style links inside TIP boxes */
+.alert--success a {
+  color: #ff9b43; /* Your link color inside tip */
+  text-decoration: underline;
 }

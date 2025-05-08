@@ -1,0 +1,301 @@
+openapi: 3.0.3
+info:
+  title: Swap by Blanc
+  description: API used by Blanc Swap
+  version: 1.0.0-beta
+
+security:
+  - ApiKeyAuth: []
+
+paths:
+  /quote:
+    get:
+      operationId: getQuote
+      description: Get a price estimation quote
+      parameters:
+        - in: query
+          name: amount_in
+          description: The amount of tokens to sell in decimal notation
+          schema:
+            $ref: "#/components/schemas/TokenAmount"
+          required: true
+          example: "1000000000000000000"
+        - in: query
+          name: token_in
+          description: The token address to sell
+          schema:
+            $ref: "#/components/schemas/Address"
+          required: true
+          example: "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+        - in: query
+          name: token_out
+          description: The token address to buy
+          schema:
+            $ref: "#/components/schemas/Address"
+          required: true
+          example: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+      responses:
+        200:
+          description: Quote successfully created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuoteResponse"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        401:
+          description: Unauthorized - Invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /route:
+    get:
+      operationId: getRoute
+      description: Get a route for execution
+      parameters:
+        - in: query
+          name: amount_in
+          description: The amount of tokens to sell in decimal notation
+          schema:
+            $ref: "#/components/schemas/TokenAmount"
+          required: true
+          example: "1000000000000000000"
+        - in: query
+          name: token_in
+          description: The token address to sell
+          schema:
+            $ref: "#/components/schemas/Address"
+          required: true
+          example: "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+        - in: query
+          name: min_amount_out
+          description: The minimum amount of tokens to receive
+          schema:
+            $ref: "#/components/schemas/TokenAmount"
+          required: true
+          example: "990000000000000000"
+        - in: query
+          name: token_out
+          description: The token address to buy
+          schema:
+            $ref: "#/components/schemas/Address"
+          required: true
+          example: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+      responses:
+        200:
+          description: Route successfully generated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RouteResponse"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        401:
+          description: Unauthorized - Invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /v2/route:
+    get:
+      operationId: getRouteV2
+      description: Get a route for execution with additional parameters
+      parameters:
+        - in: query
+          name: amount_in
+          description: The amount of tokens to sell in decimal notation
+          schema:
+            $ref: "#/components/schemas/TokenAmount"
+          required: true
+          example: "1000000000000000000"
+        - in: query
+          name: token_in
+          description: The token address to sell
+          schema:
+            $ref: "#/components/schemas/Address"
+          required: true
+          example: "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+        - in: query
+          name: token_out
+          description: The token address to buy
+          schema:
+            $ref: "#/components/schemas/Address"
+          required: true
+          example: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+        - in: query
+          name: slippage
+          description: The slippage tolerance in percentage (e.g., 0.5 for 0.5%)
+          schema:
+            type: number
+            format: float
+          required: false
+          example: 0.5
+        - in: query
+          name: target_duration_ms
+          description: The target duration for the route search in milliseconds
+          schema:
+            type: integer
+            format: int64
+          required: false
+          example: 200
+      responses:
+        200:
+          description: Route successfully generated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RouteResponseV2"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        401:
+          description: Unauthorized - Invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key with format sk_live_*
+
+  schemas:
+    Address:
+      description: 20 byte Ethereum address encoded as a hex with `0x` prefix
+      type: string
+      pattern: "^0x[a-fA-F0-9]{40}$"
+      example: "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+
+    TokenAmount:
+      description: Amount of an ERC20 token as a decimal string (no scientific notation)
+      type: string
+      pattern: "^[0-9]+$"
+      example: "1000000000000000000"
+
+    QuoteResponse:
+      description: Successful quote with the expected output amount
+      type: object
+      properties:
+        amount_out:
+          description: The amount of output tokens you would receive
+          $ref: "#/components/schemas/TokenAmount"
+      required:
+        - amount_out
+
+    Call:
+      description: An EVM call for execution
+      type: object
+      required:
+        - to
+        - value
+        - data
+      properties:
+        to:
+          description: Target contract address
+          $ref: "#/components/schemas/Address"
+        value:
+          description: Amount of ETH to send with call (in wei)
+          $ref: "#/components/schemas/TokenAmount"
+        data:
+          description: Hex encoded calldata
+          type: string
+          pattern: "^0x[a-fA-F0-9]*$"
+          example: "0x38ed1739"
+
+    RouteResponse:
+      description: Successfully created route with execution details
+      type: object
+      required:
+        - calls
+        - gas
+      properties:
+        calls:
+          description: Array of EVM calls to execute in sequence
+          type: array
+          items:
+            $ref: "#/components/schemas/Call"
+        gas:
+          description: Estimated gas required for execution
+          type: integer
+          example: 150000
+
+    RouteResponseV2:
+      description: Successfully created route with additional details
+      type: object
+      required:
+        - quote_id
+        - amount_out
+        - min_amount_out
+        - target
+        - swap_call_data
+        - rainbow_input
+      properties:
+        quote_id:
+          description: Unique identifier for the quote
+          type: string
+          example: "q_12345678"
+        amount_out:
+          description: The amount of output tokens you would receive
+          $ref: "#/components/schemas/TokenAmount"
+        min_amount_out:
+          description: The minimum amount of tokens to receive after slippage
+          $ref: "#/components/schemas/TokenAmount"
+        target:
+          description: The target contract address for the swap
+          $ref: "#/components/schemas/Address"
+        swap_call_data:
+          description: Hex encoded calldata for the swap
+          type: string
+          pattern: "^0x[a-fA-F0-9]*$"
+          example: "0x38ed1739"
+        rainbow_input:
+          description: Input data for the rainbow swap
+          type: string
+          example: "0x..."
+
+    Error:
+      description: Error response with details
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          description: Human readable error message
+          type: string
+          example: "insufficient output amount"

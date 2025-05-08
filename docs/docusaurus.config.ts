@@ -1,16 +1,17 @@
 import { themes as prismThemes } from "prism-react-renderer";
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
+import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
 
 const config: Config = {
   title: "Sprinter",
-  tagline: "Multichain interactions that feel like one",
+  tagline: "The Fast Lane For Crosschain",
   favicon: "img/sprinter.ico",
 
   url: "https://docs.sprinter.buildwithsygma.com/",
   baseUrl: "/",
 
-  organizationName: "ChainSafe",
+  organizationName: "Sprinter",
   projectName: "sprinter-ts",
 
   onBrokenLinks: "throw",
@@ -30,6 +31,7 @@ const config: Config = {
           remarkPlugins: [
             [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }],
           ],
+          docItemComponent: "@theme/ApiItem",
           sidebarPath: "./sidebars.ts",
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
@@ -44,6 +46,14 @@ const config: Config = {
   ],
 
   themeConfig: {
+    mermaid: {
+      theme: { light: "neutral", dark: "dark" },
+    },
+    colorMode: {
+      defaultMode: "dark",
+      disableSwitch: false, // optional: hide theme toggle switch
+      respectPrefersColorScheme: false, // always force dark unless user switches
+    },
     navbar: {
       title: "Sprinter",
       logo: {
@@ -53,8 +63,8 @@ const config: Config = {
       },
       items: [
         {
-          href: "https://poc.sprinter.buildwithsygma.com/",
-          label: "POC",
+          href: "https://app.sprinter.tech/",
+          label: "Stash",
           position: "left",
         },
         {
@@ -63,7 +73,7 @@ const config: Config = {
           position: "right",
         },
         {
-          href: "https://github.com/ChainSafe/sprinter-ts",
+          href: "https://github.com/sprintertech",
           label: "GitHub",
           position: "right",
         },
@@ -78,14 +88,6 @@ const config: Config = {
             {
               label: "Introduction",
               to: "/",
-            },
-            {
-              label: "SDK",
-              to: "/sdk",
-            },
-            {
-              label: "React SDK",
-              to: "/react-sdk/",
             },
           ],
         },
@@ -144,7 +146,45 @@ const config: Config = {
         indexDocs: true,
       },
     ],
+    [
+      "docusaurus-plugin-openapi-docs",
+      {
+        id: "openapi",
+        docsPluginId: "classic",
+        config: {
+          // petstore: { // EXAMPLE
+          //   specPath: "src/api/petstore-utf8.yaml",
+          //   outputDir: "docs/../src/api/generated/petstore",
+          //   downloadUrl:
+          //       "https://raw.githubusercontent.com/PaloAltoNetworks/docusaurus-template-openapi-docs/main/examples/petstore.yaml",
+          //   sidebarOptions: {
+          //     groupPathsBy: "tag",
+          //   },
+          // } satisfies OpenApiPlugin.Options,
+          solve: {
+            specPath: "src/api/solve-openapi.yaml",
+            outputDir: "docs/../src/api/generated/solve",
+            sidebarOptions: {
+              groupPathsBy: "tag",
+            },
+          } satisfies OpenApiPlugin.Options,
+          stash: {
+            specPath: "src/api/stash-openapi.yaml",
+            outputDir: "docs/../src/api/generated/stash",
+            sidebarOptions: {
+              groupPathsBy: "tag",
+            },
+          } satisfies OpenApiPlugin.Options,
+        },
+      },
+    ],
   ],
+
+  themes: ["docusaurus-theme-openapi-docs", "@docusaurus/theme-mermaid"],
+
+  markdown: {
+    mermaid: true,
+  },
 };
 
 export default config;

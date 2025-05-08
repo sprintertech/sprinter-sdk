@@ -1,0 +1,229 @@
+---
+id: get-route
+title: "getRoute"
+description: "Get a route for execution"
+sidebar_label: "getRoute"
+hide_title: true
+hide_table_of_contents: true
+api: eJztV99v2zYQ/lcIYg9tJzeyY9eR3xTH6YJhQJGkwwDDS2npbLORSIU/UnuG/vfhSEV2IttNg+1hXf1m8nj87uN3d7o1lQUoZrgUFykd0DmYS2kN0ICmoBPFC9yiA/oeDGFE4R6ZSUVgCYl1ewEtmGI5GFCaDsZrytH+zoJa0YAKlgMdUJZLK8wNFw3H1wsgfpfIGTHyFoQmRhINWUa4ICkkPGcZEdKw6j6dLCBndLB+4iqu3TBBRpfDTuj9EaYJqx1po7iYk1dCEp1wEIbPeFK7f00DalYFYvaGLj5jQOENf47DVjT5+ScaUFiyvMjQrh02fuiEG7d7jQg8MloGVMGd5QpSOjDKwtfclMFuOl1Y+9isYk5TBbqm8gBtnZBMVwbIyCxAgc3royASmULq6VvAknzhZkE+hctPpFAw48vDXIXLMWvN4tY5crbuhuVj2sLlu9N2v9ftd0cnURh1h93uGYtOplGvO4IU4mE36nX67TQ832Iz9tAOM/kNnvcRnHNxU2lWWrOT5pwLniNbO8SrIAF+D9+tVqPoG6W6j8SGVqd29f+S6jDsMBYfR9NO5/h8dHIWxiH0ht3zTh/isyg8OR72e++GSYeWE3SkCyk0aKSmE4ZNhlz1JtomCWg9s1m2InMQWOIhpQFNpDAgDJ5jRZHxxAnp6LPGw+u9vF9t+0sUoLeqGTii625AUjCMZ3pDt5x+hgQff0PCmCYsczZzpukkoIXCLmS4j8tvNjNGKbbChBn9/htxNqgXfzNgp9BwZ0EksLmb4REaUG4g3+VR1L4aPe0QeiNpQO9ZZl2bZIY1YzDyuxGvD/Q/WcDc2zSQ/wLLmnJ8e2f1fIbfPKX3+ATSdv84omW5QTJkWeYWUOINCCNteO6SaM40edDWPhFyYWAOavvadg8j377QJf5lVR9oWeJed1eFOGWpuxG0eXlBGCklFXkoR16wz0t9wJPNhPHLzbeyORNEAUvZNAPirEgOWrM57HizzbNwoe1sxp3miLSmsKbq1I+eycVRs9VuAvgomDULqfhfkJIWuRD3LOMpiT9ckFtY/SBwm8DeLrldCMwiLAWg7kF5BD942/BWBjQHs5DV+OUrz4IO6JGqJjENiVXcrNx0FRf8V1jFFk3GE/woeNi+Qsp8UNtG67obukVshxjgAljqakr1nfZHK/5w0fIGTyq917rneiZVzgzRtzcZv4ebNy4oLmau3z0Ed/WFFWS6IqcZE8lOf1ZDWlsQtMeWCkp7k/bb8G3YmoJhWMYLqU3OnCwqsHMwZOecut7o6uDIWlFiYGmOioxxgfdYlaEHT/+YevonAV1IbXBhvZ4yDR9VVpa47D908U1SrlElKR3MWKbhAKZXl5UiX5MXDL47UWMZejxgVx2bum/yF2PbN0YeALE1lv4zGJ43Yx1A1Jjj/iVu/NjyVWqeYpjgH8URhMvm4CEtUVX+YJwkUGyfalRL9FJXkPeja1qWfwOX+fl8
+sidebar_class_name: "get api-method"
+info_path: ../src/api/generated/solve/swap-by-blanc
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getRoute"}
+></Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/route"}
+  context={"endpoint"}
+></MethodEndpoint>
+
+Get a route for execution
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+></Heading>
+
+<ParamsDetails
+  parameters={[
+    {
+      in: "query",
+      name: "amount_in",
+      description: "The amount of tokens to sell in decimal notation",
+      schema: {
+        description:
+          "Amount of an ERC20 token as a decimal string (no scientific notation)",
+        type: "string",
+        pattern: "^[0-9]+$",
+        example: "1000000000000000000",
+        title: "TokenAmount",
+      },
+      required: true,
+      example: "1000000000000000000",
+    },
+    {
+      in: "query",
+      name: "token_in",
+      description: "The token address to sell",
+      schema: {
+        description:
+          "20 byte Ethereum address encoded as a hex with `0x` prefix",
+        type: "string",
+        pattern: "^0x[a-fA-F0-9]{40}$",
+        example: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+        title: "Address",
+      },
+      required: true,
+      example: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+    },
+    {
+      in: "query",
+      name: "min_amount_out",
+      description: "The minimum amount of tokens to receive",
+      schema: {
+        description:
+          "Amount of an ERC20 token as a decimal string (no scientific notation)",
+        type: "string",
+        pattern: "^[0-9]+$",
+        example: "1000000000000000000",
+        title: "TokenAmount",
+      },
+      required: true,
+      example: "990000000000000000",
+    },
+    {
+      in: "query",
+      name: "token_out",
+      description: "The token address to buy",
+      schema: {
+        description:
+          "20 byte Ethereum address encoded as a hex with `0x` prefix",
+        type: "string",
+        pattern: "^0x[a-fA-F0-9]{40}$",
+        example: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+        title: "Address",
+      },
+      required: true,
+      example: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    },
+  ]}
+></ParamsDetails>
+
+<RequestSchema title={"Body"} body={undefined}></RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{
+    "200": {
+      description: "Route successfully generated",
+      content: {
+        "application/json": {
+          schema: {
+            description: "Successfully created route with execution details",
+            type: "object",
+            required: ["calls", "gas"],
+            properties: {
+              calls: {
+                description: "Array of EVM calls to execute in sequence",
+                type: "array",
+                items: {
+                  description: "An EVM call for execution",
+                  type: "object",
+                  required: ["to", "value", "data"],
+                  properties: {
+                    to: {
+                      description:
+                        "20 byte Ethereum address encoded as a hex with `0x` prefix",
+                      type: "string",
+                      pattern: "^0x[a-fA-F0-9]{40}$",
+                      example: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+                      title: "Address",
+                    },
+                    value: {
+                      description:
+                        "Amount of an ERC20 token as a decimal string (no scientific notation)",
+                      type: "string",
+                      pattern: "^[0-9]+$",
+                      example: "1000000000000000000",
+                      title: "TokenAmount",
+                    },
+                    data: {
+                      description: "Hex encoded calldata",
+                      type: "string",
+                      pattern: "^0x[a-fA-F0-9]*$",
+                      example: "0x38ed1739",
+                    },
+                  },
+                  title: "Call",
+                },
+              },
+              gas: {
+                description: "Estimated gas required for execution",
+                type: "integer",
+                example: 150000,
+              },
+            },
+            title: "RouteResponse",
+          },
+        },
+      },
+    },
+    "400": {
+      description: "Bad request",
+      content: {
+        "application/json": {
+          schema: {
+            description: "Error response with details",
+            type: "object",
+            required: ["error"],
+            properties: {
+              error: {
+                description: "Human readable error message",
+                type: "string",
+                example: "insufficient output amount",
+              },
+            },
+            title: "Error",
+          },
+        },
+      },
+    },
+    "401": {
+      description: "Unauthorized - Invalid API key",
+      content: {
+        "application/json": {
+          schema: {
+            description: "Error response with details",
+            type: "object",
+            required: ["error"],
+            properties: {
+              error: {
+                description: "Human readable error message",
+                type: "string",
+                example: "insufficient output amount",
+              },
+            },
+            title: "Error",
+          },
+        },
+      },
+    },
+    "500": {
+      description: "Internal server error",
+      content: {
+        "application/json": {
+          schema: {
+            description: "Error response with details",
+            type: "object",
+            required: ["error"],
+            properties: {
+              error: {
+                description: "Human readable error message",
+                type: "string",
+                example: "insufficient output amount",
+              },
+            },
+            title: "Error",
+          },
+        },
+      },
+    },
+  }}
+></StatusCodes>
