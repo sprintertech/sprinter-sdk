@@ -43,7 +43,7 @@ jobs:
         with:
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: 2238a825c5aca59233eab1f221f7aefb
+          accountId: 167153f505df751a355a8192b0656720
           command: pages deploy ./docs/build --project-name=sprinter-docs --branch=${{ env.CF_BRANCH_NAME }}
       - name: Publish POC to Cloudflare Pages
         id: poc-publish
@@ -51,7 +51,7 @@ jobs:
         with:
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: 2238a825c5aca59233eab1f221f7aefb
+          accountId: 167153f505df751a355a8192b0656720
           command: pages deploy ./web/.svelte-kit/cloudflare --project-name=sprinter-poc --branch=${{ env.CF_BRANCH_NAME }}
       - name: Generate Deployment Summary
         run: |
@@ -75,19 +75,3 @@ jobs:
               repo: context.repo.repo,
               body: message,
             });
-
-      # old deployment
-      - name: Publish Docs to Cloudflare Pages (old  project)
-        uses: cloudflare/wrangler-action@v3
-        with:
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: 2238a825c5aca59233eab1f221f7aefb
-          command: pages deploy ./docs/build --project-name=gopher-docs --branch=${{ env.CF_BRANCH_NAME }}
-      - name: Publish POC to Cloudflare Pages (old  project)
-        uses: cloudflare/wrangler-action@v3
-        with:
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: 2238a825c5aca59233eab1f221f7aefb
-          command: pages deploy ./web/.svelte-kit/cloudflare --project-name=gopher-poc --branch=${{ env.CF_BRANCH_NAME }}
