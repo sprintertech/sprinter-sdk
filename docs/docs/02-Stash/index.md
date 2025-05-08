@@ -19,18 +19,18 @@ Sprinter's crosschain credit protocol providing liquidity access to solvers and 
 - **Solvers** request and borrow credit on destination instantly, [without collateral](#how-stash-enables-zero-collateral-loans), enabling seamless crosschain execution.
 - Once **fills are completed**, Stash receives funds on the source chain, repays the credit, and distributes profits to LPs and solvers.
 
-### Stash Solver Fill Lifecycle
+### Stash Fill Lifecycle
 
 ```mermaid
 flowchart TD
-  A[Detect User Intent] --> B[Preview an estimated borrowing cost of credit🔗]
+  A[Solver Detects User Intent] --> B[Solver Previews estimated borrowing cost of credit]
   B --> C[Receive Borrow Cost Estimate]
-  C --> D{Is Cost Acceptable?}
-  D -- Yes --> E[Reserve credit and authorize the fill🔗]
+  C --> D{Fill using Stash Credit?}
+  D -- Yes --> E[Solver Reserves credit and authorize the fill]
   D -- No --> F[Abort Fill]
-  E --> G[Borrow Liquidity from Sprinter Stash]
-  G --> H[Perform Cross-Chain Swap/Bridge Execution]
-  H --> I[Repay Borrowed Credit + Costs]
+  E --> G[Solver Borrow Liquidity from Sprinter Stash]
+  G --> H[Stash Executes Cross-Chain Swap/Bridge Execution]
+  H --> I[Intent Protocol Repays Borrowed Credit + Costs]
   I --> J[Fill Complete]
 
 click B "borrow-cost-api" "Borrow Cost"

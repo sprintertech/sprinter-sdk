@@ -1,7 +1,7 @@
 ---
-id: resources
-title: Resources
-sidebar_position: 9
+id: Audit
+title: Sprinter Audits
+sidebar_position: 11
 ---
 
 ## Audits

@@ -10,29 +10,29 @@ Request your Stash API key via [Sprinter Stash Request](https://forms.gle/kgpcQK
 
 ## As a Solver
 
-Sprinter Stash enables solvers to **borrow credit crosschain on-demand** to execute user intents without needing pre-funded inventory.
+Sprinter Stash enables solvers to **borrow crosschain credit on-demand** to execute user intents without needing pre-funded inventory.
 
 This guide covers:
 
-1. Recap of the [Stash Solver Fill Lifecycle](use-stash#1-stash-solver-fill-lifecycle)
+1. Recap of the [Stash Fill Lifecycle](use-stash#1-stash-solver-fill-lifecycle)
 2. Requesting a [Credit Borrow Cost Estimate](use-stash#2-request-a-borrow-cost-estimate-optional)
 3. Requesting a [Final Borrow Quote and Credit Authorization](use-stash#3-request-a-final-borrow-quote)
 4. Check out the [Fill Optimization Tips](use-stash#4-fill-optimization-tips)
 
-### 1. Stash Solver Fill Lifecycle
+### 1. Stash Fill Lifecycle
 
 <div style={{ display: "flex", justifyContent: "center" }}>
 
 ```mermaid
 flowchart TD
-  A[Detect User Intent] --> B[2 - Preview an estimated borrowing cost of credit🔗]
+  A[Solver Detects User Intent] --> B[2 - Solver Previews estimated borrowing cost of credit /request]
   B --> C[Receive Borrow Cost Estimate]
-  C --> D{Is Cost Acceptable?}
-  D -- Yes --> E[3 - Reserve credit and authorize the fill🔗]
+  C --> D{Fill using Stash Credit?}
+  D -- Yes --> E[3 - Solver Reserves credit and authorize the fill]
   D -- No --> F[Abort Fill]
-  E --> G[Borrow Liquidity from Sprinter Stash]
-  G --> H[Perform Cross-Chain Swap/Bridge Execution]
-  H --> I[Repay Borrowed Credit + Costs]
+  E --> G[Solver Borrow Liquidity from Sprinter Stash]
+  G --> H[Stash Executes Cross-Chain Swap/Bridge Execution /quote]
+  H --> I[Intent Protocol Repays Borrowed Credit + Costs]
   I --> J[Fill Complete]
 
 click B "use-stash#2-request-a-borrow-cost-estimate-optional" "Borrow Cost"
@@ -49,46 +49,80 @@ style E fill:#FF9B43,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
 
 Call the [**Borrow Cost API**](borrow-cost-api) to preview an estimated [borrowing cost](/glossary#46-borrow-cost) for a potential fill before requesting credit.
 
-```ts title="Fetch Borrow Cost Estimate"
-const protocol = "across"; // Example: "across", "uniswapx"
-const type = "swap"; // Example: "swap", "bridge"
-
+```ts title="Fetch Borrow Cost Estimate Example Payload"
+const baseUrl = "https://api.sprinter.tech";
+const destChainId = "eip155:8453"; // eip155:8453(Base), eip155:10 (Optimism), eip155:42161 (Arbitrum) destChainId must use capid format from our configuration
+const protocol = "across"; // "across" or "mayan"
+const txHash = "string"; // Source chain deposit TX
 const response = await fetch(
-  `https://api.sprinter.tech/v1/liquidity/protocol/${protocol}/type/${type}/quote`,
+  `${baseUrl}/liquidity/chain/${destChainId}/protocol/${protocol}/deposit/${txHash}/requests`,
   {
     method: "GET",
     headers: {
-      "Content-Type": "application/json",
-      "X-API-Key": "<your_api_key>",
+      "X-Auth-Token": "<your_api_key>",
+    },
+    body: {
+      input: callData, // encoded callData of deposit
+      caller: "address", // the address that will execute the borrow and fill ond destChainId
     },
   },
 );
-
-const costEstimate = await response.json();
-console.log("Borrow Cost Estimate:", costEstimate);
 ```
 
 ### 3. Request a Final Borrow Quote
 
-If the estimated cost is acceptable, call the [**Borrow Quote API**](borrow-quote-api) to request a [borrow quote](/glossary#47-borrow-quote) to reserve credit and authorize the fill.
+If proceeding to fill with Sprinter Stash, call the [**Borrow Quote API**](borrow-quote-api) to request a [borrow quote](/glossary#47-borrow-quote) to reserve credit and authorize the fill. This can be based on input or output amount.
 
-```ts title="Request Final Borrow Quote"
-const protocol = "across";
-const txHash = "0xabc123"; // Related transaction hash
-
+```ts title="Request Final Borrow Quote with type ExactInput (input amount - borrow costs)"
+const baseUrl = "https://api.sprinter.tech";
+const sourceChainId = "eip155:8453"; // eip155:8453(Base), eip155:10 (Optimism), eip155:42161 (Arbitrum). ChainId must use capid format from our configuration
+const protocol = "across"; // "across" or "mayan"
+const type = "ExactInput"; // Request will consider the amount as (input amount - borrow costs)
+const amount = 10000000; // This is the ExactInput eg 1 USDC (6 decimals)
 const response = await fetch(
-  `https://api.sprinter.tech/v1/liquidity/protocol/${protocol}/deposit/${txHash}/request`,
+  `${baseUrl}/liquidity/chain/${sourceChainId}/protocol/${protocol}/type/${type}/quote`,
   {
     method: "GET",
     headers: {
-      "Content-Type": "application/json",
-      "X-API-Key": "<your_api_key>",
+      "X-Auth-Token": "<your_api_key>",
+    },
+    body: {
+      amount: amount,
+      token: "destination_token_address", // Token address
+      network: "eip155:10", // Destination_Chain_ID
     },
   },
 );
 
 const borrowQuote = await response.json();
-console.log("Borrow Quote:", borrowQuote);
+console.log("Expected amount:", borrowQuote.expectedOutput);
+console.log("Borrow Cost:", borrowQuote.borrowCost);
+```
+
+```ts title="Request Final Borrow Quote with type ExactOutput (output amount + borrow costs)"
+const baseUrl = "https://api.sprinter.tech";
+const sourceChainId = "eip155:8453"; // eip155:8453(Base), eip155:10 (Optimism), eip155:42161 (Arbitrum). ChainId must use capid format from our configuration
+const protocol = "across"; // "across" or "mayan"
+const type = "ExactOutput"; // Request will consider the amount as (output amount + borrow costs)
+const amount = 10000000; // This is the ExactInput eg 1 USDC (6 decimals)
+const response = await fetch(
+  `${baseUrl}/liquidity/chain/${sourceChainId}/protocol/${protocol}/type/${type}/quote`,
+  {
+    method: "GET",
+    headers: {
+      "X-Auth-Token": "<your_api_key>",
+    },
+    body: {
+      amount: amount,
+      token: "destination_token_address", // Token address
+      network: "eip155:10", // Destination_Chiain_ID
+    },
+  },
+);
+
+const borrowQuote = await response.json();
+console.log("Expected Input:", borrowQuote.requiredInput);
+console.log("Borrow Cost:", borrowQuote.borrowCost);
 ```
 
 ### 4. Fill Optimization Tips

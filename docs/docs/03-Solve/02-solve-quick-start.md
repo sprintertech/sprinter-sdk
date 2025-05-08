@@ -13,10 +13,9 @@ Sprinter Solve enables your dApp, aggregator or protocol integration to **optimi
 This guide covers:
 
 1. Recap of the [Sprinter Solve Lifecycle](solve-api-quick-start#1-solve-lifecycle)
-2. Requesting the estimated price and execution plan
-3. Geting the finalized route and call data execution package
-4. Send transaction using `swap_call_data`
-5. Sprinter Solve Execution Tips
+2. Geting the [finalized route and call data execution package](solve-api-quick-start#2-geting-the-finalized-route-and-call-data-execution-package)
+3. Send transaction using [`swap_call_data`](solve-api-quick-start#3-send-transaction-using-swap_call_data)
+4. Sprinter Solve [Execution Tips](solve-api-quick-start#4-sprinter-solve-execution-tips)
 
 ## 1. Solve Lifecycle
 
@@ -31,11 +30,9 @@ flowchart TD
   E --> F[Simulate & Execute Transaction]
   F --> G[Send Transaction & Finalize Fill]
 
-click B "solve-get-quote" "Borrow Cost"
-style B fill:#FF9B43,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
 
-click E "solve-get-route-v2" "Borrow Quote"
-style E fill:#FF9B43,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+click B "solve-get-route-v2" "Borrow Quote"
+style B fill:#FF9B43,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
 
 click F "solve-api-quick-start#4-send-transaction-using-swap_call_data" "Borrow Quote"
 style F fill:#FF9B43,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
@@ -43,72 +40,43 @@ style F fill:#FF9B43,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
 
 </div>
 
-## 2. Requesting the estimated price and execution plan
-
-For lighter integration or quote pre-fetching, call the [**Get Quote API**](solve-get-quote) to request the estimated price and execution plan before retrieving call data.
-
-```ts title="Example Fetch Quote Request"
-cconst srcToken = "0xA0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"; // USDC on Base
-const dstToken = "0x4200000000000000000000000000000000000006"; // WETH on Base
-const amount = "1000000"; // 1 USDC (6 decimals)
-
-const url = new URL("https://api.sprinter.tech/v1/solve/quote");
-url.searchParams.append("fromToken", srcToken);
-url.searchParams.append("toToken", dstToken);
-url.searchParams.append("amount", amount);
-url.searchParams.append("fromChainId", "8453"); // Base
-url.searchParams.append("toChainId", "1");      // Ethereum Mainnet
-
-const response = await fetch(url, {
-  headers: {
-    "X-API-Key": "<your_api_key>",
-  },
-});
-
-const quote = await response.json();
-console.log("Solve Quote:", quote);
-```
-
-## 3. Geting the finalized route and call data execution package
+## 2. Geting the finalized route and call data execution package
 
 Calling the [**Get Route API**](solve-get-route-v2) returns the finalized route, including call data, gas estimates and token out amounts. Use this executable call data `swap_call_data` after verifying a quote.
 
 - **Mainnet:** `https://swaps.sprinter.tech/mainnet`
 - **Base:** `https://swaps.sprinter.tech/base`
 
-```ts title="Example Fetch Quote Request"
-const chainId = 1; // 1 = Ethereum, 8453 = Base, etc.
-const srcToken = "0xA0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"; // USDC on Base
-const dstToken = "0x4200000000000000000000000000000000000006"; // WETH on Base
-const amount = "1000000"; // 1 USDC (6 decimals)
-const userAddress = "0xYourUserAddress"; // End-user or caller's address
+```ts title="Example Fetch Quote Request Payload"
+const AMOUNT_IN; // the amount of token that you want exchange in their decimals denomination
+const TOKEN_IN_ADDRESS; // token_in_address
+const TOKEN_OUT_ADDRESS; // token_out_addres - tokens that you want to receieve
+const SLIPPAGE; // the slipapge that you want to allow for the swap ( 0.5 - 2%)
+const TARGET_DURATION;
 
-const response = await fetch("https://swaps.sprinter.tech/base/v2/route", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    "X-API-Key": "<your_api_key>",
-  },
-  body: JSON.stringify({
-    fromToken: srcToken,
-    toToken: dstToken,
-    amount: amount,
-    slippage: 0.005, // 0.5% slippage tolerance
-    user: "<user_address>",
-  }),
-});
+const fetchRoute = async () => {
+  const response = await fetch(
+    "https://swaps.sprinter.tech/mainnet/v2/route?amount_in=[AMOUNT_IN]&token_in=[TOKEN_IN_ADDRESS]&token_out=[TOKEN_OUT_ADDRESS]&slippage=[SLIPPAGE]&target_duration_ms=[TARGET_DURATION]",
+    {
+      method: "GET",
+      headers: {
+        "X-API-Key": "your_api_key_here",
+      },
+    },
+  );
 
-const route = await response.json();
-console.log("Route:", route);
+  const data = await response.json();
+  return data;
+};
 ```
 
-## 4. Send transaction using `swap_call_data`
+## 3. Send transaction using `swap_call_data`
 
 Once you've received a valid route from `/v2/route`, you'll use the `swap_call_data` in a transaction to execute the intent on-chain.
 
 Below is a simplified example using `ethers.js` to send the transaction from a connected signer:
 
-```ts title="Execute Route"
+```ts title="Example Execute Route Payload"
 import { ethers } from "ethers";
 
 const provider = new ethers.JsonRpcProvider("https://mainnet.base.org"); // or OP/Arbitrum
@@ -143,7 +111,7 @@ const tx = await signer.sendTransaction({
 console.log("Transaction hash:", tx.hash);
 ```
 
-## 5. Sprinter Solve Execution Tips
+## 4. Sprinter Solve Execution Tips
 
 1. Start with `/quote` to quickly evaluate whether a fill is profitable.
 

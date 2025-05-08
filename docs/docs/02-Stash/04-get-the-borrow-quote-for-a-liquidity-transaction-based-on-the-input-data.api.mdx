@@ -26,12 +26,14 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"get"}
-  path={"/liquidity/protocol/{protocol}/type/{type}/quote"}
+  path={"/liquidity/chain/{sourceChainId}/protocol/{protocol}/type/{type}/quote"}
   context={"endpoint"}
 ></MethodEndpoint>
 
 A [borrow quote](/glossary#47-borrow-quote) is the final, **authorized borrowing offer** issued by Sprinter Stash when a solver decides to proceed with a fill.
 It reserves credit under specific conditions, allowing solvers to confidently execute the cross-chain transaction.
+
+See the [Request Final Borrow Quote example payload](use-stash#3-request-a-final-borrow-quote).
 
 <Heading
   id={"request"}
@@ -43,14 +45,23 @@ It reserves credit under specific conditions, allowing solvers to confidently ex
 <ParamsDetails
   parameters={[
     {
-      description: "Protocol name (e.g., Across)",
+      description:
+        "destChainID must use capid format from our configuration <br />-eip155:8453(Base),<br />-eip155:10 (Optimism),<br />-eip155:42161 (Arbitrum)",
+      in: "path",
+      name: "destChainId",
+      required: true,
+      schema: { type: "string" },
+    },
+    {
+      description: "Protocol name - across, mayan",
       in: "path",
       name: "protocol",
       required: true,
       schema: { type: "string" },
     },
     {
-      description: "Quote algorithm type (e.g., ExactInput, ExactOutput)",
+      description:
+        "Quote algorithm type: <br /><br />  ExactInput - Request will consider the amount as (input amount - borrow costs) <br /><br /> ExactOutput - Request will consider the amount as (output amount + borrow costs)  ",
       in: "path",
       name: "type",
       required: true,

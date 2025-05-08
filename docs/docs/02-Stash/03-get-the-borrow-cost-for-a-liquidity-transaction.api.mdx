@@ -26,13 +26,15 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"get"}
-  path={"/liquidity/protocol/{protocol}/deposit/{txHash}/request"}
+  path={"/liquidity/chain/{chainId}/protocol/{protocol}/deposit/{txHash}/request"}
   context={"endpoint"}
 ></MethodEndpoint>
 
 A [borrow cost](/glossary#46-borrow-cost) is the **preliminary estimated fee** a solver would incur to borrow credit from Sprinter Stash. It is returned off-chain via the Stash API and helps solvers determine if pursuing a fill is profitable.
 
 Borrow cost includes expected gas, risk premiums, protocol fees, and capital access costs — but it is not a binding or reserved price.
+
+See the [Request a Credit Borrow Cost Estimate example payload](use-stash#2-request-a-credit-borrow-cost-estimate-optional).
 
 <Heading
   id={"request"}
@@ -44,14 +46,22 @@ Borrow cost includes expected gas, risk premiums, protocol fees, and capital acc
 <ParamsDetails
   parameters={[
     {
-      description: "Protocol name (e.g., Across)",
+      description:
+        "destChainID must use capid format from our configuration eg. eip155:8453(Base), eip155:10 (Optimism), eip155:42161 (Arbitrum)",
+      in: "path",
+      name: "destChainId",
+      required: true,
+      schema: { type: "string" },
+    },
+    {
+      description: "Protocol name - across, mayan",
       in: "path",
       name: "protocol",
       required: true,
       schema: { type: "string" },
     },
     {
-      description: "Transaction hash for the deposit of the protocol you are solving for",
+      description: "Source chain deposit tx",
       in: "path",
       name: "txHash",
       required: true,
@@ -64,7 +74,7 @@ Borrow cost includes expected gas, risk premiums, protocol fees, and capital acc
   title={"Body"}
   body={{
     content: { "application/json": { schema: { type: "string" } } },
-    description: "input data (relay data)",
+    description: "input data (callData eg. encoded callData of deposit)",
     required: true,
     "x-s2o-overloaded": true,
   }}

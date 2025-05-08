@@ -27,9 +27,9 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint method={"get"} path={"/v2/route"} context={"endpoint"}></MethodEndpoint>
 
-Get the **finalized execution package** returned by `/v2/route` which contains all necessary data to execute a transactions. It builds on a quote by includingalldata, selected liquidity paths, slippage tolerances, and chain-specific details.
+Get the **finalized execution package** returned by `/v2/route` which contains all necessary data to execute a transaction. It builds on a quote by including calldata, selected liquidity paths, slippage tolerances, and chain-specific details.
 
-Routes are consumed directly by solvers or smart contracts to simulate and execute cross-chain swaps or intent fills. Unlike a quote, a route is actionable.
+Routes are consumed directly by solvers or smart contracts to simulate and execute cross-chain swaps or intent fills.
 
 <Heading
   id={"request"}
