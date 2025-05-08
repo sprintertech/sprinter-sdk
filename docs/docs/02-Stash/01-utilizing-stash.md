@@ -47,7 +47,7 @@ style E fill:#FF9B43,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
 
 ### 2. Request a Credit Borrow Cost Estimate (Optional)
 
-Call the [**Borrow Cost API**](borrow-cost-api) to preview an estimated [borrowing cost](/glossary#46-borrow-cost) for a potential fill before requesting credit.
+Call the [**Borrow Cost API**](borrow-cost-api) to preview an estimated borrowing cost for a potential fill before requesting credit.
 
 ```ts title="Fetch Borrow Cost Estimate Example Payload"
 const baseUrl = "https://api.sprinter.tech";
@@ -71,7 +71,7 @@ const response = await fetch(
 
 ### 3. Request a Final Borrow Quote
 
-If proceeding to fill with Sprinter Stash, call the [**Borrow Quote API**](borrow-quote-api) to request a [borrow quote](/glossary#47-borrow-quote) to reserve credit and authorize the fill. This can be based on input or output amount.
+If proceeding to fill with Sprinter Stash, call the [**Borrow Quote API**](borrow-quote-api) to request a borrow quote to reserve credit and authorize the fill. This can be based on input or output amount.
 
 ```ts title="Request Final Borrow Quote with type ExactInput (input amount - borrow costs)"
 const baseUrl = "https://api.sprinter.tech";
