@@ -21,7 +21,7 @@ import Heading from "@theme/Heading";
 <Heading
   as={"h1"}
   className={"openapi__heading"}
-  children={"Preview an estimated borrowing cost before requesting credit."}
+  children={"Reserve credit and authorize the fill."}
 ></Heading>
 
 <MethodEndpoint
@@ -30,11 +30,10 @@ import Heading from "@theme/Heading";
   context={"endpoint"}
 ></MethodEndpoint>
 
-A [borrow cost](/Resources/glossary#stash-borrow-cost) is the **preliminary estimated fee** a solver would incur to borrow credit from Sprinter Stash. It is returned off-chain via the Stash API and helps solvers determine if pursuing a fill is profitable.
+A [borrow cost](/Resources/glossary#stash-borrow-cost) is the final, **authorized borrowing offer** issued by Sprinter Stash when a solver decides to proceed with a fill.
+It reserves credit under specific conditions, allowing solvers to confidently execute the cross-chain transaction.
 
-Borrow cost includes expected gas, risk premiums, protocol fees, and capital access costs — but it is not a binding or reserved price.
-
-See the [Request a Credit Borrow Cost Estimate example payload](use-stash#2-request-a-credit-borrow-cost-estimate-optional).
+See the [Request Final Borrow Cost example payload](use-stash#3-request-the-final-credit-borrow-cost).
 
 <Heading
   id={"request"}

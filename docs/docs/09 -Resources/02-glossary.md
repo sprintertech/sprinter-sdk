@@ -100,13 +100,13 @@ Automated agents that find and execute the most efficient way to fulfill a user�
 
 Gets the finalized execution package returned by `/v2/route` which contains all necessary data to execute a transaction. It builds on a quote by including calldata, selected liquidity paths, slippage tolerances, and chain-specific details. Routes are consumed directly by solvers or smart contracts to simulate and execute cross-chain swaps or intent fills.
 
-### Stash Borrow Cost
-
-A borrow cost is the preliminary **estimated fee** a solver would incur to borrow credit from Sprinter Stash. It is returned off-chain via the Stash API and helps solvers determine if pursuing a fill is profitable. Borrow cost includes expected gas, risk premiums, protocol fees, and capital access costs — but it is not a binding or reserved price.
-
 ### Stash Borrow Quote
 
-A **borrow quote** is the final, **authorized borrowing offer** issued by Sprinter Stash when a solver decides to proceed with a fill. It reserves credit under specific conditions, allowing solvers to confidently execute the crosschain transaction.
+A borrow quote is the preliminary **estimated fee** a solver would incur to borrow credit from Sprinter Stash. It is returned off-chain via the Stash API and helps solvers determine if pursuing a fill is profitable. Borrow quote includes expected gas, risk premiums, protocol fees, and capital access costs — but it is not a binding or reserved price.
+
+### Stash Borrow Cost
+
+A borrow cost is the final, **authorized borrowing offer** issued by Sprinter Stash when a solver decides to proceed with a fill. It reserves credit under specific conditions, allowing solvers to confidently execute the crosschain transaction.
 
 ### State Proofs
 

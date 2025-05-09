@@ -21,7 +21,7 @@ import Heading from "@theme/Heading";
 <Heading
   as={"h1"}
   className={"openapi__heading"}
-  children={"Reserve credit and authorize the fill"}
+  children={"Preview an estimated borrowing cost before requesting credit."}
 ></Heading>
 
 <MethodEndpoint
@@ -29,6 +29,12 @@ import Heading from "@theme/Heading";
   path={"/liquidity/chain/{sourceChainId}/protocol/{protocol}/type/{type}/quote"}
   context={"endpoint"}
 ></MethodEndpoint>
+
+A [borrow quote](/Resources/glossary#stash-borrow-quote) is the **preliminary estimated fee** a solver would incur to borrow credit from Sprinter Stash. It is returned off-chain via the Stash API and helps solvers determine if pursuing a fill is profitable.
+
+Borrow quote includes expected gas, risk premiums, protocol fees, and capital access costs — but it is not a binding or reserved price.
+
+See the [Request a Credit Borrow Quote Estimate example payload](use-stash#2-request-a-credit-borrow-quote-estimate-optional).
 
 A [borrow quote](/Resources/glossary#stash-borrow-quote) is the final, **authorized borrowing offer** issued by Sprinter Stash when a solver decides to proceed with a fill.
 It reserves credit under specific conditions, allowing solvers to confidently execute the cross-chain transaction.
