@@ -23,8 +23,8 @@ Sprinter's crosschain credit protocol providing liquidity access to solvers and 
 
 ```mermaid
 flowchart TD
-  A[Solver Detects User Intent] --> B[Solver Previews estimated borrowing cost of credit]
-  B --> C[Receive Borrow Cost Estimate]
+  A[Solver Detects User Intent] --> B[Solver Previews Estimated Borrowing Quote of Credit]
+  B --> C[Receive Borrow Quote Estimate]
   C --> D{Fill using Stash Credit?}
   D -- Yes --> E[Solver Reserves credit and authorize the fill]
   D -- No --> F[Abort Fill]

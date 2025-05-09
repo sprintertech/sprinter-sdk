@@ -7,7 +7,6 @@
 
 * staging changes to docs ([#146](https://github.com/sprintertech/sprinter-sdk/issues/146)) ([217be20](https://github.com/sprintertech/sprinter-sdk/commit/217be201118073cf5e01afedd5e6c213d10a5b5e))
 
-## [1.2.3](https://github.com/sprintertech/sprinter-sdk/compare/sprinter-react-v1.2.2...sprinter-react-v1.2.3) (2025-01-22)
 
 ### Bug Fixes
 
