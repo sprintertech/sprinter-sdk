@@ -1,6 +1,12 @@
 # Changelog
 
-## [0.1.3](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.1.2...docs-v0.1.3) (2025-01-22)
+## [0.2.0](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.1.3...docs-v0.2.0) (2025-05-08)
+
+
+### Features
+
+* staging changes to docs ([#146](https://github.com/sprintertech/sprinter-sdk/issues/146)) ([217be20](https://github.com/sprintertech/sprinter-sdk/commit/217be201118073cf5e01afedd5e6c213d10a5b5e))
+
 
 ### Bug Fixes
 
