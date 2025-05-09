@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/sprintertech/sprinter-sdk/compare/sprinter-react-v1.3.0...sprinter-react-v1.4.0) (2025-05-09)
+
+
+### Features
+
+* **docs:** add improved Stash API Quick Start ([#153](https://github.com/sprintertech/sprinter-sdk/issues/153)) ([f19c411](https://github.com/sprintertech/sprinter-sdk/commit/f19c411311d60f0f8af76590d0435e9d7716bad8))
+
 ## [1.3.0](https://github.com/sprintertech/sprinter-sdk/compare/sprinter-react-v1.2.3...sprinter-react-v1.3.0) (2025-05-08)
 
 
