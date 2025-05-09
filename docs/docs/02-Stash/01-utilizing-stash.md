@@ -45,7 +45,6 @@ style E fill:#FF9B43,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
 
 </div>
 
-
 ### 2. Request a Credit Borrow Quote Estimate (Optional)
 
 Call the [**Borrow Quote API**](borrow-quote-api) to preview an estimated borrowing cost for a potential fill before requesting credit. This can be based on input or output amount.
