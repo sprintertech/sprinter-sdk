@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.3.2](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.1...docs-v0.3.2) (2025-05-16)
+
+
+### Bug Fixes
+
+* updated standard usdc pool address  ([#157](https://github.com/sprintertech/sprinter-sdk/issues/157)) ([1d7f805](https://github.com/sprintertech/sprinter-sdk/commit/1d7f805851280185ef7f9627645935e4dc2cc962))
+
+## [0.3.1](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.0...docs-v0.3.1) (2025-05-09)
+
+
+### Bug Fixes
+
+* **docs:** typos ([#155](https://github.com/sprintertech/sprinter-sdk/issues/155)) ([84e26e5](https://github.com/sprintertech/sprinter-sdk/commit/84e26e5f0439d8d4429f7936fd53d7d08804430e))
+
 ## [0.3.0](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.2.0...docs-v0.3.0) (2025-05-09)
 
 ### Features
