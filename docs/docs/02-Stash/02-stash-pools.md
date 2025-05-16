@@ -30,7 +30,7 @@ Deployed across multiple chains, these on-chain vaults serve solver requests.
   `0x7C255279c098fdF6c3116D2BecD9978002c09f4b`
 
 - **Standard USDC Pool** (Base, OP, Arbitrum):  
-  `0xB58Bb9643884abbbad64FA7eBcD9978002c09f4b`
+  `0xB58Bb9643884abbbad64FA7eBc874c5481E5c032`
 
 ### Functionality
 
