@@ -4,7 +4,7 @@ title: Sprinter Stash Pools
 sidebar_position: 113
 ---
 
-# Sprinter Stash 
+# Sprinter Stash
 
 Central to both Sprinter Stash is the **Sprinter Liquidity Hub and Stash Pools**—the smart contracts that manages and distributes liquidity.
 
@@ -58,6 +58,7 @@ Sprinter Stash relies on a secure **Multi-Party Computation (MPC)** network to a
 ### Governance & Oversight
 
 The [**Super Admin Multisig**](/governance#2-super-admin-multisig) manages:
+
 - Rotation or upgrade of MPC key shares
 - Approval and removal of validator nodes
 - Emergency pauses or overrides to protect protocol funds
