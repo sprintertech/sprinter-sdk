@@ -4,7 +4,7 @@
     "type": "git",
     "url": "git+https://github.com/sprintertech/sprinter-sdk.git"
   },
-  "version": "1.4.0",
+  "version": "1.4.1",
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
