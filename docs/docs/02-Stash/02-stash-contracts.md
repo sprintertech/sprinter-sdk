@@ -1,24 +1,37 @@
 ---
 id: liquidity-hub-pools
-title: Sprinter Stash Pools
+title: Sprinter Stash Contracts
 sidebar_position: 113
 ---
 
 # Sprinter Stash
 
-Central to both Sprinter Stash is the **Sprinter Liquidity Hub and Stash Pools**—the smart contracts that manages and distributes liquidity.
+Central to Sprinter Stash are the [**Sprinter Liquidity Hub**](liquidity-hub-pools#liquidity-hub), [**Liquidity Mining**](liquidity-hub-pools#liquidity-mining-contract) and [**Stash Pools**](liquidity-hub-pools#liquidity-pools) smart contracts which manages and distributes liquidity.
+
+Liquidity authorization is managed and controlled by Sprinter's [**Multi-Party Computation (MPC)**](liquidity-hub-pools#liquidity-authorization-via-mpc) network.
 
 ## Liquidity Hub
 
 **Contract Address (Base):**
 `0xa593A9bBBc65be342FF610a01e96da2EB8539FF2`
 
-### Responsibilities:
+### Functionality:
 
-- **Depositing Liquidity:** LPs deposit USDC → receive `spUSDC-LP` tokens.
 - **Allocation:** Hub allocates liquidity across supported chains based on solver demand.
 - **Yield:** Idle liquidity is deployed into lending protocols like Aave.
 - **Withdrawals:** LPs redeem their LP tokens for USDC when available.
+
+## Liquidity Mining Contract
+
+**Contract Address (Base):**
+`0x479D158959B59328E89f0fbF7DfeBb198c313C21`
+
+### Functionality:
+
+- **Incentive Layer** Bootstraps solver access to credit while ensuring LPs are fairly rewarded. Reward parameters can be updated through governance, and all emissions are transparently distributed on-chain.
+- **Depositing Liquidity:** LPs deposit USDC → receive `spUSDC-LP` tokens.
+- **Stashing** When LPs receive their `spUSDC-LP` tokens, they can stake them in this contract to participate in ongoing emissions programs.
+  **Multiplier incentives** — Longer lockups (e.g., 3, 6, or 9 months) offer higher SPRNT yield rates to encourage deeper liquidity commitments.
 
 ## Liquidity Pools
 
@@ -45,8 +58,8 @@ Sprinter Stash relies on a secure **Multi-Party Computation (MPC)** network to a
 
 ### What the MPC Does
 
-- **Signs liquidity quotes**: When a solver calls the Stash API and is approved for a fill, the MPC co-signs the authorization.
-- **Authorizes cross-chain releases**: The MPC signs messages that unlock liquidity from remote vaults (e.g., on Base, Arbitrum).
+- **Validates and Signs liquidity quotes**: When a solver calls the Stash API and is approved for a fill, the MPC validates the intent, user deposit and then co-signs the authorization.
+- **Authorizes cross-chain releases**: The MPC authorizes any transfers required for inventory management across Stash Liquidity Pools and the Liquidity Hub (e.g., on Base, Arbitrum).
 - **Enforces protocol limits**: MPC logic verifies borrowing caps, rate limits, and repayment preconditions before authorizing transactions.
 
 ### Why MPC Matters

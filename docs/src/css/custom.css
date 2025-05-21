@@ -4,8 +4,6 @@
  * work well for content-centric websites.
  */
 
-/* You can override the default Infima variables here. */
-
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap");
@@ -109,5 +107,3 @@ body {
   color: #ff9b43; /* Your link color inside tip */
   text-decoration: underline;
 }
-
-/* For navbar search box (top right) */
