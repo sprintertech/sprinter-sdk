@@ -2,24 +2,21 @@
 
 ## [0.3.2](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.1...docs-v0.3.2) (2025-05-16)
 
-
 ### Bug Fixes
 
-* updated standard usdc pool address  ([#157](https://github.com/sprintertech/sprinter-sdk/issues/157)) ([1d7f805](https://github.com/sprintertech/sprinter-sdk/commit/1d7f805851280185ef7f9627645935e4dc2cc962))
+- updated standard usdc pool address ([#157](https://github.com/sprintertech/sprinter-sdk/issues/157)) ([1d7f805](https://github.com/sprintertech/sprinter-sdk/commit/1d7f805851280185ef7f9627645935e4dc2cc962))
 
 ## [0.3.1](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.0...docs-v0.3.1) (2025-05-09)
 
-
 ### Bug Fixes
 
-* **docs:** typos ([#155](https://github.com/sprintertech/sprinter-sdk/issues/155)) ([84e26e5](https://github.com/sprintertech/sprinter-sdk/commit/84e26e5f0439d8d4429f7936fd53d7d08804430e))
+- **docs:** typos ([#155](https://github.com/sprintertech/sprinter-sdk/issues/155)) ([84e26e5](https://github.com/sprintertech/sprinter-sdk/commit/84e26e5f0439d8d4429f7936fd53d7d08804430e))
 
 ## [0.3.0](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.2.0...docs-v0.3.0) (2025-05-09)
 
 ### Features
 
-
-* **docs:** add improved Stash API Quick Start ([#153](https://github.com/sprintertech/sprinter-sdk/issues/153)) ([f19c411](https://github.com/sprintertech/sprinter-sdk/commit/f19c411311d60f0f8af76590d0435e9d7716bad8))
+- **docs:** add improved Stash API Quick Start ([#153](https://github.com/sprintertech/sprinter-sdk/issues/153)) ([f19c411](https://github.com/sprintertech/sprinter-sdk/commit/f19c411311d60f0f8af76590d0435e9d7716bad8))
 
 ## [0.2.0](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.1.3...docs-v0.2.0) (2025-05-08)
 

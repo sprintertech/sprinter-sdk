@@ -2,18 +2,15 @@
 
 ## [1.4.0](https://github.com/sprintertech/sprinter-sdk/compare/sprinter-sdk-v1.3.0...sprinter-sdk-v1.4.0) (2025-05-09)
 
-
 ### Features
 
-* **docs:** add improved Stash API Quick Start ([#153](https://github.com/sprintertech/sprinter-sdk/issues/153)) ([f19c411](https://github.com/sprintertech/sprinter-sdk/commit/f19c411311d60f0f8af76590d0435e9d7716bad8))
+- **docs:** add improved Stash API Quick Start ([#153](https://github.com/sprintertech/sprinter-sdk/issues/153)) ([f19c411](https://github.com/sprintertech/sprinter-sdk/commit/f19c411311d60f0f8af76590d0435e9d7716bad8))
 
 ## [1.3.0](https://github.com/sprintertech/sprinter-sdk/compare/sprinter-sdk-v1.2.4...sprinter-sdk-v1.3.0) (2025-05-08)
 
-
 ### Features
 
-* staging changes to docs ([#146](https://github.com/sprintertech/sprinter-sdk/issues/146)) ([217be20](https://github.com/sprintertech/sprinter-sdk/commit/217be201118073cf5e01afedd5e6c213d10a5b5e))
-
+- staging changes to docs ([#146](https://github.com/sprintertech/sprinter-sdk/issues/146)) ([217be20](https://github.com/sprintertech/sprinter-sdk/commit/217be201118073cf5e01afedd5e6c213d10a5b5e))
 
 ### Bug Fixes
 
