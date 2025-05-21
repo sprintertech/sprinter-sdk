@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/sprintertech/sprinter-sdk/compare/sprinter-sdk-v1.4.0...sprinter-sdk-v1.4.1) (2025-05-21)
+
+
+### Bug Fixes
+
+* added MPC details  ([#159](https://github.com/sprintertech/sprinter-sdk/issues/159)) ([16fc0a2](https://github.com/sprintertech/sprinter-sdk/commit/16fc0a28ff7925c2643a313d572773d10f1b4619))
+
 ## [1.4.0](https://github.com/sprintertech/sprinter-sdk/compare/sprinter-sdk-v1.3.0...sprinter-sdk-v1.4.0) (2025-05-09)
 
 ### Features

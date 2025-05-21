@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.3](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.2...docs-v0.3.3) (2025-05-21)
+
+
+### Bug Fixes
+
+* added MPC details  ([#159](https://github.com/sprintertech/sprinter-sdk/issues/159)) ([16fc0a2](https://github.com/sprintertech/sprinter-sdk/commit/16fc0a28ff7925c2643a313d572773d10f1b4619))
+
 ## [0.3.2](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.1...docs-v0.3.2) (2025-05-16)
 
 ### Bug Fixes
