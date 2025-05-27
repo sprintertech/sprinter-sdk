@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.2](https://github.com/sprintertech/sprinter-sdk/compare/sprinter-react-v1.4.1...sprinter-react-v1.4.2) (2025-05-27)
+
+
+### Bug Fixes
+
+* **docs:** typos  ([#161](https://github.com/sprintertech/sprinter-sdk/issues/161)) ([9f5c2f0](https://github.com/sprintertech/sprinter-sdk/commit/9f5c2f09d873bff398fa350d91f36829c9ba6220))
+
 ## [1.4.1](https://github.com/sprintertech/sprinter-sdk/compare/sprinter-react-v1.4.0...sprinter-react-v1.4.1) (2025-05-21)
 
 
