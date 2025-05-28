@@ -4,7 +4,7 @@
     "type": "git",
     "url": "git+https://github.com/sprintertech/sprinter-sdk.git"
   },
-  "version": "1.4.2",
+  "version": "1.4.3",
   "type": "module",
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
