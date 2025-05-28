@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.3](https://github.com/sprintertech/sprinter-sdk/compare/sprinter-react-v1.4.2...sprinter-react-v1.4.3) (2025-05-28)
+
+
+### Bug Fixes
+
+* **docs:** adding router addresses  ([#163](https://github.com/sprintertech/sprinter-sdk/issues/163)) ([ff7f939](https://github.com/sprintertech/sprinter-sdk/commit/ff7f939bf87b6730fb5cdf409f1541c2c4aa95b7))
+
 ## [1.4.2](https://github.com/sprintertech/sprinter-sdk/compare/sprinter-react-v1.4.1...sprinter-react-v1.4.2) (2025-05-27)
 
 

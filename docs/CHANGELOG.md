@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.5](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.4...docs-v0.3.5) (2025-05-28)
+
+
+### Bug Fixes
+
+* **docs:** adding router addresses  ([#163](https://github.com/sprintertech/sprinter-sdk/issues/163)) ([ff7f939](https://github.com/sprintertech/sprinter-sdk/commit/ff7f939bf87b6730fb5cdf409f1541c2c4aa95b7))
+
 ## [0.3.4](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.3...docs-v0.3.4) (2025-05-27)
 
 
