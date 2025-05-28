@@ -23,19 +23,15 @@ This guide covers:
 
 ```mermaid
 flowchart TD
-  A[Intent Detected] --> B[Request estimated price and execution plan]
-  B --> C{Quote Acceptable/<br>Profitable?}
-  C -- No --> D[Abort or Re-query]
-  C -- Yes --> E[Get the finalized route and call data execution package]
+  A[Intent Detected] -->
+  E[Get the finalized route and call data execution package]
   E --> F[Simulate & Execute Transaction]
   F --> G[Send Transaction & Finalize Fill]
 
 
-click B "solve-get-route-v2" "Borrow Quote"
-style B fill:#FF9B43,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+click E "solve-get-route-v2" "Borrow Quote"
+style E fill:#FF9B43,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
 
-click F "solve-api-quick-start#4-send-transaction-using-swap_call_data" "Borrow Quote"
-style F fill:#FF9B43,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
 ```
 
 </div>
@@ -102,7 +98,7 @@ const route = await routeResponse.json();
 
 // Send the calldata to the target contract (Sprinter Router or intent receiver)
 const tx = await signer.sendTransaction({
-  to: route.to, // usually the router or intent execution contract
+  to: route.to, //  the router or intent execution contract eg. 0xbfc4b3546416c5a7fa857bdb31b7701bfc7a42f7 for Sprinter Solve (Mainnet, Base)
   data: route.swap_call_data,
   value: route.value || 0, // only include if route requires native gas
   gasLimit: route.gasEstimate + 50000, // add buffer
@@ -113,12 +109,10 @@ console.log("Transaction hash:", tx.hash);
 
 ## 4. Sprinter Solve Execution Tips
 
-1. Start with `/quote` to quickly evaluate whether a fill is profitable.
+1. Use tools like Tenderly or hardhat to **simulate calldata before execution**.
 
-2. Use tools like Tenderly or hardhat to **simulate calldata before execution**.
+2. **Pay attention to slippage** - Quotes expire quickly. Re-query /route before execution if delayed.
 
-3. **Pay attention to slippage** - Quotes expire quickly. Re-query /route before execution if delayed.
+3. Use **gasEstimate for accurate costing** - whilst the Route API provides gas estimates — apply buffer when setting gas limits.
 
-4. Use **gasEstimate for accurate costing** - whilst the Route API provides gas estimates — apply buffer when setting gas limits.
-
-5. **Handling Rate Limits** - If you hit 429s, give it a moment and retry using retry_after value. You can request higher limits via support@sprinter.tech.
+4. **Handling Rate Limits** - If you hit 429s, give it a moment and retry using retry_after value. You can request higher limits via support@sprinter.tech.

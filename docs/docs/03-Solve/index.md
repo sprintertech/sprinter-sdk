@@ -21,16 +21,15 @@ Sprinter Solve enables the efficient execution of intent-based Swaps through its
 
 ```mermaid
 flowchart TD
-  A[Intent Detected] --> B[Request estimated price and execution plan]
-  B --> C{Quote Acceptable/<br>Profitable?}
-  C -- No --> D[Abort or Re-query]
-  C -- Yes --> E[Get the finalized route and call data execution package]
+  A[Intent Detected] -->
+  E[Get the finalized route and call data execution package]
   E --> F[Simulate & Execute Transaction]
   F --> G[Send Transaction & Finalize Fill]
 
 
-click B "solve-get-route-v2" "Borrow Quote"
-style B fill:#FF9B43,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+click E "solve-get-route-v2" "Borrow Quote"
+style E fill:#FF9B43,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+
 ```
 
 ## Key Features & Utility
