@@ -1,0 +1,71 @@
+---
+id: get-route-v-1
+title: "getRouteV1"
+description: "Calculate the optimal swap route and generate execution parameters for a token exchange"
+sidebar_label: "getRouteV1"
+hide_title: true
+hide_table_of_contents: true
+api: eJztWEtvGzcQ/isEkaJOu5bWrn2obnLitj60DeykF0MFRtyRlskuuSaHilRh/3sx5OplKc4LAVI3N4mcnfnmmwfJWUrboAPS1lwVciCnSNc2EP51IjNZoFdON7wpB/IZVCpUQCioRGEb0jVUwr+FRjj+RIApxBQNq0OBc1SBvxQNOKiR0HkxsU6AIPsGjcC5KsFMUWZyIyEHt0up2dpdQLeQmTRQoxxIqG0wdGX2UL0sUaRNYSdCmyZQMuAF2YTuSJu09L0XvoaqQk8iGE1PZSa9KrEGOVje0ztc6wQjLq+fneYdbvACRIEqeU9Om6k4MlZ4pdGQnmgljKXIKOunRcP4k2D0lQgdW/j7Nj/+efTjExbSVLHUS7aQLMs2kw7vgnZYyAG5gG12mJoI6wAzz6whB4oEFIVD79kXjtwWR5EirKoHeLikEh2GWqj76o5OczFeEPqnAo2yBRbMTYlzWLHzVlMp8rloHE70/GEy8vktHE+Gx78wKcuzvN3mZZhMfiQnfwb6YFJsoB1WxmHx6EjxlW4amOJF4w+W0WpfkK3QgVGcK2IMXnvRWG3IiyPsTXuZOM9jKee98+92a6jzRRvCKTqZyYl1NVBa+ulUZrLWRtehloM8kzXM0++TPM9zhjSBUJEcnOc7Tk2g8tiOeMk31nj0bOs0z/cjcxOUQu8noaoWQq06VrHdpmIANu2pQAJdMSMlQhF70FJe411AT8dXz/dNvDL6LqBwSUToIpV9dHePiXVU10SUOH8oyKdn7RPZtm0mObfQECuDpqm0ij2l/9oziuU7c3OXAYfR/fd43oG149eouGY21N92nTfVUq277pT+Ergp8g8FVfUcCOQok43jE4V0CtLm66+yw+449FUi7Dj+6lvQOgX2kP6G8zUQliqAILYP7rtclx8B4Idt6xfspORSWa10V5frrk1wHbWZPDvUKC6gWJdwEbjnCW1mUOli68LyaJrCpXPWiVX7TAnwYeXPcZOZRFawX95x9x3WeE9oU0SMZhrDzZa4npK67P550a4MvUNljd5DvDLuMrmdA1FyHfmTQ6GCQKV1+h+ujNgs72cAm9LeM2rlMMYSHtER8b/NhrN9VX9YMdMwrnD7ijCxwRTrHjXVMzTfusKjyYPzQ+fBlWGS+ThHN0O3xvIt0v/ZSPP9Dqm03VwjEVzKgezPTvqx0Dk4Mdxp8BBcxbEgavyg3+d+4Hu+cYzO9QhV2a9BG4P7z8rf07q44R4yfHEl+Q32fnVj8Lin6wI8bikaMUYVnKZFBHkBXqthYEduR9u7Nxz7FJYtmXXSMY5VMvJ/ftepyJw2ExsFOwaj7fFCXFRg1B684YsrETwWa4mIVWaSaUwiJ728lx+PkYAj2lhPNcT07B6iUyQRr2pif8y03KT4F5w4dZwQzqnfVKANA43xWnZJcitnjC2lySiTpfXEq8slB+2Vq9qWl9MTm+NSaM/HyOq5+oBbR9ddfT0Vnzu9OujHG1zsTsxmUAUWi1n5STg/bpb0AKrNsOrLgTo8y3kfqPSk/URUnzU+eQDZ7shmA27Ef1y8t8Q2sDqnYiamT4dKYbPt0t55wVrWDfLXy5eybf8FfAyYow==
+sidebar_class_name: "get api-method"
+info_path: ../src/api/generated/solve/swap-by-blanc
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"getRouteV1"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v1/route"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Calculate the optimal swap route and generate execution parameters for a token exchange
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"query","name":"amountIn","description":"The amount of input tokens to swap (in token's smallest unit)","schema":{"description":"Amount of an ERC20 token as a decimal string (no scientific notation)","type":"string","pattern":"^[0-9]+$","title":"TokenAmount"},"required":true},{"in":"query","name":"tokenIn","description":"Contract address of the input token to sell","schema":{"description":"Ethereum contract address (20 bytes) encoded as hexadecimal with 0x prefix","type":"string","pattern":"^0x[a-fA-F0-9]{40}$","title":"Address"},"required":true},{"in":"query","name":"tokenOut","description":"Contract address of the output token to buy","schema":{"description":"Ethereum contract address (20 bytes) encoded as hexadecimal with 0x prefix","type":"string","pattern":"^0x[a-fA-F0-9]{40}$","title":"Address"},"required":true},{"in":"query","name":"slippageBps","description":"The slippage tolerance in basis points (e.g., 50 for 0.5%)","schema":{"type":"integer","format":"int32","minimum":0,"maximum":10000,"default":50},"required":false}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully calculated swap route with execution details","headers":{"Request-ID":{"description":"Unique request identifier","schema":{"type":"string","format":"hex","pattern":"^0x[a-fA-F0-9]{24}$"}}},"content":{"application/json":{"schema":{"description":"Successfully created route with execution details","type":"object","required":["amountOut","minAmountOut","target","callData"],"properties":{"amountOut":{"description":"Amount of an ERC20 token as a decimal string (no scientific notation)","type":"string","pattern":"^[0-9]+$","title":"TokenAmount"},"minAmountOut":{"description":"Amount of an ERC20 token as a decimal string (no scientific notation)","type":"string","pattern":"^[0-9]+$","title":"TokenAmount"},"target":{"description":"Ethereum contract address (20 bytes) encoded as hexadecimal with 0x prefix","type":"string","pattern":"^0x[a-fA-F0-9]{40}$","title":"Address"},"callData":{"description":"Hex encoded calldata for the swap","type":"string","pattern":"^0x[a-fA-F0-9]*$","title":"Bytes"}},"title":"RouteV1Response"}}}},"400":{"description":"Bad request due to invalid parameters","headers":{"Request-ID":{"description":"Unique request identifier","schema":{"type":"string","format":"hex","pattern":"^0x[a-fA-F0-9]{24}$"}}},"content":{"application/json":{"schema":{"description":"Error response with details","type":"object","required":["code","error"],"properties":{"code":{"description":"Error code indicating the type of error","type":"integer"},"error":{"description":"Error message","type":"string"}},"title":"Error"}}}},"401":{"description":"Unauthorized access due to invalid or missing credentials","headers":{"Request-ID":{"description":"Unique request identifier","schema":{"type":"string","format":"hex","pattern":"^0x[a-fA-F0-9]{24}$"}}},"content":{"application/json":{"schema":{"description":"Error response with details","type":"object","required":["code","error"],"properties":{"code":{"description":"Error code indicating the type of error","type":"integer"},"error":{"description":"Error message","type":"string"}},"title":"Error"}}}},"404":{"description":"No viable swap route found for the given parameters","headers":{"Request-ID":{"description":"Unique request identifier","schema":{"type":"string","format":"hex","pattern":"^0x[a-fA-F0-9]{24}$"}}},"content":{"application/json":{"schema":{"description":"Error response with details","type":"object","required":["code","error"],"properties":{"code":{"description":"Error code indicating the type of error","type":"integer"},"error":{"description":"Error message","type":"string"}},"title":"Error"}}}},"500":{"description":"Internal server error","headers":{"Request-ID":{"description":"Unique request identifier","schema":{"type":"string","format":"hex","pattern":"^0x[a-fA-F0-9]{24}$"}}},"content":{"application/json":{"schema":{"description":"Error response with details","type":"object","required":["code","error"],"properties":{"code":{"description":"Error code indicating the type of error","type":"integer"},"error":{"description":"Error message","type":"string"}},"title":"Error"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      
