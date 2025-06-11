@@ -39,7 +39,7 @@ style E fill:#FF9B43,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
 
 ## 2. Geting the finalized route and call data execution package
 
-Calling the [**Get Route API**](solve-get-route-v2) returns the finalized route, including call data, gas estimates and token out amounts. Use this executable call data `swap_call_data` after verifying a quote.
+Calling the [**Get Route API**](solve-get-route-v1) returns the finalized route, including call data, gas estimates and token out amounts. Use this executable call data `swap_call_data` after verifying a quote.
 
 - **Mainnet:** `https://swaps.sprinter.tech/mainnet`
 - **Base:** `https://swaps.sprinter.tech/base`
@@ -69,7 +69,7 @@ const fetchRoute = async () => {
 
 ## 3. Send transaction using `swap_call_data`
 
-Once you've received a valid route from `/v2/route`, you'll use the `swap_call_data` in a transaction to execute the intent on-chain.
+Once you've received a valid route from `/v1/route`, you'll use the `swap_call_data` in a transaction to execute the intent on-chain.
 
 Below is a simplified example using `ethers.js` to send the transaction from a connected signer:
 
@@ -79,7 +79,7 @@ import { ethers } from "ethers";
 const provider = new ethers.JsonRpcProvider("https://mainnet.base.org"); // or OP/Arbitrum
 const signer = new ethers.Wallet("<PRIVATE_KEY>", provider);
 
-const routeResponse = await fetch("https://swaps.sprinter.tech/base/v2/route", {
+const routeResponse = await fetch("https://swaps.sprinter.tech/base/1/route", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
