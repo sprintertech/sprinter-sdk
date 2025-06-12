@@ -2,24 +2,21 @@
 
 ## [0.3.5](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.4...docs-v0.3.5) (2025-05-28)
 
-
 ### Bug Fixes
 
-* **docs:** adding router addresses  ([#163](https://github.com/sprintertech/sprinter-sdk/issues/163)) ([ff7f939](https://github.com/sprintertech/sprinter-sdk/commit/ff7f939bf87b6730fb5cdf409f1541c2c4aa95b7))
+- **docs:** adding router addresses ([#163](https://github.com/sprintertech/sprinter-sdk/issues/163)) ([ff7f939](https://github.com/sprintertech/sprinter-sdk/commit/ff7f939bf87b6730fb5cdf409f1541c2c4aa95b7))
 
 ## [0.3.4](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.3...docs-v0.3.4) (2025-05-27)
 
-
 ### Bug Fixes
 
-* **docs:** typos  ([#161](https://github.com/sprintertech/sprinter-sdk/issues/161)) ([9f5c2f0](https://github.com/sprintertech/sprinter-sdk/commit/9f5c2f09d873bff398fa350d91f36829c9ba6220))
+- **docs:** typos ([#161](https://github.com/sprintertech/sprinter-sdk/issues/161)) ([9f5c2f0](https://github.com/sprintertech/sprinter-sdk/commit/9f5c2f09d873bff398fa350d91f36829c9ba6220))
 
 ## [0.3.3](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.2...docs-v0.3.3) (2025-05-21)
 
-
 ### Bug Fixes
 
-* added MPC details  ([#159](https://github.com/sprintertech/sprinter-sdk/issues/159)) ([16fc0a2](https://github.com/sprintertech/sprinter-sdk/commit/16fc0a28ff7925c2643a313d572773d10f1b4619))
+- added MPC details ([#159](https://github.com/sprintertech/sprinter-sdk/issues/159)) ([16fc0a2](https://github.com/sprintertech/sprinter-sdk/commit/16fc0a28ff7925c2643a313d572773d10f1b4619))
 
 ## [0.3.2](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.1...docs-v0.3.2) (2025-05-16)
 

@@ -1,8 +1,8 @@
 ---
-id: get-route-v-1
-title: "getRouteV1"
+id: solve-get-route-v1
+title: "Get Route V1 API"
 description: "Calculate the optimal swap route and generate execution parameters for a token exchange"
-sidebar_label: "getRouteV1"
+sidebar_label: "Get Route API V1 "
 hide_title: true
 hide_table_of_contents: true
 api: eJztWEtvGzcQ/isEkaJOu5bWrn2obnLitj60DeykF0MFRtyRlskuuSaHilRh/3sx5OplKc4LAVI3N4mcnfnmmwfJWUrboAPS1lwVciCnSNc2EP51IjNZoFdON7wpB/IZVCpUQCioRGEb0jVUwr+FRjj+RIApxBQNq0OBc1SBvxQNOKiR0HkxsU6AIPsGjcC5KsFMUWZyIyEHt0up2dpdQLeQmTRQoxxIqG0wdGX2UL0sUaRNYSdCmyZQMuAF2YTuSJu09L0XvoaqQk8iGE1PZSa9KrEGOVje0ztc6wQjLq+fneYdbvACRIEqeU9Om6k4MlZ4pdGQnmgljKXIKOunRcP4k2D0lQgdW/j7Nj/+efTjExbSVLHUS7aQLMs2kw7vgnZYyAG5gG12mJoI6wAzz6whB4oEFIVD79kXjtwWR5EirKoHeLikEh2GWqj76o5OczFeEPqnAo2yBRbMTYlzWLHzVlMp8rloHE70/GEy8vktHE+Gx78wKcuzvN3mZZhMfiQnfwb6YFJsoB1WxmHx6EjxlW4amOJF4w+W0WpfkK3QgVGcK2IMXnvRWG3IiyPsTXuZOM9jKee98+92a6jzRRvCKTqZyYl1NVBa+ulUZrLWRtehloM8kzXM0++TPM9zhjSBUJEcnOc7Tk2g8tiOeMk31nj0bOs0z/cjcxOUQu8noaoWQq06VrHdpmIANu2pQAJdMSMlQhF70FJe411AT8dXz/dNvDL6LqBwSUToIpV9dHePiXVU10SUOH8oyKdn7RPZtm0mObfQECuDpqm0ij2l/9oziuU7c3OXAYfR/fd43oG149eouGY21N92nTfVUq277pT+Ergp8g8FVfUcCOQok43jE4V0CtLm66+yw+449FUi7Dj+6lvQOgX2kP6G8zUQliqAILYP7rtclx8B4Idt6xfspORSWa10V5frrk1wHbWZPDvUKC6gWJdwEbjnCW1mUOli68LyaJrCpXPWiVX7TAnwYeXPcZOZRFawX95x9x3WeE9oU0SMZhrDzZa4npK67P550a4MvUNljd5DvDLuMrmdA1FyHfmTQ6GCQKV1+h+ujNgs72cAm9LeM2rlMMYSHtER8b/NhrN9VX9YMdMwrnD7ijCxwRTrHjXVMzTfusKjyYPzQ+fBlWGS+ThHN0O3xvIt0v/ZSPP9Dqm03VwjEVzKgezPTvqx0Dk4Mdxp8BBcxbEgavyg3+d+4Hu+cYzO9QhV2a9BG4P7z8rf07q44R4yfHEl+Q32fnVj8Lin6wI8bikaMUYVnKZFBHkBXqthYEduR9u7Nxz7FJYtmXXSMY5VMvJ/ftepyJw2ExsFOwaj7fFCXFRg1B684YsrETwWa4mIVWaSaUwiJ728lx+PkYAj2lhPNcT07B6iUyQRr2pif8y03KT4F5w4dZwQzqnfVKANA43xWnZJcitnjC2lySiTpfXEq8slB+2Vq9qWl9MTm+NSaM/HyOq5+oBbR9ddfT0Vnzu9OujHG1zsTsxmUAUWi1n5STg/bpb0AKrNsOrLgTo8y3kfqPSk/URUnzU+eQDZ7shmA27Ef1y8t8Q2sDqnYiamT4dKYbPt0t55wVrWDfLXy5eybf8FfAyYow==
@@ -22,16 +22,14 @@ import Heading from "@theme/Heading";
 <Heading
   as={"h1"}
   className={"openapi__heading"}
-  children={"getRouteV1"}
+  children={"Get the executable swap route"}
 ></Heading>
 
-<MethodEndpoint
-  method={"get"}
-  path={"/v1/route"}
-  context={"endpoint"}
-></MethodEndpoint>
+<MethodEndpoint method={"get"} path={"/v1/route"} context={"endpoint"}></MethodEndpoint>
 
-Calculate the optimal swap route and generate execution parameters for a token exchange
+Get the **finalized execution package** returned by `/v1/route` which contains all necessary data to execute a transaction. It builds on a quote by including calldata, selected liquidity paths, slippage tolerances, and chain-specific details.
+
+Routes are consumed directly by solvers or smart contracts to simulate and execute cross-chain swaps or intent fills.
 
 <Heading
   id={"request"}
@@ -45,42 +43,43 @@ Calculate the optimal swap route and generate execution parameters for a token e
     {
       in: "query",
       name: "amountIn",
-      description:
-        "The amount of input tokens to swap (in token's smallest unit)",
+      description: "The amount of tokens to sell in decimal notation",
       schema: {
-        description:
-          "Amount of an ERC20 token as a decimal string (no scientific notation)",
+        description: "Amount of an ERC20 token as a decimal string (no scientific notation)",
         type: "string",
         pattern: "^[0-9]+$",
+        example: "1000000000000000000",
         title: "TokenAmount",
       },
       required: true,
+      example: "1000000000000000000",
     },
     {
       in: "query",
       name: "tokenIn",
       description: "Contract address of the input token to sell",
       schema: {
-        description:
-          "Ethereum contract address (20 bytes) encoded as hexadecimal with 0x prefix",
+        description: "Ethereum contract address (20 bytes) encoded as hexadecimal with 0x prefix",
         type: "string",
         pattern: "^0x[a-fA-F0-9]{40}$",
+        example: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
         title: "Address",
       },
       required: true,
+      example: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
     },
     {
       in: "query",
       name: "tokenOut",
       description: "Contract address of the output token to buy",
       schema: {
-        description:
-          "Ethereum contract address (20 bytes) encoded as hexadecimal with 0x prefix",
+        description: "Ethereum contract address (20 bytes) encoded as hexadecimal with 0x prefix",
         type: "string",
         pattern: "^0x[a-fA-F0-9]{40}$",
         title: "Address",
       },
       required: true,
+      example: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
     },
     {
       in: "query",
@@ -94,6 +93,7 @@ Calculate the optimal swap route and generate execution parameters for a token e
         default: 50,
       },
       required: false,
+      example: 50,
     },
   ]}
 ></ParamsDetails>
