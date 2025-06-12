@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.6](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.5...docs-v0.3.6) (2025-06-12)
+
+
+### Bug Fixes
+
+* update to solve-openapi.yaml to match updated OpenAPI spec ([#167](https://github.com/sprintertech/sprinter-sdk/issues/167)) ([b79e4cc](https://github.com/sprintertech/sprinter-sdk/commit/b79e4cc7ce82df46bb8a6894b11f379dd6536dbb))
+
 ## [0.3.5](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.4...docs-v0.3.5) (2025-05-28)
 
 ### Bug Fixes
