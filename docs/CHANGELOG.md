@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.7](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.6...docs-v0.3.7) (2025-06-26)
+
+
+### Bug Fixes
+
+* broken links solve v1 ([#169](https://github.com/sprintertech/sprinter-sdk/issues/169)) ([34be02b](https://github.com/sprintertech/sprinter-sdk/commit/34be02b69ef86a3b7cb9d27ec1bb24f69889be40))
+
 ## [0.3.6](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.5...docs-v0.3.6) (2025-06-12)
 
 
