@@ -27,7 +27,7 @@ flowchart TD
   F --> G[Send Transaction & Finalize Fill]
 
 
-click E "solve-get-route-v2" "Borrow Quote"
+click E "solve-get-route-v1" "Borrow Quote"
 style E fill:#FF9B43,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
 
 ```

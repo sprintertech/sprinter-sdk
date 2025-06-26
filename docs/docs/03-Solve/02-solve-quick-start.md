@@ -12,10 +12,10 @@ Sprinter Solve enables your dApp, aggregator or protocol integration to **optimi
 
 This guide covers:
 
-1. Recap of the [Sprinter Solve Lifecycle](solve-api-quick-start#1-solve-lifecycle)
-2. Geting the [finalized route and call data execution package](solve-api-quick-start#2-geting-the-finalized-route-and-call-data-execution-package)
-3. Send transaction using [`swap_call_data`](solve-api-quick-start#3-send-transaction-using-swap_call_data)
-4. Sprinter Solve [Execution Tips](solve-api-quick-start#4-sprinter-solve-execution-tips)
+1. Recap of the [Sprinter Solve Lifecycle](#1-solve-lifecycle)
+2. Geting the [finalized route and call data execution package](#2-geting-the-finalized-route-and-call-data-execution-package)
+3. Send transaction using [`swap_call_data`](#3-send-transaction-using-swap_call_data)
+4. Sprinter Solve [Execution Tips](#4-sprinter-solve-execution-tips)
 
 ## 1. Solve Lifecycle
 
