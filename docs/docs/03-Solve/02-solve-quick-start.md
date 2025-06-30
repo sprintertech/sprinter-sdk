@@ -45,22 +45,22 @@ Calling the [**Get Route API**](solve-get-route-v1) returns the finalized route,
 - **Base:** `https://swaps.sprinter.tech/base`
 
 ```ts title="Example Fetch Quote Request Payload"
-const AMOUNT_IN; // the amount of token that you want exchange in their decimals denomination
-const TOKEN_IN_ADDRESS; // token_in_address
-const TOKEN_OUT_ADDRESS; // token_out_addres - tokens that you want to receieve
-const SLIPPAGE; // the slipapge that you want to allow for the swap ( 0.5 - 2%)
-const TARGET_DURATION;
+const AMOUNT_IN = "100000000"; // the amount of token you want to exchange, in its smallest unit (as a string)
+const TOKEN_IN_ADDRESS = "0x..."; // address of the token you want to sell
+const TOKEN_OUT_ADDRESS = "0x..."; // address of the token you want to buy
+const SLIPPAGE_BPS = 50; // slippage in basis points (e.g., 50 = 0.5%)
+const API_USER = "your_api_user";
+const API_PASS = "your_api_pass";
 
 const fetchRoute = async () => {
-  const response = await fetch(
-    "https://swaps.sprinter.tech/mainnet/v2/route?amount_in=[AMOUNT_IN]&token_in=[TOKEN_IN_ADDRESS]&token_out=[TOKEN_OUT_ADDRESS]&slippage=[SLIPPAGE]&target_duration_ms=[TARGET_DURATION]",
-    {
-      method: "GET",
-      headers: {
-        "X-API-Key": "your_api_key_here",
-      },
+  const url = `https://swaps.sprinter.tech/mainnet/v1/route?amountIn=${AMOUNT_IN}&tokenIn=${TOKEN_IN_ADDRESS}&tokenOut=${TOKEN_OUT_ADDRESS}&slippageBps=${SLIPPAGE_BPS}`;
+
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      Authorization: "Basic " + btoa(`${API_USER}:${API_PASS}`),
     },
-  );
+  });
 
   const data = await response.json();
   return data;
