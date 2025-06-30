@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.8](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.7...docs-v0.3.8) (2025-06-30)
+
+
+### Bug Fixes
+
+* update solve api example ([#175](https://github.com/sprintertech/sprinter-sdk/issues/175)) ([9dbfbd8](https://github.com/sprintertech/sprinter-sdk/commit/9dbfbd8763e13b050e0bc3ca33414f6016a48cb4))
+
 ## [0.3.7](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.6...docs-v0.3.7) (2025-06-26)
 
 
