@@ -2,24 +2,21 @@
 
 ## [0.3.8](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.7...docs-v0.3.8) (2025-06-30)
 
-
 ### Bug Fixes
 
-* update solve api example ([#175](https://github.com/sprintertech/sprinter-sdk/issues/175)) ([9dbfbd8](https://github.com/sprintertech/sprinter-sdk/commit/9dbfbd8763e13b050e0bc3ca33414f6016a48cb4))
+- update solve api example ([#175](https://github.com/sprintertech/sprinter-sdk/issues/175)) ([9dbfbd8](https://github.com/sprintertech/sprinter-sdk/commit/9dbfbd8763e13b050e0bc3ca33414f6016a48cb4))
 
 ## [0.3.7](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.6...docs-v0.3.7) (2025-06-26)
 
-
 ### Bug Fixes
 
-* broken links solve v1 ([#169](https://github.com/sprintertech/sprinter-sdk/issues/169)) ([34be02b](https://github.com/sprintertech/sprinter-sdk/commit/34be02b69ef86a3b7cb9d27ec1bb24f69889be40))
+- broken links solve v1 ([#169](https://github.com/sprintertech/sprinter-sdk/issues/169)) ([34be02b](https://github.com/sprintertech/sprinter-sdk/commit/34be02b69ef86a3b7cb9d27ec1bb24f69889be40))
 
 ## [0.3.6](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.5...docs-v0.3.6) (2025-06-12)
 
-
 ### Bug Fixes
 
-* update to solve-openapi.yaml to match updated OpenAPI spec ([#167](https://github.com/sprintertech/sprinter-sdk/issues/167)) ([b79e4cc](https://github.com/sprintertech/sprinter-sdk/commit/b79e4cc7ce82df46bb8a6894b11f379dd6536dbb))
+- update to solve-openapi.yaml to match updated OpenAPI spec ([#167](https://github.com/sprintertech/sprinter-sdk/issues/167)) ([b79e4cc](https://github.com/sprintertech/sprinter-sdk/commit/b79e4cc7ce82df46bb8a6894b11f379dd6536dbb))
 
 ## [0.3.5](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.4...docs-v0.3.5) (2025-05-28)
 

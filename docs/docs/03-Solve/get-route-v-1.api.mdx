@@ -19,18 +19,9 @@ import OperationTabs from "@theme/OperationTabs";
 import TabItem from "@theme/TabItem";
 import Heading from "@theme/Heading";
 
+<Heading as={"h1"} className={"openapi__heading"} children={"getRouteV1"}></Heading>
 
-<Heading
-  as={"h1"}
-  className={"openapi__heading"}
-  children={"getRouteV1"}
-></Heading>
-
-<MethodEndpoint
-  method={"get"}
-  path={"/v1/route"}
-  context={"endpoint"}
-></MethodEndpoint>
+<MethodEndpoint method={"get"} path={"/v1/route"} context={"endpoint"}></MethodEndpoint>
 
 Calculate the optimal swap route and generate execution parameters for a token exchange
 
@@ -46,11 +37,9 @@ Calculate the optimal swap route and generate execution parameters for a token e
     {
       in: "query",
       name: "amountIn",
-      description:
-        "The amount of input tokens to swap (in token's smallest unit)",
+      description: "The amount of input tokens to swap (in token's smallest unit)",
       schema: {
-        description:
-          "Amount of an ERC20 token as a decimal string (no scientific notation)",
+        description: "Amount of an ERC20 token as a decimal string (no scientific notation)",
         type: "string",
         pattern: "^[0-9]+$",
         title: "TokenAmount",
@@ -63,8 +52,7 @@ Calculate the optimal swap route and generate execution parameters for a token e
       description:
         "Contract address of the input token to sell. The zero address (0x00…00) represents the native currency ETH.",
       schema: {
-        description:
-          "Ethereum contract address (20 bytes) encoded as hexadecimal with 0x prefix",
+        description: "Ethereum contract address (20 bytes) encoded as hexadecimal with 0x prefix",
         type: "string",
         pattern: "^0x[a-fA-F0-9]{40}$",
         title: "Address",
@@ -77,8 +65,7 @@ Calculate the optimal swap route and generate execution parameters for a token e
       description:
         "Contract address of the output token to buy. The zero address (0x00…00) represents the native currency ETH.",
       schema: {
-        description:
-          "Ethereum contract address (20 bytes) encoded as hexadecimal with 0x prefix",
+        description: "Ethereum contract address (20 bytes) encoded as hexadecimal with 0x prefix",
         type: "string",
         pattern: "^0x[a-fA-F0-9]{40}$",
         title: "Address",
@@ -111,8 +98,7 @@ Calculate the optimal swap route and generate execution parameters for a token e
       description: "Successfully calculated swap route with execution details",
       headers: {
         "Request-ID": {
-          description:
-            "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
+          description: "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
           schema: {
             description:
               "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
@@ -128,13 +114,7 @@ Calculate the optimal swap route and generate execution parameters for a token e
           schema: {
             description: "Successfully created route with execution details",
             type: "object",
-            required: [
-              "requestId",
-              "amountOut",
-              "minAmountOut",
-              "target",
-              "callData",
-            ],
+            required: ["requestId", "amountOut", "minAmountOut", "target", "callData"],
             properties: {
               requestId: {
                 description:
@@ -181,8 +161,7 @@ Calculate the optimal swap route and generate execution parameters for a token e
       description: "Bad request due to invalid parameters",
       headers: {
         "Request-ID": {
-          description:
-            "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
+          description: "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
           schema: {
             description:
               "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
@@ -223,8 +202,7 @@ Calculate the optimal swap route and generate execution parameters for a token e
       description: "Unauthorized access due to invalid or missing credentials",
       headers: {
         "Request-ID": {
-          description:
-            "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
+          description: "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
           schema: {
             description:
               "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
@@ -265,8 +243,7 @@ Calculate the optimal swap route and generate execution parameters for a token e
       description: "No viable swap route found for the given parameters",
       headers: {
         "Request-ID": {
-          description:
-            "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
+          description: "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
           schema: {
             description:
               "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
@@ -307,8 +284,7 @@ Calculate the optimal swap route and generate execution parameters for a token e
       description: "Internal server error",
       headers: {
         "Request-ID": {
-          description:
-            "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
+          description: "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
           schema: {
             description:
               "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
@@ -347,4 +323,3 @@ Calculate the optimal swap route and generate execution parameters for a token e
     },
   }}
 ></StatusCodes>
-
