@@ -19,17 +19,20 @@ import OperationTabs from "@theme/OperationTabs";
 import TabItem from "@theme/TabItem";
 import Heading from "@theme/Heading";
 
+
 <Heading
   as={"h1"}
   className={"openapi__heading"}
-  children={"Get the executable swap route"}
+  children={"getRouteV1"}
 ></Heading>
 
-<MethodEndpoint method={"get"} path={"/v1/route"} context={"endpoint"}></MethodEndpoint>
+<MethodEndpoint
+  method={"get"}
+  path={"/v1/route"}
+  context={"endpoint"}
+></MethodEndpoint>
 
-Get the **finalized execution package** returned by `/v1/route` which contains all necessary data to execute a transaction. It builds on a quote by including calldata, selected liquidity paths, slippage tolerances, and chain-specific details.
-
-Routes are consumed directly by solvers or smart contracts to simulate and execute cross-chain swaps or intent fills.
+Calculate the optimal swap route and generate execution parameters for a token exchange
 
 <Heading
   id={"request"}
@@ -43,43 +46,44 @@ Routes are consumed directly by solvers or smart contracts to simulate and execu
     {
       in: "query",
       name: "amountIn",
-      description: "The amount of tokens to sell in decimal notation",
+      description:
+        "The amount of input tokens to swap (in token's smallest unit)",
       schema: {
-        description: "Amount of an ERC20 token as a decimal string (no scientific notation)",
+        description:
+          "Amount of an ERC20 token as a decimal string (no scientific notation)",
         type: "string",
         pattern: "^[0-9]+$",
-        example: "1000000000000000000",
         title: "TokenAmount",
       },
       required: true,
-      example: "1000000000000000000",
     },
     {
       in: "query",
       name: "tokenIn",
-      description: "Contract address of the input token to sell",
+      description:
+        "Contract address of the input token to sell. The zero address (0x00…00) represents the native currency ETH.",
       schema: {
-        description: "Ethereum contract address (20 bytes) encoded as hexadecimal with 0x prefix",
+        description:
+          "Ethereum contract address (20 bytes) encoded as hexadecimal with 0x prefix",
         type: "string",
         pattern: "^0x[a-fA-F0-9]{40}$",
-        example: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
         title: "Address",
       },
       required: true,
-      example: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
     },
     {
       in: "query",
       name: "tokenOut",
-      description: "Contract address of the output token to buy",
+      description:
+        "Contract address of the output token to buy. The zero address (0x00…00) represents the native currency ETH.",
       schema: {
-        description: "Ethereum contract address (20 bytes) encoded as hexadecimal with 0x prefix",
+        description:
+          "Ethereum contract address (20 bytes) encoded as hexadecimal with 0x prefix",
         type: "string",
         pattern: "^0x[a-fA-F0-9]{40}$",
         title: "Address",
       },
       required: true,
-      example: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
     },
     {
       in: "query",
@@ -93,7 +97,6 @@ Routes are consumed directly by solvers or smart contracts to simulate and execu
         default: 50,
       },
       required: false,
-      example: 50,
     },
   ]}
 ></ParamsDetails>
@@ -108,11 +111,15 @@ Routes are consumed directly by solvers or smart contracts to simulate and execu
       description: "Successfully calculated swap route with execution details",
       headers: {
         "Request-ID": {
-          description: "Unique request identifier",
+          description:
+            "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
           schema: {
+            description:
+              "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
             type: "string",
             format: "hex",
-            pattern: "^0x[a-fA-F0-9]{24}$",
+            pattern: "^0x[a-fA-F0-9]{32}$",
+            title: "RequestID",
           },
         },
       },
@@ -121,8 +128,22 @@ Routes are consumed directly by solvers or smart contracts to simulate and execu
           schema: {
             description: "Successfully created route with execution details",
             type: "object",
-            required: ["amountOut", "minAmountOut", "target", "callData"],
+            required: [
+              "requestId",
+              "amountOut",
+              "minAmountOut",
+              "target",
+              "callData",
+            ],
             properties: {
+              requestId: {
+                description:
+                  "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
+                type: "string",
+                format: "hex",
+                pattern: "^0x[a-fA-F0-9]{32}$",
+                title: "RequestID",
+              },
               amountOut: {
                 description:
                   "Amount of an ERC20 token as a decimal string (no scientific notation)",
@@ -160,11 +181,15 @@ Routes are consumed directly by solvers or smart contracts to simulate and execu
       description: "Bad request due to invalid parameters",
       headers: {
         "Request-ID": {
-          description: "Unique request identifier",
+          description:
+            "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
           schema: {
+            description:
+              "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
             type: "string",
             format: "hex",
-            pattern: "^0x[a-fA-F0-9]{24}$",
+            pattern: "^0x[a-fA-F0-9]{32}$",
+            title: "RequestID",
           },
         },
       },
@@ -173,11 +198,19 @@ Routes are consumed directly by solvers or smart contracts to simulate and execu
           schema: {
             description: "Error response with details",
             type: "object",
-            required: ["code", "error"],
+            required: ["code", "requestId", "error"],
             properties: {
               code: {
                 description: "Error code indicating the type of error",
                 type: "integer",
+              },
+              requestId: {
+                description:
+                  "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
+                type: "string",
+                format: "hex",
+                pattern: "^0x[a-fA-F0-9]{32}$",
+                title: "RequestID",
               },
               error: { description: "Error message", type: "string" },
             },
@@ -190,11 +223,15 @@ Routes are consumed directly by solvers or smart contracts to simulate and execu
       description: "Unauthorized access due to invalid or missing credentials",
       headers: {
         "Request-ID": {
-          description: "Unique request identifier",
+          description:
+            "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
           schema: {
+            description:
+              "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
             type: "string",
             format: "hex",
-            pattern: "^0x[a-fA-F0-9]{24}$",
+            pattern: "^0x[a-fA-F0-9]{32}$",
+            title: "RequestID",
           },
         },
       },
@@ -203,11 +240,19 @@ Routes are consumed directly by solvers or smart contracts to simulate and execu
           schema: {
             description: "Error response with details",
             type: "object",
-            required: ["code", "error"],
+            required: ["code", "requestId", "error"],
             properties: {
               code: {
                 description: "Error code indicating the type of error",
                 type: "integer",
+              },
+              requestId: {
+                description:
+                  "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
+                type: "string",
+                format: "hex",
+                pattern: "^0x[a-fA-F0-9]{32}$",
+                title: "RequestID",
               },
               error: { description: "Error message", type: "string" },
             },
@@ -220,11 +265,15 @@ Routes are consumed directly by solvers or smart contracts to simulate and execu
       description: "No viable swap route found for the given parameters",
       headers: {
         "Request-ID": {
-          description: "Unique request identifier",
+          description:
+            "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
           schema: {
+            description:
+              "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
             type: "string",
             format: "hex",
-            pattern: "^0x[a-fA-F0-9]{24}$",
+            pattern: "^0x[a-fA-F0-9]{32}$",
+            title: "RequestID",
           },
         },
       },
@@ -233,11 +282,19 @@ Routes are consumed directly by solvers or smart contracts to simulate and execu
           schema: {
             description: "Error response with details",
             type: "object",
-            required: ["code", "error"],
+            required: ["code", "requestId", "error"],
             properties: {
               code: {
                 description: "Error code indicating the type of error",
                 type: "integer",
+              },
+              requestId: {
+                description:
+                  "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
+                type: "string",
+                format: "hex",
+                pattern: "^0x[a-fA-F0-9]{32}$",
+                title: "RequestID",
               },
               error: { description: "Error message", type: "string" },
             },
@@ -250,11 +307,15 @@ Routes are consumed directly by solvers or smart contracts to simulate and execu
       description: "Internal server error",
       headers: {
         "Request-ID": {
-          description: "Unique request identifier",
+          description:
+            "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
           schema: {
+            description:
+              "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
             type: "string",
             format: "hex",
-            pattern: "^0x[a-fA-F0-9]{24}$",
+            pattern: "^0x[a-fA-F0-9]{32}$",
+            title: "RequestID",
           },
         },
       },
@@ -263,11 +324,19 @@ Routes are consumed directly by solvers or smart contracts to simulate and execu
           schema: {
             description: "Error response with details",
             type: "object",
-            required: ["code", "error"],
+            required: ["code", "requestId", "error"],
             properties: {
               code: {
                 description: "Error code indicating the type of error",
                 type: "integer",
+              },
+              requestId: {
+                description:
+                  "Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix",
+                type: "string",
+                format: "hex",
+                pattern: "^0x[a-fA-F0-9]{32}$",
+                title: "RequestID",
               },
               error: { description: "Error message", type: "string" },
             },
@@ -278,3 +347,4 @@ Routes are consumed directly by solvers or smart contracts to simulate and execu
     },
   }}
 ></StatusCodes>
+
