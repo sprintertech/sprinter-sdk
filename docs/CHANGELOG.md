@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.9](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.8...docs-v0.3.9) (2025-07-08)
+
+
+### Bug Fixes
+
+* adding requestID to solve api  ([#178](https://github.com/sprintertech/sprinter-sdk/issues/178)) ([0438cc9](https://github.com/sprintertech/sprinter-sdk/commit/0438cc921ab037988d46f43f61bfe481d7a0e8b1))
+
 ## [0.3.8](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.7...docs-v0.3.8) (2025-06-30)
 
 ### Bug Fixes
