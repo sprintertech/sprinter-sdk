@@ -304,6 +304,7 @@ definitions:
         description:
           amount of tokens for which we are requesting borrow quote (in
           the smallest denomination)
+        example: "49805421"
         type: string
       exclusive_fill:
         description: boolean representing if you have exclusivity to fill this quote
@@ -315,8 +316,9 @@ definitions:
         type: string
       token:
         description: token address (hex)
-        example: 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+        example: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
         type: string
+        format: hex
     required:
       - amount
       - exclusive_fill
@@ -561,7 +563,7 @@ paths:
       summary: Get signing authorization for a liquidity transaction
       tags:
         - Liquidity
-  /liquidity/chain/{chainId}/protocol/{protocol}/type/{type}/quote:
+  /liquidity/chain/{chain}/protocol/{protocol}/type/{type}/quote:
     get:
       consumes:
         - application/json
@@ -569,21 +571,27 @@ paths:
         Calculates the borrow quote including borrow cost, required input/output,
         and duration.
       parameters:
-        - description: Protocol name (e.g., Across)
-          in: path
-          name: protocol
-          required: true
-          type: string
-        - description: Quote algorithm type (e.g., ExactInput, ExactOutput)
-          in: path
-          name: type
-          required: true
-          type: string
         - description: Source CAIP chain ID (e.g., eip155:1)
           in: path
           name: chain
           required: true
-          type: string
+          schema:
+            type: string
+            example: eip155:8453
+        - description: Protocol name (e.g., Across)
+          in: path
+          name: protocol
+          required: true
+          schema:
+            type: string
+            example: mayan
+        - description: Quote algorithm type (e.g., ExactInput, ExactOutput)
+          in: path
+          name: type
+          required: true
+          schema:
+            type: string
+            example: ExactOutput
         - description: Borrow quote request payload
           in: body
           name: body
