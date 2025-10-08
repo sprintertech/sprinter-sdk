@@ -27,7 +27,7 @@ export default function WordWrapButton({
       className={clsx(
         "clean-btn",
         className,
-        isEnabled && "openapi-explorer__code-block-word-wrap-btn--enabled"
+        isEnabled && "openapi-explorer__code-block-word-wrap-btn--enabled",
       )}
       aria-label={title}
       title={title}

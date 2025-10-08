@@ -37,7 +37,7 @@ export default function ParamSelectFormItem({ param }: ParamProps) {
                 setParam({
                   ...param,
                   value: val === "---" ? undefined : val,
-                })
+                }),
               );
               onChange(val);
             }}

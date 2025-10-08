@@ -46,7 +46,7 @@ export default function CopyButton({
         "clean-btn",
         className,
         "openapi-explorer__code-block-copy-btn",
-        isCopied && "openapi-explorer__code-block-copy-btn--copied"
+        isCopied && "openapi-explorer__code-block-copy-btn--copied",
       )}
       onClick={handleCopyCode}
     >

@@ -17,7 +17,7 @@ export default function CodeBlockLine({
     line,
     className: clsx(
       classNames,
-      showLineNumbers && "openapi-explorer__code-block-code-line"
+      showLineNumbers && "openapi-explorer__code-block-code-line",
     ),
   });
   const lineTokens = line.map((token, key) => (

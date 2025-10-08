@@ -18,7 +18,7 @@ export default function CodeBlockJSX({
       className={clsx(
         "openapi-explorer__code-block-standalone",
         "thin-scrollbar",
-        className
+        className,
       )}
     >
       <code className="openapi-explorer__code-block-lines">{children}</code>

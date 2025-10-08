@@ -4,12 +4,12 @@ import sdk from "postman-collection";
 function fetchWithtimeout(
   url: string,
   options: RequestInit,
-  timeout = 5000
+  timeout = 5000,
 ): any {
   return Promise.race([
     fetch(url, options),
     new Promise((_, reject) =>
-      setTimeout(() => reject(new Error("Request timed out")), timeout)
+      setTimeout(() => reject(new Error("Request timed out")), timeout),
     ),
   ]);
 }
@@ -40,7 +40,7 @@ async function loadImage(content: Blob): Promise<string | ArrayBuffer | null> {
 async function makeRequest(
   request: sdk.Request,
   proxy: string | undefined,
-  _body: Body
+  _body: Body,
 ) {
   const headers = request.toJSON().header;
 

@@ -45,7 +45,7 @@ function MethodEndpoint({ method, path, context }: Props) {
       Object.keys(serverValue.variables).forEach((variable) => {
         serverUrlWithVariables = serverUrlWithVariables.replace(
           `{${variable}}`,
-          serverValue.variables?.[variable].default ?? ""
+          serverValue.variables?.[variable].default ?? "",
         );
       });
     }

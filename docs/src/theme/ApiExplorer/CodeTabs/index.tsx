@@ -43,7 +43,7 @@ function TabList({
 
   useEffect(() => {
     const activeTab = tabRefs.current.find(
-      (tab) => tab?.getAttribute("aria-selected") === "true"
+      (tab) => tab?.getAttribute("aria-selected") === "true",
     );
 
     if (activeTab && tabsScrollContainerRef.current) {
@@ -72,7 +72,7 @@ function TabList({
     event:
       | React.FocusEvent<HTMLLIElement>
       | React.MouseEvent<HTMLLIElement>
-      | React.KeyboardEvent<HTMLLIElement>
+      | React.KeyboardEvent<HTMLLIElement>,
   ) => {
     const newTab = event.currentTarget;
     const newTabIndex = tabRefs.current.indexOf(newTab);
@@ -87,19 +87,19 @@ function TabList({
       let newLanguage: Language;
       if (currentLanguage && includeVariant) {
         newLanguage = languageSet.filter(
-          (lang: Language) => lang.language === currentLanguage
+          (lang: Language) => lang.language === currentLanguage,
         )[0];
         newLanguage.variant = newTabValue;
         action.setSelectedVariant(newTabValue.toLowerCase());
       } else if (currentLanguage && includeSample) {
         newLanguage = languageSet.filter(
-          (lang: Language) => lang.language === currentLanguage
+          (lang: Language) => lang.language === currentLanguage,
         )[0];
         newLanguage.sample = newTabValue;
         action.setSelectedSample(newTabValue);
       } else {
         newLanguage = languageSet.filter(
-          (lang: Language) => lang.language === newTabValue
+          (lang: Language) => lang.language === newTabValue,
         )[0];
         action.setSelectedVariant(newLanguage.variants[0].toLowerCase());
         action.setSelectedSample(newLanguage.sample);
@@ -145,7 +145,7 @@ function TabList({
         {
           "tabs--block": block,
         },
-        className
+        className,
       )}
       ref={tabsScrollContainerRef}
     >
@@ -170,7 +170,7 @@ function TabList({
             attributes?.className as string,
             {
               active: selectedValue === value,
-            }
+            },
           )}
         >
           <span>{label ?? value}</span>
@@ -186,11 +186,11 @@ function TabContent({
   selectedValue,
 }: CodeTabsProps & ReturnType<typeof useTabs>): React.JSX.Element | null {
   const childTabs = (Array.isArray(children) ? children : [children]).filter(
-    Boolean
+    Boolean,
   ) as ReactElement<TabItemProps>[];
   if (lazy) {
     const selectedTabItem = childTabs.find(
-      (tabItem) => tabItem.props.value === selectedValue
+      (tabItem) => tabItem.props.value === selectedValue,
     );
     if (!selectedTabItem) {
       // fail-safe or fail-fast? not sure what's best here
@@ -204,7 +204,7 @@ function TabContent({
         cloneElement(tabItem, {
           key: i,
           hidden: tabItem.props.value !== selectedValue,
-        })
+        }),
       )}
     </div>
   );
@@ -225,7 +225,7 @@ function TabsComponent(props: CodeTabsProps & Props): React.JSX.Element {
 }
 
 export default function CodeTabs(
-  props: CodeTabsProps & Props
+  props: CodeTabsProps & Props,
 ): React.JSX.Element {
   const isBrowser = useIsBrowser();
   return (

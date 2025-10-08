@@ -51,7 +51,7 @@ export default function CodeBlockString({
         blockClassName,
         language &&
           !blockClassName.includes(`language-${language}`) &&
-          `language-${language}`
+          `language-${language}`,
       )}
     >
       {title && (
@@ -72,14 +72,14 @@ export default function CodeBlockString({
               className={clsx(
                 className,
                 "openapi-explorer__code-block",
-                "thin-scrollbar"
+                "thin-scrollbar",
               )}
             >
               <code
                 className={clsx(
                   "openapi-explorer__code-block-lines",
                   showLineNumbers &&
-                    "openapi-explorer__code-block-lines-numbering"
+                    "openapi-explorer__code-block-lines-numbering",
                 )}
               >
                 {tokens.map((line, i) => (
@@ -111,7 +111,7 @@ export default function CodeBlockString({
           <ExpandButton
             className={clsx(
               "openapi-explorer__code-block-code-btn",
-              "openapi-explorer__expand-btn"
+              "openapi-explorer__expand-btn",
             )}
             code={code}
             language={(language ?? "text") as Language}

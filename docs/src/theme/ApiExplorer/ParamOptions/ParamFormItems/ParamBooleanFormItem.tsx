@@ -36,7 +36,7 @@ export default function ParamBooleanFormItem({ param }: ParamProps) {
                 setParam({
                   ...param,
                   value: val === "---" ? undefined : val,
-                })
+                }),
               );
               onChange(val);
             }}

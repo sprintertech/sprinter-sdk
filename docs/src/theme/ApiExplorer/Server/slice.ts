@@ -15,7 +15,7 @@ export const slice = createSlice({
   reducers: {
     setServer: (state, action: PayloadAction<string>) => {
       state.value = state.options.find(
-        (s) => s.url === JSON.parse(action.payload).url
+        (s) => s.url === JSON.parse(action.payload).url,
       );
     },
     setServerVariable: (state, action: PayloadAction<string>) => {

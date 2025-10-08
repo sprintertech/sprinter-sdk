@@ -44,7 +44,7 @@ export default function ParamMultiSelectFormItem({ param }: ParamProps) {
       setParam({
         ...param,
         value: values.length > 0 ? values : undefined,
-      })
+      }),
     );
 
     onChange(paramTypeToWatch);

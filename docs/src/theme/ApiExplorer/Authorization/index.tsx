@@ -50,7 +50,7 @@ function Authorization() {
                       scheme: a.key,
                       key: "token",
                       value: value ? value : undefined,
-                    })
+                    }),
                   );
                 }}
               />
@@ -72,7 +72,7 @@ function Authorization() {
                       scheme: a.key,
                       key: "token",
                       value: value ? value : undefined,
-                    })
+                    }),
                   );
                 }}
               />
@@ -94,7 +94,7 @@ function Authorization() {
                         scheme: a.key,
                         key: "username",
                         value: value ? value : undefined,
-                      })
+                      }),
                     );
                   }}
                 />
@@ -111,7 +111,7 @@ function Authorization() {
                         scheme: a.key,
                         key: "password",
                         value: value ? value : undefined,
-                      })
+                      }),
                     );
                   }}
                 />
@@ -134,7 +134,7 @@ function Authorization() {
                       scheme: a.key,
                       key: "apiKey",
                       value: value ? value : undefined,
-                    })
+                    }),
                   );
                 }}
               />

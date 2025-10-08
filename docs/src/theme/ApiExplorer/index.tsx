@@ -21,12 +21,12 @@ function ApiExplorer({
       <SecuritySchemes infoPath={infoPath} />
       <Request item={item} />
       <Response item={item} />
-        {item.method !== "event" && (
-            <CodeSnippets
-                postman={postman}
-                codeSamples={(item as any)["x-codeSamples"] ?? []}
-            />
-        )}
+      {item.method !== "event" && (
+        <CodeSnippets
+          postman={postman}
+          codeSamples={(item as any)["x-codeSamples"] ?? []}
+        />
+      )}
     </>
   );
 }

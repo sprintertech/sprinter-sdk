@@ -23,7 +23,7 @@ export default function ParamTextFormItem({ param }: ParamProps) {
               param.in === "path" || param.in === "query"
                 ? e.target.value.replace(/\s/g, "%20")
                 : e.target.value,
-          })
+          }),
         )
       }
     />

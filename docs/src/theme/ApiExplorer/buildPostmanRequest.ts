@@ -38,7 +38,7 @@ function setQueryParams(postman: sdk.Request, queryParams: Param[]) {
               new sdk.QueryParam({
                 key: param.name,
                 value: val,
-              })
+              }),
           );
         } else {
           return new sdk.QueryParam({
@@ -67,7 +67,7 @@ function setQueryParams(postman: sdk.Request, queryParams: Param[]) {
               new sdk.QueryParam({
                 key: `${param.name}[${key}]`,
                 value: val,
-              })
+              }),
           );
         } else if (param.explode) {
           return Object.entries(jsonResult).map(
@@ -75,7 +75,7 @@ function setQueryParams(postman: sdk.Request, queryParams: Param[]) {
               new sdk.QueryParam({
                 key: key,
                 value: val,
-              })
+              }),
           );
         } else {
           return new sdk.QueryParam({
@@ -201,7 +201,7 @@ function buildCookie(cookieParams: Param[]) {
                   new sdk.Cookie({
                     key: key,
                     value: val,
-                  })
+                  }),
               );
             } else {
               // Serialize the object as a single cookie with key-value pairs joined by commas
@@ -236,7 +236,7 @@ function setHeaders(
   accept: string,
   cookie: string,
   headerParams: Param[],
-  other: { key: string; value: string }[]
+  other: { key: string; value: string }[],
 ) {
   postman.headers.clear();
 
@@ -405,7 +405,7 @@ function buildPostmanRequest(
     body,
     server,
     auth,
-  }: Options
+  }: Options,
 ) {
   const clonedPostman = cloneDeep(postman);
 
@@ -424,10 +424,13 @@ function buildPostmanRequest(
   }
 
   setQueryParams(clonedPostman, queryParams);
-  setPathParams(clonedPostman, pathParams.map(path => ({
-    ...path,
-    value: path.value || path.schema.example,
-  })));
+  setPathParams(
+    clonedPostman,
+    pathParams.map((path) => ({
+      ...path,
+      value: path.value || path.schema.example,
+    })),
+  );
 
   const cookie = buildCookie(cookieParams);
   let otherHeaders = [];
@@ -511,7 +514,7 @@ function buildPostmanRequest(
     accept,
     cookie,
     headerParams,
-    otherHeaders
+    otherHeaders,
   );
 
   setBody(clonedPostman, body);

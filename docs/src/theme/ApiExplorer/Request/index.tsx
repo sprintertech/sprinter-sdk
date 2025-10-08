@@ -83,7 +83,7 @@ function Request({ item }: { item: ApiItem }) {
       const paramType = param.in;
       const paramsArray: ParameterObject[] = paramsObject[paramType];
       paramsArray.push(param as ParameterObject);
-    }
+    },
   );
 
   const methods = useForm({ shouldFocusError: false });

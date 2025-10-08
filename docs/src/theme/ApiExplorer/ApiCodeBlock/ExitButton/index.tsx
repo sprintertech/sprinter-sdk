@@ -28,7 +28,7 @@ export default function ExitButton({
       className={clsx(
         "clean-btn",
         "openapi-explorer__code-block-exit-btn",
-        className
+        className,
       )}
       onClick={handler}
     >

@@ -18,7 +18,7 @@ export default function CodeBlockContainer<T extends "div" | "pre">({
       className={clsx(
         "openapi-explorer__code-block-container",
         props.className,
-        ThemeClassNames.common.codeBlock
+        ThemeClassNames.common.codeBlock,
       )}
     />
   );

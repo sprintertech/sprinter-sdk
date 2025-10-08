@@ -32,7 +32,7 @@ export function createPersistanceMiddleware(options: ThemeConfig["api"]) {
         if (state.auth.selected) {
           storage.setItem(
             hashArray(Object.keys(state.auth.options)),
-            state.auth.selected
+            state.auth.selected,
           );
         }
       }

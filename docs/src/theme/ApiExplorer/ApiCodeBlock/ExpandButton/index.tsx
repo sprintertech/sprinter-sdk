@@ -62,7 +62,7 @@ export default function ExpandButton({
           "clean-btn",
           className,
           "openapi-explorer__code-block-expand-btn",
-          isModalOpen && "openapi-explorer__code-block-expand-btn--copied"
+          isModalOpen && "openapi-explorer__code-block-expand-btn--copied",
         )}
         onClick={() => setIsModalOpen(true)}
       >
@@ -97,7 +97,7 @@ export default function ExpandButton({
             "openapi-explorer__code-block-container",
             language &&
               !blockClassName.includes(`language-${language}`) &&
-              `language-${language}`
+              `language-${language}`,
           )}
         >
           {title && (
@@ -117,14 +117,14 @@ export default function ExpandButton({
                   className={clsx(
                     className,
                     "openapi-explorer__code-block",
-                    "thin-scrollbar"
+                    "thin-scrollbar",
                   )}
                 >
                   <code
                     className={clsx(
                       "openapi-explorer__code-block-lines",
                       showLineNumbers &&
-                        "openapi-explorer__code-block-lines-numbers"
+                        "openapi-explorer__code-block-lines-numbers",
                     )}
                   >
                     {tokens.map((line, i) => (

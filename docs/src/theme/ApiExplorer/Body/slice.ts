@@ -71,7 +71,7 @@ export const slice = createSlice({
     },
     setStringFormBody: (
       state,
-      action: PayloadAction<{ key: string; value: string }>
+      action: PayloadAction<{ key: string; value: string }>,
     ) => {
       if (state?.type !== "form") {
         return {
@@ -92,7 +92,7 @@ export const slice = createSlice({
     },
     setFileFormBody: (
       state,
-      action: PayloadAction<{ key: string; value: FileContent["value"] }>
+      action: PayloadAction<{ key: string; value: FileContent["value"] }>,
     ) => {
       if (state?.type !== "form") {
         return {

@@ -123,7 +123,7 @@ export const slice = createSlice({
   reducers: {
     setAuthData: (
       state,
-      action: PayloadAction<{ scheme: string; key: string; value?: string }>
+      action: PayloadAction<{ scheme: string; key: string; value?: string }>,
     ) => {
       const { scheme, key, value } = action.payload;
       state.data[scheme][key] = value;

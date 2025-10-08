@@ -101,7 +101,7 @@ function Body({
               setFileRawBody({
                 src: `/path/to/${file.name}`,
                 content: file,
-              })
+              }),
             );
           }}
         />
@@ -141,7 +141,7 @@ function Body({
                             src: `/path/to/${file.name}`,
                             content: file,
                           },
-                        })
+                        }),
                       );
                     }}
                   />
@@ -170,7 +170,7 @@ function Body({
                           setStringFormBody({
                             key: key,
                             value: val,
-                          })
+                          }),
                         );
                       }
                     }}
@@ -197,7 +197,7 @@ function Body({
                   placeholder={val.description || key}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     dispatch(
-                      setStringFormBody({ key: key, value: e.target.value })
+                      setStringFormBody({ key: key, value: e.target.value }),
                     );
                   }}
                 />
@@ -230,8 +230,7 @@ function Body({
         try {
           // If the value is already valid JSON we shouldn't double encode the value
           JSON.parse(example.value);
-        }
-        catch (e) {
+        } catch (e) {
           body = JSON.stringify(example.value, null, 2);
         }
 

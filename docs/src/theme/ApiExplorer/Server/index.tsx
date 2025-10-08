@@ -44,7 +44,7 @@ function Server() {
         Object.keys(value.variables).forEach((variable) => {
           url = url.replace(
             `{${variable}}`,
-            value.variables?.[variable].default ?? ""
+            value.variables?.[variable].default ?? "",
           );
         });
       }
@@ -69,9 +69,9 @@ function Server() {
               dispatch(
                 setServer(
                   JSON.stringify(
-                    options.filter((s: any) => s.url === e.target.value)[0]
-                  )
-                )
+                    options.filter((s: any) => s.url === e.target.value)[0],
+                  ),
+                ),
               );
             }}
             value={value?.url}
@@ -90,8 +90,8 @@ function Server() {
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       dispatch(
                         setServerVariable(
-                          JSON.stringify({ key, value: e.target.value })
-                        )
+                          JSON.stringify({ key, value: e.target.value }),
+                        ),
                       );
                     }}
                     value={value?.variables[key].default}
@@ -106,8 +106,8 @@ function Server() {
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     dispatch(
                       setServerVariable(
-                        JSON.stringify({ key, value: e.target.value })
-                      )
+                        JSON.stringify({ key, value: e.target.value }),
+                      ),
                     );
                   }}
                   value={value?.variables?.[key].default}

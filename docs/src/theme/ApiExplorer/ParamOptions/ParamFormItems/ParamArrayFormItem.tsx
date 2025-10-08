@@ -73,7 +73,7 @@ export default function ParamArrayFormItem({ param }: ParamProps) {
       setParam({
         ...param,
         value: values.length > 0 ? values : undefined,
-      })
+      }),
     );
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
