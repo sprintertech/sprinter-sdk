@@ -511,6 +511,9 @@ definitions:
     type: object
 info:
   contact: {}
+schemes:
+  - https
+host: api.sprinter.buildwithsygma.com/
 paths:
   /liquidity/chain/{chainId}/protocol/{protocol}/deposit/{txHash}/request:
     get:
