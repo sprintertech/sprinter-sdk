@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.11](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.10...docs-v0.3.11) (2025-10-09)
+
+
+### Bug Fixes
+
+* borrow quote example ([#189](https://github.com/sprintertech/sprinter-sdk/issues/189)) ([1583e74](https://github.com/sprintertech/sprinter-sdk/commit/1583e74b750fd4b5a7fe1b5887f742221ea3061f))
+
 ## [0.3.10](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.9...docs-v0.3.10) (2025-09-15)
 
 
