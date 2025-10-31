@@ -12,20 +12,8 @@ const sidebar: SidebarsConfig = {
       items: [
         {
           type: "doc",
-          id: "../src/api/generated/solve/",
-          label: "Missing summary",
-          className: "api-method get",
-        },
-        {
-          type: "doc",
-          id: "../src/api/generated/solve/",
-          label: "Missing summary",
-          className: "api-method get",
-        },
-        {
-          type: "doc",
-          id: "../src/api/generated/solve/",
-          label: "Missing summary",
+          id: "../src/api/generated/solve/get-route-v-1",
+          label: "getRouteV1",
           className: "api-method get",
         },
       ],

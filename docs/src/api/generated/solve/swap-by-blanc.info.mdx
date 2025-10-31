@@ -35,18 +35,17 @@ API used by Blanc Swap
     children={"Authentication"}
   ></Heading>
   <SchemaTabs className={"openapi-tabs__security-schemes"}>
-    <TabItem label={"API Key: ApiKeyAuth"} value={"ApiKeyAuth"}>
-      API key with format sk_live_*
+    <TabItem label={"HTTP: Basic Auth"} value={"BasicAuth"}>
       <div>
         <table>
           <tbody>
             <tr>
               <th>Security Scheme Type:</th>
-              <td>apiKey</td>
+              <td>http</td>
             </tr>
             <tr>
-              <th>Header parameter name:</th>
-              <td>X-API-Key</td>
+              <th>HTTP Authorization Scheme:</th>
+              <td>basic</td>
             </tr>
           </tbody>
         </table>
