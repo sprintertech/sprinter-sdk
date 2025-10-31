@@ -1,16 +1,13 @@
 definitions:
-  entity.Aave:
+  config.Token:
     properties:
-      pool:
+      address:
         type: string
-      poolAddressProvider:
-        type: string
-      priceOracle:
-        type: string
+      decimals:
+        type: integer
     required:
-      - pool
-      - poolAddressProvider
-      - priceOracle
+      - address
+      - decimals
     type: object
   entity.Amount:
     properties:
@@ -38,6 +35,7 @@ definitions:
       - 1993
       - 19934
       - 84532
+    format: int32
     type: integer
     x-enum-varnames:
       - Ethereum
@@ -88,10 +86,6 @@ definitions:
     type: object
   entity.Network:
     properties:
-      aave:
-        $ref: "#/definitions/entity.Aave"
-      aaveLiquidityPool:
-        type: string
       blockTime:
         type: integer
       chainID:
@@ -108,11 +102,7 @@ definitions:
         items:
           type: string
         type: array
-      usdcLiquidityPool:
-        type: string
     required:
-      - aave
-      - aaveLiquidityPool
       - blockTime
       - chainID
       - chainType
@@ -120,7 +110,6 @@ definitions:
       - name
       - nativeToken
       - rpcURLs
-      - usdcLiquidityPool
     type: object
   entity.TokenTransferQuote:
     properties:
@@ -265,7 +254,6 @@ definitions:
       - account
       - amount
       - destination
-      - destinationContractCall
       - threshold
       - token
       - type
@@ -293,6 +281,8 @@ definitions:
   server.BorrowCost:
     description: Borrow cost structure with a big.Int represented as string
     properties:
+      borrowAmount:
+        type: string
       borrowCost:
         type: string
       liquidityPool:
@@ -302,17 +292,38 @@ definitions:
       signature:
         type: string
     required:
+      - borrowAmount
       - borrowCost
       - liquidityPool
       - nonce
       - signature
     type: object
-  server.BorrowQuote.response:
+  server.BorrowQuoteRequest:
     properties:
-      data:
-        $ref: "#/definitions/server.Quote"
+      amount:
+        description:
+          amount of tokens for which we are requesting borrow quote (in
+          the smallest denomination)
+        example: "49805421"
+        type: string
+      exclusive_fill:
+        description: boolean representing if you have exclusivity to fill this quote
+        example: false
+        type: boolean
+      network:
+        description: caip formated network id
+        example: eip155:1
+        type: string
+      token:
+        description: token address (hex)
+        example: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+        type: string
+        format: hex
     required:
-      - data
+      - amount
+      - exclusive_fill
+      - network
+      - token
     type: object
   server.ErrorResponse:
     properties:
@@ -321,7 +332,6 @@ definitions:
       error:
         type: string
     required:
-      - debug
       - error
     type: object
   server.GetFungibleTokensByChainHandler.response:
@@ -339,6 +349,25 @@ definitions:
         items:
           $ref: "#/definitions/entity.Network"
         type: array
+    required:
+      - data
+    type: object
+  server.GetSolverHandler.response:
+    properties:
+      duration:
+        type: integer
+      solver:
+        type: string
+    required:
+      - duration
+      - solver
+    type: object
+  server.GetStashSupportedTokensHandler.response:
+    properties:
+      data:
+        additionalProperties:
+          $ref: "#/definitions/config.Token"
+        type: object
     required:
       - data
     type: object
@@ -373,6 +402,12 @@ definitions:
         type: string
       duration:
         type: string
+      liquidityPool:
+        type: string
+      repaymentChain:
+        $ref: "#/definitions/entity.ChainID"
+      repaymentRecipient:
+        type: string
       requiredInput:
         type: string
       requiredOutput:
@@ -380,6 +415,9 @@ definitions:
     required:
       - borrowCost
       - duration
+      - liquidityPool
+      - repaymentChain
+      - repaymentRecipient
       - requiredInput
       - requiredOutput
     type: object
@@ -432,7 +470,6 @@ definitions:
       - account
       - amount
       - destination
-      - destinationContractCall
       - enableSwaps
       - recipient
       - threshold
@@ -465,14 +502,24 @@ definitions:
       - chainId
       - tokenDecimals
     type: object
+  server.response:
+    properties:
+      data:
+        $ref: "#/definitions/server.Quote"
+    required:
+      - data
+    type: object
 info:
   contact: {}
+schemes:
+  - https
+host: api.sprinter.buildwithsygma.com/
 paths:
-  /liquidity/protocol/{protocol}/deposit/{txHash}/request:
+  /liquidity/chain/{chainId}/protocol/{protocol}/deposit/{txHash}/request:
     get:
       consumes:
         - application/json
-      description: Get the borrow cost for a liquidity transaction
+      description: This endpoint returns signed authorization for a liquidity transaction
       parameters:
         - description: input data (relay data)
           in: body
@@ -496,6 +543,11 @@ paths:
           name: txHash
           required: true
           type: string
+        - description: Destination chain caip id
+          in: path
+          name: chain
+          required: true
+          type: string
       produces:
         - application/json
       responses:
@@ -511,69 +563,62 @@ paths:
           description: Internal server error
           schema:
             $ref: "#/definitions/server.ErrorResponse"
-      summary: Get the borrow cost for a liquidity transaction
+      summary: Get signing authorization for a liquidity transaction
       tags:
         - Liquidity
-  /liquidity/protocol/{protocol}/type/{type}/quote:
+  /liquidity/chain/{chain}/protocol/{protocol}/type/{type}/quote:
     get:
       consumes:
         - application/json
       description:
-        This endpoint calculates the borrow quote for a liquidity transaction,
-        including the borrow cost, required input/output, and duration.
+        Calculates the borrow quote including borrow cost, required input/output,
+        and duration.
       parameters:
-        - description: Amount to borrow
-          in: body
-          name: amount
+        - description: Source CAIP chain ID (e.g., eip155:1)
+          in: path
+          name: chain
           required: true
           schema:
             type: string
-        - description: Token address (in Ethereum address format)
-          in: body
-          name: token
-          required: true
-          schema:
-            type: string
-        - description: Network ID for the transaction
-          in: body
-          name: network
-          required: true
-          schema:
-            type: integer
+            example: eip155:8453
         - description: Protocol name (e.g., Across)
           in: path
           name: protocol
           required: true
-          type: string
+          schema:
+            type: string
+            example: mayan
         - description: Quote algorithm type (e.g., ExactInput, ExactOutput)
           in: path
           name: type
           required: true
-          type: string
-        - description:
-            Destination Network ID (optional, defaults to the network from
-            the request body)
-          in: query
-          name: network
-          type: integer
+          schema:
+            type: string
+            example: ExactOutput
+        - description: Borrow quote request payload
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/server.BorrowQuoteRequest"
       produces:
         - application/json
       responses:
         "200":
-          description: Successfully retrieved borrow quote
+          description: Successfully retrieved borrow quote".
           schema:
-            $ref: "#/definitions/server.BorrowQuote.response"
+            $ref: "#/definitions/server.response"
         "400":
-          description: Bad request due to invalid input or missing parameters
+          description: Bad request due to invalid input or missing parameters".
           schema:
             $ref: "#/definitions/server.ErrorResponse"
         "500":
-          description: Internal server error
+          description: Internal server error".
           schema:
             $ref: "#/definitions/server.ErrorResponse"
       summary:
         Get the borrow quote for a liquidity transaction based on the input
-        data
+        data.
       tags:
         - Liquidity
 swagger: "2.0"

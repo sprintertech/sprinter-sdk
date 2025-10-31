@@ -136,6 +136,33 @@ const config: Config = {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
     },
+    languageTabs: [
+      {
+        language: "curl",
+        highlight: "bash",
+        logoClass: "curl",
+      },
+      {
+        language: "go",
+        highlight: "go",
+        logoClass: "go",
+      },
+      {
+        language: "javascript",
+        highlight: "javascript",
+        logoClass: "javascript",
+      },
+      {
+        language: "csharp",
+        highlight: "csharp",
+        logoClass: "csharp",
+      },
+      {
+        language: "java",
+        highlight: "java",
+        logoClass: "java",
+      },
+    ],
   } satisfies Preset.ThemeConfig,
   plugins: [
     [
