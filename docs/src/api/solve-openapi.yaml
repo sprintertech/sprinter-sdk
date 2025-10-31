@@ -27,13 +27,13 @@ paths:
           required: true
         - in: query
           name: tokenIn
-          description: Contract address of the input token to sell
+          description: Contract address of the input token to sell. The zero address (0x00…00) represents the native currency ETH.
           schema:
             $ref: "#/components/schemas/Address"
           required: true
         - in: query
           name: tokenOut
-          description: Contract address of the output token to buy
+          description: Contract address of the output token to buy. The zero address (0x00…00) represents the native currency ETH.
           schema:
             $ref: "#/components/schemas/Address"
           required: true
@@ -46,6 +46,14 @@ paths:
             minimum: 0
             maximum: 10000
             default: 50
+          required: false
+        - in: query
+          name: timeout
+          description: Optional timeout in milliseconds. If set, returns the best pathfinder result within the timeout window. Must be a positive integer.
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
           required: false
       responses:
         200:
@@ -102,13 +110,17 @@ components:
 
   headers:
     RequestID:
-      description: Unique request identifier
+      description: Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix
       schema:
-        type: string
-        format: hex
-        pattern: "^0x[a-fA-F0-9]{24}$"
+        $ref: "#/components/schemas/RequestID"
 
   schemas:
+    RequestID:
+      description: Unique request identifier (16 bytes) encoded as hexadecimal with 0x prefix
+      type: string
+      format: hex
+      pattern: "^0x[a-fA-F0-9]{32}$"
+
     Address:
       description: Ethereum contract address (20 bytes) encoded as hexadecimal with 0x prefix
       type: string
@@ -127,8 +139,19 @@ components:
     RouteV1Response:
       description: Successfully created route with execution details
       type: object
-      required: [amountOut, minAmountOut, target, callData]
+      required:
+        [
+          requestId,
+          amountOut,
+          minAmountOut,
+          target,
+          callData,
+          gasUsed,
+          gasLimit,
+        ]
       properties:
+        requestId:
+          $ref: "#/components/schemas/RequestID"
         amountOut:
           description: Amount of tokens to receive
           $ref: "#/components/schemas/TokenAmount"
@@ -141,15 +164,29 @@ components:
         callData:
           description: Hex encoded calldata for the swap
           $ref: "#/components/schemas/Bytes"
+        gasUsed:
+          description: Actual gas consumed by the swap simulation
+          type: integer
+          format: uint64
+          minimum: 0
+          example: 180000
+        gasLimit:
+          description: Recommended gas limit for the swap transaction (gasUsed * 1.3)
+          type: integer
+          format: uint64
+          minimum: 0
+          example: 234000
 
     Error:
       description: Error response with details
       type: object
-      required: [code, error]
+      required: [code, requestId, error]
       properties:
         code:
           description: Error code indicating the type of error
           type: integer
+        requestId:
+          $ref: "#/components/schemas/RequestID"
         error:
           description: Error message
           type: string
