@@ -2,17 +2,15 @@
 
 ## [0.3.11](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.10...docs-v0.3.11) (2025-10-09)
 
-
 ### Bug Fixes
 
-* borrow quote example ([#189](https://github.com/sprintertech/sprinter-sdk/issues/189)) ([1583e74](https://github.com/sprintertech/sprinter-sdk/commit/1583e74b750fd4b5a7fe1b5887f742221ea3061f))
+- borrow quote example ([#189](https://github.com/sprintertech/sprinter-sdk/issues/189)) ([1583e74](https://github.com/sprintertech/sprinter-sdk/commit/1583e74b750fd4b5a7fe1b5887f742221ea3061f))
 
 ## [0.3.10](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.9...docs-v0.3.10) (2025-09-15)
 
-
 ### Bug Fixes
 
-* missing base url ([#185](https://github.com/sprintertech/sprinter-sdk/issues/185)) ([c9b535d](https://github.com/sprintertech/sprinter-sdk/commit/c9b535dd422413a9f06414ef8158f07c1b650462)), closes [#184](https://github.com/sprintertech/sprinter-sdk/issues/184)
+- missing base url ([#185](https://github.com/sprintertech/sprinter-sdk/issues/185)) ([c9b535d](https://github.com/sprintertech/sprinter-sdk/commit/c9b535dd422413a9f06414ef8158f07c1b650462)), closes [#184](https://github.com/sprintertech/sprinter-sdk/issues/184)
 
 ## [0.3.9](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.8...docs-v0.3.9) (2025-07-08)
 
