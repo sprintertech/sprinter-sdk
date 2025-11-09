@@ -31,7 +31,7 @@ Liquidity authorization is managed and controlled by Sprinter's [**Multi-Party C
 - **Incentive Layer** Bootstraps solver access to credit while ensuring LPs are fairly rewarded. Reward parameters can be updated through governance, and all emissions are transparently distributed on-chain.
 - **Depositing Liquidity:** LPs deposit USDC → receive `spUSDC-LP` tokens.
 - **Stashing** When LPs receive their `spUSDC-LP` tokens, they can stake them in this contract to participate in ongoing emissions programs.
-  **Multiplier incentives** — Longer lockups (e.g., 3, 6, or 9 months) offer higher SPRNT yield rates to encourage deeper liquidity commitments.
+  **Multiplier incentives** — Longer lockups (e.g., 3, 6, or 9 months) offer higher point multipliers to encourage deeper liquidity commitments.
 
 ## Liquidity Pools
 

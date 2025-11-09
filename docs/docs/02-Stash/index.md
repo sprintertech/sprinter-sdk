@@ -46,7 +46,7 @@ style E fill:#FF9B43,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
 ### For Liquidity Providers
 
 - Earn passive yield, solver-generated fees and protocol incentives.
-- Participate in liquidity mining campaigns for SPRNT rewards.
+- Participate in liquidity mining campaigns for points rewards.
 - Benefit from protocol-managed inventory strategies.
 
 ### For Solvers
