@@ -6,8 +6,8 @@ sidebar_position: 1
 ---
 
 <div class="logo-container">
-  <img src="/img/sprinter-header.png" class="logo-light-mode" alt="Sprinter Logo Black" />
-  <img src="/img/sprinter-header.png" class="logo-dark-mode" alt="Sprinter Logo White" />
+  <img src="/img/credit header.png" class="logo-light-mode" alt="Sprinter Logo Black" />
+  <img src="/img/credit header.png" class="logo-dark-mode" alt="Sprinter Logo White" />
 </div>
 
 #
@@ -16,13 +16,15 @@ Sprinter envisions a decentralized, open and equitable financial system that pro
 
 # What is Sprinter?
 
-Sprinter combines solving-as-a-service infrastructure with credit-based crosschain liquidity. It enables solvers to borrow and execute onchain actions without pre-funded inventory, while giving dApps and protocols access to best-in-class execution routes, powered by the Project Blanc advanced solving technology.
+Sprinter combines solving-as-a-service infrastructure with credit-based crosschain liquidity. It enables venues to borrow and execute onchain actions without pre-funded inventory, while giving dApps and protocols access to best-in-class execution routes, powered by the Project Blanc advanced solving technology.
 
 ## Sprinter’s Core Products
 
 ### [Sprinter Stash](Stash)
 
-A crosschain credit protocol providing liquidity access to solvers and market makers without requiring collateral. Liquidity providers deposit USDC into the protocol, earning returns through solver fees and passive yield strategies.
+Sprinter Stash is a universal credit protocol that powers the next-generation of use cases, from solver credit lines to trading, whilst rewarding LPs with sustainable, risk-managed stablecoin yield.
+
+Stash provides zero-collateral credit, so solvers don’t need capital, users don’t need to touch bridges, and dApps get instant fills.
 
 ### [Sprinter Solve](Solve)
 
@@ -37,3 +39,4 @@ If you have questions about Sprinter, the code, the docs, or have a partnership 
 - **Telegram:** [t.me/sprinter_tech](https://t.me/sprinter_tech)
 - **X:** [@sprinter_ux](https://x.com/sprinter_ux)
 - **Website:** [sprinter.tech](https://sprinter.tech)
+- **Blog:** [blog.sprinter.tech](https://blog.sprinter.tech)
