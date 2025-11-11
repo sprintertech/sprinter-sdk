@@ -8,8 +8,8 @@ const config: Config = {
   tagline: "The Fast Lane For Crosschain",
   favicon: "img/sprinter.ico",
 
-  url: "https://docs.sprinter.tech/",
-  baseUrl: "https://api.sprinter.tech",
+  url: "https://docs.sprinter.buildwithsygma.com/",
+  baseUrl: "/",
 
   organizationName: "Sprinter",
   projectName: "sprinter-ts",
@@ -68,7 +68,7 @@ const config: Config = {
           position: "left",
         },
         {
-          href: "https://api.sprinter.buildwithsygma.com/swagger/index.html",
+          href: "https://api.sprinter.tech/swagger/index.html",
           label: "Swagger",
           position: "right",
         },
@@ -202,7 +202,7 @@ const config: Config = {
               groupPathsBy: "tag",
             },
           } satisfies OpenApiPlugin.Options,
-          
+        },
       },
     ],
   ],

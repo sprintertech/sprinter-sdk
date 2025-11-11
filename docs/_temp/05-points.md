@@ -4,7 +4,6 @@ title: Stash points
 sidebar_position: 5
 ---
 
-
 # Stash points
 
 Your participation now earns Stash points, a new rewards system that tracks your contributions across the Sprinter ecosystem.

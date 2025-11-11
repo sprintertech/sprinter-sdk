@@ -34,7 +34,7 @@ Sprinter Stash enables capital-efficient crosschain execution by removing the ne
 
 1. **Liquidity Providers deposit USDC on Base from any chain into the protocol’s liquidity hub** - Receiving spUSDC-LP tokens in return. Liquidity is then managed across the pools on supported chains.
 2. **Solvers access liquidity instantly, without collateral** – Solvers are executing their fills through Stash. After a fill is completed via credit, Stash receives the deposited funds on the source chain repaying the credit and keeping profits for LPs and solvers. Stash works as a closed credit system where the MPC validates all intents to be filled and ensure credit will be repayed.
-3. **LPs earn dynamic rewards** – Yield is optimized through a combination of base yield from supply in lending protocols, such as Aave, and yield from solver borrow fees. LPs are also eligible to earn staking rewards in the form of SPRNT emissions, with higher multipliers for longer locks in addition to bonus incentives for earlybirds. 
+3. **LPs earn dynamic rewards** – Yield is optimized through a combination of base yield from supply in lending protocols, such as Aave, and yield from solver borrow fees. LPs are also eligible to earn staking rewards in the form of SPRNT emissions, with higher multipliers for longer locks in addition to bonus incentives for earlybirds.
 4. Once **fills are completed**, Stash receives funds on the source chain, repays the credit, and distributes profits to LPs and solvers.
 
 By bringing together **liquidity providers and solvers** Sprinter Stash creates a more efficient and scalable solver environment for the entire DeFi ecosystem. Stash launches with supported:
