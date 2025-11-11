@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.12...docs-v0.4.0) (2025-11-11)
+
+
+### Features
+
+* add points program to docs ([#195](https://github.com/sprintertech/sprinter-sdk/issues/195)) ([80019d5](https://github.com/sprintertech/sprinter-sdk/commit/80019d5046ba9b3063f57f224858901d33f165e2))
+
 ## [0.3.12](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.11...docs-v0.3.12) (2025-10-31)
 
 ### Bug Fixes

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/sprintertech/sprinter-sdk/compare/sprinter-react-v1.4.4...sprinter-react-v1.5.0) (2025-11-11)
+
+
+### Features
+
+* add points program to docs ([#195](https://github.com/sprintertech/sprinter-sdk/issues/195)) ([80019d5](https://github.com/sprintertech/sprinter-sdk/commit/80019d5046ba9b3063f57f224858901d33f165e2))
+
 ## [1.4.4](https://github.com/sprintertech/sprinter-sdk/compare/sprinter-react-v1.4.3...sprinter-react-v1.4.4) (2025-06-30)
 
 
