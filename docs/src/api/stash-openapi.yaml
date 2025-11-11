@@ -513,7 +513,7 @@ info:
   contact: {}
 schemes:
   - https
-host: api.sprinter.buildwithsygma.com/
+host: api.sprinter.tech/
 paths:
   /liquidity/chain/{chainId}/protocol/{protocol}/deposit/{txHash}/request:
     get:

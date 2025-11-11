@@ -2,10 +2,9 @@
 
 ## [0.3.12](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.11...docs-v0.3.12) (2025-10-31)
 
-
 ### Bug Fixes
 
-* Update to solve api for gas limits ([#193](https://github.com/sprintertech/sprinter-sdk/issues/193)) ([f8e77a6](https://github.com/sprintertech/sprinter-sdk/commit/f8e77a667db859a184812db4d69d6a38c20776fc))
+- Update to solve api for gas limits ([#193](https://github.com/sprintertech/sprinter-sdk/issues/193)) ([f8e77a6](https://github.com/sprintertech/sprinter-sdk/commit/f8e77a667db859a184812db4d69d6a38c20776fc))
 
 ## [0.3.11](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.10...docs-v0.3.11) (2025-10-09)
 

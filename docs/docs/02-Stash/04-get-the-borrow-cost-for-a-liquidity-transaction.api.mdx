@@ -26,14 +26,14 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"get"}
-  path={"/liquidity/chain/{chainId}/protocol/{protocol}/deposit/{txHash}/request"}
+  path={"liquidity/chain/{chainId}/protocol/{protocol}/deposit/{txHash}/request"}
   context={"endpoint"}
 ></MethodEndpoint>
 
 A [borrow cost](/Resources/glossary#stash-borrow-cost) is the final, **authorized borrowing offer** issued by Sprinter Stash when a solver decides to proceed with a fill.
 It reserves credit under specific conditions, allowing solvers to confidently execute the cross-chain transaction.
 
-See the [Request Final Borrow Cost example payload](use-stash#3-request-the-final-credit-borrow-cost).
+See the [Request Final Borrow Cost example payload](borrow-cost-api#3-request-the-final-credit-borrow-cost) and check out the [optimization tips](borrow-cost-api#fill-optimization-tips)
 
 <Heading
   id={"request"}
@@ -133,3 +133,39 @@ See the [Request Final Borrow Cost example payload](use-stash#3-request-the-fina
     },
   }}
 ></StatusCodes>
+
+## Example Borrow Cost payload
+
+```ts title="Fetch Borrow Cost Example Payload"
+const baseUrl = "https://api.sprinter.tech";
+const destChainId = "eip155:8453"; // eip155:8453(Base), eip155:10 (Optimism), eip155:42161 (Arbitrum) destChainId must use capid format from our configuration
+const protocol = "across"; // "across" or "mayan"
+const txHash = "string"; // Source chain deposit TX
+const response = await fetch(
+  `${baseUrl}/liquidity/chain/${destChainId}/protocol/${protocol}/deposit/${txHash}/requests`,
+  {
+    method: "GET",
+    headers: {
+      "X-Auth-Token": "<your_api_key>",
+    },
+    body: {
+      input: "callData", // encoded callData for destination ( Borrow & Fill) it also contains depositData prams for MPC validation
+      caller: "address", // the address that will execute the borrow and fill ond destChainId
+    },
+  },
+);
+```
+
+## Fill Optimization Tips
+
+Here are some tips on getting the best performance and profit from your Sprinter Stash integration:
+
+1. **Pre-fetch Borrow Cost** - Call `GET /type/{type}/quote` as early as possible (when detecting intents) to evaluate solver profitability.
+
+2. **Batch Gas Where Possible** - Bundle execution and repayment transactions to reduce gas costs.
+
+3. **Optimize for Slippage** - Query quotes close to execution time to reduce stale pricing or slippage-induced fills.
+
+4. **Handling Rate Limits** - If you hit 429s, give it a moment and retry using retry_after value. You can request higher limits via support@sprinter.tech.
+
+5. **Validate Transaction Hash Early** - Ensure the user intent transaction is final and not reverted before calling `/deposit/{txHash}/request`.

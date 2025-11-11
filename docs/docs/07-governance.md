@@ -38,9 +38,3 @@ Sprinter Protocol governance is currently managed via two multisigs, with plans 
 
 - `ASSETS_ADJUSTER`
 - `ADMIN` (Upgrades)
-
-## Long-Term Vision
-
-- Gradual shift to veSPRNT-based DAO governance
-- Protocol parameters and fee splits managed by tokenholders
-- On-chain voting for upgrades, integrations, emissions

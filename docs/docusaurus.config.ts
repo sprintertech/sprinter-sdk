@@ -63,12 +63,12 @@ const config: Config = {
       },
       items: [
         {
-          href: "https://app.sprinter.tech/",
-          label: "Stash",
+          href: "https://sprinter.tech/",
+          label: "Website",
           position: "left",
         },
         {
-          href: "https://api.sprinter.buildwithsygma.com/swagger/index.html",
+          href: "https://api.sprinter.tech/swagger/index.html",
           label: "Swagger",
           position: "right",
         },

@@ -26,20 +26,17 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"get"}
-  path={"/liquidity/chain/{sourceChainId}/protocol/{protocol}/type/{type}/quote"}
+  path={"liquidity/chain/{sourceChainId}/protocol/{protocol}/type/{type}/quote"}
   context={"endpoint"}
 ></MethodEndpoint>
 
+## Borrow quote overview
+
 A [borrow quote](/Resources/glossary#stash-borrow-quote) is the **preliminary estimated fee** a solver would incur to borrow credit from Sprinter Stash. It is returned off-chain via the Stash API and helps solvers determine if pursuing a fill is profitable.
 
-Borrow quote includes expected gas, risk premiums, protocol fees, and capital access costs — but it is not a binding or reserved price.
+Borrow quote includes expected gas, risk premiums, protocol fees, and capital access costs — but it is not a binding or reserved price. This can be based on input or output amount.
 
-See the [Request a Credit Borrow Quote Estimate example payload](use-stash#2-request-a-credit-borrow-quote-estimate-optional).
-
-A [borrow quote](/Resources/glossary#stash-borrow-quote) is the final, **authorized borrowing offer** issued by Sprinter Stash when a solver decides to proceed with a fill.
-It reserves credit under specific conditions, allowing solvers to confidently execute the cross-chain transaction.
-
-See the [Request Final Borrow Quote example payload](/Stash/use-stash#3-request-a-final-borrow-quote).
+See the [Request a Credit Borrow Quote Estimate example payload](borrow-quote-api#example-borrow-quote-payload).
 
 <Heading
   id={"request"}
@@ -204,3 +201,58 @@ See the [Request Final Borrow Quote example payload](/Stash/use-stash#3-request-
     },
   }}
 ></StatusCodes>
+
+## Example Borrow Quote payload
+
+```ts title="Request Borrow Quote Estimate with type ExactInput (input amount - borrow costs)"
+const baseUrl = "https://api.sprinter.tech";
+const sourceChainId = "eip155:8453"; // eip155:8453(Base), eip155:10 (Optimism), eip155:42161 (Arbitrum). ChainId must use capid format from our configuration
+const protocol = "across"; // "across" or "mayan"
+const type = "ExactInput"; // Request will consider the amount as (input amount - borrow costs)
+const amount = 10000000; // This is the ExactInput eg 1 USDC (6 decimals)
+const response = await fetch(
+  `${baseUrl}/liquidity/chain/${sourceChainId}/protocol/${protocol}/type/${type}/quote`,
+  {
+    method: "GET",
+    headers: {
+      "X-Auth-Token": "<your_api_key>",
+    },
+    body: {
+      amount: amount,
+      token: "destination_token_address", // Token address
+      network: "eip155:10", // Destination_Chain_ID
+    },
+  },
+);
+
+const borrowQuote = await response.json();
+console.log("Expected amount:", borrowQuote.expectedOutput);
+console.log("Borrow Cost:", borrowQuote.borrowCost);
+```
+
+```ts title="Request Final Borrow Quote Estimate with type ExactOutput (output amount + borrow costs)"
+const baseUrl = "https://api.sprinter.tech";
+const sourceChainId = "eip155:8453"; // eip155:8453(Base), eip155:10 (Optimism), eip155:42161 (Arbitrum). ChainId must use capid format from our configuration
+const protocol = "across"; // "across" or "mayan"
+const type = "ExactOutput"; // Request will consider the amount as (output amount + borrow costs)
+const amount = 10000000; // This is the ExactInput eg 1 USDC (6 decimals)
+const response = await fetch(
+  `${baseUrl}/liquidity/chain/${sourceChainId}/protocol/${protocol}/type/${type}/quote`,
+  {
+    method: "GET",
+    headers: {
+      "X-Auth-Token": "<your_api_key>",
+    },
+    body: {
+      amount: amount,
+      token: "destination_token_address", // Token address
+      network: "eip155:10", // Destination_Chiain_ID
+    },
+  },
+);
+
+const borrowQuote = await response.json();
+
+console.log("Expected Input:", borrowQuote.requiredInput);
+console.log("Borrow Cost:", borrowQuote.borrowCost);
+```
