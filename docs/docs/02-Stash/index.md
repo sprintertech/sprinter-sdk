@@ -4,10 +4,6 @@ title: Sprinter Stash
 sidebar_position: 3
 ---
 
-:::tip
-Ready to **Stash**? Check out our first [Stash Track Event](/Stash-points) to earn Stash points
-:::
-
 # Sprinter Stash
 
 Sprinter Stash is a credit-based liquidity protocol that connects stablecoin LPs with crosschain actors like solvers and strategists and bridges the gap between passive capital and high-frequency, crosschain demand.
