@@ -4,6 +4,7 @@ title: Stash points
 sidebar_position: 5
 ---
 
+
 # Stash points
 
 Your participation now earns Stash points, a new rewards system that tracks your contributions across the Sprinter ecosystem.
@@ -71,4 +72,4 @@ You earn from:
 - **Strategy fees**
 - **Multi-dimentional Passive yield**
 - **Stash points**
-- **SPRNT incentives** (post TGE)
+- **Rewards** (post TGE)
