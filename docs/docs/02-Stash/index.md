@@ -40,7 +40,4 @@ By bringing together **liquidity providers and solvers** Sprinter Stash creates 
 - **Protocols** - Any EVM crosschain bridge/ swap protocol such as 1inch Fusion+, Across, Debridge Liquidity Network, Everclear, Mayan.Finance with many more upcoming
 - **Rebalancing/ Inventory Management** - CCTP, native Bridges, Everclear
 
-## Ready to Stash?
 
-- **As a Liquidity Provider**: Check out our [Stash Track Events](/Stash-points) on how to provide liquidity and earn **Stash points** in our first campaign.
-- **For crosschain DeFi**: Check out our [Stash integration guide](use-stash)
