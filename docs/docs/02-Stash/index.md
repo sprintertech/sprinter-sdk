@@ -4,6 +4,10 @@ title: Sprinter Stash
 sidebar_position: 3
 ---
 
+:::tip
+Ready to Stash? Check out [Track Event 1](/Stash-points) on how to provide capital, earn yield and win Stash Points. 
+:::
+
 # Sprinter Stash
 
 Sprinter Stash is a credit-based liquidity protocol that connects stablecoin LPs with crosschain actors like solvers and strategists and bridges the gap between passive capital and high-frequency, crosschain demand.
@@ -39,3 +43,9 @@ By bringing together **liquidity providers and solvers** Sprinter Stash creates 
 - **Tokens** - DAI, ETH/WETH, USDC, USDT, WBTC
 - **Protocols** - Any EVM crosschain bridge/ swap protocol such as 1inch Fusion+, Across, Debridge Liquidity Network, Everclear, Mayan.Finance with many more upcoming
 - **Rebalancing/ Inventory Management** - CCTP, native Bridges, Everclear
+
+
+# Ready to Stash?
+
+- As a Liquidity Provider: check out [Track Event 1](/Stash-points)
+- For DeFi: check out the [Stash API Integration Guide](use-stash)
