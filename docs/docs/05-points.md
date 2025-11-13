@@ -20,7 +20,7 @@ Your participation now earns Stash points, a new rewards system that tracks your
 
 ### Early LPs get a head start
 
-Sprinter Stash rewards liquidity providers with points, and yield that scales based on how long you lock your funds. The longer you commit, the higher your multiplier, starting at 0.4x for a 3-month lock, up to a generous 2.2x for a 12-month commitment.
+Sprinter Stash rewards liquidity providers with points, and yield that scales based on how long you lock your funds. The longer you commit, the higher your multiplier, starting at 0.4x for a 3-month lock, up to 2.2x for a 12-month commitment.
 
 And for early adopters, there’s an additional reason to act fast: deposits made within the first 48 hours of each milestone unlock a **100% SPRNT bonus** on your USDC deposit, on top of your regular rewards. No extra steps required — just show up early, and your bonus will be automatically applied.
 
