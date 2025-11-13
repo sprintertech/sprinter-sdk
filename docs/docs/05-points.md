@@ -73,8 +73,8 @@ You earn from:
 - **Stash points**
 - **Rewards** (post TGE)
 
-
 <video controls width="100%" style={{ borderRadius: '12px' }}>
+
   <source src="/img/Stash.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>

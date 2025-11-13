@@ -5,7 +5,7 @@ sidebar_position: 3
 ---
 
 :::tip
-Ready to Stash? Check out [Track Event 1](/Stash-points) on how to provide capital, earn yield and win Stash Points. 
+Ready to Stash? Check out [Track Event 1](/Stash-points) on how to provide capital, earn yield and win Stash Points.
 :::
 
 # Sprinter Stash
@@ -43,7 +43,6 @@ By bringing together **liquidity providers and solvers** Sprinter Stash creates 
 - **Tokens** - DAI, ETH/WETH, USDC, USDT, WBTC
 - **Protocols** - Any EVM crosschain bridge/ swap protocol such as 1inch Fusion+, Across, Debridge Liquidity Network, Everclear, Mayan.Finance with many more upcoming
 - **Rebalancing/ Inventory Management** - CCTP, native Bridges, Everclear
-
 
 # Ready to Stash?
 
