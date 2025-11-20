@@ -75,10 +75,6 @@ Sprinter enforces:
 - Circuit breakers triggered by irregular repayment behavior
 - Slashing (or bond requirements) for higher-risk integrations
 
-#### 4. Bonding Pools
-
-Sprinter will also allow Solver Operators to create Bonding Pools, that escrow funds to vouch for their solvers, enabling more favourable borrowing conditions. Sprinter Bonding Pools will be controlled by governance and similarly allow slashing by governance for any malicious activity or violations.
-
 ## Stash Fees
 
 Sprinter Stash handles crosschain liquidity fills. Revenue is generated from the spread between between the amount the user deposited on source and the amount provided on the destination.

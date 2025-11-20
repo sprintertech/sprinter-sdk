@@ -78,3 +78,13 @@ You earn from:
   <source src="/img/Stash.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
+
+## Sprinter LP participation
+
+From time to time, the Sprinter team will move treasury funds into the Stash liquidity pools from its Treasury wallet for various reasons such as:
+
+- the provision of additional liquidity for new solver routes or protocol usage,
+- rebalancing or,
+- participating in yield strategies
+
+Sprinter's participation will not be Stashed, and therefore not be eligible for any Stash Points.
