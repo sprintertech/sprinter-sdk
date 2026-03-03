@@ -1,7 +1,7 @@
 ---
 id: Stash-points
 title: Stash points
-sidebar_position: 5
+sidebar_position: 3
 ---
 
 # Stash points

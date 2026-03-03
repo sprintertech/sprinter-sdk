@@ -12,31 +12,23 @@ sidebar_position: 1
 
 #
 
-Sprinter envisions a decentralized, open and equitable financial system that provides opportunities for everyone. Our mission is to build the infrastructure that democratizes access to crosschain liquidity and optimizes liquidity flows across DeFi.
+Credit is what gives people agency: the freedom to do more than their current balance allows, to move before the money catches up, to act on their own terms. And increasingly, it is not just people who need that freedom. AI agents can think, plan, and execute, but they cannot borrow, settle, or take financial risk.
 
-# What is Sprinter?
+We gave the world intelligence it has never had before, and it still cannot get a decent credit line. The infrastructure has been frozen for 30 years. Rigid terms, expensive rates, one-size-fits-all products for people, zero access for machines. Stablecoins showed what happens when you rebuild financial architecture from scratch: payments became programmable, global, and structurally cheaper overnight. That same transformation is now possible for credit, and almost nobody is building it. This is why Sprinter exists.
 
-Sprinter combines solving-as-a-service infrastructure with credit-based crosschain liquidity. It enables venues to borrow and execute onchain actions without pre-funded inventory, while giving dApps and protocols access to best-in-class execution routes, powered by the Project Blanc advanced solving technology.
+## What is Sprinter Stash?
 
-## Sprinter’s Core Products
+We are building Stash, a credit engine that apps plug in via a single API and get access to the full credit stack: flexible terms, adaptive guardrails, and economics powered by DeFi. Collateral is productive, meaning the assets backing a credit line generate yield, making credit cheaper by design. Web2 in the front, DeFi in the back. The end user never touches a protocol, they just get credit that is personalised, adaptive, and affordable.
 
-### [Sprinter Stash](Stash)
-
-Sprinter Stash is a universal credit protocol that powers the next-generation of use cases, from solver credit lines to trading, whilst rewarding LPs with sustainable, risk-managed stablecoin yield.
-
-Stash provides zero-collateral credit, so solvers don’t need capital, users don’t need to touch bridges, and dApps get instant fills.
-
-### [Sprinter Solve](Solve)
-
-A solving-as-a-service platform that offers a request-for-quote (RFQ) based swap API for our partners. It enables dApps, wallets, and protocols to improve execution quality, optimize pricing, and enhance user experience.
+Stash powers credit for apps in the onchain economy and beyond. Any app, in any market, whether they are building a fintech, a neobank, an agentic wallet, or something we have not imagined yet, can plug in and offer their users credit that actually works for them. As more people take control of their financial lives, and as autonomous agents enter the economy, the demand for programmable, personalised credit is only going to grow.
 
 ## Need to chat to us?
 
 If you have questions about Sprinter, the code, the docs, or have a partnership inquiry, please reach out to us on [Telegram](https://t.me/sprinter_tech/1) or via email at [hello@sprinter.tech](mailto:hello@sprinter.tech).
 
-### Join our Community
+## Join our Community
 
 - **Telegram:** [t.me/sprinter_tech](https://t.me/sprinter_tech)
 - **X:** [@sprinter_ux](https://x.com/sprinter_ux)
-- **Website:** [sprinter.tech](https://sprinter.tech)
-- **Blog:** [blog.sprinter.tech](https://blog.sprinter.tech)
+- **Website:** [sprinter.tech](https://sprinter.tech/)
+- **Blog:** [blog.sprinter.tech](https://blog.sprinter.tech/)
