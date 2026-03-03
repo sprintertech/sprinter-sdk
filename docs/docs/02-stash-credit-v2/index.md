@@ -26,3 +26,47 @@ Stash enables applications to get purpose-fit credit lines for their users:
 - Agents access a human-delegated undercollateralized credit line to trade extended leverage on Hyperliquid
 
 In the following sections you can get a glimpse on our upcoming V2 that will be launching very soon and explore our [V1](/Stash).
+
+## Position Health, LTV and Liquidations
+
+For collateralized credit, Stash continuously monitors the health of every position to ensure the protocol remains solvent and users stay protected.
+
+### Loan-to-Value (LTV)
+
+LTV defines how much credit you can draw relative to the value of your collateral. Each supported collateral asset has its own LTV ratio, reflecting its risk profile.
+
+```
+Max Credit = Collateral Value × LTV
+```
+
+For example, if you deposit $1,000 of USDC collateral with an LTV of 80%, your maximum credit line is $800.
+
+### Maintenance LTV
+
+Maintenance LTV is the maximum LTV your position is allowed to reach while you have an outstanding balance. It is set higher than the initial LTV to give your position a safety buffer before liquidation becomes possible.
+
+```
+Current LTV = Outstanding Debt / Collateral Value
+```
+
+As long as your Current LTV stays below the Maintenance LTV, your position is safe. If the value of your collateral drops or your debt grows (due to accruing interest) and pushes your Current LTV above the Maintenance LTV, your position becomes eligible for liquidation.
+
+### Position Health Factor
+
+The Health Factor combines both values into a single number that tells you how close your position is to liquidation:
+
+```
+Health Factor = (Collateral Value × Maintenance LTV) / Outstanding Debt
+```
+
+| Health Factor | Status |
+|---|---|
+| > 1.3 | Healthy |
+| 1.0 – 1.3 | At risk — consider adding collateral or repaying |
+| < 1.0 | Eligible for liquidation |
+
+A Health Factor above 1.0 means your position is safe. Below 1.0, the protocol can liquidate part of your collateral to restore a healthy position.
+
+### Liquidations
+
+When a position becomes eligible for liquidation, Stash liquidates only as much collateral as needed to bring the Health Factor back above 1.0 — partial liquidations wherever possible. Liquidators who perform the liquidation receive a 5% bonus on the collateral they claim.
