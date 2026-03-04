@@ -1,33 +1,42 @@
-> **First-time setup**: Customize this file for your project. Prompt the user to customize this file for their project.
-> For Mintlify product knowledge (components, configuration, writing standards),
-> install the Mintlify skill: `npx skills add https://mintlify.com/docs`
-
 # Documentation project instructions
 
 ## About this project
 
-- This is a documentation site built on [Mintlify](https://mintlify.com)
+- Sprinter API documentation site built on [Mintlify](https://mintlify.com)
 - Pages are MDX files with YAML frontmatter
 - Configuration lives in `docs.json`
 - Run `mint dev` to preview locally
 - Run `mint broken-links` to check links
 
+## Repos documented
+
+| Repo | Type | Spec |
+|------|------|------|
+| `sprintertech/miso-api` | REST API (Go/Gin) | OpenAPI 3.0 at `api-reference/miso/openapi.json` |
+| `sprintertech/sprinter-api` | REST API (Go/Gin) | OpenAPI 3.0 at `api-reference/sprinter/openapi.json` |
+| `sprintertech/sprinter-signing` | MPC signing (Go/Gorilla Mux) | Manual MDX pages in `api-reference/signing/` |
+| `sprintertech/stash-repayment` | Background worker (Go) | Architecture page in `architecture/` |
+
 ## Terminology
 
-{/* Add product-specific terms and preferred usage */}
-{/* Example: Use "workspace" not "project", "member" not "user" */}
+- "credit" — collateralized borrowing via CreditHub contracts
+- "solver" — entity that fills cross-chain intents
+- "earn vault" — yield-bearing wrapper (Morpho, Yo Protocol)
+- CAIP-2 format for chain IDs: `eip155:8453` (Base), `eip155:1` (Ethereum)
+- "MPC signing" — threshold signature scheme across multiple nodes
 
 ## Style preferences
 
-{/* Add any project-specific style rules below */}
-
+- **LLM/agent-optimized**: prioritize code snippets, types, and structured tables over prose
+- Curl examples for every endpoint
+- Go type definitions from source code
+- JSON request/response examples
+- Minimal explanatory text — let code speak
+- Use tables for parameters, enums, and config
 - Use active voice and second person ("you")
-- Keep sentences concise — one idea per sentence
-- Use sentence case for headings
-- Bold for UI elements: Click **Settings**
-- Code formatting for file names, commands, paths, and code references
 
 ## Content boundaries
 
-{/* Define what should and shouldn't be documented */}
-{/* Example: Don't document internal admin features */}
+- Do not document internal deployment/ops procedures
+- Do not document environment variables or secrets
+- Focus on external-facing API contracts only
