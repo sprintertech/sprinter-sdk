@@ -6,8 +6,8 @@ sidebar_position: 1
 ---
 
 <div class="logo-container">
-  <img src="/img/credit header.png" class="logo-light-mode" alt="Sprinter Logo Black" />
-  <img src="/img/credit header.png" class="logo-dark-mode" alt="Sprinter Logo White" />
+  <img src="/img/twitter-banner-2.png" class="logo-light-mode" alt="Sprinter Logo Black" />
+  <img src="/img/twitter-banner-2.png" class="logo-dark-mode" alt="Sprinter Logo White" />
 </div>
 
 #

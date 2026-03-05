@@ -50,9 +50,9 @@ const config: Config = {
       theme: { light: "neutral", dark: "dark" },
     },
     colorMode: {
-      defaultMode: "dark",
+      defaultMode: "light",
       disableSwitch: false, // optional: hide theme toggle switch
-      respectPrefersColorScheme: false, // always force dark unless user switches
+      respectPrefersColorScheme: false, // always force light unless user switches
     },
     navbar: {
       title: "Sprinter",
