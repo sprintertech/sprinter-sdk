@@ -107,30 +107,3 @@ body {
   color: #ff5100; /* Your link color inside tip */
   text-decoration: underline;
 }
-
-/* Search box and modal overrides */
-.navbar__search-input:focus {
-  border-color: #ff5100 !important;
-  box-shadow: 0 0 0 2px rgba(255, 81, 0, 0.2) !important;
-  outline: none !important;
-}
-
-[class*="searchBar"] input:focus,
-[class*="search-bar"] input:focus {
-  border-color: #ff5100 !important;
-  box-shadow: 0 0 0 2px rgba(255, 81, 0, 0.2) !important;
-  outline: none !important;
-}
-
-[class*="searchResultsPopup"],
-[class*="search-result"] mark,
-[class*="searchResults"] mark {
-  color: #ff5100 !important;
-  background: rgba(255, 81, 0, 0.1) !important;
-}
-
-[class*="searchModal"],
-[class*="search-modal"] {
-  border-color: #ff5100 !important;
-  outline-color: #ff5100 !important;
-}
