@@ -4,9 +4,9 @@ title: Stash Credit (V2)
 sidebar_position: 2
 ---
 
-# Stash Credit (V2)
+# Stash Credit
 
-Stash is programmable credit layer for individuals and agents. We don't just issue credit — we make credit *configurable*.
+Stash is a programmable credit layer for individuals and agents. We don't just issue credit — we make credit *configurable*.
 
 The first version of Stash (V1) provided zero-collateral credit for crosschain solvers and processed over $200m USD in volume within the first months. With our upcoming V2 we take credit beyond solvers and bring the benefits of *programmable credit* to neo finance and the agentic age.
 
@@ -25,4 +25,3 @@ Stash enables applications to get purpose-fit credit lines for their users:
 - Neobanks provide a DeFi-powered liquid savings account, so users can spend their assets while having them earn yield in DeFi
 - Agents access a human-delegated undercollateralized credit line to trade extended leverage on Hyperliquid
 
-In the following sections you can get a glimpse on our upcoming V2 that will be launching very soon and explore our [V1](/Stash).
