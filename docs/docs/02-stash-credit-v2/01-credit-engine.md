@@ -38,18 +38,7 @@ Stash currently uses USDC as the main asset for credit issuance.
 
 ## Supported Assets & Positions
 
-Stash provides one unified credit line — and in the case of collateralized credit, users can deposit assets and DeFi positions across all supported chains. The following assets and positions are supported as collateral:
-
-| Asset or Position | Type | Supported Chains | Token | LTV | Maintenance LTV |
-|---|---|---|---|---|---|
-| USDC | Asset | Base | | | |
-| Gauntlet USDC Prime | Vault | Base | | | |
-| YoUSD | | | | | |
-| SuperUSD | | | | | |
-
-:::tip
-Stash constantly adds more assets and DeFi positions to the list of supported collateral. Drop us a message if you'd like to see a specific asset supported.
-:::
+Stash provides one unified credit line — and in the case of collateralized credit, users can deposit assets and DeFi positions across all supported chains.
 
 ## Position Health, LTVs and Liquidations
 
