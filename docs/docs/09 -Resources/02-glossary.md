@@ -4,134 +4,106 @@ title: Sprinter Glossary
 sidebar_position: 12
 ---
 
-### Account Abstraction (AA)
-
-A design that moves away from traditional externally owned accounts (EOAs) and allows more flexible wallet interactions.
-
 ### Bridges
 
 Protocols that facilitate asset and data transfer between different blockchain networks. Bridges can be trust-minimized (e.g., ZK-proofs, MPC) or centralized.
 
-### Crosschain Finality
+### Collateral
 
-Ensuring that transactions on one blockchain are finalized and verifiable on another without rollback risks.
+Assets deposited by a user to secure a credit line. Stash values collateral across all supported chains as a single unified portfolio.
 
-### Crosschain Governance
+### Credit Account
 
-Systems that enable decentralized governance across multiple chains without requiring users to vote on each network separately.
+A guardrailed smart contract that holds issued credit funds and enforces usage constraints defined by the credit policy.
 
-### Crosschain Messaging
+### Credit Configuration
 
-A communication layer that enables smart contracts and applications on different blockchains to exchange messages and trigger actions.
+The financial terms governing a credit line: supported collateral assets, LTV ratios, credit asset, interest rate, term length, and fees. A tighter credit policy can unlock a more favourable configuration.
 
-### Decentralized Order Flow
+### Credit Hub
 
-A distributed mechanism where the process is open, permissionless, and avoids reliance on a central entity (such as a centralized exchange)
+The core component of Stash V2. Handles credit line creation, drawdowns, repayments, and liquidations across supported networks.
 
-### Execution Environments
+### Credit Line
 
-Different blockchain execution layers (e.g., EVM, WASM) that need to be abstracted for smooth multi-chain interactions.
+A pre-approved borrowing facility issued by Stash, allowing users or agents to draw funds up to a defined limit based on their collateral and credit configuration.
 
-### Executable Intents
+### Credit Operator
 
-Intents that include conditions and constraints to ensure execution only happens when all state change criteria are met.
+An entity (user, app, or agent) granted access to a Stash credit line on behalf of its owner, subject to fine-grained policy constraints such as allowed actions, amount caps, and co-sign requirements.
 
-### Fair Ordering Protocols
+### Drawdown
 
-Systems that prevent MEV extraction and ensure user transactions are processed fairly in intent-based architectures.
+The act of drawing funds from an open credit line up to the available credit limit.
 
 ### Fill
 
-A fill represents the full lifecycle: Detecting a user intent ➔ Borrowing liquidity ➔ Executing the transaction ➔ Repaying liquidity ➔ Realizing solver and protocol profits.
+A fill represents the full lifecycle: Detecting a user intent → Borrowing liquidity → Executing the transaction → Repaying liquidity → Realizing solver and protocol profits.
 
-### Gas Abstraction
+### Health Factor
 
-A mechanism where users don’t need to hold native tokens to pay for gas fees, allowing transactions to be executed with alternative assets.
-
-### Intent Aggregation
-
-The process of bundling multiple user intents to optimize execution costs and efficiency.
-
-### Intent Standardization
-
-The process of creating common formats for intent expression so that multiple solvers can compete on execution.
+A single number indicating how close a position is to liquidation, calculated as `(Collateral Value × Maintenance LTV) / Outstanding Debt`. A Health Factor above 1.0 is safe; below 1.0 the position is eligible for liquidation.
 
 ### Intent Systems
 
 A model where users specify desired outcomes, and solvers or order flow networks execute transactions accordingly.
 
-### Intent-Based Arbitrage
-
-Arbitrage that is facilitated through intents, allowing solvers or execution agents to optimize price discrepancies across multiple venues or chains without needing the user to manually define trade paths.
-
 ### Interop
 
 The ability of multiple blockchain networks to communicate and share information in a seamless, trust-minimized, and permissionless way. This enables assets, smart contracts, and transactions to interact across chains without requiring users to manage complex bridging processes.
 
-### Liquidity Mining
+### Liquidation
 
-Incentivizing users to provide liquidity to decentralized protocols, crucial for ensuring deep liquidity in interoperable ecosystems.
+When a position's Health Factor drops below 1.0, Stash liquidates as much collateral as needed to restore a healthy position. Partial liquidations are preferred. Liquidators receive a 5% bonus on the collateral they claim.
+
+### Liquidity Layer
+
+The Stash component that sources and manages the capital required for credit issuance. Liquidity Providers deposit into the Liquidity Hub to earn yield.
+
+### Liquidity Provider
+
+A participant who supplies capital to the Stash Liquidity Layer in exchange for yield.
+
+### Loan-to-Value (LTV)
+
+The ratio of a user's credit limit to the value of their collateral. Each supported collateral asset has its own LTV ratio reflecting its risk profile. `Max Credit = Collateral Value × LTV`
+
+### Maintenance LTV
+
+The maximum LTV a position may reach before becoming eligible for liquidation. Set above the initial LTV to provide a safety buffer. `Current LTV = Outstanding Debt / Collateral Value`
 
 ### MEV (Maximal Extractable Value)
 
 The value miners, validators, or solvers can extract by reordering transactions, with growing importance in MEV-resistant routing across chains.
 
-### Order Flow Auctions
+### Overcollateralized Credit
 
-A mechanism where solvers compete to execute user intents by offering the most efficient execution path.
+A credit line where the value of deposited collateral exceeds the credit issued, reducing lender risk.
 
-### Recursive SNARKs
+### Policy Engine
 
-A cryptographic method for verifying multiple proofs efficiently, often used for crosschain validation.
+The Stash component that makes credit configurable. Every credit line is governed by a policy defining who can use it, what they can do with it, and under what conditions. Tighter constraints enable more favourable credit terms.
 
-### Solver Competition
+### Productive Collateral
 
-A model where multiple solvers bid to execute a user’s intent based on optimal execution parameters.
-
-### Solver Networks
-
-Decentralized networks of solvers that execute user intents efficiently while minimizing costs and MEV risks.
+Collateral assets that continue to generate yield while locked in Stash, making credit cheaper by design. Stash integrates with DeFi strategies from Gauntlet and YO for this purpose.
 
 ### Solvers
 
-Automated agents that find and execute the most efficient way to fulfill a user’s intent, optimizing for cost, speed, and security.
-
-### Sprinter Solve Route
-
-Gets the finalized execution package returned by `/v2/route` which contains all necessary data to execute a transaction. It builds on a quote by including calldata, selected liquidity paths, slippage tolerances, and chain-specific details. Routes are consumed directly by solvers or smart contracts to simulate and execute cross-chain swaps or intent fills.
+Automated agents that find and execute the most efficient way to fulfill a user's intent, optimizing for cost, speed, and security.
 
 ### Stash Borrow Quote
 
-A borrow quote is the preliminary **estimated fee** a solver would incur to borrow credit from Sprinter Stash. It is returned off-chain via the Stash API and helps solvers determine if pursuing a fill is profitable. Borrow quote includes expected gas, risk premiums, protocol fees, and capital access costs — but it is not a binding or reserved price.
+A borrow quote is the preliminary estimated fee a solver would incur to borrow credit from Sprinter Stash. It is returned off-chain via the Stash API and helps solvers determine if pursuing a fill is profitable. Borrow quote includes expected gas, risk premiums, protocol fees, and capital access costs — but it is not a binding or reserved price.
 
 ### Stash Borrow Cost
 
-A borrow cost is the final, **authorized borrowing offer** issued by Sprinter Stash when a solver decides to proceed with a fill. It reserves credit under specific conditions, allowing solvers to confidently execute the crosschain transaction.
-
-### State Proofs
-
-Cryptographic proofs that verify the state of one blockchain on another without needing a centralized validator.
+A borrow cost is the final, authorized borrowing offer issued by Sprinter Stash when a solver decides to proceed with a fill. It reserves credit under specific conditions, allowing solvers to confidently execute the crosschain transaction.
 
 ### Swaps
 
 Asset exchanges that can occur within a single chain or across multiple chains using interoperability protocols.
 
-### Threshold Signature Scheme (TSS)
+### Undercollateralized Credit
 
-A security mechanism where multiple signatures are required to execute a transaction across chains.
-
-### Threshold Signatures (TSS)
-
-A cryptographic scheme used in cross transactions to prevent single points of failure.
-
-### Trust-Minimized Interoperability
-
-A security model that ensures crosschain transactions can be verified without relying on a single centralized authority.
-
-### Unified Liquidity Pools
-
-Crosschain pools that allow users to access liquidity seamlessly without needing to bridge assets manually.
-
-### Universal Smart Accounts
-
-Wallet accounts that function across multiple blockchains and support advanced execution logic.
+A credit line where the issued credit exceeds the value of deposited collateral (or requires no collateral at all). Enabled by tight usage constraints via the Policy Engine.

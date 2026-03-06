@@ -9,17 +9,15 @@
 
 ## [0.4.2](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.4.1...docs-v0.4.2) (2025-12-02)
 
-
 ### Bug Fixes
 
-* pointsupdate ([#200](https://github.com/sprintertech/sprinter-sdk/issues/200)) ([2c9ca5c](https://github.com/sprintertech/sprinter-sdk/commit/2c9ca5ceae4a798772b9239bbb19fe4da1efd7b8))
+- pointsupdate ([#200](https://github.com/sprintertech/sprinter-sdk/issues/200)) ([2c9ca5c](https://github.com/sprintertech/sprinter-sdk/commit/2c9ca5ceae4a798772b9239bbb19fe4da1efd7b8))
 
 ## [0.4.1](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.4.0...docs-v0.4.1) (2025-11-13)
 
-
 ### Bug Fixes
 
-* adding points to docs ([#197](https://github.com/sprintertech/sprinter-sdk/issues/197)) ([76117ac](https://github.com/sprintertech/sprinter-sdk/commit/76117ac3e6b4c0d1be30ccebaeee6e9538dcfcde))
+- adding points to docs ([#197](https://github.com/sprintertech/sprinter-sdk/issues/197)) ([76117ac](https://github.com/sprintertech/sprinter-sdk/commit/76117ac3e6b4c0d1be30ccebaeee6e9538dcfcde))
 
 ## [0.4.0](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.3.12...docs-v0.4.0) (2025-11-11)
 

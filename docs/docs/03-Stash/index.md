@@ -1,6 +1,6 @@
 ---
 id: Stash
-title: Sprinter Stash
+title: Stash Solver Credit (V1)
 sidebar_position: 3
 ---
 
