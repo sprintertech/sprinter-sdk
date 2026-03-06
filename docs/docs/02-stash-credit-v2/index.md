@@ -1,6 +1,6 @@
 ---
 id: stash-credit-v2
-title: Stash Credit (V2)
+title: Stash Credit
 sidebar_position: 2
 ---
 
