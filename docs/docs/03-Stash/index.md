@@ -85,7 +85,7 @@ Sprinter enforces:
 
 Stash pools initiate the execution, not the solver. The solver does not pull funds itself, but merely instruct the pool and as such never custody capital. There are no scenarios where a solver can “not execute” or misdirect funds.
 
-#### 5. Liquidity Proivder Risk
+#### 5. Liquidity Provider Risk
 
 Stash is a closed credit system with controlled flows, so solvers cannot lose LP funds. The remaining risks are the same as any DeFi protocol: Security risks in Stash itself and in the protocols we use (e.g. Aave). We only integrate with partners who meet strict security standards and have strong audit histories as ourselves.
 
