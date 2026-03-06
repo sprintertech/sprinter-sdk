@@ -20,17 +20,17 @@ The Stash Credit Engine handles credit line creation, drawdowns, repayments, and
 
 Stash uses credit configurations to structure different forms of credit. Creating a new credit configuration is currently a permissioned process — if you need purpose-fit credit for your app, we'd love to hear from you!
 
-| | Card Spend | Crosschain Intents |
-|---|---|---|
-| Access | Permissionless | Permissioned |
-| Type | Overcollateralized | Zero Collateral |
-| Usage Constraints | No | Fills in supported Intent protocols |
-| Credit Chains | Base | Base, Arbitrum, Ethereum, Optimism, Unichain |
-| Credit Asset | USDC | USDC, WETH, WBTC |
-| Collateral Chains | Base, Ethereum | N/A |
-| Collateral Assets | All supported | N/A |
-| Term | Fixed 30+7 | Up to 4 hours |
-| Fees | One-Time + Late Payment | Dynamic |
+|                   | Card Spend              | Crosschain Intents                           |
+| ----------------- | ----------------------- | -------------------------------------------- |
+| Access            | Permissionless          | Permissioned                                 |
+| Type              | Overcollateralized      | Zero Collateral                              |
+| Usage Constraints | No                      | Fills in supported Intent protocols          |
+| Credit Chains     | Base                    | Base, Arbitrum, Ethereum, Optimism, Unichain |
+| Credit Asset      | USDC                    | USDC, WETH, WBTC                             |
+| Collateral Chains | Base, Ethereum          | N/A                                          |
+| Collateral Assets | All supported           | N/A                                          |
+| Term              | Fixed 30+7              | Up to 4 hours                                |
+| Fees              | One-Time + Late Payment | Dynamic                                      |
 
 ## Credit Issuance
 
@@ -66,11 +66,11 @@ The Health Factor combines both values into a single number that indicates how c
 
 `Health Factor = (Collateral Value × Maintenance LTV) / Outstanding Debt`
 
-| Health Factor | Status |
-|---|---|
-| > 1.3 | Healthy |
-| 1.0 – 1.3 | At risk — consider adding collateral or repaying |
-| < 1.0 | Eligible for liquidation |
+| Health Factor | Status                                           |
+| ------------- | ------------------------------------------------ |
+| > 1.3         | Healthy                                          |
+| 1.0 – 1.3     | At risk — consider adding collateral or repaying |
+| < 1.0         | Eligible for liquidation                         |
 
 A Health Factor above 1.0 means the position is safe. Below 1.0, the protocol can liquidate part of the collateral to restore a healthy position.
 
