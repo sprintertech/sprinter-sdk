@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.3](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.4.2...docs-v0.4.3) (2026-03-06)
+
+
+### Bug Fixes
+
+* typo in documentation ([#206](https://github.com/sprintertech/sprinter-sdk/issues/206)) ([d24231f](https://github.com/sprintertech/sprinter-sdk/commit/d24231ff20b34bc4f7338ffbc730a673448ee45b))
+
 ## [0.4.2](https://github.com/sprintertech/sprinter-sdk/compare/docs-v0.4.1...docs-v0.4.2) (2025-12-02)
 
 
