@@ -1,0 +1,44 @@
+---
+title: "Sprinter API - Get Available Liquidity for a Specific Pool Type on a Chain"
+sidebarTitle: "Get Available Liquidity for a Specific Pool Type on a Chain"
+openapi: get /liquidity/pools/{poolType}
+---
+
+<RequestExample>
+```bash cURL
+curl --request GET \
+  --url 'https://api.sprinter.tech/liquidity/pools/{poolType}'
+```
+
+```python Python
+import requests
+
+response = requests.get("https://api.sprinter.tech/liquidity/pools/{poolType}")
+print(response.json())
+```
+
+```javascript JavaScript
+const response = await fetch(
+  "https://api.sprinter.tech/liquidity/pools/{poolType}"
+);
+const data = await response.json();
+console.log(data);
+```
+
+```go Go
+package main
+
+import (
+	"fmt"
+	"io"
+	"net/http"
+)
+
+func main() {
+	resp, _ := http.Get("https://api.sprinter.tech/liquidity/pools/{poolType}")
+	defer resp.Body.Close()
+	body, _ := io.ReadAll(resp.Body)
+	fmt.Println(string(body))
+}
+```
+</RequestExample>

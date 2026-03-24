@@ -1,0 +1,58 @@
+---
+title: "Miso API - Rename a Card"
+sidebarTitle: "Rename a Card"
+openapi: patch /miso/cards/{cardId}
+---
+
+<RequestExample>
+```bash cURL
+curl --request PATCH \
+  --url 'https://api.getmiso.fi/miso/cards/{cardId}' \
+  -H 'Content-Type: application/json' \
+  -d '{}'
+```
+
+```python Python
+import requests
+
+response = requests.patch(
+    "https://api.getmiso.fi/miso/cards/{cardId}",
+    json={}
+)
+print(response.json())
+```
+
+```javascript JavaScript
+const response = await fetch(
+  "https://api.getmiso.fi/miso/cards/{cardId}",
+  {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({}),
+  }
+);
+const data = await response.json();
+console.log(data);
+```
+
+```go Go
+package main
+
+import (
+	"bytes"
+	"fmt"
+	"io"
+	"net/http"
+)
+
+func main() {
+	resp, _ := http.NewRequest("PATCH", "https://api.getmiso.fi/miso/cards/{cardId}", bytes.NewBuffer([]byte("{}")))
+	resp.Header.Set("Content-Type", "application/json")
+	client := &http.Client{}
+	res, _ := client.Do(resp)
+	defer res.Body.Close()
+	body, _ := io.ReadAll(res.Body)
+	fmt.Println(string(body))
+}
+```
+</RequestExample>

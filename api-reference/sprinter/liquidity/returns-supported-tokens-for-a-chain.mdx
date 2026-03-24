@@ -1,0 +1,44 @@
+---
+title: "Sprinter API - Returns Supported Tokens for a Chain"
+sidebarTitle: "Returns Supported Tokens for a Chain"
+openapi: get /liquidity/chain/{chainId}/tokens
+---
+
+<RequestExample>
+```bash cURL
+curl --request GET \
+  --url 'https://api.sprinter.tech/liquidity/chain/{chainId}/tokens'
+```
+
+```python Python
+import requests
+
+response = requests.get("https://api.sprinter.tech/liquidity/chain/{chainId}/tokens")
+print(response.json())
+```
+
+```javascript JavaScript
+const response = await fetch(
+  "https://api.sprinter.tech/liquidity/chain/{chainId}/tokens"
+);
+const data = await response.json();
+console.log(data);
+```
+
+```go Go
+package main
+
+import (
+	"fmt"
+	"io"
+	"net/http"
+)
+
+func main() {
+	resp, _ := http.Get("https://api.sprinter.tech/liquidity/chain/{chainId}/tokens")
+	defer resp.Body.Close()
+	body, _ := io.ReadAll(resp.Body)
+	fmt.Println(string(body))
+}
+```
+</RequestExample>

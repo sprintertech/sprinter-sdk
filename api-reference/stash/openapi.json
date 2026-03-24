@@ -1,0 +1,269 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Sprinter Stash API",
+    "version": "1.0.0",
+    "description": "Sprinter Stash V1 API for liquidity transactions."
+  },
+  "servers": [
+    {
+      "url": "https://api.sprinter.tech",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/liquidity/chain/{chain}/protocol/{protocol}/type/{type}/quote": {
+      "get": {
+        "operationId": "getBorrowQuote",
+        "summary": "Get the borrow quote for a liquidity transaction",
+        "description": "Calculates the borrow quote including borrow cost, required input/output, and duration.",
+        "tags": ["Liquidity"],
+        "parameters": [
+          {
+            "name": "chain",
+            "in": "path",
+            "required": true,
+            "description": "Source CAIP chain ID (e.g., eip155:1)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "protocol",
+            "in": "path",
+            "required": true,
+            "description": "Protocol name (e.g., Across)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "description": "Quote algorithm type (e.g., ExactInput, ExactOutput)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "amount",
+            "in": "query",
+            "required": true,
+            "description": "Amount of tokens in smallest denomination (e.g., 49805421)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "description": "Token address (hex, e.g., 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "network",
+            "in": "query",
+            "required": true,
+            "description": "CAIP formatted network ID (e.g., eip155:1)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "exclusive_fill",
+            "in": "query",
+            "required": false,
+            "description": "Whether you have exclusivity to fill this quote",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful borrow quote response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "borrowCost": {
+                          "type": "string"
+                        },
+                        "duration": {
+                          "type": "string"
+                        },
+                        "liquidityPool": {
+                          "type": "string"
+                        },
+                        "repaymentChain": {
+                          "type": "integer"
+                        },
+                        "repaymentRecipient": {
+                          "type": "string"
+                        },
+                        "requiredInput": {
+                          "type": "string"
+                        },
+                        "requiredOutput": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/liquidity/chain/{chainId}/protocol/{protocol}/deposit/{txHash}/request": {
+      "get": {
+        "operationId": "getSigningAuthorization",
+        "summary": "Get signing authorization for a liquidity transaction",
+        "description": "Returns signed authorization for a liquidity transaction based on the deposit transaction hash.",
+        "tags": ["Liquidity"],
+        "parameters": [
+          {
+            "name": "chainId",
+            "in": "path",
+            "required": true,
+            "description": "Destination chain CAIP ID (e.g., eip155:8453)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "protocol",
+            "in": "path",
+            "required": true,
+            "description": "Protocol name (e.g., Across)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "txHash",
+            "in": "path",
+            "required": true,
+            "description": "Transaction hash of the deposit",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Input",
+            "in": "query",
+            "required": true,
+            "description": "Input data (relay data)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Caller",
+            "in": "query",
+            "required": true,
+            "description": "Caller address (solver address)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful signing authorization response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "borrowAmount": {
+                      "type": "string"
+                    },
+                    "borrowCost": {
+                      "type": "string"
+                    },
+                    "liquidityPool": {
+                      "type": "string"
+                    },
+                    "nonce": {
+                      "type": "string"
+                    },
+                    "signature": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "debug": {
+            "type": "string"
+          }
+        },
+        "required": ["error"]
+      }
+    }
+  }
+}

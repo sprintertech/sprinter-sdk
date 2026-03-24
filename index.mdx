@@ -1,20 +1,44 @@
 ---
-title: "Sprinter API Documentation"
-description: "API reference for Sprinter's cross-chain infrastructure"
+title: "Sprinter Documentation"
+description: "The Fast Lane For Crosschain — programmable credit infrastructure for people and AI agents"
 ---
 
-<CardGroup cols={2}>
-  <Card title="Miso API" icon="user" href="/api-reference/health-check">
-    User registration, cards, and referrals. Authenticated via Privy JWT.
+<img src="/images/credit-header.png" alt="Sprinter" />
+
+## Explore the Docs
+
+<CardGroup cols={3}>
+  <Card title="What Is Sprinter?" icon="rocket" href="/introduction">
+    Learn about Sprinter's cross-chain credit infrastructure.
   </Card>
-  <Card title="Sprinter API" icon="bolt" href="/api-reference/returns-solver-address">
-    Credit, liquidity, and solver operations. Authenticated via API key or JWT.
+  <Card title="Stash Credit (V2)" icon="vault" href="/stash-credit-v2/overview">
+    Credit Hub, Policy Engine, and the Liquidity Layer.
   </Card>
-  <Card title="Signing API" icon="key" href="/api-reference/signing/introduction">
-    MPC threshold signing for cross-chain deposits and unlocks.
+  <Card title="Stash V1" icon="database" href="/stash-v1/overview">
+    Stash Solver Credit — connect stablecoin LPs with crosschain solvers.
   </Card>
-  <Card title="Architecture" icon="diagram-project" href="/architecture/stash-repayment">
-    System design for the stash repayment service.
+  <Card title="Stash Points" icon="star" href="/stash-points">
+    Rewards for liquidity providers.
+  </Card>
+  <Card title="Governance" icon="scale-balanced" href="/governance">
+    Multisig structure and admin controls.
+  </Card>
+  <Card title="Glossary" icon="book" href="/resources/glossary">
+    Key terms and definitions.
+  </Card>
+</CardGroup>
+
+## API Reference
+
+<CardGroup cols={3}>
+  <Card title="Sprinter API" icon="bolt" href="/api-reference/sprinter/health-check">
+    Credit, liquidity, and solver operations with interactive playground.
+  </Card>
+  <Card title="Miso API" icon="user" href="/api-reference/miso/health-check">
+    User registration, cards, and referrals.
+  </Card>
+  <Card title="Stash V1 API" icon="database" href="/api-reference/stash/liquidity/get-the-borrow-quote-for-a-liquidity-transaction-based-on-the-input-data">
+    Borrow quote and signing authorization endpoints.
   </Card>
 </CardGroup>
 
@@ -22,13 +46,13 @@ description: "API reference for Sprinter's cross-chain infrastructure"
 
 | Service | Method | Header |
 |---------|--------|--------|
-| Miso API | Privy JWT | `Authorization: Bearer <token>` |
 | Sprinter API | API Key | `X-Auth-Token: <key>` |
 | Sprinter API | Privy JWT | `Authorization: Bearer <token>` |
-| Signing API | None | — |
+| Miso API | Privy JWT | `Authorization: Bearer <token>` |
 
-## Base URL
+## Base URLs
 
-```
-https://api.getmiso.fi
-```
+| Service | URL |
+|---------|-----|
+| Sprinter API | `https://api.sprinter.tech` |
+| Miso API | `https://api.getmiso.fi` |
