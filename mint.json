@@ -8,7 +8,7 @@
   "favicon": "/favicon.svg",
   "tabs": [
     {
-      "name": "Sprinter API",
+      "name": "Stash Credit (V2) API",
       "url": "api-reference/sprinter"
     },
     {
