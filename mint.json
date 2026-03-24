@@ -35,7 +35,14 @@
             "quickstart/card-programs/authorization-webhook"
           ]
         },
-        "quickstart/agent-skills"
+        {
+          "group": "Agent Skills",
+          "pages": [
+            "quickstart/agent-skills",
+            "quickstart/agent-skills/health-monitor",
+            "quickstart/agent-skills/yield-optimizer"
+          ]
+        }
       ]
     },
     {
