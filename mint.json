@@ -8,12 +8,8 @@
   "favicon": "/favicon.svg",
   "tabs": [
     {
-      "name": "Stash Credit (V2) API",
+      "name": "Sprinter Credit (V2) API",
       "url": "api-reference/sprinter"
-    },
-    {
-      "name": "Miso API",
-      "url": "api-reference/miso"
     },
     {
       "name": "Stash Solver Credit (V1) API",
@@ -46,7 +42,7 @@
       ]
     },
     {
-      "group": "Stash Credit (V2)",
+      "group": "Sprinter Credit (V2)",
       "pages": [
         "stash-credit-v2/overview",
         "stash-credit-v2/credit-engine",
