@@ -42,3 +42,46 @@ func main() {
 }
 ```
 </RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "chains": {
+    "8453": {
+      "collateral": {
+        "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913": {
+          "escrowAddress": "0xaB1c2D3e4F5678901234567890AbCdEf12345678",
+          "ltv": "8000",
+          "strategy": "gauntlet-usdc-prime",
+          "symbol": "usdc"
+        }
+      },
+      "creditHubs": {
+        "USDC": {
+          "assetAddress": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "creditHubAddress": "0xCreditHub1234567890AbCdEf1234567890AbCdEf",
+          "creditHubControllerAddress": "0xController234567890AbCdEf1234567890AbCdEf1"
+        }
+      },
+      "escrowsMetadata": {
+        "controller": "0xEscrowCtrl234567890AbCdEf1234567890AbCdEf1",
+        "helper": "0xEscrowHelp234567890AbCdEf1234567890AbCdEf1"
+      },
+      "strategies": {
+        "gauntlet-usdc-prime": {
+          "curator": "Gauntlet",
+          "name": "Gauntlet USDC Prime",
+          "protocol": "morpho-v1",
+          "riskScore": "3",
+          "type": "Lending",
+          "underlyingAddress": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "vaultAddress": "0xeE8F4eC5672F09119b96Ab6fB59C27E1b7e44b61",
+          "vaultType": "erc4626"
+        }
+      },
+      "wrappedNativeAddress": "0x4200000000000000000000000000000000000006"
+    }
+  }
+}
+```
+</ResponseExample>
