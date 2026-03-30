@@ -5,12 +5,6 @@
         "title": "",
         "version": ""
     },
-    "servers": [
-        {
-            "url": "https://api.sprinter.tech",
-            "description": "Production server"
-        }
-    ],
     "paths": {
         "/credit/accounts/{account}/draw": {
             "get": {
@@ -63,6 +57,16 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/credit.DrawCredit.response"
+                                },
+                                "example": {
+                                    "calls": [
+                                        {
+                                            "chain": "8453",
+                                            "to": "0x1234567890abcdef1234567890abcdef12345678",
+                                            "data": "0xa9059cbb000000000000000000000000abcdef1234567890abcdef1234567890abcdef120000000000000000000000000000000000000000000000000000000005f5e100",
+                                            "value": "0"
+                                        }
+                                    ]
                                 }
                             }
                         }
@@ -131,6 +135,22 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/credit.GetCreditUserInfo.response"
+                                },
+                                "example": {
+                                    "data": {
+                                        "USDC": {
+                                            "debt": "750.25",
+                                            "dueDate": "2025-07-15T23:59:59Z",
+                                            "healthFactor": "1.85",
+                                            "interest": "12.34",
+                                            "liquidationLimit": "900.00",
+                                            "mHealthFactor": "1.10",
+                                            "principal": "737.91",
+                                            "remainingCreditCapacity": "1249.75",
+                                            "totalCollateralValue": "2500.00",
+                                            "totalCreditCapacity": "2000.00"
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -214,12 +234,241 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/credit.Lock.response"
+                                },
+                                "example": {
+                                    "calls": [
+                                        {
+                                            "chain": "8453",
+                                            "to": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                                            "data": "0x095ea7b30000000000000000000000001234567890abcdef1234567890abcdef12345678ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                                            "value": "0"
+                                        },
+                                        {
+                                            "chain": "8453",
+                                            "to": "0x1234567890abcdef1234567890abcdef12345678",
+                                            "data": "0x2e1a7d4d0000000000000000000000000000000000000000000000000000000005f5e100",
+                                            "value": "0"
+                                        }
+                                    ]
                                 }
                             }
                         }
                     },
                     "400": {
                         "description": "Bad request due to invalid input or missing parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/credit/accounts/{account}/operator": {
+            "get": {
+                "description": "Returns the current operator address and list of whitelisted credit receivers.",
+                "tags": [
+                    "Credit"
+                ],
+                "summary": "Get operator status for an account",
+                "parameters": [
+                    {
+                        "description": "User account address",
+                        "name": "account",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operator status",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/credit.GetOperatorStatus.response"
+                                },
+                                "example": {
+                                    "data": {
+                                        "operator": "0x742d35Cc6634C0532925a3b844Bc9e7595f2bD18",
+                                        "receivers": [
+                                            "0xAbCdEf1234567890AbCdEf1234567890AbCdEf12",
+                                            "0x9876543210FeDcBa9876543210FeDcBa98765432"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/credit/accounts/{account}/operator/auto-topup/disable": {
+            "get": {
+                "description": "Returns the removeCreditReceiver call if the receiver is currently\nwhitelisted; returns empty calls if already disabled.",
+                "tags": [
+                    "Credit"
+                ],
+                "summary": "Build transaction calls to disable auto top-up",
+                "parameters": [
+                    {
+                        "description": "User account address",
+                        "name": "account",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Receiver address to remove",
+                        "name": "receiver",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of contract calls",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/credit.GetDisableAutoTopup.response"
+                                },
+                                "example": {
+                                    "calls": [
+                                        {
+                                            "chain": "8453",
+                                            "to": "0x1234567890abcdef1234567890abcdef12345678",
+                                            "data": "0xa9059cbb000000000000000000000000abcdef1234567890abcdef1234567890abcdef120000000000000000000000000000000000000000000000000000000005f5e100",
+                                            "value": "0"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/credit/accounts/{account}/operator/auto-topup/enable": {
+            "get": {
+                "description": "Returns the calls needed to enable auto top-up. Checks on-chain state\nand only includes setOperator (if not already set) and addCreditReceiver\n(if not already whitelisted).",
+                "tags": [
+                    "Credit"
+                ],
+                "summary": "Build transaction calls to enable auto top-up",
+                "parameters": [
+                    {
+                        "description": "User account address",
+                        "name": "account",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Receiver address to auto top-up",
+                        "name": "receiver",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of contract calls",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/credit.GetEnableAutoTopup.response"
+                                },
+                                "example": {
+                                    "calls": [
+                                        {
+                                            "chain": "8453",
+                                            "to": "0x1234567890abcdef1234567890abcdef12345678",
+                                            "data": "0xa9059cbb000000000000000000000000abcdef1234567890abcdef1234567890abcdef120000000000000000000000000000000000000000000000000000000005f5e100",
+                                            "value": "0"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Account has a different operator",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -280,6 +529,22 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/credit.Repay.response"
+                                },
+                                "example": {
+                                    "calls": [
+                                        {
+                                            "chain": "8453",
+                                            "to": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                                            "data": "0x095ea7b30000000000000000000000001234567890abcdef1234567890abcdef12345678ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                                            "value": "0"
+                                        },
+                                        {
+                                            "chain": "8453",
+                                            "to": "0x1234567890abcdef1234567890abcdef12345678",
+                                            "data": "0x2e1a7d4d0000000000000000000000000000000000000000000000000000000005f5e100",
+                                            "value": "0"
+                                        }
+                                    ]
                                 }
                             }
                         }
@@ -363,6 +628,22 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/credit.Unlock.response"
+                                },
+                                "example": {
+                                    "calls": [
+                                        {
+                                            "chain": "8453",
+                                            "to": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                                            "data": "0x095ea7b30000000000000000000000001234567890abcdef1234567890abcdef12345678ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                                            "value": "0"
+                                        },
+                                        {
+                                            "chain": "8453",
+                                            "to": "0x1234567890abcdef1234567890abcdef12345678",
+                                            "data": "0x2e1a7d4d0000000000000000000000000000000000000000000000000000000005f5e100",
+                                            "value": "0"
+                                        }
+                                    ]
                                 }
                             }
                         }
@@ -436,6 +717,15 @@
                                             "$ref": "#/components/schemas/credit.CollateralDetailsResponse"
                                         }
                                     }
+                                },
+                                "example": {
+                                    "collateralAddress": "0xeE8F4eC5672F09119b96Ab6fB59C27E1b7e44b61",
+                                    "collateralPriceUsd": 1.023456,
+                                    "earnServiceName": "Gauntlet",
+                                    "isEarnVault": true,
+                                    "apy": 4.56,
+                                    "underlyingAsset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                                    "underlyingPriceUsd": 1.0
                                 }
                             }
                         }
@@ -452,6 +742,114 @@
                     },
                     "404": {
                         "description": "Collateral not supported",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/credit/earn/claim": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Creates list of contract calls to Claim a position from an earn vault,\nconverting vault shares back to the underlying asset.",
+                "tags": [
+                    "Credit"
+                ],
+                "summary": "Claim position from earn vault",
+                "parameters": [
+                    {
+                        "example": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+                        "description": "Owner address that holds the vault shares",
+                        "name": "owner",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+                        "description": "Address that will receive the Claimed underlying tokens",
+                        "name": "receiver",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "0xeE8F4eC5672F09119b96Ab6fB59C27E1b7e44b61",
+                        "description": "Vault shares token address",
+                        "name": "asset",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "eip155:8453",
+                        "description": "Chain ID in CAIP format",
+                        "name": "chain",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "0",
+                        "description": "claimRequestId",
+                        "name": "claimRequestId",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/credit.ClaimResponse"
+                                },
+                                "example": {
+                                    "calls": [
+                                        {
+                                            "chain": "8453",
+                                            "to": "0x1234567890abcdef1234567890abcdef12345678",
+                                            "data": "0xa9059cbb000000000000000000000000abcdef1234567890abcdef1234567890abcdef120000000000000000000000000000000000000000000000000000000005f5e100",
+                                            "value": "0"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input parameters",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -553,6 +951,25 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/credit.UnwrapResponse"
+                                },
+                                "example": {
+                                    "amountOut": "1000000",
+                                    "calls": [
+                                        {
+                                            "chain": "8453",
+                                            "to": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                                            "data": "0x095ea7b30000000000000000000000001234567890abcdef1234567890abcdef12345678ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                                            "value": "0"
+                                        },
+                                        {
+                                            "chain": "8453",
+                                            "to": "0x1234567890abcdef1234567890abcdef12345678",
+                                            "data": "0x2e1a7d4d0000000000000000000000000000000000000000000000000000000005f5e100",
+                                            "value": "0"
+                                        }
+                                    ],
+                                    "minAmountOut": "997000",
+                                    "tokenOut": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
                                 }
                             }
                         }
@@ -650,6 +1067,24 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/credit.WrapResponse"
+                                },
+                                "example": {
+                                    "amountOut": "999850000000000000000",
+                                    "calls": [
+                                        {
+                                            "chain": "8453",
+                                            "to": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                                            "data": "0x095ea7b30000000000000000000000001234567890abcdef1234567890abcdef12345678ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                                            "value": "0"
+                                        },
+                                        {
+                                            "chain": "8453",
+                                            "to": "0x1234567890abcdef1234567890abcdef12345678",
+                                            "data": "0x2e1a7d4d0000000000000000000000000000000000000000000000000000000005f5e100",
+                                            "value": "0"
+                                        }
+                                    ],
+                                    "tokenOut": "0xeE8F4eC5672F09119b96Ab6fB59C27E1b7e44b61"
                                 }
                             }
                         }
@@ -696,6 +1131,60 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/config.CreditProtocolConfig"
+                                },
+                                "example": {
+                                    "chains": {
+                                        "8453": {
+                                            "collateral": {
+                                                "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913": {
+                                                    "escrowAddress": "0xaB1c2D3e4F5678901234567890AbCdEf12345678",
+                                                    "ltv": "8000",
+                                                    "strategy": "gauntlet-usdc-prime",
+                                                    "symbol": "usdc"
+                                                },
+                                                "0x4200000000000000000000000000000000000006": {
+                                                    "escrowAddress": "0xdEf1234567890AbCdEf1234567890AbCdEf123456",
+                                                    "ltv": "7000",
+                                                    "strategy": "yo-eth",
+                                                    "symbol": "usdc"
+                                                }
+                                            },
+                                            "creditHubs": {
+                                                "USDC": {
+                                                    "assetAddress": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                                                    "creditHubAddress": "0xCreditHub1234567890AbCdEf1234567890AbCdEf",
+                                                    "creditHubControllerAddress": "0xController1234567890AbCdEf1234567890AbCdEf"
+                                                }
+                                            },
+                                            "escrowsMetadata": {
+                                                "controller": "0xEscrowCtrl1234567890AbCdEf1234567890AbCdEf",
+                                                "helper": "0xEscrowHelp1234567890AbCdEf1234567890AbCdEf"
+                                            },
+                                            "strategies": {
+                                                "gauntlet-usdc-prime": {
+                                                    "curator": "Gauntlet",
+                                                    "name": "Gauntlet USDC Prime",
+                                                    "protocol": "morpho-v1",
+                                                    "riskScore": "3",
+                                                    "type": "Lending",
+                                                    "underlyingAddress": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                                                    "vaultAddress": "0xeE8F4eC5672F09119b96Ab6fB59C27E1b7e44b61",
+                                                    "vaultType": "erc4626"
+                                                },
+                                                "yo-eth": {
+                                                    "curator": "Yo",
+                                                    "name": "YO ETH Yield",
+                                                    "protocol": "yo-protocol",
+                                                    "riskScore": "5",
+                                                    "type": "Lending",
+                                                    "underlyingAddress": "0x4200000000000000000000000000000000000006",
+                                                    "vaultAddress": "0xYoVault1234567890AbCdEf1234567890AbCdEf12",
+                                                    "vaultType": "erc4626"
+                                                }
+                                            },
+                                            "wrappedNativeAddress": "0x4200000000000000000000000000000000000006"
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -724,6 +1213,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/server.HealthHandler.response"
+                                },
+                                "example": {
+                                    "status": "ok"
                                 }
                             }
                         }
@@ -761,6 +1253,18 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/liquidity.GetStashSupportedTokensHandler.response"
+                                },
+                                "example": {
+                                    "data": {
+                                        "USDC": {
+                                            "address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                                            "decimals": 6
+                                        },
+                                        "WETH": {
+                                            "address": "0x4200000000000000000000000000000000000006",
+                                            "decimals": 18
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -898,6 +1402,12 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/liquidity.availableLiquidityResponse"
+                                },
+                                "example": {
+                                    "data": {
+                                        "address": "0xLiqPool1234567890AbCdEf1234567890AbCdEf12",
+                                        "balance": "5000000000000"
+                                    }
                                 }
                             }
                         }
@@ -991,6 +1501,20 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/liquidity.FeesResponse"
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "feeBps": 5,
+                                            "minAmount": 0,
+                                            "maxAmount": 100000000000
+                                        },
+                                        {
+                                            "feeBps": 3,
+                                            "minAmount": 100000000000,
+                                            "maxAmount": 1000000000000
+                                        }
+                                    ]
                                 }
                             }
                         }
@@ -1068,6 +1592,11 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/liquidity.UnlockResponse"
+                                },
+                                "example": {
+                                    "data": {
+                                        "signature": "0x9f8e7d6c5b4a3928170fabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef12345678901b"
+                                    }
                                 }
                             }
                         }
@@ -1263,6 +1792,21 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/liquidity.borrowQuoteResponse"
+                                },
+                                "example": {
+                                    "data": {
+                                        "borrowCost": "150000",
+                                        "duration": 300,
+                                        "estimatedFillDuration": 180,
+                                        "feeBps": 5,
+                                        "id": "qt_a1b2c3d4e5f6",
+                                        "liquidityPool": "0xLiqPool1234567890AbCdEf1234567890AbCdEf12",
+                                        "quoteDuration": 60,
+                                        "repaymentChain": 1,
+                                        "repaymentRecipient": "0xRepayRecip1234567890AbCdEf1234567890AbCdEf",
+                                        "requiredInput": "100000000",
+                                        "requiredOutput": "99850000"
+                                    }
                                 }
                             }
                         }
@@ -1357,6 +1901,10 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/server.GetSolverHandler.response"
+                                },
+                                "example": {
+                                    "duration": 180,
+                                    "solver": "0xSolverAddr1234567890AbCdEf1234567890AbCdEf"
                                 }
                             }
                         }
@@ -1450,6 +1998,7 @@
                 "type": "object",
                 "required": [
                     "escrowAddress",
+                    "ltv",
                     "strategy",
                     "symbol"
                 ],
@@ -1457,6 +2006,10 @@
                     "escrowAddress": {
                         "type": "string",
                         "example": "0xfedcba0987654321fedcba0987654321fedcba09"
+                    },
+                    "ltv": {
+                        "type": "string",
+                        "example": "12343"
                     },
                     "strategy": {
                         "allOf": [
@@ -1512,6 +2065,44 @@
                             "$ref": "#/components/schemas/config.ChainConfig"
                         }
                     }
+                },
+                "example": {
+                    "chains": {
+                        "8453": {
+                            "collateral": {
+                                "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913": {
+                                    "escrowAddress": "0xaB1c2D3e4F5678901234567890AbCdEf12345678",
+                                    "ltv": "8000",
+                                    "strategy": "gauntlet-usdc-prime",
+                                    "symbol": "usdc"
+                                }
+                            },
+                            "creditHubs": {
+                                "USDC": {
+                                    "assetAddress": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                                    "creditHubAddress": "0xCreditHub1234567890AbCdEf1234567890AbCdEf",
+                                    "creditHubControllerAddress": "0xController234567890AbCdEf1234567890AbCdEf1"
+                                }
+                            },
+                            "escrowsMetadata": {
+                                "controller": "0xEscrowCtrl234567890AbCdEf1234567890AbCdEf1",
+                                "helper": "0xEscrowHelp234567890AbCdEf1234567890AbCdEf1"
+                            },
+                            "strategies": {
+                                "gauntlet-usdc-prime": {
+                                    "curator": "Gauntlet",
+                                    "name": "Gauntlet USDC Prime",
+                                    "protocol": "morpho-v1",
+                                    "riskScore": "3",
+                                    "type": "Lending",
+                                    "underlyingAddress": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                                    "vaultAddress": "0xeE8F4eC5672F09119b96Ab6fB59C27E1b7e44b61",
+                                    "vaultType": "erc4626"
+                                }
+                            },
+                            "wrappedNativeAddress": "0x4200000000000000000000000000000000000006"
+                        }
+                    }
                 }
             },
             "config.EarnVaultMetadata": {
@@ -1551,7 +2142,7 @@
                         "example": "morpho-v1"
                     },
                     "riskScore": {
-                        "description": "RiskScore indicates the strategy's risk level (0–10 scale)",
+                        "description": "RiskScore indicates the strategy's risk level (0\u201310 scale)",
                         "allOf": [
                             {
                                 "$ref": "#/components/schemas/entity.RiskScore"
@@ -1616,11 +2207,38 @@
                 ],
                 "properties": {
                     "address": {
-                        "type": "string"
+                        "type": "string",
+                        "example": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
                     },
                     "decimals": {
-                        "type": "integer"
+                        "type": "integer",
+                        "example": 6
                     }
+                }
+            },
+            "credit.ClaimResponse": {
+                "type": "object",
+                "required": [
+                    "calls"
+                ],
+                "properties": {
+                    "calls": {
+                        "description": "List of contract calls to execute the Claim",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/evm.ContractCall"
+                        }
+                    }
+                },
+                "example": {
+                    "calls": [
+                        {
+                            "chain": "8453",
+                            "to": "0x1234567890abcdef1234567890abcdef12345678",
+                            "data": "0xa9059cbb00000000000000000000000000000000000000000000000000000005f5e100",
+                            "value": "0"
+                        }
+                    ]
                 }
             },
             "credit.CollateralDetailsResponse": {
@@ -1660,6 +2278,15 @@
                         "type": "number",
                         "example": 1
                     }
+                },
+                "example": {
+                    "collateralAddress": "0xeE8F4eC5672F09119b96Ab6fB59C27E1b7e44b61",
+                    "collateralPriceUsd": 1.023456,
+                    "earnServiceName": "Gauntlet",
+                    "isEarnVault": true,
+                    "apy": 4.56,
+                    "underlyingAsset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                    "underlyingPriceUsd": 1.0
                 }
             },
             "credit.DrawCredit.response": {
@@ -1674,6 +2301,16 @@
                             "$ref": "#/components/schemas/evm.ContractCall"
                         }
                     }
+                },
+                "example": {
+                    "calls": [
+                        {
+                            "chain": "8453",
+                            "to": "0x1234567890abcdef1234567890abcdef12345678",
+                            "data": "0xa9059cbb00000000000000000000000000000000000000000000000000000005f5e100",
+                            "value": "0"
+                        }
+                    ]
                 }
             },
             "credit.GetCreditUserInfo.response": {
@@ -1689,6 +2326,109 @@
                             "$ref": "#/components/schemas/credit.UserCreditInfoFMT"
                         }
                     }
+                },
+                "example": {
+                    "data": {
+                        "USDC": {
+                            "debt": "750.25",
+                            "dueDate": "2025-07-15T23:59:59Z",
+                            "healthFactor": "1.85",
+                            "interest": "12.34",
+                            "liquidationLimit": "900.00",
+                            "mHealthFactor": "1.10",
+                            "principal": "737.91",
+                            "remainingCreditCapacity": "1249.75",
+                            "totalCollateralValue": "2500.00",
+                            "totalCreditCapacity": "2000.00"
+                        }
+                    }
+                }
+            },
+            "credit.GetDisableAutoTopup.response": {
+                "type": "object",
+                "required": [
+                    "calls"
+                ],
+                "properties": {
+                    "calls": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/evm.ContractCall"
+                        }
+                    }
+                },
+                "example": {
+                    "calls": [
+                        {
+                            "chain": "8453",
+                            "to": "0x1234567890abcdef1234567890abcdef12345678",
+                            "data": "0xa9059cbb00000000000000000000000000000000000000000000000000000005f5e100",
+                            "value": "0"
+                        }
+                    ]
+                }
+            },
+            "credit.GetEnableAutoTopup.response": {
+                "type": "object",
+                "required": [
+                    "calls"
+                ],
+                "properties": {
+                    "calls": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/evm.ContractCall"
+                        }
+                    }
+                },
+                "example": {
+                    "calls": [
+                        {
+                            "chain": "8453",
+                            "to": "0x1234567890abcdef1234567890abcdef12345678",
+                            "data": "0xa9059cbb00000000000000000000000000000000000000000000000000000005f5e100",
+                            "value": "0"
+                        }
+                    ]
+                }
+            },
+            "credit.GetOperatorStatus.response": {
+                "type": "object",
+                "required": [
+                    "data"
+                ],
+                "properties": {
+                    "data": {
+                        "type": "object",
+                        "required": [
+                            "operator",
+                            "receivers"
+                        ],
+                        "properties": {
+                            "operator": {
+                                "type": "string",
+                                "example": "0x742d35Cc6634C0532925a3b844Bc9e7595f2bD18"
+                            },
+                            "receivers": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "example": [
+                                    "0xAbCdEf1234567890AbCdEf1234567890AbCdEf12"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "example": {
+                    "data": {
+                        "operator": "0x742d35Cc6634C0532925a3b844Bc9e7595f2bD18",
+                        "receivers": [
+                            "0xAbCdEf1234567890AbCdEf1234567890AbCdEf12",
+                            "0x9876543210FeDcBa9876543210FeDcBa98765432"
+                        ]
+                    }
                 }
             },
             "credit.Lock.response": {
@@ -1703,6 +2443,22 @@
                             "$ref": "#/components/schemas/evm.ContractCall"
                         }
                     }
+                },
+                "example": {
+                    "calls": [
+                        {
+                            "chain": "8453",
+                            "to": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                            "data": "0x095ea7b3000000000000000000000000abcdef1234567890abcdef1234567890abcdef12",
+                            "value": "0"
+                        },
+                        {
+                            "chain": "8453",
+                            "to": "0x1234567890abcdef1234567890abcdef12345678",
+                            "data": "0xa9059cbb00000000000000000000000000000000000000000000000000000005f5e100",
+                            "value": "0"
+                        }
+                    ]
                 }
             },
             "credit.Repay.response": {
@@ -1717,6 +2473,22 @@
                             "$ref": "#/components/schemas/evm.ContractCall"
                         }
                     }
+                },
+                "example": {
+                    "calls": [
+                        {
+                            "chain": "8453",
+                            "to": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                            "data": "0x095ea7b3000000000000000000000000abcdef1234567890abcdef1234567890abcdef12",
+                            "value": "0"
+                        },
+                        {
+                            "chain": "8453",
+                            "to": "0x1234567890abcdef1234567890abcdef12345678",
+                            "data": "0xa9059cbb00000000000000000000000000000000000000000000000000000005f5e100",
+                            "value": "0"
+                        }
+                    ]
                 }
             },
             "credit.Unlock.response": {
@@ -1731,6 +2503,22 @@
                             "$ref": "#/components/schemas/evm.ContractCall"
                         }
                     }
+                },
+                "example": {
+                    "calls": [
+                        {
+                            "chain": "8453",
+                            "to": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                            "data": "0x095ea7b3000000000000000000000000abcdef1234567890abcdef1234567890abcdef12",
+                            "value": "0"
+                        },
+                        {
+                            "chain": "8453",
+                            "to": "0x1234567890abcdef1234567890abcdef12345678",
+                            "data": "0xa9059cbb00000000000000000000000000000000000000000000000000000005f5e100",
+                            "value": "0"
+                        }
+                    ]
                 }
             },
             "credit.UnwrapResponse": {
@@ -1764,6 +2552,19 @@
                         "type": "string",
                         "example": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
                     }
+                },
+                "example": {
+                    "amountOut": "1000000",
+                    "calls": [
+                        {
+                            "chain": "8453",
+                            "to": "0x1234567890abcdef1234567890abcdef12345678",
+                            "data": "0xa9059cbb00000000000000000000000000000000000000000000000000000005f5e100",
+                            "value": "0"
+                        }
+                    ],
+                    "minAmountOut": "997000",
+                    "tokenOut": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
                 }
             },
             "credit.UserCreditInfoFMT": {
@@ -1811,7 +2612,7 @@
                         "example": "1.10"
                     },
                     "principal": {
-                        "description": "Principal borrowed amount in USD (Debt − Interest)",
+                        "description": "Principal borrowed amount in USD (Debt \u2212 Interest)",
                         "type": "string",
                         "example": "737.91"
                     },
@@ -1857,6 +2658,18 @@
                         "type": "string",
                         "example": "0xeE8F4eC5672F09119b96Ab6fB59C27E1b7e44b61"
                     }
+                },
+                "example": {
+                    "amountOut": "999850000000000000000",
+                    "calls": [
+                        {
+                            "chain": "8453",
+                            "to": "0x1234567890abcdef1234567890abcdef12345678",
+                            "data": "0xa9059cbb00000000000000000000000000000000000000000000000000000005f5e100",
+                            "value": "0"
+                        }
+                    ],
+                    "tokenOut": "0xeE8F4eC5672F09119b96Ab6fB59C27E1b7e44b61"
                 }
             },
             "entity.ChainID": {
@@ -1980,23 +2793,27 @@
                 ],
                 "properties": {
                     "chain": {
-                        "type": "string"
+                        "type": "string",
+                        "example": "8453"
                     },
                     "data": {
-                        "type": "array",
-                        "items": {
-                            "type": "integer"
-                        }
+                        "type": "string",
+                        "example": "0xa9059cbb0000000000000000000000000000000000000000000000000000000005f5e100"
                     },
                     "to": {
-                        "type": "array",
-                        "items": {
-                            "type": "integer"
-                        }
+                        "type": "string",
+                        "example": "0x1234567890abcdef1234567890abcdef12345678"
                     },
                     "value": {
-                        "$ref": "#/components/schemas/types.BigInt"
+                        "type": "string",
+                        "example": "0"
                     }
+                },
+                "example": {
+                    "chain": "8453",
+                    "to": "0x1234567890abcdef1234567890abcdef12345678",
+                    "data": "0xa9059cbb00000000000000000000000000000000000000000000000000000005f5e100",
+                    "value": "0"
                 }
             },
             "liquidity.BorrowCost": {
@@ -2013,31 +2830,38 @@
                 "properties": {
                     "borrowAmount": {
                         "description": "amount to be borrowed in lowest denomination of the borrowed token",
-                        "type": "string"
+                        "type": "string",
+                        "example": "100000000"
                     },
                     "borrowCost": {
                         "description": "cost to borrow the liquidity in lowest denomination of the borrowed token (excluding gas costs)",
-                        "type": "string"
+                        "type": "string",
+                        "example": "150000"
                     },
                     "borrowToken": {
                         "description": "address of the token being borrowed from the liquidity pool",
-                        "type": "string"
+                        "type": "string",
+                        "example": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
                     },
                     "deadline": {
                         "description": "deadline for executing the borrow transaction",
-                        "type": "string"
+                        "type": "string",
+                        "example": "1735689599"
                     },
                     "liquidityPool": {
                         "description": "address of the liquidity pool from which the liquidity will be borrowed",
-                        "type": "string"
+                        "type": "string",
+                        "example": "0xLiqPool1234567890AbCdEf1234567890AbCdEf12"
                     },
                     "nonce": {
                         "description": "unique nonce for the borrow request",
-                        "type": "string"
+                        "type": "string",
+                        "example": "42"
                     },
                     "signature": {
                         "description": "hex string containing the MPC set signature used on the Liquidity pool contract",
-                        "type": "string"
+                        "type": "string",
+                        "example": "0x1a2b3c4d5e6f7890abcdef1234567890abcdef12345678901c"
                     }
                 }
             },
@@ -2049,6 +2873,17 @@
                 "properties": {
                     "data": {
                         "$ref": "#/components/schemas/liquidity.BorrowCost"
+                    }
+                },
+                "example": {
+                    "data": {
+                        "borrowAmount": "100000000",
+                        "borrowCost": "150000",
+                        "borrowToken": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                        "deadline": "1735689599",
+                        "liquidityPool": "0xLiqPool1234567890AbCdEf1234567890AbCdEf12",
+                        "nonce": "42",
+                        "signature": "0x1a2b3c4d5e6f7890abcdef1234567890abcdef1234567890abcdef1234567890ab1c"
                     }
                 }
             },
@@ -2098,6 +2933,20 @@
                             "$ref": "#/components/schemas/types.FeeTier"
                         }
                     }
+                },
+                "example": {
+                    "data": [
+                        {
+                            "feeBps": 5,
+                            "minAmount": 0,
+                            "maxAmount": 100000000000
+                        },
+                        {
+                            "feeBps": 3,
+                            "minAmount": 100000000000,
+                            "maxAmount": 1000000000000
+                        }
+                    ]
                 }
             },
             "liquidity.GetStashSupportedTokensHandler.response": {
@@ -2110,6 +2959,18 @@
                         "type": "object",
                         "additionalProperties": {
                             "$ref": "#/components/schemas/config.Token"
+                        }
+                    }
+                },
+                "example": {
+                    "data": {
+                        "USDC": {
+                            "address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                            "decimals": 6
+                        },
+                        "WETH": {
+                            "address": "0x4200000000000000000000000000000000000006",
+                            "decimals": 18
                         }
                     }
                 }
@@ -2131,31 +2992,38 @@
                 "properties": {
                     "borrowCost": {
                         "description": "Cost to borrow the liquidity (in the smallest denomination). Excludes gas costs.",
-                        "type": "string"
+                        "type": "string",
+                        "example": "150000"
                     },
                     "duration": {
                         "description": "Deprecated: use EstimatedFillDuration instead.",
-                        "type": "number"
+                        "type": "number",
+                        "example": 300
                     },
                     "estimatedFillDuration": {
                         "description": "Estimated duration for the borrow transaction to complete.\nDepends on the required amount of confirmations on the source chain.",
-                        "type": "number"
+                        "type": "number",
+                        "example": 180
                     },
                     "feeBps": {
                         "description": "Borrow fee in basis points. Excludes gas costs.",
-                        "type": "number"
+                        "type": "number",
+                        "example": 5
                     },
                     "id": {
                         "description": "Unique identifier for the quote. Guarantees liquidity reservation. Used on borrow signature request.",
-                        "type": "string"
+                        "type": "string",
+                        "example": "qt_a1b2c3d4e5f6"
                     },
                     "liquidityPool": {
                         "description": "Liquidity pool from which the liquidity will be borrowed",
-                        "type": "string"
+                        "type": "string",
+                        "example": "0xLiqPool1234567890AbCdEf1234567890AbCdEf12"
                     },
                     "quoteDuration": {
                         "description": "Duration for which this quote remains valid.",
-                        "type": "number"
+                        "type": "number",
+                        "example": 60
                     },
                     "repaymentChain": {
                         "description": "Chain on which the repayment will be received",
@@ -2167,15 +3035,18 @@
                     },
                     "repaymentRecipient": {
                         "description": "Address to which the repayment should be sent",
-                        "type": "string"
+                        "type": "string",
+                        "example": "0xRepayRecip234567890AbCdEf1234567890AbCdEf1"
                     },
                     "requiredInput": {
                         "description": "Amount of input tokens required to fulfill the borrow (in the smallest denomination)",
-                        "type": "string"
+                        "type": "string",
+                        "example": "100000000"
                     },
                     "requiredOutput": {
                         "description": "Amount of output tokens that will be received from the borrow (in the smallest denomination)",
-                        "type": "string"
+                        "type": "string",
+                        "example": "99850000"
                     }
                 }
             },
@@ -2187,7 +3058,8 @@
                 ],
                 "properties": {
                     "signature": {
-                        "type": "string"
+                        "type": "string",
+                        "example": "0x9f8e7d6c5b4a3928abcdef1234567890abcdef12345678901b"
                     }
                 }
             },
@@ -2200,6 +3072,11 @@
                     "data": {
                         "$ref": "#/components/schemas/liquidity.Unlock"
                     }
+                },
+                "example": {
+                    "data": {
+                        "signature": "0x9f8e7d6c5b4a3928170fabcdef1234567890abcdef1234567890abcdef12345678901b"
+                    }
                 }
             },
             "liquidity.availableLiquidityResponse": {
@@ -2210,6 +3087,12 @@
                 "properties": {
                     "data": {
                         "$ref": "#/components/schemas/liquidity.poolLiquidity"
+                    }
+                },
+                "example": {
+                    "data": {
+                        "address": "0xLiqPool1234567890AbCdEf1234567890AbCdEf12",
+                        "balance": "5000000000000"
                     }
                 }
             },
@@ -2222,6 +3105,21 @@
                     "data": {
                         "$ref": "#/components/schemas/liquidity.Quote"
                     }
+                },
+                "example": {
+                    "data": {
+                        "borrowCost": "150000",
+                        "duration": 300,
+                        "estimatedFillDuration": 180,
+                        "feeBps": 5,
+                        "id": "qt_a1b2c3d4e5f6",
+                        "liquidityPool": "0xLiqPool1234567890AbCdEf1234567890AbCdEf12",
+                        "quoteDuration": 60,
+                        "repaymentChain": 1,
+                        "repaymentRecipient": "0xRepayRecip234567890AbCdEf1234567890AbCdEf1",
+                        "requiredInput": "100000000",
+                        "requiredOutput": "99850000"
+                    }
                 }
             },
             "liquidity.poolLiquidity": {
@@ -2232,10 +3130,12 @@
                 ],
                 "properties": {
                     "address": {
-                        "type": "string"
+                        "type": "string",
+                        "example": "0xLiqPool1234567890AbCdEf1234567890AbCdEf12"
                     },
                     "balance": {
-                        "type": "string"
+                        "type": "string",
+                        "example": "5000000000000"
                     }
                 }
             },
@@ -2251,6 +3151,10 @@
                     "error": {
                         "type": "string"
                     }
+                },
+                "example": {
+                    "error": "invalid account address",
+                    "debug": "account parameter must be a valid Ethereum address"
                 }
             },
             "server.GetSolverHandler.response": {
@@ -2261,11 +3165,17 @@
                 ],
                 "properties": {
                     "duration": {
-                        "type": "integer"
+                        "type": "integer",
+                        "example": 180
                     },
                     "solver": {
-                        "type": "string"
+                        "type": "string",
+                        "example": "0xSolverAddr234567890AbCdEf1234567890AbCdEf1"
                     }
+                },
+                "example": {
+                    "duration": 180,
+                    "solver": "0xSolverAddr234567890AbCdEf1234567890AbCdEf1"
                 }
             },
             "server.HealthHandler.response": {
@@ -2275,8 +3185,12 @@
                 ],
                 "properties": {
                     "status": {
-                        "type": "string"
+                        "type": "string",
+                        "example": "ok"
                     }
+                },
+                "example": {
+                    "status": "ok"
                 }
             },
             "types.BigInt": {
@@ -2291,16 +3205,25 @@
                 ],
                 "properties": {
                     "feeBps": {
-                        "type": "number"
+                        "type": "number",
+                        "example": 5
                     },
                     "maxAmount": {
-                        "type": "integer"
+                        "type": "integer",
+                        "example": 100000000000
                     },
                     "minAmount": {
-                        "type": "integer"
+                        "type": "integer",
+                        "example": 0
                     }
                 }
             }
         }
-    }
+    },
+    "servers": [
+        {
+            "url": "https://api.sprinter.tech",
+            "description": "Production server"
+        }
+    ]
 }

@@ -95,8 +95,12 @@
         "api-reference/sprinter/credit/build-transaction-calls-to-draw-credit",
         "api-reference/sprinter/credit/call-data-to-repay-credit-debt",
         "api-reference/sprinter/credit/get-collateral-asset-details",
+        "api-reference/sprinter/credit/get-operator-status-for-an-account",
+        "api-reference/sprinter/credit/build-transaction-calls-to-enable-auto-top-up",
+        "api-reference/sprinter/credit/build-transaction-calls-to-disable-auto-top-up",
         "api-reference/sprinter/credit/wrap-asset-into-earn-vault",
-        "api-reference/sprinter/credit/unwrap-position-from-earn-vault"
+        "api-reference/sprinter/credit/unwrap-position-from-earn-vault",
+        "api-reference/sprinter/credit/claim-position-from-earn-vault"
       ]
     },
     {
