@@ -6,6 +6,11 @@
     "dark": "#CC4100"
   },
   "favicon": "/favicon.svg",
+  "api": {
+    "proxy": {
+      "url": "https://api.sprinter.tech"
+    }
+  },
   "tabs": [
     {
       "name": "Sprinter Credit (V2) API",
