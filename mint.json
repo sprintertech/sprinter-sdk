@@ -74,12 +74,6 @@
       ]
     },
     {
-      "group": "Health",
-      "pages": [
-        "api-reference/sprinter/health-check"
-      ]
-    },
-    {
       "group": "Credit",
       "pages": [
         "api-reference/sprinter/credit/get-credit-protocol-configuration",
@@ -95,14 +89,6 @@
         "api-reference/sprinter/credit/wrap-asset-into-earn-vault",
         "api-reference/sprinter/credit/unwrap-position-from-earn-vault",
         "api-reference/sprinter/credit/claim-position-from-earn-vault"
-      ]
-    },
-    {
-      "group": "Liquidity",
-      "pages": [
-        "api-reference/sprinter/liquidity/returns-supported-tokens-for-a-chain",
-        "api-reference/sprinter/liquidity/get-fee-and-limits-for-a-given-protocol-route",
-        "api-reference/sprinter/liquidity/get-the-borrow-quote-for-a-liquidity-transaction-based-on-the-input-data"
       ]
     },
     {
