@@ -80,12 +80,6 @@
       ]
     },
     {
-      "group": "Solver",
-      "pages": [
-        "api-reference/sprinter/returns-solver-address"
-      ]
-    },
-    {
       "group": "Credit",
       "pages": [
         "api-reference/sprinter/credit/get-credit-protocol-configuration",
@@ -106,13 +100,9 @@
     {
       "group": "Liquidity",
       "pages": [
-        "api-reference/sprinter/liquidity/get-available-liquidity-for-a-specific-pool-type-on-a-chain",
-        "api-reference/sprinter/liquidity/stream-available-liquidity-updates-via-sse",
         "api-reference/sprinter/liquidity/returns-supported-tokens-for-a-chain",
         "api-reference/sprinter/liquidity/get-fee-and-limits-for-a-given-protocol-route",
-        "api-reference/sprinter/liquidity/get-the-borrow-quote-for-a-liquidity-transaction-based-on-the-input-data",
-        "api-reference/sprinter/liquidity/get-signing-authorization-for-a-liquidity-transaction",
-        "api-reference/sprinter/liquidity/get-signing-authorization-for-a-an-unlock-transaction"
+        "api-reference/sprinter/liquidity/get-the-borrow-quote-for-a-liquidity-transaction-based-on-the-input-data"
       ]
     },
     {

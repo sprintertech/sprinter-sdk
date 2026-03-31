@@ -42,3 +42,62 @@ func main() {
 }
 ```
 </RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "chains": {
+    "eip155:8453": {
+      "creditHubs": {
+        "usdc": {
+          "creditHubAddress": "0xb5cf2A13E9aaE413E788379966727...",
+          "creditHubControllerAddress": "0x748721356a7f7Fcff6C...",
+          "assetAddress": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+        }
+      },
+      "collateral": {
+        "erc20:0x833589fcd6edb6e08f4c7c32d4f71b54bda02913": {
+          "escrowAddress": "0xf8610910cc80568537C83BC48a3471c2...",
+          "symbol": "USDC",
+          "ltv": "8000",
+          "strategy": "gauntlet-usdc-prime"
+        },
+        "erc20:0x4200000000000000000000000000000000000006": {
+          "escrowAddress": "0xaBcD1234567890AbCdEf1234567890Ab...",
+          "symbol": "WETH",
+          "ltv": "7000",
+          "strategy": "yo-eth"
+        }
+      },
+      "strategies": {
+        "gauntlet-usdc-prime": {
+          "name": "Gauntlet USDC Prime",
+          "curator": "Gauntlet",
+          "protocol": "morpho-v1",
+          "vaultAddress": "0xeE8F4eC5672F09119b96Ab6fB59C27E1b7e44b61",
+          "underlyingAddress": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "vaultType": "erc4626",
+          "type": "Lending",
+          "riskScore": "3"
+        },
+        "yo-eth": {
+          "name": "YO ETH Yield",
+          "curator": "Yo",
+          "protocol": "yo-protocol",
+          "vaultAddress": "0xYoEthVault1234567890AbCdEf123456...",
+          "underlyingAddress": "0x4200000000000000000000000000000000000006",
+          "vaultType": "erc4626",
+          "type": "Lending",
+          "riskScore": "5"
+        }
+      },
+      "escrowsMetadata": {
+        "controller": "0xEscrowCtrl234567890AbCdEf123456...",
+        "helper": "0xEscrowHelp234567890AbCdEf123456..."
+      },
+      "wrappedNativeAddress": "0x4200000000000000000000000000000000000006"
+    }
+  }
+}
+```
+</ResponseExample>
