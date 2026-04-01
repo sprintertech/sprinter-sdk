@@ -32,6 +32,13 @@
           ]
         },
         {
+          "group": "Kast Card",
+          "pages": [
+            "quickstart/kast-card",
+            "quickstart/kast-card/authorization-webhook"
+          ]
+        },
+        {
           "group": "Agent Skills",
           "pages": [
             "quickstart/agent-skills",

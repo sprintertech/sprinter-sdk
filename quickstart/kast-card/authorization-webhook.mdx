@@ -1,0 +1,263 @@
+---
+title: "Kast Authorization Webhook"
+description: "TypeScript implementation for handling Kast Visa card authorization webhooks with JIT credit draws via the Sprinter Credit API"
+---
+
+When a Kast cardholder swipes their Visa card, Third National (the card issuer) sends an authorization request to your backend. You have ~2 seconds to check credit, execute an on-chain draw, and respond.
+
+```
+Card swipe → Visa → Third National → Kast backend → Your webhook endpoint
+  ├─ Validate signature
+  ├─ Look up wallet from card ID
+  ├─ GET /credit/accounts/{account}/info   → check credit
+  ├─ GET /credit/accounts/{account}/draw   → build draw calldata
+  ├─ Execute on-chain via delegated signer
+  └─ Respond: approved / declined
+```
+
+<Info>
+This example assumes a webhook-based authorization flow from Kast/Third National. Adapt signature validation and response format to match the actual integration spec when available.
+</Info>
+
+## Implementation
+
+<Steps>
+  <Step title="Set Up Configuration">
+    ```typescript
+    import express from "express";
+    import crypto from "crypto";
+    import { ethers } from "ethers";
+
+    const app = express();
+    app.use(express.json({ verify: (req: any, _res, buf) => { req.rawBody = buf; } }));
+
+    const SPRINTER_API = "https://api.sprinter.tech";
+    const SPRINTER_API_KEY = process.env.SPRINTER_API_KEY!;
+    const KAST_WEBHOOK_SECRET = process.env.KAST_WEBHOOK_SECRET!;
+    const SETTLEMENT_ADDRESS = process.env.SETTLEMENT_ADDRESS!; // Third National settlement
+    const RPC_URL = process.env.RPC_URL!; // Base RPC
+    const SIGNER_PRIVATE_KEY = process.env.SIGNER_PRIVATE_KEY!;
+
+    const provider = new ethers.JsonRpcProvider(RPC_URL);
+    const signer = new ethers.Wallet(SIGNER_PRIVATE_KEY, provider);
+    ```
+  </Step>
+
+  <Step title="Define Types and Helpers">
+    ```typescript
+    interface ContractCall {
+      to: string;
+      data: string;
+      value: string;
+    }
+
+    interface CreditInfo {
+      data: {
+        USDC: {
+          totalCreditCapacity: string;
+          remainingCreditCapacity: string;
+          totalCollateralValue: string;
+          principal: string;
+          interest: string;
+          healthFactor: string;
+          dueDate: string | null;
+        };
+      };
+    }
+
+    // Use Redis or a database in production
+    const processed = new Map<string, { approved: boolean; txHash?: string }>();
+
+    function validateSignature(rawBody: Buffer, signature: string): boolean {
+      const expected = crypto
+        .createHmac("sha256", KAST_WEBHOOK_SECRET)
+        .update(rawBody)
+        .digest("hex");
+      return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected));
+    }
+
+    async function getWalletForCard(cardId: string): Promise<string | null> {
+      // TODO: query your database mapping Kast card IDs to wallet addresses
+      throw new Error(`Implement getWalletForCard for cardId: ${cardId}`);
+    }
+
+    async function getCreditInfo(account: string): Promise<CreditInfo> {
+      const res = await fetch(`${SPRINTER_API}/credit/accounts/${account}/info`, {
+        headers: { "X-Auth-Token": SPRINTER_API_KEY },
+      });
+      if (!res.ok) throw new Error(`Credit info failed: ${res.status}`);
+      return res.json();
+    }
+
+    async function buildDrawCalls(
+      account: string,
+      amountUsdc: string,
+      receiver: string
+    ): Promise<ContractCall[]> {
+      const url = new URL(`${SPRINTER_API}/credit/accounts/${account}/draw`);
+      url.searchParams.set("amount", amountUsdc);
+      url.searchParams.set("receiver", receiver);
+      const res = await fetch(url.toString(), {
+        headers: { "X-Auth-Token": SPRINTER_API_KEY },
+      });
+      if (!res.ok) throw new Error(`Draw calldata failed: ${res.status}`);
+      const data = await res.json();
+      return data.calls;
+    }
+
+    async function executeCalls(calls: ContractCall[]): Promise<string> {
+      let lastTxHash = "";
+      for (const call of calls) {
+        const tx = await signer.sendTransaction({
+          to: call.to,
+          data: call.data,
+          value: call.value || "0",
+        });
+        const receipt = await tx.wait();
+        if (!receipt || receipt.status !== 1) {
+          throw new Error(`Transaction reverted: ${tx.hash}`);
+        }
+        lastTxHash = tx.hash;
+      }
+      return lastTxHash;
+    }
+
+    /** $1.00 = 100 cents = 1_000_000 USDC units (6 decimals) */
+    function centsToUsdcUnits(cents: number): string {
+      return (cents * 10_000).toString();
+    }
+    ```
+  </Step>
+
+  <Step title="Handle the Authorization Webhook">
+    ```typescript
+    app.post("/webhooks/kast/authorization", async (req, res) => {
+      try {
+        // 1. Validate webhook signature
+        const signature = req.headers["x-kast-signature"] as string;
+        if (!signature || !validateSignature((req as any).rawBody, signature)) {
+          return res.status(401).json({ error: "Invalid signature" });
+        }
+
+        const { id, cardId, amount, currency, merchantName } = req.body;
+
+        // 2. Idempotency — return cached result if already processed
+        const cached = processed.get(id);
+        if (cached) return res.json(cached);
+
+        // 3. Look up user wallet from Kast card ID
+        const wallet = await getWalletForCard(cardId);
+        if (!wallet) {
+          processed.set(id, { approved: false });
+          return res.json({ approved: false, reason: "unknown_card" });
+        }
+
+        // 4. Convert amount to USDC (Kast supports USD, apply FX if non-USD)
+        const usdcAmount = currency === "USD"
+          ? centsToUsdcUnits(amount)
+          : centsToUsdcUnits(amount); // TODO: apply FX rate for non-USD
+
+        // 5. Check available credit and health factor
+        const info = await getCreditInfo(wallet);
+        const remaining = parseFloat(info.data.USDC.remainingCreditCapacity);
+        const healthFactor = parseFloat(info.data.USDC.healthFactor);
+        const requestedUsd = amount / 100;
+
+        if (requestedUsd > remaining) {
+          processed.set(id, { approved: false });
+          return res.json({ approved: false, reason: "insufficient_credit" });
+        }
+
+        if (healthFactor < 1.3) {
+          processed.set(id, { approved: false });
+          return res.json({ approved: false, reason: "low_health_factor" });
+        }
+
+        // 6. Build and execute the credit draw
+        const calls = await buildDrawCalls(wallet, usdcAmount, SETTLEMENT_ADDRESS);
+        const txHash = await executeCalls(calls);
+
+        console.log(`Approved: ${merchantName} $${requestedUsd} for card ${cardId} tx:${txHash}`);
+        processed.set(id, { approved: true, txHash });
+        return res.json({ approved: true, txHash });
+      } catch (error) {
+        // Fail closed — always decline on error
+        console.error("Authorization error:", error);
+        return res.json({ approved: false, reason: "internal_error" });
+      }
+    });
+
+    app.listen(3001, () => console.log("Kast webhook handler running on :3001"));
+    ```
+  </Step>
+</Steps>
+
+## Delegated Signing
+
+Card authorizations must complete without user interaction. Your backend needs a server-side signer authorized to draw credit on the user's behalf.
+
+<CardGroup cols={3}>
+  <Card title="ERC-7579 Session Keys" icon="key">
+    User grants a scoped session key that can only call the credit draw function.
+  </Card>
+  <Card title="Pre-signed Permits" icon="file-signature">
+    User pre-signs EIP-2612 permits for USDC transfers.
+  </Card>
+  <Card title="Smart Account Delegation" icon="wallet">
+    User's smart wallet delegates draw authority to your backend EOA.
+  </Card>
+</CardGroup>
+
+<Warning>
+The delegated signer can draw credit from user accounts. Secure the private key with HSM or KMS in production — never store it in environment variables on shared infrastructure.
+</Warning>
+
+## Latency Budget
+
+Visa expects a response within ~2 seconds:
+
+| Step | Target | Notes |
+|---|:---:|---|
+| Signature validation | < 1ms | Local crypto |
+| Database lookup (card → wallet) | < 10ms | Index on Kast card ID |
+| `GET /credit/accounts/{account}/info` | < 100ms | Sprinter API |
+| `GET /credit/accounts/{account}/draw` | < 100ms | Sprinter API |
+| On-chain execution | < 1000ms | Dedicated Base RPC node |
+| **Total** | **< 1300ms** | ~700ms buffer |
+
+<Tip>
+Use a dedicated RPC node on Base. Public endpoints will exceed the time budget under load.
+</Tip>
+
+## Production Checklist
+
+<AccordionGroup>
+  <Accordion title="Infrastructure" icon="server" defaultOpen={true}>
+    - [ ] Replace in-memory idempotency map with Redis or database
+    - [ ] Use a dedicated Base RPC node (Alchemy, QuickNode, or self-hosted)
+    - [ ] Store signer key in HSM or cloud KMS (AWS KMS, GCP Cloud KMS)
+    - [ ] Set up webhook endpoint behind a load balancer with TLS
+  </Accordion>
+  <Accordion title="Kast Integration" icon="credit-card">
+    - [ ] Implement `getWalletForCard()` mapping Kast card IDs to user wallets
+    - [ ] Confirm settlement address with Third National
+    - [ ] Handle FX conversion for non-USD transactions (Kast charges 2% FX fee)
+    - [ ] Map Kast card tiers (Standard/Premium/Luxe) to Sprinter credit configurations
+  </Accordion>
+  <Accordion title="Monitoring" icon="chart-line">
+    - [ ] Monitor authorization latency (p99 < 2s)
+    - [ ] Alert on elevated decline rates
+    - [ ] Track on-chain execution success rate
+    - [ ] Monitor health factors across all active Kast cardholders
+  </Accordion>
+</AccordionGroup>
+
+## Environment Variables
+
+| Variable | Description |
+|---|---|
+| `SPRINTER_API_KEY` | Sprinter Credit API key ([request via Telegram](https://t.me/Sprinter_Intern_Bot)) |
+| `KAST_WEBHOOK_SECRET` | Webhook signing secret from Kast/Third National |
+| `SETTLEMENT_ADDRESS` | Third National's USDC settlement address on Base |
+| `RPC_URL` | Base RPC endpoint (dedicated node recommended) |
+| `SIGNER_PRIVATE_KEY` | Delegated signer private key (HSM/KMS in production) |
