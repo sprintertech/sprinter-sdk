@@ -37,14 +37,6 @@ jobs:
           else
             echo "CF_BRANCH_NAME=${{ github.head_ref || github.ref_name }}" >> $GITHUB_ENV
           fi
-      - name: Publish Docs to Cloudflare Pages
-        id: docs-publish
-        uses: cloudflare/wrangler-action@v3
-        with:
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: 167153f505df751a355a8192b0656720
-          command: pages deploy ./docs/build --project-name=sprinter-docs --branch=${{ env.CF_BRANCH_NAME }}
       - name: Publish POC to Cloudflare Pages
         id: poc-publish
         uses: cloudflare/wrangler-action@v3
@@ -59,16 +51,16 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "| **Project**             | **Preview URL** |" >> $GITHUB_STEP_SUMMARY
           echo "| ----------------------- | ---------------- |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Docs**                | [View Docs -> ${{ steps.docs-publish.outputs.deployment-url }}](${{ steps.docs-publish.outputs.deployment-url }}) |" >> $GITHUB_STEP_SUMMARY
           echo "| **POC**                 | [View POC -> ${{ steps.poc-publish.outputs.deployment-url }}](${{ steps.poc-publish.outputs.deployment-url }}) |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Docs**                | Hosted on [Mintlify](https://docs.sprinter.tech) |" >> $GITHUB_STEP_SUMMARY
       - name: Notify About Deployment
         if: ${{ github.actor != 'dependabot[bot]' && github.ref_name != 'master' }}
         uses: actions/github-script@v7
         with:
           script: |
-            const docsUrl = `**Docs:** [View Deployment -> ${{ steps.docs-publish.outputs.deployment-url }}](${{ steps.docs-publish.outputs.deployment-url }})`;
             const pocUrl = `**POC:** [View Deployment -> ${{ steps.poc-publish.outputs.deployment-url }}](${{ steps.poc-publish.outputs.deployment-url }})`;
-            const message = `🚀 **Deployment Completed**\n\n${docsUrl}\n${pocUrl}`;
+            const docsUrl = `**Docs:** Hosted on [Mintlify](https://docs.sprinter.tech)`;
+            const message = `🚀 **Deployment Completed**\n\n${pocUrl}\n${docsUrl}`;
             await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
