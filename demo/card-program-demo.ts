@@ -74,12 +74,26 @@ async function executeCalls(calls: ContractCall[]): Promise<string> {
     return "0x_dry_run";
   }
 
+  // Filter out any USDC approve calls from the API response — we handle approval ourselves
+  const filteredCalls = calls.filter((call) => {
+    if (call.to.toLowerCase() === USDC_ADDRESS.toLowerCase() && call.data.startsWith("0x095ea7b3")) {
+      log("⏭️", `Skipping API approve call (handled separately)`);
+      return false;
+    }
+    return true;
+  });
+
   let lastTxHash = "";
-  for (let i = 0; i < calls.length; i++) {
-    const call = calls[i];
-    log("⛓️", `Sending tx ${i + 1}/${calls.length} to ${call.to}`);
+  for (let i = 0; i < filteredCalls.length; i++) {
+    const call = filteredCalls[i];
+    log("⛓️", `Sending tx ${i + 1}/${filteredCalls.length} to ${call.to}`);
 
     try {
+      const nonce = await wallet.getNonce("pending");
+      log("🔢", `Using nonce ${nonce}`);
+
+      const feeData = await provider.getFeeData();
+
       // Estimate gas first to catch reverts early with a clear error
       const gasEstimate = await wallet.estimateGas({
         to: call.to,
@@ -93,6 +107,9 @@ async function executeCalls(calls: ContractCall[]): Promise<string> {
         data: call.data,
         value: call.value || "0",
         gasLimit: (gasEstimate * 120n) / 100n, // 20% buffer
+        nonce,
+        maxFeePerGas: feeData.maxFeePerGas,
+        maxPriorityFeePerGas: feeData.maxPriorityFeePerGas,
       });
 
       log("⏳", `Waiting for confirmation... tx: ${tx.hash}`);
@@ -142,6 +159,35 @@ async function getEthBalance(): Promise<string> {
   return ethers.formatEther(balance);
 }
 
+async function ensureUsdcApproval(spender: string, amount: string): Promise<void> {
+  const usdc = new ethers.Contract(
+    USDC_ADDRESS,
+    [
+      "function allowance(address owner, address spender) view returns (uint256)",
+      "function approve(address spender, uint256 amount) returns (bool)",
+    ],
+    wallet
+  );
+
+  const currentAllowance = await usdc.allowance(account, spender);
+  const needed = BigInt(amount);
+
+  if (currentAllowance >= needed) {
+    log("✅", `USDC allowance sufficient (${currentAllowance} >= ${needed})`);
+    return;
+  }
+
+  log("🔓", `Approving USDC spend for ${spender}...`);
+  const nonce = await wallet.getNonce("pending");
+  const tx = await usdc.approve(spender, ethers.MaxUint256, { nonce });
+  log("⏳", `Waiting for approval confirmation... tx: ${tx.hash}`);
+  const receipt = await tx.wait();
+  if (!receipt || receipt.status !== 1) {
+    throw new Error(`USDC approval reverted: ${tx.hash}`);
+  }
+  log("✅", `USDC approved in block ${receipt.blockNumber}`);
+}
+
 // ── Demo Steps ──────────────────────────────────────────────────────────────
 
 async function checkHealth() {
@@ -178,7 +224,12 @@ async function lockCollateral(amount: number): Promise<string> {
     `/credit/accounts/${account}/lock?amount=${amountWei}&asset=${USDC_ADDRESS}`
   );
 
-  log("📦", `Got ${data.calls.length} transaction(s) to execute (approve + lock)`);
+  log("📦", `Got ${data.calls.length} transaction(s) to execute`);
+  // Ensure USDC is approved for the lock contract before executing
+  const lockContract = data.calls.find((c: ContractCall) => c.to.toLowerCase() !== USDC_ADDRESS.toLowerCase());
+  if (lockContract) {
+    await ensureUsdcApproval(lockContract.to, amountWei);
+  }
   const txHash = await executeCalls(data.calls);
   log("✅", `Collateral locked: ${amount} USDC`);
   return txHash;
@@ -236,7 +287,12 @@ async function repayDebt(amount: number): Promise<string> {
     `/credit/accounts/${account}/repay?amount=${amountWei}`
   );
 
-  log("📦", `Got ${data.calls.length} transaction(s) to execute (approve + repay)`);
+  log("📦", `Got ${data.calls.length} transaction(s) to execute`);
+  // Ensure USDC is approved for the repay contract before executing
+  const repayContract = data.calls.find((c: ContractCall) => c.to.toLowerCase() !== USDC_ADDRESS.toLowerCase());
+  if (repayContract) {
+    await ensureUsdcApproval(repayContract.to, amountWei);
+  }
   const txHash = await executeCalls(data.calls);
   log("✅", `Repaid ${amount} USDC`);
   return txHash;
@@ -364,7 +420,16 @@ async function main() {
   log("🔗", `https://basescan.org/tx/${repayTx}`);
 
   console.log("\n  Credit position after repay:");
-  await checkCreditInfo();
+  const postRepay = await checkCreditInfo();
+
+  // Clear any remaining dust debt (interest accrues immediately after draw)
+  if (postRepay.debt > 0.001) {
+    log("ℹ️", `Remaining dust debt: ${postRepay.debt.toFixed(6)} USDC — repaying...`);
+    const dustAmount = postRepay.debt + 0.000001; // tiny buffer
+    await repayDebt(dustAmount);
+    log("✅", "Dust debt cleared");
+    await checkCreditInfo();
+  }
 
   // ── Step 5: Unlock collateral ─────────────────────────────────────────
   header(5, 6, `Unlock ${DEMO_AMOUNT} USDC collateral`);

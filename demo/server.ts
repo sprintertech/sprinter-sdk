@@ -70,10 +70,24 @@ async function executeCalls(calls: ContractCall[], send: SSEWriter): Promise<str
     return "0x_dry_run";
   }
 
+  // Filter out any USDC approve calls from the API response — we handle approval ourselves
+  const filteredCalls = calls.filter((call) => {
+    if (call.to.toLowerCase() === USDC_ADDRESS.toLowerCase() && call.data.startsWith("0x095ea7b3")) {
+      send("log", { message: `Skipping API approve call (handled separately)` });
+      return false;
+    }
+    return true;
+  });
+
   let lastTxHash = "";
-  for (let i = 0; i < calls.length; i++) {
-    const call = calls[i];
-    send("log", { message: `Sending tx ${i + 1}/${calls.length} to ${call.to}` });
+  for (let i = 0; i < filteredCalls.length; i++) {
+    const call = filteredCalls[i];
+    send("log", { message: `Sending tx ${i + 1}/${filteredCalls.length} to ${call.to}` });
+
+    const nonce = await wallet.getNonce("pending");
+    send("log", { message: `Using nonce ${nonce}` });
+
+    const feeData = await provider.getFeeData();
 
     const gasEstimate = await wallet.estimateGas({
       to: call.to,
@@ -86,6 +100,9 @@ async function executeCalls(calls: ContractCall[], send: SSEWriter): Promise<str
       data: call.data,
       value: call.value || "0",
       gasLimit: (gasEstimate * 120n) / 100n,
+      nonce,
+      maxFeePerGas: feeData.maxFeePerGas,
+      maxPriorityFeePerGas: feeData.maxPriorityFeePerGas,
     });
 
     send("log", { message: `Waiting for confirmation... ${tx.hash}` });
@@ -114,6 +131,35 @@ async function getUsdcBalance(): Promise<string> {
 async function getEthBalance(): Promise<string> {
   const balance = await provider.getBalance(account);
   return ethers.formatEther(balance);
+}
+
+async function ensureUsdcApproval(spender: string, amount: string, send: SSEWriter): Promise<void> {
+  const usdc = new ethers.Contract(
+    USDC_ADDRESS,
+    [
+      "function allowance(address owner, address spender) view returns (uint256)",
+      "function approve(address spender, uint256 amount) returns (bool)",
+    ],
+    wallet
+  );
+
+  const currentAllowance = await usdc.allowance(account, spender);
+  const needed = BigInt(amount);
+
+  if (currentAllowance >= needed) {
+    send("log", { message: `USDC allowance sufficient (${currentAllowance} >= ${needed})` });
+    return;
+  }
+
+  send("log", { message: `Approving USDC spend for ${spender}...` });
+  const nonce = await wallet.getNonce("pending");
+  const tx = await usdc.approve(spender, ethers.MaxUint256, { nonce });
+  send("log", { message: `Waiting for approval confirmation... ${tx.hash}` });
+  const receipt = await tx.wait();
+  if (!receipt || receipt.status !== 1) {
+    throw new Error(`USDC approval reverted: ${tx.hash}`);
+  }
+  send("log", { message: `USDC approved in block ${receipt.blockNumber}` });
 }
 
 // ── Express App ─────────────────────────────────────────────────────────────
@@ -182,6 +228,11 @@ app.get("/api/run", async (req, res) => {
       `/credit/accounts/${account}/lock?amount=${usdcUnits(DEMO_AMOUNT)}&asset=${USDC_ADDRESS}`,
       send
     );
+    // Ensure USDC is approved for the lock contract before executing
+    const lockContract = lockData.calls.find((c: ContractCall) => c.to.toLowerCase() !== USDC_ADDRESS.toLowerCase());
+    if (lockContract) {
+      await ensureUsdcApproval(lockContract.to, usdcUnits(DEMO_AMOUNT), send);
+    }
     const lockTx = await executeCalls(lockData.calls, send);
     send("step", {
       step: 1,
@@ -251,10 +302,34 @@ app.get("/api/run", async (req, res) => {
       `/credit/accounts/${account}/repay?amount=${usdcUnits(drawAmount)}`,
       send
     );
+    // Ensure USDC is approved for the repay contract before executing
+    const repayContract = repayData.calls.find((c: ContractCall) => c.to.toLowerCase() !== USDC_ADDRESS.toLowerCase());
+    if (repayContract) {
+      await ensureUsdcApproval(repayContract.to, usdcUnits(drawAmount), send);
+    }
     const repayTx = await executeCalls(repayData.calls, send);
 
+    // Check for remaining dust debt (interest accrues immediately after draw)
     const postRepayInfo = await sprinterGet(`/credit/accounts/${account}/info`, send);
     const postRepay = postRepayInfo.data.usdc;
+    const remainingDebt = parseFloat(postRepay.debt);
+
+    if (remainingDebt > 0.001) {
+      send("log", { message: `Remaining debt: ${remainingDebt.toFixed(6)} USDC — repaying dust...`, type: "info" });
+      const dustUnits = BigInt(Math.ceil(remainingDebt * 10 ** USDC_DECIMALS) + 1).toString();
+      const dustRepay = await sprinterGet(
+        `/credit/accounts/${account}/repay?amount=${dustUnits}`,
+        send
+      );
+      const dustContract = dustRepay.calls.find((c: ContractCall) => c.to.toLowerCase() !== USDC_ADDRESS.toLowerCase());
+      if (dustContract) {
+        await ensureUsdcApproval(dustContract.to, dustUnits, send);
+      }
+      await executeCalls(dustRepay.calls, send);
+    }
+
+    const finalDebtInfo = await sprinterGet(`/credit/accounts/${account}/info`, send);
+    const finalDebt = finalDebtInfo.data.usdc;
 
     send("step", {
       step: 4,
@@ -263,7 +338,7 @@ app.get("/api/run", async (req, res) => {
       txHash: repayTx,
       details: {
         repaid: `${drawAmount.toFixed(2)} USDC`,
-        remainingDebt: `${parseFloat(postRepay.debt).toFixed(2)} USDC`,
+        remainingDebt: `${parseFloat(finalDebt.debt).toFixed(6)} USDC`,
       },
     });
 
