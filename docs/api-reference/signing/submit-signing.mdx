@@ -27,8 +27,8 @@ curl -X POST https://api.getmiso.fi/v1/chains/8453/signatures \
 
 ## Path Parameters
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
+| Parameter | Type     | Description                              |
+| --------- | -------- | ---------------------------------------- |
 | `chainId` | `uint64` | Destination chain ID (must be supported) |
 
 ## Request Body
@@ -55,11 +55,11 @@ All protocols require: `depositId`, `nonce`, `protocol`, `liquidityPool`, `calle
 
 ## Responses
 
-| Status | Description |
-|--------|-------------|
-| `202` | Deposit accepted for signing |
-| `400` | Invalid request body or unsupported chain/protocol |
-| `500` | Signing failed |
+| Status | Description                                        |
+| ------ | -------------------------------------------------- |
+| `202`  | Deposit accepted for signing                       |
+| `400`  | Invalid request body or unsupported chain/protocol |
+| `500`  | Signing failed                                     |
 
 ## Protocol-Specific Notes
 

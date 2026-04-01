@@ -13,8 +13,8 @@ curl https://api.getmiso.fi/v1/chains/8453/confirmations
 
 ## Path Parameters
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
+| Parameter | Type     | Description       |
+| --------- | -------- | ----------------- |
 | `chainId` | `uint64` | Chain ID to query |
 
 ## Response
@@ -24,16 +24,16 @@ Returns confirmation count requirements bucketed by deposit value thresholds. Th
 ```json
 {
   "confirmations": [
-    {"maxValue": 1000, "blocks": 1},
-    {"maxValue": 10000, "blocks": 3},
-    {"maxValue": 100000, "blocks": 6}
+    { "maxValue": 1000, "blocks": 1 },
+    { "maxValue": 10000, "blocks": 3 },
+    { "maxValue": 100000, "blocks": 6 }
   ]
 }
 ```
 
 ## Errors
 
-| Status | Description |
-|--------|-------------|
-| `400` | Invalid chain ID |
-| `404` | Chain not supported |
+| Status | Description         |
+| ------ | ------------------- |
+| `400`  | Invalid chain ID    |
+| `404`  | Chain not supported |

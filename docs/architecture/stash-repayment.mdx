@@ -36,30 +36,30 @@ balance() → debt() → bridge()
 
 ## Bridge Providers
 
-| ID | Provider |
-|----|----------|
-| `0` | LOCAL (same-chain) |
-| `1` | CCTP |
-| `2` | ACROSS |
-| `4` | EVERCLEAR |
-| `254` | MAYAN |
+| ID    | Provider           |
+| ----- | ------------------ |
+| `0`   | LOCAL (same-chain) |
+| `1`   | CCTP               |
+| `2`   | ACROSS             |
+| `4`   | EVERCLEAR          |
+| `254` | MAYAN              |
 
 ## External Dependencies
 
-| Service | Purpose |
-|---------|---------|
+| Service                            | Purpose                    |
+| ---------------------------------- | -------------------------- |
 | Sprinter API (`api.sprinter.tech`) | Stash debt/balance queries |
-| LiFi | Token swaps |
-| CoinMarketCap | Token pricing |
-| CCTP / Across / Everclear / Mayan | Cross-chain bridging |
+| LiFi                               | Token swaps                |
+| CoinMarketCap                      | Token pricing              |
+| CCTP / Across / Everclear / Mayan  | Cross-chain bridging       |
 
 ## Key Configuration
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `REPAYMENT_MINS` | `5` | Minutes between repayment cycles |
-| `REPAYMENT_THRESHOLD` | `$100` | Min USD for repayment |
-| `BRIDGING_MINS` | `60` | Minutes between bridging cycles |
-| `BRIDGING_THRESHOLD` | `$0.10` | Min USD for bridging |
-| `BRIDGING_MAX_FEE_PCT` | `5%` | Max acceptable bridge fee |
-| `LIQUIDATION_MINS` | `5` | Minutes between liquidation checks |
+| Variable               | Default | Description                        |
+| ---------------------- | ------- | ---------------------------------- |
+| `REPAYMENT_MINS`       | `5`     | Minutes between repayment cycles   |
+| `REPAYMENT_THRESHOLD`  | `$100`  | Min USD for repayment              |
+| `BRIDGING_MINS`        | `60`    | Minutes between bridging cycles    |
+| `BRIDGING_THRESHOLD`   | `$0.10` | Min USD for bridging               |
+| `BRIDGING_MAX_FEE_PCT` | `5%`    | Max acceptable bridge fee          |
+| `LIQUIDATION_MINS`     | `5`     | Minutes between liquidation checks |

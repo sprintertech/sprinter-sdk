@@ -1,1237 +1,1175 @@
 {
-    "openapi": "3.0.0",
-    "info": {
-        "contact": {},
-        "title": "",
-        "version": ""
-    },
-    "servers": [
-        {
-            "url": "https://api.getmiso.fi",
-            "description": "Production server"
-        }
-    ],
-    "paths": {
-        "/health": {
-            "get": {
-                "description": "health check",
-                "summary": "health check",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/server.HealthHandler.response"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/miso/cards": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Returns all cards for the authenticated user",
-                "tags": [
-                    "Miso"
-                ],
-                "summary": "Get user cards",
-                "responses": {
-                    "200": {
-                        "description": "List of user's cards",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/cards.CardsResponse"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized - missing or invalid authentication",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "User not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Creates a new card for the authenticated user",
-                "tags": [
-                    "Miso"
-                ],
-                "summary": "Create a new card",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/cards.CreateCardRequest"
-                            }
-                        }
-                    },
-                    "description": "Card details",
-                    "required": true
-                },
-                "responses": {
-                    "201": {
-                        "description": "Card created successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/cards.CardResponse"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid request body or validation error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized - missing or invalid authentication",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "User not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "409": {
-                        "description": "Card already exists",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/miso/cards/tuyo/authorize": {
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Validates the OAuth state, exchanges the authorization code for tokens, and creates a Tuyo card or re-authenticates an existing one.",
-                "tags": [
-                    "Miso"
-                ],
-                "summary": "Complete Tuyo OAuth flow",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/cards.TuyoCallbackRequest"
-                            }
-                        }
-                    },
-                    "description": "OAuth callback parameters",
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "Re-authentication successful",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/cards.CardResponse"
-                                }
-                            }
-                        }
-                    },
-                    "201": {
-                        "description": "Card created successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/cards.CardResponse"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid request, state, or authorization code",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized - missing or invalid authentication",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "User not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "409": {
-                        "description": "Tuyo account already connected",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "502": {
-                        "description": "Tuyo service unavailable",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/miso/cards/tuyo/create": {
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Generates an OAuth state and returns the Tuyo authorization URL. If cardId is provided, initiates re-authentication for an existing card.",
-                "tags": [
-                    "Miso"
-                ],
-                "summary": "Initiate Tuyo OAuth flow",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/cards.TuyoConnectRequest"
-                            }
-                        }
-                    },
-                    "description": "Optional card ID for re-authentication"
-                },
-                "responses": {
-                    "200": {
-                        "description": "Authorization URL",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/cards.TuyoConnectResponse"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid request",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized - missing or invalid authentication",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "Card does not belong to user",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Card not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/miso/cards/{cardId}": {
-            "delete": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Soft deletes a card belonging to the authenticated user",
-                "tags": [
-                    "Miso"
-                ],
-                "summary": "Delete a card",
-                "parameters": [
-                    {
-                        "description": "Card ID",
-                        "name": "cardId",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "minimum": 1
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Card deleted successfully"
-                    },
-                    "400": {
-                        "description": "Invalid card ID",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized - missing or invalid authentication",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "Card does not belong to user",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Card not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "patch": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Updates the nickname of a card belonging to the authenticated user",
-                "tags": [
-                    "Miso"
-                ],
-                "summary": "Rename a card",
-                "parameters": [
-                    {
-                        "description": "Card ID",
-                        "name": "cardId",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "minimum": 1
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/cards.RenameCardRequest"
-                            }
-                        }
-                    },
-                    "description": "New card name",
-                    "required": true
-                },
-                "responses": {
-                    "204": {
-                        "description": "Card renamed successfully"
-                    },
-                    "400": {
-                        "description": "Invalid request body or validation error",
-                        "content": {
-                            "*/*": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized - missing or invalid authentication",
-                        "content": {
-                            "*/*": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "Card does not belong to user",
-                        "content": {
-                            "*/*": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Card not found",
-                        "content": {
-                            "*/*": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "content": {
-                            "*/*": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/miso/referral/validate": {
-            "post": {
-                "description": "Checks if a referral code exists and is available for use",
-                "tags": [
-                    "Miso"
-                ],
-                "summary": "Validate referral code",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/miso.ValidateReferralRequest"
-                            }
-                        }
-                    },
-                    "description": "Referral code to validate",
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "Code validation result",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/miso.ValidateReferralResponse"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid request or code",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/miso/register": {
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Registers a new user after Privy authentication and smart wallet deployment.",
-                "tags": [
-                    "Miso"
-                ],
-                "summary": "Register a new user",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/miso.RegisterRequest"
-                            }
-                        }
-                    },
-                    "description": "Registration details",
-                    "required": true
-                },
-                "responses": {
-                    "201": {
-                        "description": "User successfully registered",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/miso.RegisterResponse"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid request body, validation error, or invalid referral code",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized - missing or invalid authentication",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "409": {
-                        "description": "User already exists",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/miso/user": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Returns the authenticated user's profile including associated cards and referral info",
-                "tags": [
-                    "Miso"
-                ],
-                "summary": "Get user profile",
-                "responses": {
-                    "200": {
-                        "description": "User profile retrieved successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/miso.UserResponse"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized - missing or invalid authentication",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "User not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/miso/username/check": {
-            "post": {
-                "description": "Returns 200 if username is available, 409 if already taken",
-                "tags": [
-                    "Miso"
-                ],
-                "summary": "Check username availability",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/miso.CheckUsernameRequest"
-                            }
-                        }
-                    },
-                    "description": "Username to check",
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "Username is available",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/miso.CheckUsernameResponse"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid request body or validation error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "409": {
-                        "description": "Username already taken",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    },
-    "components": {
-        "securitySchemes": {
-            "BearerAuth": {
-                "description": "Enter your Privy JWT token with the `Bearer ` prefix",
-                "type": "apiKey",
-                "name": "Authorization",
-                "in": "header"
-            }
-        },
-        "schemas": {
-            "cards.CardResponse": {
-                "type": "object",
-                "required": [
-                    "authStatus",
-                    "balances",
-                    "id",
-                    "name",
-                    "topupAddress",
-                    "topupChain",
-                    "totalUsdBalance",
-                    "type"
-                ],
-                "properties": {
-                    "authStatus": {
-                        "description": "Authentication status: \"ok\" or \"needs_reauth\"",
-                        "type": "string",
-                        "example": "ok"
-                    },
-                    "balances": {
-                        "description": "Token balances",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/cards.TokenBalanceResponse"
-                        }
-                    },
-                    "id": {
-                        "description": "Unique card identifier",
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "name": {
-                        "description": "User-defined card name",
-                        "type": "string",
-                        "example": "My Card"
-                    },
-                    "topupAddress": {
-                        "description": "Address for topping up the card",
-                        "type": "string",
-                        "example": "0x1234567890abcdef1234567890abcdef12345678"
-                    },
-                    "topupChain": {
-                        "description": "CAIP-2 chain for topup transactions",
-                        "type": "string",
-                        "example": "eip155:8453"
-                    },
-                    "totalUsdBalance": {
-                        "description": "Total USD value across all token balances",
-                        "type": "number",
-                        "example": 1234.56
-                    },
-                    "type": {
-                        "description": "Card provider type",
-                        "type": "string",
-                        "example": "tuyo"
-                    }
-                }
-            },
-            "cards.CardsResponse": {
-                "type": "object",
-                "required": [
-                    "cards"
-                ],
-                "properties": {
-                    "cards": {
-                        "description": "List of user's cards",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/cards.CardResponse"
-                        }
-                    }
-                }
-            },
-            "cards.CreateCardRequest": {
-                "type": "object",
-                "required": [
-                    "cardName",
-                    "cardType",
-                    "topupAddress",
-                    "topupChain"
-                ],
-                "properties": {
-                    "cardName": {
-                        "description": "User-defined card name",
-                        "type": "string",
-                        "maxLength": 30,
-                        "minLength": 1,
-                        "example": "My Card"
-                    },
-                    "cardType": {
-                        "description": "Card provider type",
-                        "type": "string",
-                        "example": "tuyo"
-                    },
-                    "topupAddress": {
-                        "description": "Address for topping up the card",
-                        "type": "string",
-                        "example": "0x1234567890abcdef1234567890abcdef12345678"
-                    },
-                    "topupChain": {
-                        "description": "CAIP-2 chain for topup transactions",
-                        "type": "string",
-                        "example": "eip155:8453"
-                    }
-                }
-            },
-            "cards.RenameCardRequest": {
-                "type": "object",
-                "required": [
-                    "cardName"
-                ],
-                "properties": {
-                    "cardName": {
-                        "description": "New card name",
-                        "type": "string",
-                        "maxLength": 30,
-                        "minLength": 1,
-                        "example": "My Renamed Card"
-                    }
-                }
-            },
-            "cards.TokenBalanceResponse": {
-                "type": "object",
-                "required": [
-                    "token",
-                    "usdPrice",
-                    "usdValue"
-                ],
-                "properties": {
-                    "token": {
-                        "description": "Token information (what you hold)",
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/cards.TokenInfoResponse"
-                            }
-                        ]
-                    },
-                    "usdPrice": {
-                        "description": "USD price per unit of the token",
-                        "type": "number",
-                        "example": 1
-                    },
-                    "usdValue": {
-                        "description": "Total USD value of the balance",
-                        "type": "number",
-                        "example": 1234.56
-                    }
-                }
-            },
-            "cards.TokenInfoResponse": {
-                "type": "object",
-                "required": [
-                    "balance",
-                    "balanceRaw",
-                    "chainCaip",
-                    "decimals",
-                    "symbol"
-                ],
-                "properties": {
-                    "balance": {
-                        "description": "Formatted balance with decimals",
-                        "type": "string",
-                        "example": "1234.56"
-                    },
-                    "balanceRaw": {
-                        "description": "Raw balance in smallest unit (wei)",
-                        "type": "string",
-                        "example": "1234560000"
-                    },
-                    "chainCaip": {
-                        "description": "CAIP-2 chain identifier (e.g. \"eip155:8453\")",
-                        "type": "string",
-                        "example": "eip155:8453"
-                    },
-                    "decimals": {
-                        "description": "Token decimals",
-                        "type": "integer",
-                        "example": 6
-                    },
-                    "symbol": {
-                        "description": "Token symbol (e.g. \"usdc\")",
-                        "type": "string",
-                        "example": "usdc"
-                    }
-                }
-            },
-            "cards.TuyoCallbackRequest": {
-                "type": "object",
-                "required": [
-                    "code",
-                    "state"
-                ],
-                "properties": {
-                    "cardName": {
-                        "description": "Name of the Card to add. Required for new card creation, ignored for re-authentication.",
-                        "type": "string",
-                        "maxLength": 30,
-                        "example": "My Card"
-                    },
-                    "code": {
-                        "description": "OAuth authorization code from Tuyo redirect",
-                        "type": "string",
-                        "example": "abc123"
-                    },
-                    "state": {
-                        "description": "OAuth state parameter for CSRF protection",
-                        "type": "string",
-                        "example": "a1b2c3d4..."
-                    }
-                }
-            },
-            "cards.TuyoConnectRequest": {
-                "type": "object",
-                "properties": {
-                    "cardId": {
-                        "description": "Card ID for re-authentication flow. Omit for new card creation.",
-                        "type": "integer",
-                        "example": 123
-                    }
-                }
-            },
-            "cards.TuyoConnectResponse": {
-                "type": "object",
-                "required": [
-                    "authUrl"
-                ],
-                "properties": {
-                    "authUrl": {
-                        "description": "The Tuyo OAuth authorization URL to redirect the user to",
-                        "type": "string",
-                        "example": "https://auth.tuyo.com/authorize?..."
-                    }
-                }
-            },
-            "miso.CheckUsernameRequest": {
-                "type": "object",
-                "required": [
-                    "username"
-                ],
-                "properties": {
-                    "username": {
-                        "description": "Username to check availability (3-50 characters)",
-                        "type": "string",
-                        "maxLength": 50,
-                        "minLength": 3,
-                        "example": "johndoe"
-                    }
-                }
-            },
-            "miso.CheckUsernameResponse": {
-                "type": "object",
-                "required": [
-                    "message"
-                ],
-                "properties": {
-                    "message": {
-                        "description": "Availability message",
-                        "type": "string",
-                        "example": "username available"
-                    }
-                }
-            },
-            "miso.RegisterRequest": {
-                "type": "object",
-                "required": [
-                    "privyDid",
-                    "referralCode",
-                    "smartAccount",
-                    "username"
-                ],
-                "properties": {
-                    "privyDid": {
-                        "description": "Privy decentralized identifier",
-                        "type": "string",
-                        "example": "did:privy:abc123"
-                    },
-                    "referralCode": {
-                        "description": "Referral code (required for registration)",
-                        "type": "string",
-                        "example": "A7K9MX2P"
-                    },
-                    "smartAccount": {
-                        "description": "Ethereum smart account address",
-                        "type": "string",
-                        "example": "0x1234567890abcdef1234567890abcdef12345678"
-                    },
-                    "username": {
-                        "description": "Unique username (3-50 characters)",
-                        "type": "string",
-                        "maxLength": 50,
-                        "minLength": 3,
-                        "example": "johndoe"
-                    }
-                }
-            },
-            "miso.RegisterResponse": {
-                "type": "object",
-                "required": [
-                    "createdAt",
-                    "smartAccount",
-                    "userId",
-                    "username"
-                ],
-                "properties": {
-                    "createdAt": {
-                        "description": "Account creation timestamp",
-                        "type": "string",
-                        "example": "2024-01-15T10:30:00Z"
-                    },
-                    "referralCode": {
-                        "description": "User's personal referral code (empty if creation failed)",
-                        "type": "string",
-                        "example": "B3C8WX4N"
-                    },
-                    "smartAccount": {
-                        "description": "Ethereum smart account address",
-                        "type": "string",
-                        "example": "0x1234567890abcdef1234567890abcdef12345678"
-                    },
-                    "userId": {
-                        "description": "Unique user identifier",
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "username": {
-                        "description": "User's username",
-                        "type": "string",
-                        "example": "johndoe"
-                    }
-                }
-            },
-            "miso.UserResponse": {
-                "type": "object",
-                "required": [
-                    "badges",
-                    "cards",
-                    "referralCode",
-                    "referralUsageCount",
-                    "smartAccount",
-                    "username"
-                ],
-                "properties": {
-                    "badges": {
-                        "description": "List of user's badge types",
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "example": [
-                            "founding_member"
-                        ]
-                    },
-                    "cards": {
-                        "description": "List of user's cards",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/cards.CardResponse"
-                        }
-                    },
-                    "referralCode": {
-                        "description": "User's referral code",
-                        "type": "string",
-                        "example": "B3C8WX4N"
-                    },
-                    "referralExpiresAt": {
-                        "description": "Referral code expiration timestamp (null = never expires)",
-                        "type": "string",
-                        "example": "2024-12-31T23:59:59Z"
-                    },
-                    "referralMaxUsage": {
-                        "description": "Maximum allowed uses (null = unlimited)",
-                        "type": "integer",
-                        "example": 10
-                    },
-                    "referralUsageCount": {
-                        "description": "Number of times the referral code has been used",
-                        "type": "integer",
-                        "example": 5
-                    },
-                    "smartAccount": {
-                        "description": "Ethereum smart account address",
-                        "type": "string",
-                        "example": "0x1234567890abcdef1234567890abcdef12345678"
-                    },
-                    "username": {
-                        "description": "User's username",
-                        "type": "string",
-                        "example": "johndoe"
-                    }
-                }
-            },
-            "miso.ValidateReferralRequest": {
-                "type": "object",
-                "required": [
-                    "code"
-                ],
-                "properties": {
-                    "code": {
-                        "type": "string",
-                        "example": "A7K9MX2P"
-                    }
-                }
-            },
-            "miso.ValidateReferralResponse": {
-                "type": "object",
-                "required": [
-                    "valid"
-                ],
-                "properties": {
-                    "valid": {
-                        "type": "boolean",
-                        "example": true
-                    }
-                }
-            },
-            "responses.ErrorResponse": {
-                "type": "object",
-                "required": [
-                    "error"
-                ],
-                "properties": {
-                    "debug": {
-                        "type": "string"
-                    },
-                    "error": {
-                        "type": "string"
-                    }
-                }
-            },
-            "server.HealthHandler.response": {
-                "type": "object",
-                "required": [
-                    "status"
-                ],
-                "properties": {
-                    "status": {
-                        "type": "string"
-                    }
-                }
-            }
-        }
+  "openapi": "3.0.0",
+  "info": {
+    "contact": {},
+    "title": "",
+    "version": ""
+  },
+  "servers": [
+    {
+      "url": "https://api.getmiso.fi",
+      "description": "Production server"
     }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "description": "health check",
+        "summary": "health check",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/server.HealthHandler.response"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/miso/cards": {
+      "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "description": "Returns all cards for the authenticated user",
+        "tags": ["Miso"],
+        "summary": "Get user cards",
+        "responses": {
+          "200": {
+            "description": "List of user's cards",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/cards.CardsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - missing or invalid authentication",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "description": "Creates a new card for the authenticated user",
+        "tags": ["Miso"],
+        "summary": "Create a new card",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/cards.CreateCardRequest"
+              }
+            }
+          },
+          "description": "Card details",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Card created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/cards.CardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body or validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - missing or invalid authentication",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Card already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/miso/cards/tuyo/authorize": {
+      "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "description": "Validates the OAuth state, exchanges the authorization code for tokens, and creates a Tuyo card or re-authenticates an existing one.",
+        "tags": ["Miso"],
+        "summary": "Complete Tuyo OAuth flow",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/cards.TuyoCallbackRequest"
+              }
+            }
+          },
+          "description": "OAuth callback parameters",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Re-authentication successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/cards.CardResponse"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Card created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/cards.CardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request, state, or authorization code",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - missing or invalid authentication",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Tuyo account already connected",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Tuyo service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/miso/cards/tuyo/create": {
+      "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "description": "Generates an OAuth state and returns the Tuyo authorization URL. If cardId is provided, initiates re-authentication for an existing card.",
+        "tags": ["Miso"],
+        "summary": "Initiate Tuyo OAuth flow",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/cards.TuyoConnectRequest"
+              }
+            }
+          },
+          "description": "Optional card ID for re-authentication"
+        },
+        "responses": {
+          "200": {
+            "description": "Authorization URL",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/cards.TuyoConnectResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - missing or invalid authentication",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Card does not belong to user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Card not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/miso/cards/{cardId}": {
+      "delete": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "description": "Soft deletes a card belonging to the authenticated user",
+        "tags": ["Miso"],
+        "summary": "Delete a card",
+        "parameters": [
+          {
+            "description": "Card ID",
+            "name": "cardId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Card deleted successfully"
+          },
+          "400": {
+            "description": "Invalid card ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - missing or invalid authentication",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Card does not belong to user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Card not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "description": "Updates the nickname of a card belonging to the authenticated user",
+        "tags": ["Miso"],
+        "summary": "Rename a card",
+        "parameters": [
+          {
+            "description": "Card ID",
+            "name": "cardId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/cards.RenameCardRequest"
+              }
+            }
+          },
+          "description": "New card name",
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Card renamed successfully"
+          },
+          "400": {
+            "description": "Invalid request body or validation error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - missing or invalid authentication",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Card does not belong to user",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Card not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/miso/referral/validate": {
+      "post": {
+        "description": "Checks if a referral code exists and is available for use",
+        "tags": ["Miso"],
+        "summary": "Validate referral code",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/miso.ValidateReferralRequest"
+              }
+            }
+          },
+          "description": "Referral code to validate",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Code validation result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/miso.ValidateReferralResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or code",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/miso/register": {
+      "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "description": "Registers a new user after Privy authentication and smart wallet deployment.",
+        "tags": ["Miso"],
+        "summary": "Register a new user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/miso.RegisterRequest"
+              }
+            }
+          },
+          "description": "Registration details",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "User successfully registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/miso.RegisterResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body, validation error, or invalid referral code",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - missing or invalid authentication",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "User already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/miso/user": {
+      "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "description": "Returns the authenticated user's profile including associated cards and referral info",
+        "tags": ["Miso"],
+        "summary": "Get user profile",
+        "responses": {
+          "200": {
+            "description": "User profile retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/miso.UserResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - missing or invalid authentication",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/miso/username/check": {
+      "post": {
+        "description": "Returns 200 if username is available, 409 if already taken",
+        "tags": ["Miso"],
+        "summary": "Check username availability",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/miso.CheckUsernameRequest"
+              }
+            }
+          },
+          "description": "Username to check",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Username is available",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/miso.CheckUsernameResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body or validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Username already taken",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responses.ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "description": "Enter your Privy JWT token with the `Bearer ` prefix",
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
+    },
+    "schemas": {
+      "cards.CardResponse": {
+        "type": "object",
+        "required": [
+          "authStatus",
+          "balances",
+          "id",
+          "name",
+          "topupAddress",
+          "topupChain",
+          "totalUsdBalance",
+          "type"
+        ],
+        "properties": {
+          "authStatus": {
+            "description": "Authentication status: \"ok\" or \"needs_reauth\"",
+            "type": "string",
+            "example": "ok"
+          },
+          "balances": {
+            "description": "Token balances",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/cards.TokenBalanceResponse"
+            }
+          },
+          "id": {
+            "description": "Unique card identifier",
+            "type": "integer",
+            "example": 1
+          },
+          "name": {
+            "description": "User-defined card name",
+            "type": "string",
+            "example": "My Card"
+          },
+          "topupAddress": {
+            "description": "Address for topping up the card",
+            "type": "string",
+            "example": "0x1234567890abcdef1234567890abcdef12345678"
+          },
+          "topupChain": {
+            "description": "CAIP-2 chain for topup transactions",
+            "type": "string",
+            "example": "eip155:8453"
+          },
+          "totalUsdBalance": {
+            "description": "Total USD value across all token balances",
+            "type": "number",
+            "example": 1234.56
+          },
+          "type": {
+            "description": "Card provider type",
+            "type": "string",
+            "example": "tuyo"
+          }
+        }
+      },
+      "cards.CardsResponse": {
+        "type": "object",
+        "required": ["cards"],
+        "properties": {
+          "cards": {
+            "description": "List of user's cards",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/cards.CardResponse"
+            }
+          }
+        }
+      },
+      "cards.CreateCardRequest": {
+        "type": "object",
+        "required": ["cardName", "cardType", "topupAddress", "topupChain"],
+        "properties": {
+          "cardName": {
+            "description": "User-defined card name",
+            "type": "string",
+            "maxLength": 30,
+            "minLength": 1,
+            "example": "My Card"
+          },
+          "cardType": {
+            "description": "Card provider type",
+            "type": "string",
+            "example": "tuyo"
+          },
+          "topupAddress": {
+            "description": "Address for topping up the card",
+            "type": "string",
+            "example": "0x1234567890abcdef1234567890abcdef12345678"
+          },
+          "topupChain": {
+            "description": "CAIP-2 chain for topup transactions",
+            "type": "string",
+            "example": "eip155:8453"
+          }
+        }
+      },
+      "cards.RenameCardRequest": {
+        "type": "object",
+        "required": ["cardName"],
+        "properties": {
+          "cardName": {
+            "description": "New card name",
+            "type": "string",
+            "maxLength": 30,
+            "minLength": 1,
+            "example": "My Renamed Card"
+          }
+        }
+      },
+      "cards.TokenBalanceResponse": {
+        "type": "object",
+        "required": ["token", "usdPrice", "usdValue"],
+        "properties": {
+          "token": {
+            "description": "Token information (what you hold)",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/cards.TokenInfoResponse"
+              }
+            ]
+          },
+          "usdPrice": {
+            "description": "USD price per unit of the token",
+            "type": "number",
+            "example": 1
+          },
+          "usdValue": {
+            "description": "Total USD value of the balance",
+            "type": "number",
+            "example": 1234.56
+          }
+        }
+      },
+      "cards.TokenInfoResponse": {
+        "type": "object",
+        "required": [
+          "balance",
+          "balanceRaw",
+          "chainCaip",
+          "decimals",
+          "symbol"
+        ],
+        "properties": {
+          "balance": {
+            "description": "Formatted balance with decimals",
+            "type": "string",
+            "example": "1234.56"
+          },
+          "balanceRaw": {
+            "description": "Raw balance in smallest unit (wei)",
+            "type": "string",
+            "example": "1234560000"
+          },
+          "chainCaip": {
+            "description": "CAIP-2 chain identifier (e.g. \"eip155:8453\")",
+            "type": "string",
+            "example": "eip155:8453"
+          },
+          "decimals": {
+            "description": "Token decimals",
+            "type": "integer",
+            "example": 6
+          },
+          "symbol": {
+            "description": "Token symbol (e.g. \"usdc\")",
+            "type": "string",
+            "example": "usdc"
+          }
+        }
+      },
+      "cards.TuyoCallbackRequest": {
+        "type": "object",
+        "required": ["code", "state"],
+        "properties": {
+          "cardName": {
+            "description": "Name of the Card to add. Required for new card creation, ignored for re-authentication.",
+            "type": "string",
+            "maxLength": 30,
+            "example": "My Card"
+          },
+          "code": {
+            "description": "OAuth authorization code from Tuyo redirect",
+            "type": "string",
+            "example": "abc123"
+          },
+          "state": {
+            "description": "OAuth state parameter for CSRF protection",
+            "type": "string",
+            "example": "a1b2c3d4..."
+          }
+        }
+      },
+      "cards.TuyoConnectRequest": {
+        "type": "object",
+        "properties": {
+          "cardId": {
+            "description": "Card ID for re-authentication flow. Omit for new card creation.",
+            "type": "integer",
+            "example": 123
+          }
+        }
+      },
+      "cards.TuyoConnectResponse": {
+        "type": "object",
+        "required": ["authUrl"],
+        "properties": {
+          "authUrl": {
+            "description": "The Tuyo OAuth authorization URL to redirect the user to",
+            "type": "string",
+            "example": "https://auth.tuyo.com/authorize?..."
+          }
+        }
+      },
+      "miso.CheckUsernameRequest": {
+        "type": "object",
+        "required": ["username"],
+        "properties": {
+          "username": {
+            "description": "Username to check availability (3-50 characters)",
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 3,
+            "example": "johndoe"
+          }
+        }
+      },
+      "miso.CheckUsernameResponse": {
+        "type": "object",
+        "required": ["message"],
+        "properties": {
+          "message": {
+            "description": "Availability message",
+            "type": "string",
+            "example": "username available"
+          }
+        }
+      },
+      "miso.RegisterRequest": {
+        "type": "object",
+        "required": ["privyDid", "referralCode", "smartAccount", "username"],
+        "properties": {
+          "privyDid": {
+            "description": "Privy decentralized identifier",
+            "type": "string",
+            "example": "did:privy:abc123"
+          },
+          "referralCode": {
+            "description": "Referral code (required for registration)",
+            "type": "string",
+            "example": "A7K9MX2P"
+          },
+          "smartAccount": {
+            "description": "Ethereum smart account address",
+            "type": "string",
+            "example": "0x1234567890abcdef1234567890abcdef12345678"
+          },
+          "username": {
+            "description": "Unique username (3-50 characters)",
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 3,
+            "example": "johndoe"
+          }
+        }
+      },
+      "miso.RegisterResponse": {
+        "type": "object",
+        "required": ["createdAt", "smartAccount", "userId", "username"],
+        "properties": {
+          "createdAt": {
+            "description": "Account creation timestamp",
+            "type": "string",
+            "example": "2024-01-15T10:30:00Z"
+          },
+          "referralCode": {
+            "description": "User's personal referral code (empty if creation failed)",
+            "type": "string",
+            "example": "B3C8WX4N"
+          },
+          "smartAccount": {
+            "description": "Ethereum smart account address",
+            "type": "string",
+            "example": "0x1234567890abcdef1234567890abcdef12345678"
+          },
+          "userId": {
+            "description": "Unique user identifier",
+            "type": "integer",
+            "example": 1
+          },
+          "username": {
+            "description": "User's username",
+            "type": "string",
+            "example": "johndoe"
+          }
+        }
+      },
+      "miso.UserResponse": {
+        "type": "object",
+        "required": [
+          "badges",
+          "cards",
+          "referralCode",
+          "referralUsageCount",
+          "smartAccount",
+          "username"
+        ],
+        "properties": {
+          "badges": {
+            "description": "List of user's badge types",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": ["founding_member"]
+          },
+          "cards": {
+            "description": "List of user's cards",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/cards.CardResponse"
+            }
+          },
+          "referralCode": {
+            "description": "User's referral code",
+            "type": "string",
+            "example": "B3C8WX4N"
+          },
+          "referralExpiresAt": {
+            "description": "Referral code expiration timestamp (null = never expires)",
+            "type": "string",
+            "example": "2024-12-31T23:59:59Z"
+          },
+          "referralMaxUsage": {
+            "description": "Maximum allowed uses (null = unlimited)",
+            "type": "integer",
+            "example": 10
+          },
+          "referralUsageCount": {
+            "description": "Number of times the referral code has been used",
+            "type": "integer",
+            "example": 5
+          },
+          "smartAccount": {
+            "description": "Ethereum smart account address",
+            "type": "string",
+            "example": "0x1234567890abcdef1234567890abcdef12345678"
+          },
+          "username": {
+            "description": "User's username",
+            "type": "string",
+            "example": "johndoe"
+          }
+        }
+      },
+      "miso.ValidateReferralRequest": {
+        "type": "object",
+        "required": ["code"],
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "A7K9MX2P"
+          }
+        }
+      },
+      "miso.ValidateReferralResponse": {
+        "type": "object",
+        "required": ["valid"],
+        "properties": {
+          "valid": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "responses.ErrorResponse": {
+        "type": "object",
+        "required": ["error"],
+        "properties": {
+          "debug": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          }
+        }
+      },
+      "server.HealthHandler.response": {
+        "type": "object",
+        "required": ["status"],
+        "properties": {
+          "status": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
 }
