@@ -272,7 +272,6 @@ app.get("/api/run", async (req, res) => {
   res.setHeader("Connection", "keep-alive");
 
   const send = createSSEWriter(res);
-  const drawAmount = DEMO_AMOUNT * 0.5;
 
   try {
     // Step 0: Protocol config
@@ -324,18 +323,27 @@ app.get("/api/run", async (req, res) => {
     if (parseFloat(hf) > 1000000) hf = "∞";
     else hf = parseFloat(hf).toFixed(2);
 
+    const remainingCapacity = parseFloat(usdc.remainingCreditCapacity);
+    const existingDebt = parseFloat(usdc.debt);
+
     send("step", {
       step: 2,
       status: "done",
       title: "Check Credit Line",
       details: {
         creditCapacity: `${parseFloat(usdc.totalCreditCapacity).toFixed(2)} USDC`,
-        remainingCapacity: `${parseFloat(usdc.remainingCreditCapacity).toFixed(2)} USDC`,
+        remainingCapacity: `${remainingCapacity.toFixed(2)} USDC`,
         collateralValue: `${parseFloat(usdc.totalCollateralValue).toFixed(2)} USDC`,
         healthFactor: hf,
-        debt: `${parseFloat(usdc.debt).toFixed(2)} USDC`,
+        debt: `${existingDebt.toFixed(2)} USDC`,
       },
     });
+
+    // Calculate draw amount based on actual remaining capacity (use 50% of capacity, leave room)
+    const drawAmount = Math.min(DEMO_AMOUNT * 0.5, Math.floor(remainingCapacity * 0.5 * 100) / 100);
+    if (drawAmount < 0.01) {
+      throw new Error(`Insufficient credit capacity to draw. Remaining: ${remainingCapacity.toFixed(6)} USDC. Try "Recover Funds" first to clear any stuck debt.`);
+    }
 
     // Step 3: Draw (card swipe)
     send("step", {
@@ -370,27 +378,34 @@ app.get("/api/run", async (req, res) => {
       },
     });
 
-    // Step 4: Repay
-    send("step", { step: 4, status: "running", title: `Repay $${drawAmount.toFixed(2)}` });
+    // Step 4: Repay all outstanding debt
+    // Get current total debt (includes accrued interest + any prior residual debt)
+    const preRepayInfo = await sprinterGet(`/credit/accounts/${account}/info`, send);
+    const totalDebt = parseFloat(preRepayInfo.data.usdc.debt);
+    // Add a small buffer to cover interest that accrues between the info call and the repay tx
+    const repayAmount = Math.ceil((totalDebt + 0.01) * 10 ** USDC_DECIMALS);
+    const repayUnits = BigInt(repayAmount).toString();
+
+    send("step", { step: 4, status: "running", title: `Repay $${totalDebt.toFixed(2)} debt` });
     const repayData = await sprinterGet(
-      `/credit/accounts/${account}/repay?amount=${usdcUnits(drawAmount)}`,
+      `/credit/accounts/${account}/repay?amount=${repayUnits}`,
       send
     );
-    // Ensure USDC is approved for the repay contract before executing
     const repayContract = repayData.calls.find((c: ContractCall) => c.to.toLowerCase() !== USDC_ADDRESS.toLowerCase());
     if (repayContract) {
-      await ensureUsdcApproval(repayContract.to, usdcUnits(drawAmount), send);
+      await ensureUsdcApproval(repayContract.to, repayUnits, send);
     }
     const repayTx = await executeCalls(repayData.calls, send);
 
-    // Check for remaining dust debt (interest accrues immediately after draw)
+    // Verify debt is cleared
     const postRepayInfo = await sprinterGet(`/credit/accounts/${account}/info`, send);
     const postRepay = postRepayInfo.data.usdc;
     const remainingDebt = parseFloat(postRepay.debt);
 
-    if (remainingDebt > 0.001) {
-      send("log", { message: `Remaining debt: ${remainingDebt.toFixed(6)} USDC — repaying dust...`, type: "info" });
-      const dustUnits = BigInt(Math.ceil(remainingDebt * 10 ** USDC_DECIMALS) + 1).toString();
+    // If there's still dust debt, do one more repay
+    if (remainingDebt > 0.0001) {
+      send("log", { message: `Dust debt remaining: ${remainingDebt.toFixed(6)} USDC — clearing...`, type: "info" });
+      const dustUnits = BigInt(Math.ceil(remainingDebt * 10 ** USDC_DECIMALS) + 10).toString();
       const dustRepay = await sprinterGet(
         `/credit/accounts/${account}/repay?amount=${dustUnits}`,
         send
@@ -408,10 +423,10 @@ app.get("/api/run", async (req, res) => {
     send("step", {
       step: 4,
       status: "done",
-      title: `Repay $${drawAmount.toFixed(2)}`,
+      title: `Repay $${totalDebt.toFixed(2)} debt`,
       txHash: repayTx,
       details: {
-        repaid: `${drawAmount.toFixed(2)} USDC`,
+        repaid: `${totalDebt.toFixed(2)} USDC`,
         remainingDebt: `${parseFloat(finalDebt.debt).toFixed(6)} USDC`,
       },
     });
