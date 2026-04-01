@@ -1,0 +1,58 @@
+---
+title: "Get Collateral Asset Details"
+sidebarTitle: "Get Collateral Asset Details"
+openapi: get /credit/collateral/{chain}/{collateral}
+---
+
+<RequestExample>
+```bash cURL
+curl --request GET \
+  --url 'https://api.sprinter.tech/credit/collateral/{chain}/{collateral}'
+```
+
+```python Python
+import requests
+
+response = requests.get("https://api.sprinter.tech/credit/collateral/{chain}/{collateral}")
+print(response.json())
+```
+
+```javascript JavaScript
+const response = await fetch(
+  "https://api.sprinter.tech/credit/collateral/{chain}/{collateral}"
+);
+const data = await response.json();
+console.log(data);
+```
+
+```go Go
+package main
+
+import (
+	"fmt"
+	"io"
+	"net/http"
+)
+
+func main() {
+	resp, _ := http.Get("https://api.sprinter.tech/credit/collateral/{chain}/{collateral}")
+	defer resp.Body.Close()
+	body, _ := io.ReadAll(resp.Body)
+	fmt.Println(string(body))
+}
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "collateralAddress": "0xeE8F4eC5672F09119b96Ab6fB59C27E1b7e44b61",
+  "collateralPriceUsd": 1.023456,
+  "earnServiceName": "Gauntlet",
+  "isEarnVault": true,
+  "apy": 4.56,
+  "underlyingAsset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+  "underlyingPriceUsd": 1.0
+}
+```
+</ResponseExample>

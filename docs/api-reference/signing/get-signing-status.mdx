@@ -1,0 +1,66 @@
+---
+title: "Get Signing Status (SSE)"
+description: "GET /v1/chains/{chainId}/signatures/{depositId}"
+---
+
+Subscribe to the signing result via Server-Sent Events. The connection stays open until the MPC signature is ready, then sends the hex-encoded signature as an SSE `data` event and closes.
+
+## Request
+
+```bash
+curl -N https://api.getmiso.fi/v1/chains/8453/signatures/12345 \
+  -H "Accept: text/event-stream"
+```
+
+## Path Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `chainId` | `uint64` | Chain ID (must be supported) |
+| `depositId` | `string` | Deposit ID from the signing request |
+
+## Response
+
+**Content-Type:** `text/event-stream`
+
+The response is an SSE stream. When the signature is ready:
+
+```
+data: <hex-encoded-signature>
+```
+
+### Example SSE Response
+
+```
+data: a1b2c3d4e5f6...
+```
+
+## Response Headers
+
+```
+Content-Type: text/event-stream
+Cache-Control: no-cache
+Connection: keep-alive
+Access-Control-Allow-Origin: *
+```
+
+## Errors
+
+| Status | Description |
+|--------|-------------|
+| `400` | Invalid chain ID or missing deposit ID |
+| `404` | Chain not supported |
+
+## Usage with JavaScript
+
+```javascript
+const eventSource = new EventSource(
+  'https://api.getmiso.fi/v1/chains/8453/signatures/12345'
+);
+
+eventSource.onmessage = (event) => {
+  const signature = event.data;
+  console.log('Signature:', signature);
+  eventSource.close();
+};
+```

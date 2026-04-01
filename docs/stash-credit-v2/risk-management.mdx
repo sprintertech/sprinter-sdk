@@ -1,0 +1,51 @@
+---
+title: "Risk Management"
+description: "Margin Period of Risk (MPOR)-driven risk framework protecting LPs from shortfall in Sprinter's credit system"
+---
+
+## Why Risk Management Matters
+
+Stash extends credit against on-chain collateral — vault positions, raw assets, yield-bearing tokens. The primary goal of the risk framework is to protect LPs (the capital providers behind every credit line) from shortfall: a situation where liquidated collateral recovers less than the outstanding debt. Every parameter in the system — LTVs, maintenance thresholds, concentration caps — exists to make that outcome unlikely and bounded.
+
+## The Approach: MPOR-Driven Parameters
+
+Stash derives its risk parameters from a single core measurement: **Margin Period of Risk (MPOR)** — the total time it takes to detect an undercollateralised position, trigger liquidation, and convert that collateral back to USDC. The longer that window, the more price can move against the position, and the more buffer is needed.
+
+LTV is an output of that measurement:
+
+```
+LTV = 1 − (MPOR buffer + liquidation incentive + slippage margin)
+```
+
+This means LTV tiers reflect liquidation mechanics, not arbitrary haircut rules. A raw ETH position carries a higher LTV than a stable vault — not because ETH is less risky, but because ETH can be liquidated in seconds while a vault requires unwinding. The MPOR for ETH is under a minute; for a vault with queued redemptions it can be hours.
+
+## Parameters
+
+### Collateral Tiers (USDC-denominated lending)
+
+| Collateral | Examples | LTV | Liquidation Threshold | Liquidation Bonus |
+|---|---|:---:|:---:|:---:|
+| Stable vault | Gauntlet USDC Prime | 90% | 94% | 5% |
+| Raw volatile | ETH, WBTC | 80% | 85% | 5% |
+| Volatile DEX-swap | stETH, cbETH | 75% | 82% | 5% |
+| Volatile vault | yoETH | 65% | 75% | 6% |
+| USDC SuperVault | Superform USDC | 85% | 90% | 6% |
+| Raw stablecoin | USDC | 95% | 97% | 5% |
+| RWA / queued redemption | — | Not accepted | — | — |
+
+The **liquidation threshold** is the health factor floor — when a position's collateral value drops below this ratio relative to debt, it becomes eligible for liquidation. The gap between LTV and the liquidation threshold is the buffer: it gives the protocol time to execute liquidation before a shortfall occurs.
+
+### Concentration Limits
+
+Multi-layer caps prevent a single failure from being catastrophic:
+
+| Layer | Cap |
+|---|---|
+| Per vault | 8–20% of TVL (varies by tier) |
+| Per protocol (e.g. Morpho) | 40% |
+| Per stablecoin (e.g. USDC) | 60% |
+| Per chain (e.g. Base) | 70% |
+
+## Getting Your Collateral Accepted
+
+Stash uses a structured vault onboarding process to assess new collateral assets. The assessment covers audit history, oracle availability, MPOR measurement, liquidation market depth, and concentration impact. It typically takes 1–2 weeks.

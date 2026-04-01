@@ -1,0 +1,65 @@
+---
+title: "Call Data to Unlock Collateral"
+sidebarTitle: "Call Data to Unlock Collateral"
+openapi: get /credit/accounts/{account}/unlock
+---
+
+<RequestExample>
+```bash cURL
+curl --request GET \
+  --url 'https://api.sprinter.tech/credit/accounts/{account}/unlock'
+```
+
+```python Python
+import requests
+
+response = requests.get("https://api.sprinter.tech/credit/accounts/{account}/unlock")
+print(response.json())
+```
+
+```javascript JavaScript
+const response = await fetch(
+  "https://api.sprinter.tech/credit/accounts/{account}/unlock"
+);
+const data = await response.json();
+console.log(data);
+```
+
+```go Go
+package main
+
+import (
+	"fmt"
+	"io"
+	"net/http"
+)
+
+func main() {
+	resp, _ := http.Get("https://api.sprinter.tech/credit/accounts/{account}/unlock")
+	defer resp.Body.Close()
+	body, _ := io.ReadAll(resp.Body)
+	fmt.Println(string(body))
+}
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "calls": [
+    {
+      "chain": "8453",
+      "to": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "data": "0x095ea7b3000000000000000000000000abcdef1234567890abcdef1234567890abcdef12",
+      "value": "0"
+    },
+    {
+      "chain": "8453",
+      "to": "0x1234567890abcdef1234567890abcdef12345678",
+      "data": "0x2e1a7d4d000000000000000000000000000000000000000000000000000000000005f5e100",
+      "value": "0"
+    }
+  ]
+}
+```
+</ResponseExample>

@@ -1,0 +1,44 @@
+---
+title: "Get Signing Authorization"
+sidebarTitle: "Get Signing Authorization"
+openapi: get /liquidity/chain/{chainId}/protocol/{protocol}/deposit/{txHash}/request
+---
+
+<RequestExample>
+```bash cURL
+curl --request GET \
+  --url 'https://api.sprinter.tech/liquidity/chain/{chainId}/protocol/{protocol}/deposit/{txHash}/request'
+```
+
+```python Python
+import requests
+
+response = requests.get("https://api.sprinter.tech/liquidity/chain/{chainId}/protocol/{protocol}/deposit/{txHash}/request")
+print(response.json())
+```
+
+```javascript JavaScript
+const response = await fetch(
+  "https://api.sprinter.tech/liquidity/chain/{chainId}/protocol/{protocol}/deposit/{txHash}/request"
+);
+const data = await response.json();
+console.log(data);
+```
+
+```go Go
+package main
+
+import (
+	"fmt"
+	"io"
+	"net/http"
+)
+
+func main() {
+	resp, _ := http.Get("https://api.sprinter.tech/liquidity/chain/{chainId}/protocol/{protocol}/deposit/{txHash}/request")
+	defer resp.Body.Close()
+	body, _ := io.ReadAll(resp.Body)
+	fmt.Println(string(body))
+}
+```
+</RequestExample>

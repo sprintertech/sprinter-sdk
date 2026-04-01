@@ -1,0 +1,70 @@
+---
+title: "Sprinter Documentation"
+description: "The Fast Lane For Crosschain — programmable credit infrastructure for people and AI agents"
+---
+
+<img src="/images/credit-header.png" alt="Sprinter" />
+
+## Explore the Docs
+
+<CardGroup cols={3}>
+  <Card title="What Is Sprinter?" icon="rocket" href="/introduction">
+    Learn about Sprinter's cross-chain credit infrastructure.
+  </Card>
+  <Card title="Sprinter Credit (V2)" icon="vault" href="/stash-credit-v2/overview">
+    Credit Hub, Policy Engine, and the Liquidity Layer.
+  </Card>
+  <Card title="Stash Solver Credit (V1)" icon="database" href="/stash-v1/overview">
+    Connect stablecoin LPs with crosschain solvers.
+  </Card>
+  <Card title="Stash Points" icon="star" href="/stash-points">
+    Rewards for liquidity providers.
+  </Card>
+  <Card title="Governance" icon="scale-balanced" href="/governance">
+    Multisig structure and admin controls.
+  </Card>
+  <Card title="Glossary" icon="book" href="/resources/glossary">
+    Key terms and definitions.
+  </Card>
+</CardGroup>
+
+## Quickstart
+
+<CardGroup cols={2}>
+  <Card title="Card Programs" icon="credit-card" href="/quickstart/card-programs">
+    Integrate just-in-time credit draws into card programs.
+  </Card>
+  <Card title="Agent Skills" icon="robot" href="/quickstart/agent-skills">
+    Pre-built agent skills for autonomous credit management.
+  </Card>
+</CardGroup>
+
+## API Reference
+
+<Tip>
+Request credentials by dropping a Telegram DM to [@Sprinter_Intern_Bot](https://t.me/Sprinter_Intern_Bot) with `/request api key`
+</Tip>
+
+<CardGroup cols={2}>
+  <Card title="Sprinter Credit (V2) API" icon="bolt" href="/api-reference/sprinter/health-check">
+    Credit, liquidity, and solver operations with interactive playground.
+  </Card>
+  <Card title="Stash Solver Credit (V1) API" icon="database" href="/api-reference/stash/liquidity/get-the-borrow-quote-for-a-liquidity-transaction-based-on-the-input-data">
+    Borrow quote and signing authorization endpoints.
+  </Card>
+</CardGroup>
+
+## Authentication
+
+| Service | Method | Header |
+|---------|--------|--------|
+| Sprinter API | API Key | `X-Auth-Token: <key>` |
+| Sprinter API | Privy JWT | `Authorization: Bearer <token>` |
+| Miso API | Privy JWT | `Authorization: Bearer <token>` |
+
+## Base URLs
+
+| Service | URL |
+|---------|-----|
+| Sprinter API | `https://api.sprinter.tech` |
+| Miso API | `https://api.getmiso.fi` |

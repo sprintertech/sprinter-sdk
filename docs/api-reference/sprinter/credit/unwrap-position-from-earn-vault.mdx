@@ -1,0 +1,62 @@
+---
+title: "Unwrap Position from Earn Vault"
+sidebarTitle: "Unwrap Position from Earn Vault"
+openapi: get /credit/earn/unwrap
+---
+
+<RequestExample>
+```bash cURL
+curl --request GET \
+  --url 'https://api.sprinter.tech/credit/earn/unwrap'
+```
+
+```python Python
+import requests
+
+response = requests.get("https://api.sprinter.tech/credit/earn/unwrap")
+print(response.json())
+```
+
+```javascript JavaScript
+const response = await fetch(
+  "https://api.sprinter.tech/credit/earn/unwrap"
+);
+const data = await response.json();
+console.log(data);
+```
+
+```go Go
+package main
+
+import (
+	"fmt"
+	"io"
+	"net/http"
+)
+
+func main() {
+	resp, _ := http.Get("https://api.sprinter.tech/credit/earn/unwrap")
+	defer resp.Body.Close()
+	body, _ := io.ReadAll(resp.Body)
+	fmt.Println(string(body))
+}
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "amountOut": "1000000",
+  "calls": [
+    {
+      "chain": "8453",
+      "to": "0x1234567890abcdef1234567890abcdef12345678",
+      "data": "0xa9059cbb000000000000000000000000000000000000000000000000000000000005f5e100",
+      "value": "0"
+    }
+  ],
+  "minAmountOut": "997000",
+  "tokenOut": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+}
+```
+</ResponseExample>

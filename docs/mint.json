@@ -1,0 +1,159 @@
+{
+  "name": "Credit runs on Sprinter",
+  "colors": {
+    "primary": "#FF5100",
+    "light": "#FF7A3D",
+    "dark": "#CC4100"
+  },
+  "favicon": "/favicon.svg",
+  "tabs": [
+    {
+      "name": "Sprinter Credit (V2) API",
+      "url": "api-reference/sprinter"
+    },
+    {
+      "name": "Stash Solver Credit (V1) API",
+      "url": "api-reference/stash"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Getting Started",
+      "pages": ["index", "introduction"]
+    },
+    {
+      "group": "Quickstart",
+      "pages": [
+        {
+          "group": "Card Programs",
+          "pages": [
+            "quickstart/card-programs",
+            "quickstart/card-programs/authorization-webhook"
+          ]
+        },
+        {
+          "group": "Agent Skills",
+          "pages": [
+            "quickstart/agent-skills",
+            "quickstart/agent-skills/health-monitor",
+            "quickstart/agent-skills/yield-optimizer"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Sprinter Credit (V2)",
+      "pages": [
+        "stash-credit-v2/overview",
+        "stash-credit-v2/credit-engine",
+        "stash-credit-v2/policy-engine",
+        "stash-credit-v2/risk-management"
+      ]
+    },
+    {
+      "group": "Stash Solver Credit (V1)",
+      "pages": [
+        "stash-v1/overview",
+        "stash-v1/integration-guide",
+        "stash-v1/contracts"
+      ]
+    },
+    {
+      "group": "Community",
+      "pages": [
+        "stash-points",
+        "governance",
+        "partnerships"
+      ]
+    },
+    {
+      "group": "Resources",
+      "pages": [
+        "resources/audits",
+        "resources/glossary"
+      ]
+    },
+    {
+      "group": "Credit",
+      "pages": [
+        "api-reference/sprinter/credit/get-credit-protocol-configuration",
+        "api-reference/sprinter/credit/get-user-credit-information",
+        "api-reference/sprinter/credit/calldata-to-lock-asset-as-collateral",
+        "api-reference/sprinter/credit/call-data-to-unlock-collateral",
+        "api-reference/sprinter/credit/build-transaction-calls-to-draw-credit",
+        "api-reference/sprinter/credit/call-data-to-repay-credit-debt",
+        "api-reference/sprinter/credit/get-collateral-asset-details",
+        "api-reference/sprinter/credit/get-operator-status-for-an-account",
+        "api-reference/sprinter/credit/build-transaction-calls-to-enable-auto-top-up",
+        "api-reference/sprinter/credit/build-transaction-calls-to-disable-auto-top-up",
+        "api-reference/sprinter/credit/wrap-asset-into-earn-vault",
+        "api-reference/sprinter/credit/unwrap-position-from-earn-vault",
+        "api-reference/sprinter/credit/claim-position-from-earn-vault"
+      ]
+    },
+    {
+      "group": "Health",
+      "pages": [
+        "api-reference/miso/health-check"
+      ]
+    },
+    {
+      "group": "User & Registration",
+      "pages": [
+        "api-reference/miso/miso/check-username-availability",
+        "api-reference/miso/miso/validate-referral-code",
+        "api-reference/miso/miso/register-a-new-user",
+        "api-reference/miso/miso/get-user-profile"
+      ]
+    },
+    {
+      "group": "Cards",
+      "pages": [
+        "api-reference/miso/miso/get-user-cards",
+        "api-reference/miso/miso/create-a-new-card",
+        "api-reference/miso/miso/rename-a-card",
+        "api-reference/miso/miso/delete-a-card",
+        "api-reference/miso/miso/initiate-tuyo-oauth-flow",
+        "api-reference/miso/miso/complete-tuyo-oauth-flow"
+      ]
+    },
+    {
+      "group": "Stash V1 API",
+      "pages": [
+        "api-reference/stash/liquidity/get-the-borrow-quote-for-a-liquidity-transaction",
+        "api-reference/stash/liquidity/get-signing-authorization-for-a-liquidity-transaction"
+      ]
+    }
+  ],
+  "openapi": [
+    "api-reference/miso/openapi.json",
+    "api-reference/sprinter/openapi.json",
+    "api-reference/stash/openapi.json"
+  ],
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "topbarLinks": [
+    {
+      "name": "Website",
+      "url": "https://sprinter.tech"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Swagger",
+    "url": "https://api.sprinter.tech/swagger/index.html"
+  },
+  "anchors": [
+    {
+      "name": "GitHub",
+      "icon": "github",
+      "url": "https://github.com/sprintertech"
+    }
+  ],
+  "footerSocials": {
+    "github": "https://github.com/sprintertech",
+    "x": "https://x.com/sprinter_ux",
+    "youtube": "https://youtube.com/@sprinter"
+  }
+}

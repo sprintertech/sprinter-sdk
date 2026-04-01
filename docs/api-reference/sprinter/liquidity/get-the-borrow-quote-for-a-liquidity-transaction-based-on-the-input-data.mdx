@@ -1,0 +1,64 @@
+---
+title: "Get the Borrow Quote for a Liquidity Transaction"
+sidebarTitle: "Get the Borrow Quote for a Liquidity Transaction"
+openapi: get /liquidity/v2/chain/{srcChain}/protocol/{protocol}/type/{type}/quote
+---
+
+<RequestExample>
+```bash cURL
+curl --request GET \
+  --url 'https://api.sprinter.tech/liquidity/v2/chain/{srcChain}/protocol/{protocol}/type/{type}/quote'
+```
+
+```python Python
+import requests
+
+response = requests.get("https://api.sprinter.tech/liquidity/v2/chain/{srcChain}/protocol/{protocol}/type/{type}/quote")
+print(response.json())
+```
+
+```javascript JavaScript
+const response = await fetch(
+  "https://api.sprinter.tech/liquidity/v2/chain/{srcChain}/protocol/{protocol}/type/{type}/quote"
+);
+const data = await response.json();
+console.log(data);
+```
+
+```go Go
+package main
+
+import (
+	"fmt"
+	"io"
+	"net/http"
+)
+
+func main() {
+	resp, _ := http.Get("https://api.sprinter.tech/liquidity/v2/chain/{srcChain}/protocol/{protocol}/type/{type}/quote")
+	defer resp.Body.Close()
+	body, _ := io.ReadAll(resp.Body)
+	fmt.Println(string(body))
+}
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": {
+    "borrowCost": "150000",
+    "duration": 300,
+    "estimatedFillDuration": 180,
+    "feeBps": 5,
+    "id": "qt_a1b2c3d4e5f6",
+    "liquidityPool": "0xLiqPool1234567890AbCdEf1234567890AbCdEf12",
+    "quoteDuration": 60,
+    "repaymentChain": 1,
+    "repaymentRecipient": "0xRepayRecip234567890AbCdEf1234567890AbCdEf1",
+    "requiredInput": "100000000",
+    "requiredOutput": "99850000"
+  }
+}
+```
+</ResponseExample>

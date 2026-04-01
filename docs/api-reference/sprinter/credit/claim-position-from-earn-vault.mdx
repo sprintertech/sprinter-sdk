@@ -1,0 +1,59 @@
+---
+title: "Claim from Earn Vault"
+sidebarTitle: "Claim from Earn Vault"
+openapi: get /credit/earn/claim
+---
+
+<RequestExample>
+```bash cURL
+curl --request GET \
+  --url 'https://api.sprinter.tech/credit/earn/claim'
+```
+
+```python Python
+import requests
+
+response = requests.get("https://api.sprinter.tech/credit/earn/claim")
+print(response.json())
+```
+
+```javascript JavaScript
+const response = await fetch(
+  "https://api.sprinter.tech/credit/earn/claim"
+);
+const data = await response.json();
+console.log(data);
+```
+
+```go Go
+package main
+
+import (
+	"fmt"
+	"io"
+	"net/http"
+)
+
+func main() {
+	resp, _ := http.Get("https://api.sprinter.tech/credit/earn/claim")
+	defer resp.Body.Close()
+	body, _ := io.ReadAll(resp.Body)
+	fmt.Println(string(body))
+}
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "calls": [
+    {
+      "chain": "8453",
+      "to": "0x1234567890abcdef1234567890abcdef12345678",
+      "data": "0xa9059cbb000000000000000000000000000000000000000000000000000000000005f5e100",
+      "value": "0"
+    }
+  ]
+}
+```
+</ResponseExample>

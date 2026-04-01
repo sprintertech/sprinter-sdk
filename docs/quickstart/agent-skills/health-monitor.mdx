@@ -1,0 +1,230 @@
+---
+title: "Credit Health Monitor & Auto-Repay"
+description: "Agent skill that monitors credit position health and automatically repays debt or tops up collateral"
+---
+
+This agent skill monitors a user's credit position and takes autonomous action to keep it healthy:
+
+- **Repays debt** before the billing cycle ends to avoid the 15% overdue APR
+- **Tops up collateral** if the health factor drops below a safe threshold
+- **Alerts** on critical health factor levels
+
+## API Endpoints Used
+
+| Endpoint | Purpose |
+|---|---|
+| `GET /credit/accounts/{account}/info` | Check health factor, debt, due date |
+| `GET /credit/accounts/{account}/repay` | Build repayment calldata |
+| `GET /credit/accounts/{account}/lock` | Build collateral top-up calldata |
+
+## How It Works
+
+<Steps>
+  <Step title="Poll Position Health">
+    The agent periodically checks the user's credit position:
+
+    ```bash
+    curl -X GET https://api.sprinter.tech/credit/accounts/0xUSER/info \
+      -H 'X-Auth-Token: YOUR_API_KEY'
+    ```
+
+    ```json
+    {
+      "data": {
+        "USDC": {
+          "totalCollateralValue": "5000.00",
+          "principal": "2000.00",
+          "interest": "12.50",
+          "healthFactor": "1.85",
+          "dueDate": "2025-04-01T00:00:00Z"
+        }
+      }
+    }
+    ```
+
+    The agent extracts three signals: `healthFactor`, `principal + interest` (total debt), and `dueDate`.
+  </Step>
+
+  <Step title="Evaluate & Decide">
+    The agent applies rules to decide what action to take:
+
+    | Condition | Action |
+    |---|---|
+    | `dueDate` is within 3 days and debt > 0 | Auto-repay full balance |
+    | `healthFactor` < 1.3 | Lock additional collateral |
+    | `healthFactor` < 1.1 | Lock collateral + alert user |
+    | `healthFactor` >= 1.3 and no upcoming due date | No action |
+  </Step>
+
+  <Step title="Execute">
+    <Tabs>
+      <Tab title="Auto-Repay">
+        When the due date is approaching, the agent repays the full outstanding balance:
+
+        ```bash
+        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/repay?amount=2012500000' \
+          -H 'X-Auth-Token: YOUR_API_KEY'
+        ```
+
+        The `amount` is `principal + interest` in USDC lowest denomination (6 decimals). $2,012.50 = `2012500000`.
+
+        Returns `{ calls: ContractCall[] }` — execute via the delegated signer.
+      </Tab>
+      <Tab title="Top Up Collateral">
+        When health factor is low, the agent locks additional collateral:
+
+        ```bash
+        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/lock?amount=1000000000000000000&asset=0xCOLLATERAL_TOKEN' \
+          -H 'X-Auth-Token: YOUR_API_KEY'
+        ```
+
+        Returns `{ calls: ContractCall[] }` — execute via the delegated signer.
+      </Tab>
+    </Tabs>
+  </Step>
+</Steps>
+
+## Implementation
+
+```typescript
+const SPRINTER_API = "https://api.sprinter.tech";
+const SPRINTER_API_KEY = process.env.SPRINTER_API_KEY!;
+const POLL_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
+const HEALTH_FACTOR_THRESHOLD = 1.3;
+const REPAY_DAYS_BEFORE_DUE = 3;
+
+interface CreditInfo {
+  data: {
+    USDC: {
+      totalCollateralValue: string;
+      principal: string;
+      interest: string;
+      healthFactor: string;
+      dueDate: string | null;
+    };
+  };
+}
+
+interface ContractCall {
+  to: string;
+  data: string;
+  value: string;
+}
+
+async function getCreditInfo(account: string): Promise<CreditInfo> {
+  const res = await fetch(`${SPRINTER_API}/credit/accounts/${account}/info`, {
+    headers: { "X-Auth-Token": SPRINTER_API_KEY },
+  });
+  if (!res.ok) throw new Error(`Credit info failed: ${res.status}`);
+  return res.json();
+}
+
+async function buildRepayCalls(account: string, amount: string): Promise<ContractCall[]> {
+  const res = await fetch(
+    `${SPRINTER_API}/credit/accounts/${account}/repay?amount=${amount}`,
+    { headers: { "X-Auth-Token": SPRINTER_API_KEY } }
+  );
+  if (!res.ok) throw new Error(`Repay calldata failed: ${res.status}`);
+  const data = await res.json();
+  return data.calls;
+}
+
+async function buildLockCalls(
+  account: string,
+  amount: string,
+  asset: string
+): Promise<ContractCall[]> {
+  const res = await fetch(
+    `${SPRINTER_API}/credit/accounts/${account}/lock?amount=${amount}&asset=${asset}`,
+    { headers: { "X-Auth-Token": SPRINTER_API_KEY } }
+  );
+  if (!res.ok) throw new Error(`Lock calldata failed: ${res.status}`);
+  const data = await res.json();
+  return data.calls;
+}
+
+async function executeCalls(calls: ContractCall[], signer: any): Promise<string> {
+  let lastTxHash = "";
+  for (const call of calls) {
+    const tx = await signer.sendTransaction({
+      to: call.to,
+      data: call.data,
+      value: call.value || "0",
+    });
+    const receipt = await tx.wait();
+    if (!receipt || receipt.status !== 1) throw new Error(`Tx reverted: ${tx.hash}`);
+    lastTxHash = tx.hash;
+  }
+  return lastTxHash;
+}
+
+/** Convert dollar amount to USDC lowest denomination (6 decimals) */
+function dollarsToUsdcUnits(dollars: number): string {
+  return Math.ceil(dollars * 1_000_000).toString();
+}
+
+function daysUntil(dateStr: string): number {
+  return (new Date(dateStr).getTime() - Date.now()) / (1000 * 60 * 60 * 24);
+}
+
+async function monitorAndAct(account: string, signer: any, collateralAsset: string) {
+  const info = await getCreditInfo(account);
+  const { principal, interest, healthFactor, dueDate } = info.data.USDC;
+
+  const debt = parseFloat(principal) + parseFloat(interest);
+  const hf = parseFloat(healthFactor);
+
+  // Auto-repay if due date is approaching
+  if (dueDate && daysUntil(dueDate) <= REPAY_DAYS_BEFORE_DUE && debt > 0) {
+    console.log(`Due date approaching — repaying $${debt.toFixed(2)}`);
+    const calls = await buildRepayCalls(account, dollarsToUsdcUnits(debt));
+    const txHash = await executeCalls(calls, signer);
+    console.log(`Repayment executed: ${txHash}`);
+    return;
+  }
+
+  // Top up collateral if health factor is low
+  if (hf < HEALTH_FACTOR_THRESHOLD && debt > 0) {
+    console.log(`Health factor ${hf.toFixed(2)} below threshold — locking more collateral`);
+    const calls = await buildLockCalls(account, "1000000000000000000", collateralAsset);
+    const txHash = await executeCalls(calls, signer);
+    console.log(`Collateral locked: ${txHash}`);
+    return;
+  }
+
+  console.log(`Position healthy — HF: ${hf.toFixed(2)}, debt: $${debt.toFixed(2)}`);
+}
+
+// Run the monitor loop
+setInterval(() => {
+  monitorAndAct("0xUSER_ADDRESS", signer, "0xCOLLATERAL_TOKEN").catch(console.error);
+}, POLL_INTERVAL_MS);
+```
+
+## Configuration
+
+<AccordionGroup>
+  <Accordion title="Poll Interval" icon="clock" defaultOpen={true}>
+    Default: every 5 minutes. Increase for lower API usage, decrease if positions are volatile. For most users, 5–15 minutes is sufficient.
+  </Accordion>
+  <Accordion title="Health Factor Threshold" icon="heart-pulse">
+    Default: 1.3. The agent tops up collateral when health factor drops below this. See [Risk Management](/stash-credit-v2/risk-management) for liquidation thresholds — positions below 1.0 are liquidatable.
+  </Accordion>
+  <Accordion title="Repayment Timing" icon="calendar">
+    Default: 3 days before due date. Repaying early avoids the 15% overdue APR that kicks in after the billing cycle ends.
+  </Accordion>
+</AccordionGroup>
+
+## Related
+
+<CardGroup cols={3}>
+  <Card title="Credit Engine" icon="gear" href="/stash-credit-v2/credit-engine">
+    Health factor, LTVs, and liquidation mechanics.
+  </Card>
+  <Card title="Risk Management" icon="shield-halved" href="/stash-credit-v2/risk-management">
+    Collateral tiers and concentration limits.
+  </Card>
+  <Card title="Credit API Reference" icon="bolt" href="/api-reference/sprinter/credit/get-user-credit-information">
+    Full account info endpoint with interactive playground.
+  </Card>
+</CardGroup>

@@ -1,0 +1,71 @@
+---
+title: "Submit Signing Request"
+description: "POST /v1/chains/{chainId}/signatures"
+---
+
+Submit a deposit for MPC threshold signing. Returns `202 Accepted` if the deposit is accepted for signing, or an error if signing fails.
+
+## Request
+
+```bash
+curl -X POST https://api.getmiso.fi/v1/chains/8453/signatures \
+  -H "Content-Type: application/json" \
+  -d '{
+    "depositId": "12345",
+    "nonce": "1",
+    "protocol": "across",
+    "liquidityPool": "0x1234567890abcdef1234567890abcdef12345678",
+    "caller": "0xabcdef1234567890abcdef1234567890abcdef12",
+    "calldata": "",
+    "depositTxHash": "0xabc123...",
+    "borrowAmount": "1000000",
+    "repaymentChainId": 1,
+    "deadline": 1735689600,
+    "tokenOut": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+  }'
+```
+
+## Path Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `chainId` | `uint64` | Destination chain ID (must be supported) |
+
+## Request Body
+
+```go
+type SigningBody struct {
+    DepositId        string       `json:"depositId"`        // Deposit identifier (format varies by protocol)
+    Nonce            *BigInt      `json:"nonce"`             // Signing nonce
+    Protocol         ProtocolType `json:"protocol"`          // Protocol type (see introduction)
+    LiquidityPool    string       `json:"liquidityPool"`     // Liquidity pool contract address
+    Caller           string       `json:"caller"`            // Caller contract address
+    Calldata         string       `json:"calldata"`          // Optional calldata (used by mayan, lifi-escrow, sprinter-credit)
+    DepositTxHash    string       `json:"depositTxHash"`     // Source chain deposit transaction hash
+    BorrowAmount     *BigInt      `json:"borrowAmount"`      // Amount to borrow
+    RepaymentChainId uint64       `json:"repaymentChainId"`  // Chain where repayment happens
+    Deadline         uint64       `json:"deadline"`          // Unix timestamp deadline
+    TokenOut         string       `json:"tokenOut"`          // Output token address (sprinter-credit only)
+}
+```
+
+## Required Fields
+
+All protocols require: `depositId`, `nonce`, `protocol`, `liquidityPool`, `caller`, `deadline`, `chainId`.
+
+## Responses
+
+| Status | Description |
+|--------|-------------|
+| `202` | Deposit accepted for signing |
+| `400` | Invalid request body or unsupported chain/protocol |
+| `500` | Signing failed |
+
+## Protocol-Specific Notes
+
+- **across**: `depositId` is a numeric string, `borrowAmount` required
+- **mayan**: `depositId` is an order hash, `calldata` and `depositTxHash` required
+- **rhinestone**: `depositId` is a bundle ID, `borrowAmount` required
+- **lifi-escrow**: `depositId` is an order ID, `calldata` and `depositTxHash` required
+- **lighter**: `depositId` is an order hash, `depositTxHash` required
+- **sprinter-credit**: `tokenOut` and `calldata` required, `borrowAmount` required
