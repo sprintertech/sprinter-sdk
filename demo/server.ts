@@ -152,8 +152,7 @@ async function ensureUsdcApproval(spender: string, amount: string, send: SSEWrit
   }
 
   send("log", { message: `Approving USDC spend for ${spender}...` });
-  const nonce = await wallet.getNonce("pending");
-  const tx = await usdc.approve(spender, ethers.MaxUint256, { nonce });
+  const tx = await usdc.approve(spender, ethers.MaxUint256);
   send("log", { message: `Waiting for approval confirmation... ${tx.hash}` });
   const receipt = await tx.wait();
   if (!receipt || receipt.status !== 1) {

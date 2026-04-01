@@ -89,11 +89,6 @@ async function executeCalls(calls: ContractCall[]): Promise<string> {
     log("⛓️", `Sending tx ${i + 1}/${filteredCalls.length} to ${call.to}`);
 
     try {
-      const nonce = await wallet.getNonce("pending");
-      log("🔢", `Using nonce ${nonce}`);
-
-      const feeData = await provider.getFeeData();
-
       // Estimate gas first to catch reverts early with a clear error
       const gasEstimate = await wallet.estimateGas({
         to: call.to,
@@ -107,9 +102,6 @@ async function executeCalls(calls: ContractCall[]): Promise<string> {
         data: call.data,
         value: call.value || "0",
         gasLimit: (gasEstimate * 120n) / 100n, // 20% buffer
-        nonce,
-        maxFeePerGas: feeData.maxFeePerGas,
-        maxPriorityFeePerGas: feeData.maxPriorityFeePerGas,
       });
 
       log("⏳", `Waiting for confirmation... tx: ${tx.hash}`);
@@ -178,8 +170,7 @@ async function ensureUsdcApproval(spender: string, amount: string): Promise<void
   }
 
   log("🔓", `Approving USDC spend for ${spender}...`);
-  const nonce = await wallet.getNonce("pending");
-  const tx = await usdc.approve(spender, ethers.MaxUint256, { nonce });
+  const tx = await usdc.approve(spender, ethers.MaxUint256);
   log("⏳", `Waiting for approval confirmation... tx: ${tx.hash}`);
   const receipt = await tx.wait();
   if (!receipt || receipt.status !== 1) {
