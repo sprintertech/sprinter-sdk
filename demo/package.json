@@ -5,12 +5,18 @@
   "type": "module",
   "scripts": {
     "demo": "tsx card-program-demo.ts",
-    "demo:dry-run": "DRY_RUN=true tsx card-program-demo.ts"
+    "demo:dry-run": "DRY_RUN=true tsx card-program-demo.ts",
+    "ui": "tsx server.ts",
+    "ui:dry-run": "DRY_RUN=true tsx server.ts"
   },
   "dependencies": {
     "ethers": "^6.13.0",
+    "express": "^4.21.0",
     "tsx": "^4.19.0",
     "typescript": "^5.6.0",
     "dotenv": "^16.4.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0"
   }
 }
