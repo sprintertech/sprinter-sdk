@@ -191,6 +191,81 @@ app.get("/api/status", async (_req, res) => {
   }
 });
 
+// GET /api/recover — repay any outstanding debt and unlock stuck collateral
+app.get("/api/recover", async (req, res) => {
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+
+  const send = createSSEWriter(res);
+
+  try {
+    send("log", { message: "Checking credit position..." });
+    const infoData = await sprinterGet(`/credit/accounts/${account}/info`, send);
+    const usdc = infoData.data.usdc;
+    const debt = parseFloat(usdc.debt);
+    const collateral = parseFloat(usdc.totalCollateralValue);
+
+    send("log", { message: `Debt: ${debt.toFixed(6)} USDC, Collateral: ${collateral.toFixed(6)} USDC` });
+
+    if (debt < 0.000001 && collateral < 0.000001) {
+      send("complete", { message: "Nothing to recover — no debt or collateral found." });
+      res.end();
+      return;
+    }
+
+    // Repay any outstanding debt first
+    if (debt > 0.001) {
+      send("step", { step: 0, status: "running", title: `Repay ${debt.toFixed(6)} USDC debt` });
+      const repayUnits = BigInt(Math.ceil(debt * 10 ** USDC_DECIMALS) + 2).toString();
+      const repayData = await sprinterGet(
+        `/credit/accounts/${account}/repay?amount=${repayUnits}`,
+        send
+      );
+      const repayContract = repayData.calls.find((c: ContractCall) => c.to.toLowerCase() !== USDC_ADDRESS.toLowerCase());
+      if (repayContract) {
+        await ensureUsdcApproval(repayContract.to, repayUnits, send);
+      }
+      const repayTx = await executeCalls(repayData.calls, send);
+      send("step", { step: 0, status: "done", title: `Repaid debt`, txHash: repayTx });
+    }
+
+    // Check for remaining dust debt
+    const postRepayInfo = await sprinterGet(`/credit/accounts/${account}/info`, send);
+    const postDebt = parseFloat(postRepayInfo.data.usdc.debt);
+    if (postDebt > 0.0001) {
+      send("log", { message: `Dust debt remaining: ${postDebt.toFixed(6)} — repaying...` });
+      const dustUnits = BigInt(Math.ceil(postDebt * 10 ** USDC_DECIMALS) + 2).toString();
+      const dustData = await sprinterGet(`/credit/accounts/${account}/repay?amount=${dustUnits}`, send);
+      const dustContract = dustData.calls.find((c: ContractCall) => c.to.toLowerCase() !== USDC_ADDRESS.toLowerCase());
+      if (dustContract) {
+        await ensureUsdcApproval(dustContract.to, dustUnits, send);
+      }
+      await executeCalls(dustData.calls, send);
+    }
+
+    // Unlock collateral
+    const postInfo = await sprinterGet(`/credit/accounts/${account}/info`, send);
+    const postCollateral = parseFloat(postInfo.data.usdc.totalCollateralValue);
+    if (postCollateral > 0.001) {
+      send("step", { step: 1, status: "running", title: `Unlock ${postCollateral.toFixed(2)} USDC collateral` });
+      const unlockUnits = BigInt(Math.round(postCollateral * 10 ** USDC_DECIMALS)).toString();
+      const unlockData = await sprinterGet(
+        `/credit/accounts/${account}/unlock?amount=${unlockUnits}&asset=${USDC_ADDRESS}`,
+        send
+      );
+      const unlockTx = await executeCalls(unlockData.calls, send);
+      send("step", { step: 1, status: "done", title: `Unlocked collateral`, txHash: unlockTx });
+    }
+
+    send("complete", { message: "Recovery complete. Collateral unlocked." });
+  } catch (err: any) {
+    send("error", { message: err.message });
+  }
+
+  res.end();
+});
+
 // GET /api/run — execute the demo via Server-Sent Events
 app.get("/api/run", async (req, res) => {
   res.setHeader("Content-Type", "text/event-stream");

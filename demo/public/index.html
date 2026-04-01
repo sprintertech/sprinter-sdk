@@ -311,7 +311,10 @@
     </div>
   </div>
 
-  <button class="run-btn" id="runBtn" disabled>Run Demo</button>
+  <div style="display: flex; gap: 12px; margin-bottom: 32px;">
+    <button class="run-btn" id="runBtn" disabled style="margin-bottom: 0;">Run Demo</button>
+    <button class="run-btn" id="recoverBtn" disabled style="margin-bottom: 0; background: linear-gradient(135deg, #f59e0b, #d97706); font-size: 14px; padding: 14px 24px;">Recover Funds</button>
+  </div>
 
   <div class="pipeline" id="pipeline"></div>
   <div class="complete-banner hidden" id="completeBanner">
@@ -359,6 +362,7 @@
         }
 
         $("runBtn").disabled = false;
+        $("recoverBtn").disabled = false;
       } catch (err) {
         $("walletAddr").textContent = "Failed to connect";
       }
@@ -499,9 +503,73 @@
       });
     }
 
+    // ── Recover funds ───────────────────────────────────────────────────
+
+    async function recoverFunds() {
+      $("runBtn").disabled = true;
+      $("recoverBtn").disabled = true;
+      $("completeBanner").classList.add("hidden");
+      $("errorBanner").classList.add("hidden");
+      $("logBody").innerHTML = "";
+
+      const pipeline = $("pipeline");
+      pipeline.innerHTML = "";
+      // Create 2 placeholder steps for recover
+      ["Repay Outstanding Debt", "Unlock Collateral"].forEach((title, i) => {
+        const div = document.createElement("div");
+        div.className = "step";
+        div.id = `step-${i}`;
+        div.innerHTML = `
+          <div class="step-header">
+            <div class="step-icon">${i + 1}</div>
+            <div class="step-title">${title}</div>
+          </div>
+        `;
+        pipeline.appendChild(div);
+      });
+
+      const eventSource = new EventSource("/api/recover");
+
+      eventSource.addEventListener("step", (e) => {
+        const data = JSON.parse(e.data);
+        updateStep(data);
+      });
+
+      eventSource.addEventListener("log", (e) => {
+        const data = JSON.parse(e.data);
+        addLog(data.message, data.type);
+      });
+
+      eventSource.addEventListener("complete", (e) => {
+        const data = JSON.parse(e.data);
+        $("completeBanner").classList.remove("hidden");
+        $("completeBanner").querySelector("h3").textContent = "Recovery Complete";
+        $("completeBanner").querySelector("p").textContent = data.message;
+        $("runBtn").disabled = false;
+        $("recoverBtn").disabled = false;
+        eventSource.close();
+        loadStatus();
+      });
+
+      eventSource.addEventListener("error", (e) => {
+        try {
+          const data = JSON.parse(e.data);
+          $("errorMsg").textContent = data.message;
+          $("errorBanner").classList.remove("hidden");
+        } catch {
+          $("errorMsg").textContent = "Connection lost";
+          $("errorBanner").classList.remove("hidden");
+        }
+        $("runBtn").disabled = false;
+        $("recoverBtn").disabled = false;
+        eventSource.close();
+      });
+    }
+
     // ── Init ──────────────────────────────────────────────────────────────
 
     $("runBtn").addEventListener("click", runDemo);
+    $("recoverBtn").addEventListener("click", recoverFunds);
     $("logToggle").addEventListener("click", () => {
       logsCollapsed = !logsCollapsed;
       $("logBody").classList.toggle("collapsed", logsCollapsed);
