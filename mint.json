@@ -81,16 +81,26 @@
       ]
     },
     {
-      "group": "Credit",
+      "group": "Credit — Info",
       "pages": [
         "api-reference/sprinter/credit/get-credit-protocol-configuration",
         "api-reference/sprinter/credit/get-user-credit-information",
+        "api-reference/sprinter/credit/get-collateral-asset-details",
+        "api-reference/sprinter/credit/get-operator-status-for-an-account"
+      ]
+    },
+    {
+      "group": "Credit — Actions",
+      "pages": [
         "api-reference/sprinter/credit/calldata-to-lock-asset-as-collateral",
         "api-reference/sprinter/credit/call-data-to-unlock-collateral",
         "api-reference/sprinter/credit/build-transaction-calls-to-draw-credit",
-        "api-reference/sprinter/credit/call-data-to-repay-credit-debt",
-        "api-reference/sprinter/credit/get-collateral-asset-details",
-        "api-reference/sprinter/credit/get-operator-status-for-an-account",
+        "api-reference/sprinter/credit/call-data-to-repay-credit-debt"
+      ]
+    },
+    {
+      "group": "Credit — Advanced",
+      "pages": [
         "api-reference/sprinter/credit/build-transaction-calls-to-enable-auto-top-up",
         "api-reference/sprinter/credit/build-transaction-calls-to-disable-auto-top-up",
         "api-reference/sprinter/credit/wrap-asset-into-earn-vault",
