@@ -43,7 +43,7 @@ Request credentials by dropping a Telegram DM to [@Sprinter_Intern_Bot](https://
 ## Integration Steps
 
 <Steps>
-  <Step title="Lock Collateral & Activate Card">
+  <Step title="Lock Collateral & Activate Card" icon="lock" titleSize="h3">
     When a Kast user signs up and wants to activate their Visa card, prompt them to lock collateral via Sprinter instead of depositing into Kast's native custody.
 
     First, fetch available earn strategies so collateral earns yield while locked:
@@ -75,7 +75,7 @@ Request credentials by dropping a Telegram DM to [@Sprinter_Intern_Bot](https://
     Returns `{ calls: ContractCall[] }` — execute in the user's wallet. Once locked, Kast can activate the Visa card with a spending limit based on the credit capacity.
   </Step>
 
-  <Step title="Set Spending Limit from Credit Capacity">
+  <Step title="Set Spending Limit from Credit Capacity" icon="chart-line" titleSize="h3">
     Query the user's credit info to determine the Visa card spending limit:
 
     ```bash
@@ -104,7 +104,7 @@ Request credentials by dropping a Telegram DM to [@Sprinter_Intern_Bot](https://
     See [Credit Engine](/stash-credit-v2/credit-engine) for how health factor, LTVs, and liquidation thresholds work.
   </Step>
 
-  <Step title="Draw Credit on Card Swipe">
+  <Step title="Draw Credit on Card Swipe" icon="credit-card" titleSize="h3">
     When a cardholder swipes their Kast Visa, Third National sends an authorization request. Your backend draws USDC from Sprinter to fund the settlement:
 
     ```bash
@@ -125,7 +125,7 @@ Request credentials by dropping a Telegram DM to [@Sprinter_Intern_Bot](https://
     </Card>
   </Step>
 
-  <Step title="Monthly Repayment">
+  <Step title="Monthly Repayment" icon="money-bill-wave" titleSize="h3">
     Kast's billing cycle runs ~30 days with a 21-day grace period. At cycle end, trigger repayment via Sprinter:
 
     <Tabs>
@@ -147,7 +147,7 @@ Request credentials by dropping a Telegram DM to [@Sprinter_Intern_Bot](https://
     </Tabs>
   </Step>
 
-  <Step title="Unlock Collateral">
+  <Step title="Unlock Collateral" icon="lock-open" titleSize="h3">
     When a user closes their Kast card or downgrades and has zero outstanding debt:
 
     ```bash
