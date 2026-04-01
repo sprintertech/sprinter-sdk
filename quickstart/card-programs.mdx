@@ -36,7 +36,7 @@ Request credentials by dropping a Telegram DM to [@Sprinter_Intern_Bot](https://
 ## Integration Steps
 
 <Steps>
-  <Step title="Lock Collateral" icon="lock" titleSize="h3">
+  <Step title="Lock Collateral">
     Instead of prompting users to top up with USDC, prompt them to lock collateral. A single `/lock` call handles everything — including optional wrapping into a yield-bearing earn vault.
 
     First, fetch available earn strategies from the protocol config:
@@ -70,7 +70,7 @@ Request credentials by dropping a Telegram DM to [@Sprinter_Intern_Bot](https://
     Returns `{ calls: ContractCall[] }` — execute in the user's wallet. Once locked, the credit line is active.
   </Step>
 
-  <Step title="Check Available Credit" icon="chart-line" titleSize="h3">
+  <Step title="Check Available Credit">
     Display `totalCollateralValue` (spendable credit) and `healthFactor` in your card UI.
 
     ```bash
@@ -95,7 +95,7 @@ Request credentials by dropping a Telegram DM to [@Sprinter_Intern_Bot](https://
     See [Credit Engine](/stash-credit-v2/credit-engine) for how health factor and LTVs work.
   </Step>
 
-  <Step title="Draw Credit" icon="credit-card" titleSize="h3">
+  <Step title="Draw Credit">
     With collateral locked, you can draw credit (USDC) from the user's credit line. In a card program, this happens in your authorization webhook handler — but the `/draw` endpoint itself is a general-purpose credit draw, not specific to card authorizations.
 
     ```bash
@@ -118,7 +118,7 @@ Request credentials by dropping a Telegram DM to [@Sprinter_Intern_Bot](https://
     </Card>
   </Step>
 
-  <Step title="Repayment" icon="money-bill-wave" titleSize="h3">
+  <Step title="Repayment">
     Credit runs on a monthly billing cycle. At month end, users repay principal + accrued interest.
 
     <Tabs>
@@ -140,7 +140,7 @@ Request credentials by dropping a Telegram DM to [@Sprinter_Intern_Bot](https://
     </Tabs>
   </Step>
 
-  <Step title="Unlock Collateral" icon="lock-open" titleSize="h3">
+  <Step title="Unlock Collateral">
     When a user closes their card and has zero outstanding debt:
 
     ```bash
