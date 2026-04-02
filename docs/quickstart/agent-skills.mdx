@@ -3,40 +3,28 @@ title: "Agent Skills"
 description: "Pre-built agent skills that use the Sprinter Credit API to autonomously manage credit positions"
 ---
 
+## Overview
+
 AI agents can use the Sprinter Credit API to autonomously manage credit positions on behalf of users. These skills are designed to be picked up by any agent framework — each one maps directly to real API endpoints and can run without user interaction once authorized.
 
 <Info>
-  All skills require a Sprinter API key and a delegated signer authorized to
-  execute on-chain transactions on behalf of the user. See [Card Programs —
-  Delegated
-  Signing](/quickstart/card-programs/authorization-webhook#delegated-signing)
-  for setup options.
+All skills require a Sprinter API key and a delegated signer authorized to execute on-chain transactions on behalf of the user. See [Card Programs — Delegated Signing](/quickstart/card-programs/authorization-webhook#delegated-signing) for setup options.
 </Info>
 
 ## Available Skills
 
 <CardGroup cols={2}>
-  <Card
-    title="Credit Health Monitor & Auto-Repay"
-    icon="heart-pulse"
-    href="/quickstart/agent-skills/health-monitor"
-  >
-    Watches health factor and due dates. Auto-repays before billing cycle ends
-    to avoid overdue rates. Tops up collateral if health drops.
+  <Card title="Credit Health Monitor & Auto-Repay" icon="heart-pulse" href="/quickstart/agent-skills/health-monitor">
+    Watches health factor and due dates. Auto-repays before billing cycle ends to avoid overdue rates. Tops up collateral if health drops.
   </Card>
-  <Card
-    title="Yield-Optimized Collateral Manager"
-    icon="chart-line"
-    href="/quickstart/agent-skills/yield-optimizer"
-  >
-    Rebalances collateral across earn vaults to maximize yield while keeping the
-    credit line healthy.
+  <Card title="Yield-Optimized Collateral Manager" icon="chart-line" href="/quickstart/agent-skills/yield-optimizer">
+    Rebalances collateral across earn vaults to maximize yield while keeping the credit line healthy.
   </Card>
 </CardGroup>
 
 ## How Agent Skills Work
 
-Every Sprinter Credit API endpoint returns `{ calls: ContractCall[] }` — an array of transactions to execute on-chain. This makes the API agent-friendly by design: the agent decides _what_ to do, the API tells it _how_, and the delegated signer executes.
+Every Sprinter Credit API endpoint returns `{ calls: ContractCall[] }` — an array of transactions to execute on-chain. This makes the API agent-friendly by design: the agent decides *what* to do, the API tells it *how*, and the delegated signer executes.
 
 ```
 Agent polls /credit/accounts/{account}/info
@@ -47,15 +35,3 @@ Agent polls /credit/accounts/{account}/info
   → Logs the action and loops
 ```
 
-## Authentication
-
-| Method    | Header                          |
-| --------- | ------------------------------- |
-| API Key   | `X-Auth-Token: <key>`           |
-| Privy JWT | `Authorization: Bearer <token>` |
-
-<Tip>
-  Request credentials by dropping a Telegram DM to
-  [@Sprinter_Intern_Bot](https://t.me/Sprinter_Intern_Bot) with `/request api
-  key`
-</Tip>

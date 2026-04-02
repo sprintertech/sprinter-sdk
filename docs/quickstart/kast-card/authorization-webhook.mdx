@@ -1,14 +1,14 @@
 ---
-title: "Authorization Webhook Handler"
-description: "TypeScript implementation for handling card authorization webhooks with JIT credit draws via the Sprinter Credit API"
+title: "Kast Authorization Webhook"
+description: "TypeScript implementation for handling Kast Visa card authorization webhooks with JIT credit draws via the Sprinter Credit API"
 ---
 
 ## Overview
 
-When a cardholder swipes their card, the card network sends an authorization webhook to your backend. You have ~2 seconds to check credit, execute an on-chain draw, and respond.
+When a Kast cardholder swipes their Visa card, Third National (the card issuer) sends an authorization request to your backend. You have ~2 seconds to check credit, execute an on-chain draw, and respond.
 
 ```
-Card swipe → Visa → Card issuer → Your webhook endpoint
+Card swipe → Visa → Third National → Kast backend → Your webhook endpoint
   ├─ Validate signature
   ├─ Look up wallet from card ID
   ├─ GET /credit/accounts/{account}/info   → check credit
@@ -18,7 +18,7 @@ Card swipe → Visa → Card issuer → Your webhook endpoint
 ```
 
 <Info>
-This example uses [Rain](https://www.rain.xyz) as the card issuer. Adapt signature validation and response format for your card program.
+This example assumes a webhook-based authorization flow from Kast/Third National. Adapt signature validation and response format to match the actual integration spec when available.
 </Info>
 
 ## Implementation
@@ -34,9 +34,9 @@ This example uses [Rain](https://www.rain.xyz) as the card issuer. Adapt signatu
     app.use(express.json({ verify: (req: any, _res, buf) => { req.rawBody = buf; } }));
 
     const SPRINTER_API = "https://api.sprinter.tech";
-    const RAIN_WEBHOOK_SECRET = process.env.RAIN_WEBHOOK_SECRET!;
-    const SETTLEMENT_ADDRESS = process.env.SETTLEMENT_ADDRESS!;
-    const RPC_URL = process.env.RPC_URL!;
+    const KAST_WEBHOOK_SECRET = process.env.KAST_WEBHOOK_SECRET!;
+    const SETTLEMENT_ADDRESS = process.env.SETTLEMENT_ADDRESS!; // Third National settlement
+    const RPC_URL = process.env.RPC_URL!; // Base RPC
     const SIGNER_PRIVATE_KEY = process.env.SIGNER_PRIVATE_KEY!;
 
     const provider = new ethers.JsonRpcProvider(RPC_URL);
@@ -55,6 +55,8 @@ This example uses [Rain](https://www.rain.xyz) as the card issuer. Adapt signatu
     interface CreditInfo {
       data: {
         USDC: {
+          totalCreditCapacity: string;
+          remainingCreditCapacity: string;
           totalCollateralValue: string;
           principal: string;
           interest: string;
@@ -69,14 +71,14 @@ This example uses [Rain](https://www.rain.xyz) as the card issuer. Adapt signatu
 
     function validateSignature(rawBody: Buffer, signature: string): boolean {
       const expected = crypto
-        .createHmac("sha256", RAIN_WEBHOOK_SECRET)
+        .createHmac("sha256", KAST_WEBHOOK_SECRET)
         .update(rawBody)
         .digest("hex");
       return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected));
     }
 
     async function getWalletForCard(cardId: string): Promise<string | null> {
-      // TODO: query your database
+      // TODO: query your database mapping Kast card IDs to wallet addresses
       throw new Error(`Implement getWalletForCard for cardId: ${cardId}`);
     }
 
@@ -124,35 +126,41 @@ This example uses [Rain](https://www.rain.xyz) as the card issuer. Adapt signatu
     ```
   </Step>
 
-  <Step title="Handle the Webhook">
+  <Step title="Handle the Authorization Webhook">
     ```typescript
-    app.post("/webhooks/rain/authorization", async (req, res) => {
+    app.post("/webhooks/kast/authorization", async (req, res) => {
       try {
         // 1. Validate webhook signature
-        const signature = req.headers["x-rain-signature"] as string;
+        const signature = req.headers["x-kast-signature"] as string;
         if (!signature || !validateSignature((req as any).rawBody, signature)) {
           return res.status(401).json({ error: "Invalid signature" });
         }
 
-        const { id, cardId, amount } = req.body;
+        const { id, cardId, amount, currency, merchantName } = req.body;
 
         // 2. Idempotency — return cached result if already processed
         const cached = processed.get(id);
         if (cached) return res.json(cached);
 
-        // 3. Look up user wallet
+        // 3. Look up user wallet from Kast card ID
         const wallet = await getWalletForCard(cardId);
         if (!wallet) {
           processed.set(id, { approved: false });
           return res.json({ approved: false, reason: "unknown_card" });
         }
 
-        // 4. Check available credit and health factor
-        const info = await getCreditInfo(wallet);
-        const available = parseFloat(info.data.USDC.totalCollateralValue);
-        const healthFactor = parseFloat(info.data.USDC.healthFactor);
+        // 4. Convert amount to USDC (Kast supports USD, apply FX if non-USD)
+        const usdcAmount = currency === "USD"
+          ? centsToUsdcUnits(amount)
+          : centsToUsdcUnits(amount); // TODO: apply FX rate for non-USD
 
-        if (amount / 100 > available) {
+        // 5. Check available credit and health factor
+        const info = await getCreditInfo(wallet);
+        const remaining = parseFloat(info.data.USDC.remainingCreditCapacity);
+        const healthFactor = parseFloat(info.data.USDC.healthFactor);
+        const requestedUsd = amount / 100;
+
+        if (requestedUsd > remaining) {
           processed.set(id, { approved: false });
           return res.json({ approved: false, reason: "insufficient_credit" });
         }
@@ -162,10 +170,11 @@ This example uses [Rain](https://www.rain.xyz) as the card issuer. Adapt signatu
           return res.json({ approved: false, reason: "low_health_factor" });
         }
 
-        // 5. Build and execute the credit draw
-        const calls = await buildDrawCalls(wallet, centsToUsdcUnits(amount), SETTLEMENT_ADDRESS);
+        // 6. Build and execute the credit draw
+        const calls = await buildDrawCalls(wallet, usdcAmount, SETTLEMENT_ADDRESS);
         const txHash = await executeCalls(calls);
 
+        console.log(`Approved: ${merchantName} $${requestedUsd} for card ${cardId} tx:${txHash}`);
         processed.set(id, { approved: true, txHash });
         return res.json({ approved: true, txHash });
       } catch (error) {
@@ -175,7 +184,7 @@ This example uses [Rain](https://www.rain.xyz) as the card issuer. Adapt signatu
       }
     });
 
-    app.listen(3001, () => console.log("Webhook handler running on :3001"));
+    app.listen(3001, () => console.log("Kast webhook handler running on :3001"));
     ```
   </Step>
 </Steps>
@@ -202,12 +211,12 @@ The delegated signer can draw credit from user accounts. Secure the private key 
 
 ## Latency Budget
 
-Card networks expect a response within ~2 seconds:
+Visa expects a response within ~2 seconds:
 
 | Step | Target | Notes |
 |---|:---:|---|
 | Signature validation | < 1ms | Local crypto |
-| Database lookup (card → wallet) | < 10ms | Index on card ID |
+| Database lookup (card → wallet) | < 10ms | Index on Kast card ID |
 | `GET /credit/accounts/{account}/info` | < 100ms | Sprinter API |
 | `GET /credit/accounts/{account}/draw` | < 100ms | Sprinter API |
 | On-chain execution | < 1000ms | Dedicated Base RPC node |
@@ -224,16 +233,19 @@ Use a dedicated RPC node on Base. Public endpoints will exceed the time budget u
     - [ ] Replace in-memory idempotency map with Redis or database
     - [ ] Use a dedicated Base RPC node (Alchemy, QuickNode, or self-hosted)
     - [ ] Store signer key in HSM or cloud KMS (AWS KMS, GCP Cloud KMS)
+    - [ ] Set up webhook endpoint behind a load balancer with TLS
   </Accordion>
-  <Accordion title="Application" icon="code">
-    - [ ] Implement `getWalletForCard()` against your user database
-    - [ ] Log all authorization decisions for audit trail
-    - [ ] Load test under expected peak authorization volume
+  <Accordion title="Kast Integration" icon="credit-card">
+    - [ ] Implement `getWalletForCard()` mapping Kast card IDs to user wallets
+    - [ ] Confirm settlement address with Third National
+    - [ ] Handle FX conversion for non-USD transactions (Kast charges 2% FX fee)
+    - [ ] Map Kast card tiers (Standard/Premium/Luxe) to Sprinter credit configurations
   </Accordion>
   <Accordion title="Monitoring" icon="chart-line">
     - [ ] Monitor authorization latency (p99 < 2s)
     - [ ] Alert on elevated decline rates
     - [ ] Track on-chain execution success rate
+    - [ ] Monitor health factors across all active Kast cardholders
   </Accordion>
 </AccordionGroup>
 
@@ -241,7 +253,7 @@ Use a dedicated RPC node on Base. Public endpoints will exceed the time budget u
 
 | Variable | Description |
 |---|---|
-| `RAIN_WEBHOOK_SECRET` | Webhook signing secret from your card issuer |
-| `SETTLEMENT_ADDRESS` | Your card program's USDC settlement address on Base |
+| `KAST_WEBHOOK_SECRET` | Webhook signing secret from Kast/Third National |
+| `SETTLEMENT_ADDRESS` | Third National's USDC settlement address on Base |
 | `RPC_URL` | Base RPC endpoint (dedicated node recommended) |
 | `SIGNER_PRIVATE_KEY` | Delegated signer private key (HSM/KMS in production) |

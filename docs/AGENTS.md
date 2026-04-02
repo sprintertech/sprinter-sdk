@@ -10,12 +10,12 @@
 
 ## Repos documented
 
-| Repo                            | Type                         | Spec                                                 |
-| ------------------------------- | ---------------------------- | ---------------------------------------------------- |
-| `sprintertech/miso-api`         | REST API (Go/Gin)            | OpenAPI 3.0 at `api-reference/miso/openapi.json`     |
-| `sprintertech/sprinter-api`     | REST API (Go/Gin)            | OpenAPI 3.0 at `api-reference/sprinter/openapi.json` |
-| `sprintertech/sprinter-signing` | MPC signing (Go/Gorilla Mux) | Manual MDX pages in `api-reference/signing/`         |
-| `sprintertech/stash-repayment`  | Background worker (Go)       | Architecture page in `architecture/`                 |
+| Repo | Type | Spec |
+|------|------|------|
+| `sprintertech/miso-api` | REST API (Go/Gin) | OpenAPI 3.0 at `api-reference/miso/openapi.json` |
+| `sprintertech/sprinter-api` | REST API (Go/Gin) | OpenAPI 3.0 at `api-reference/sprinter/openapi.json` |
+| `sprintertech/sprinter-signing` | MPC signing (Go/Gorilla Mux) | Manual MDX pages in `api-reference/signing/` |
+| `sprintertech/stash-repayment` | Background worker (Go) | Architecture page in `architecture/` |
 
 ## Terminology
 

@@ -14,9 +14,9 @@ curl -N https://api.getmiso.fi/v1/chains/8453/signatures/12345 \
 
 ## Path Parameters
 
-| Parameter   | Type     | Description                         |
-| ----------- | -------- | ----------------------------------- |
-| `chainId`   | `uint64` | Chain ID (must be supported)        |
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `chainId` | `uint64` | Chain ID (must be supported) |
 | `depositId` | `string` | Deposit ID from the signing request |
 
 ## Response
@@ -46,21 +46,21 @@ Access-Control-Allow-Origin: *
 
 ## Errors
 
-| Status | Description                            |
-| ------ | -------------------------------------- |
-| `400`  | Invalid chain ID or missing deposit ID |
-| `404`  | Chain not supported                    |
+| Status | Description |
+|--------|-------------|
+| `400` | Invalid chain ID or missing deposit ID |
+| `404` | Chain not supported |
 
 ## Usage with JavaScript
 
 ```javascript
 const eventSource = new EventSource(
-  "https://api.getmiso.fi/v1/chains/8453/signatures/12345",
+  'https://api.getmiso.fi/v1/chains/8453/signatures/12345'
 );
 
 eventSource.onmessage = (event) => {
   const signature = event.data;
-  console.log("Signature:", signature);
+  console.log('Signature:', signature);
   eventSource.close();
 };
 ```
