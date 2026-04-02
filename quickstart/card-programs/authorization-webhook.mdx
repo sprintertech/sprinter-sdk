@@ -3,6 +3,8 @@ title: "Authorization Webhook Handler"
 description: "TypeScript implementation for handling card authorization webhooks with JIT credit draws via the Sprinter Credit API"
 ---
 
+## Overview
+
 When a cardholder swipes their card, the card network sends an authorization webhook to your backend. You have ~2 seconds to check credit, execute an on-chain draw, and respond.
 
 ```
@@ -178,24 +180,72 @@ This example uses [Rain](https://www.rain.xyz) as the card issuer. Adapt signatu
   </Step>
 </Steps>
 
-## Delegated Signing
+## Delegated Credit Draws
 
-Card authorizations must complete without user interaction. Your backend needs a server-side signer authorized to draw credit on the user's behalf.
+Card authorizations must complete without user interaction. Your backend needs to draw credit on behalf of users. There are two on-chain approaches:
+
+### Option A: Non-Custodial (Smart Accounts)
+
+Users deploy a smart account (ERC-4337) and grant your backend a scoped session key or module that can only call the credit draw function. The user retains full custody.
 
 <CardGroup cols={3}>
   <Card title="ERC-7579 Session Keys" icon="key">
-    User grants a scoped session key that can only call the credit draw function.
+    User grants a scoped session key that can only call the credit draw function. Expires automatically.
   </Card>
   <Card title="Pre-signed Permits" icon="file-signature">
-    User pre-signs EIP-2612 permits for USDC transfers.
+    User pre-signs EIP-2612 permits for USDC transfers up to a spending limit.
   </Card>
-  <Card title="Smart Account Delegation" icon="wallet">
-    User's smart wallet delegates draw authority to your backend EOA.
+  <Card title="Smart Account Modules" icon="wallet">
+    User's smart wallet delegates draw authority to your backend via a custom module.
   </Card>
 </CardGroup>
 
+### Option B: Operator Contract (Server-Side)
+
+Deploy an [`ExclusiveOperator`](https://github.com/sprintertech/remote-collateral-contracts/blob/main/contracts/operator/ExclusiveOperator.sol) contract that lets your backend draw credit on behalf of opted-in users. This is the pattern used by card programs that need server-side control over credit draws.
+
+**Setup (one-time):**
+
+```solidity
+// Deploy with your backend address as the authorized caller
+ExclusiveOperator operator = new ExclusiveOperator(
+    creditHubAddress,    // Sprinter Credit Hub
+    controllerAddress,   // Credit Hub Controller
+    adminAddress,        // Contract admin (your multisig)
+    callerAddress,       // Your backend's signing address
+    7 days               // Revoke delay — users must wait 7 days to revoke
+);
+```
+
+**User onboarding:**
+
+```solidity
+// 1. User sets the operator on their credit position
+creditHub.setOperator(address(operator));
+
+// 2. User whitelists your settlement address as a credit receiver
+operator.addCreditReceiver(settlementAddress);
+```
+
+**Drawing credit at swipe time:**
+
+```solidity
+// Your backend calls this directly — no user signature needed
+operator.openCreditLine(
+    borrowerAddress,     // User's wallet
+    settlementAddress,   // Whitelisted receiver
+    amount               // USDC amount in wei
+);
+```
+
+**Safety guarantees:**
+- `withdraw()` is **disabled** — the operator can never touch collateral
+- Credit can only go to **whitelisted receivers** the user has explicitly approved
+- Revocation has a **time delay** (e.g. 7 days) — prevents users from revoking mid-billing-cycle while the operator still has outstanding credit exposure
+- Users can schedule revocation at any time via `revoke()`, then finalize after the delay with `finalizeRevoke()`
+
 <Warning>
-The delegated signer can draw credit from user accounts. Secure the private key with HSM or KMS in production — never store it in environment variables on shared infrastructure.
+The caller address can draw credit from any opted-in user account. Secure the private key with HSM or KMS in production — never store it in environment variables on shared infrastructure.
 </Warning>
 
 ## Latency Budget

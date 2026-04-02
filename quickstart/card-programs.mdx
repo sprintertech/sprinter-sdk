@@ -137,11 +137,44 @@ This example uses [Rain](https://www.rain.xyz) as the card issuer, but the patte
   </Step>
 </Steps>
 
+## Delegated Credit Draws
+
+Card authorizations must complete in ~2 seconds without user interaction. Your backend needs the ability to draw credit on behalf of users at swipe time. There are two approaches:
+
+<Tabs>
+  <Tab title="Non-Custodial (Smart Accounts)">
+    Users deploy a smart account (e.g. ERC-4337) that can execute draw transactions autonomously. The user retains full custody — the smart account automates signing based on pre-configured rules.
+
+    **How it works:**
+    1. User deploys or connects a smart account
+    2. User configures a session key or module that authorizes your backend to call `/draw`
+    3. At swipe time, your backend submits the draw calldata through the smart account
+
+    This is the most trust-minimized option — users never grant direct access to their credit line.
+  </Tab>
+  <Tab title="Operator Contract (Server-Side)">
+    Your card program deploys an [`ExclusiveOperator`](https://github.com/sprintertech/remote-collateral-contracts/blob/main/contracts/operator/ExclusiveOperator.sol) contract and sets your backend address as the authorized caller. Users opt in by setting this operator on their credit position and whitelisting your settlement address as a receiver.
+
+    **How it works:**
+    1. Deploy an `ExclusiveOperator` with your backend address as the `caller`
+    2. Users call `setOperator()` on the Credit Hub to opt in
+    3. Users call `addCreditReceiver()` to whitelist your settlement address
+    4. At swipe time, your backend calls `openCreditLine(borrower, receiver, amount)` directly on-chain
+
+    **Safety guarantees:**
+    - The operator can **only** draw credit to whitelisted receivers — never withdraw collateral
+    - Users can revoke access, but revocation has a **time delay** to prevent abuse during active billing cycles
+    - Credit receivers must be explicitly whitelisted per user
+
+    See the [Authorization Webhook Handler](/quickstart/card-programs/authorization-webhook#delegated-credit-draws) for implementation details.
+  </Tab>
+</Tabs>
+
 ## Integration Notes
 
 <AccordionGroup>
-  <Accordion title="Delegated Signing" icon="key">
-    For sub-second draws at spend time, set up a server-side signer authorized to draw on behalf of users. See [Authorization Webhook Handler](/quickstart/card-programs/authorization-webhook#delegated-signing) for options (ERC-7579 session keys, pre-signed permits, smart account delegation).
+  <Accordion title="Signer Security" icon="key">
+    Whether using smart accounts or the operator contract, the signing key that executes draws must be secured with HSM or cloud KMS (AWS KMS, GCP Cloud KMS) in production. Never store it in environment variables on shared infrastructure.
   </Accordion>
   <Accordion title="Settlement Address" icon="building-columns">
     Confirm with your card issuer which address to pass as `receiver` in the draw call. This is the address that receives USDC on each authorization.
