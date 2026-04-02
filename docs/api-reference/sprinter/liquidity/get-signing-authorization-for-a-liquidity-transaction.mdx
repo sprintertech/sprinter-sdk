@@ -1,0 +1,60 @@
+---
+title: "Get Signing Authorization for a Liquidity Transaction"
+sidebarTitle: "Get Signing Authorization for a Liquidity Transaction"
+openapi: post /liquidity/v2/chain/{dstChain}/protocol/{protocol}/signature
+---
+
+<RequestExample>
+```bash cURL
+curl --request POST \
+  --url 'https://api.sprinter.tech/liquidity/v2/chain/{dstChain}/protocol/{protocol}/signature' \
+  --header 'Content-Type: application/json' \
+  --data '{}'
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    "https://api.sprinter.tech/liquidity/v2/chain/{dstChain}/protocol/{protocol}/signature",
+    json={}
+)
+print(response.json())
+```
+
+```javascript JavaScript
+const response = await fetch(
+  "https://api.sprinter.tech/liquidity/v2/chain/{dstChain}/protocol/{protocol}/signature",
+  {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({}),
+  },
+);
+const data = await response.json();
+console.log(data);
+```
+
+```go Go
+package main
+
+import (
+	"bytes"
+	"fmt"
+	"io"
+	"net/http"
+)
+
+func main() {
+	resp, _ := http.Post(
+		"https://api.sprinter.tech/liquidity/v2/chain/{dstChain}/protocol/{protocol}/signature",
+		"application/json",
+		bytes.NewBuffer([]byte("{}")),
+	)
+	defer resp.Body.Close()
+	body, _ := io.ReadAll(resp.Body)
+	fmt.Println(string(body))
+}
+```
+
+</RequestExample>

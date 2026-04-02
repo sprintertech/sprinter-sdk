@@ -1,0 +1,70 @@
+---
+title: "Wrap into Earn Vault"
+sidebarTitle: "Wrap into Earn Vault"
+openapi: get /credit/earn/wrap
+---
+
+<Info>
+The `chain` parameter uses **CAIP-2 format**: `eip155:<chainId>`. For example, `eip155:8453` for Base. See [Supported Chains](/stash-credit-v2/overview#supported-chains) for the full list.
+</Info>
+
+<RequestExample>
+```bash cURL
+curl --request GET \
+  --url 'https://api.sprinter.tech/credit/earn/wrap'
+```
+
+```python Python
+import requests
+
+response = requests.get("https://api.sprinter.tech/credit/earn/wrap")
+print(response.json())
+```
+
+```javascript JavaScript
+const response = await fetch("https://api.sprinter.tech/credit/earn/wrap");
+const data = await response.json();
+console.log(data);
+```
+
+```go Go
+package main
+
+import (
+	"fmt"
+	"io"
+	"net/http"
+)
+
+func main() {
+	resp, _ := http.Get("https://api.sprinter.tech/credit/earn/wrap")
+	defer resp.Body.Close()
+	body, _ := io.ReadAll(resp.Body)
+	fmt.Println(string(body))
+}
+```
+
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "amountOut": "999850000000000000000",
+  "calls": [
+    {
+      "chain": "8453",
+      "to": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "data": "0x095ea7b3000000000000000000000000abcdef1234567890abcdef1234567890abcdef12",
+      "value": "0"
+    },
+    {
+      "chain": "8453",
+      "to": "0x1234567890abcdef1234567890abcdef12345678",
+      "data": "0x2e1a7d4d000000000000000000000000000000000000000000000000000000000005f5e100",
+      "value": "0"
+    }
+  ],
+  "tokenOut": "0xeE8F4eC5672F09119b96Ab6fB59C27E1b7e44b61"
+}
+```
+</ResponseExample>

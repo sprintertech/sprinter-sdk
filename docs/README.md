@@ -1,41 +1,26 @@
-# Website
+# Sprinter & Miso API Documentation
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+> **Initial draft** — This is the first pass at API documentation for the Sprinter and Miso ecosystem. Content is auto-generated from OpenAPI specs and source code. Expect refinements, additional examples, and expanded coverage in future updates.
 
-### Installation
+## What's Documented
 
-```
-$ yarn
-```
+| Service             | Source Repo                     | Type                                            |
+| ------------------- | ------------------------------- | ----------------------------------------------- |
+| **Miso API**        | `sprintertech/miso-api`         | REST API — user registration, cards, referrals  |
+| **Sprinter API**    | `sprintertech/sprinter-api`     | REST API — credit, liquidity, solver operations |
+| **Signing API**     | `sprintertech/sprinter-signing` | MPC threshold signing service                   |
+| **Stash Repayment** | `sprintertech/stash-repayment`  | Architecture overview (background worker)       |
 
-### Local Development
+## Development
 
-```
-$ yarn start
-```
+Requires Node 22 LTS (Node 25+ is not supported by Mintlify).
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
-
-### Build
-
-```
-$ yarn build
+```bash
+npx mintlify dev
 ```
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
+Preview at `http://localhost:3000`.
 
-### Deployment
+## Publishing
 
-Using SSH:
-
-```
-$ USE_SSH=true yarn deploy
-```
-
-Not using SSH:
-
-```
-$ GIT_USER=<Your GitHub username> yarn deploy
-```
-
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app) to auto-deploy on push to the default branch.

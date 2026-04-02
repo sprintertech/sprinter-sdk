@@ -1,0 +1,59 @@
+---
+title: "Get Operator Status"
+sidebarTitle: "Get Operator Status"
+openapi: get /credit/accounts/{account}/operator
+---
+
+<RequestExample>
+```bash cURL
+curl --request GET \
+  --url 'https://api.sprinter.tech/credit/accounts/0xUSER/operator'
+```
+
+```python Python
+import requests
+
+response = requests.get("https://api.sprinter.tech/credit/accounts/0xUSER/operator")
+print(response.json())
+```
+
+```javascript JavaScript
+const response = await fetch(
+  "https://api.sprinter.tech/credit/accounts/0xUSER/operator",
+);
+const data = await response.json();
+console.log(data);
+```
+
+```go Go
+package main
+
+import (
+	"fmt"
+	"io"
+	"net/http"
+)
+
+func main() {
+	resp, _ := http.Get("https://api.sprinter.tech/credit/accounts/0xUSER/operator")
+	defer resp.Body.Close()
+	body, _ := io.ReadAll(resp.Body)
+	fmt.Println(string(body))
+}
+```
+
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": {
+    "operator": "0x742d35Cc6634C0532925a3b844Bc9e7595f2bD18",
+    "receivers": [
+      "0xAbCdEf1234567890AbCdEf1234567890AbCdEf12",
+      "0x9876543210FeDcBa9876543210FeDcBa98765432"
+    ]
+  }
+}
+```
+</ResponseExample>

@@ -1,0 +1,75 @@
+---
+title: "Sprinter Credit"
+description: ""
+---
+
+## Overview
+
+Sprinter Credit is a programmable credit layer for individuals and agents. We don't just issue credit — we make credit _configurable_.
+
+The first version of Sprinter Credit (V1) provided zero-collateral credit for crosschain solvers and processed over $200m USD in volume within the first months. With V2 we take credit beyond solvers and bring the benefits of _programmable credit_ to neo finance and the agentic age.
+
+On a high-level, Sprinter Credit (V2) consists of the following components:
+
+1. **[Credit Engine](/stash-credit-v2/credit-engine)**
+   The core credit issuance and management system. Handles credit line creation, drawdowns, repayments, and liquidations across supported networks.
+2. **[Policy Engine](/stash-credit-v2/policy-engine)**
+   Credit policies enable Sprinter Credit to 1) provide favorable credit conditions and 2) enable users and applications to constrain usage of credit.
+3. **Liquidity Layer**
+   The Sprinter Credit Liquidity Layer provides the liquidity required for the credit engine. The Sprinter Credit Liquidity Hub & App allow Liquidity Providers to earn yield by providing capital.
+
+Sprinter Credit enables applications to get purpose-fit credit lines for their users:
+
+- Card Programmes fund card spend just-in-time, so users don't have to hold assets idle
+- Neobanks provide a DeFi-powered liquid savings account, so users can spend their assets while having them earn yield in DeFi
+- Agents access a human-delegated undercollateralized credit line to trade extended leverage on Hyperliquid
+
+## API Overview
+
+<CardGroup cols={3}>
+  <Card
+    title="Sprinter Credit (V2) API"
+    icon="bolt"
+    href="/api-reference/sprinter/credit/get-credit-protocol-configuration"
+  >
+    Full API reference with interactive playground.
+  </Card>
+</CardGroup>
+
+### Base URL
+
+```
+https://api.sprinter.tech
+```
+
+No authentication is required. All endpoints are open.
+
+### Supported Chains
+
+The Sprinter API uses **CAIP-2** identifiers for chain references. CAIP-2 (Chain Agnostic Improvement Proposal 2) is a standard format for identifying blockchains: `namespace:chainId` — for EVM chains this is `eip155:<chainId>`.
+
+You'll see CAIP-2 identifiers in API responses (e.g. the `chain` field in contract calls) and as path/query parameters in several endpoints.
+
+#### Card Spend (Overcollateralized Credit)
+
+| Chain    | CAIP-2 Identifier | Chain ID | Role                |
+| -------- | ----------------- | -------- | ------------------- |
+| Base     | `eip155:8453`     | 8453     | Credit + Collateral |
+| Ethereum | `eip155:1`        | 1        | Collateral          |
+
+#### Crosschain Intents (Zero-Collateral Credit)
+
+| Chain    | CAIP-2 Identifier | Chain ID |
+| -------- | ----------------- | -------- |
+| Base     | `eip155:8453`     | 8453     |
+| Ethereum | `eip155:1`        | 1        |
+| Arbitrum | `eip155:42161`    | 42161    |
+| Optimism | `eip155:10`       | 10       |
+| Unichain | `eip155:130`      | 130      |
+
+<Tip>
+  You can always fetch the current list of supported chains and their collateral
+  configurations from the [`GET
+  /credit/protocol`](/api-reference/sprinter/credit/get-credit-protocol-configuration)
+  endpoint.
+</Tip>

@@ -1,0 +1,59 @@
+---
+title: "Request Unlock Signature"
+description: "POST /v1/chains/{chainId}/unlocks"
+---
+
+Request an MPC unlock signature. This is a synchronous call with a 15-second timeout — the signature is returned directly in the response body.
+
+Currently only supports the `lifi-escrow` protocol.
+
+## Request
+
+```bash
+curl -X POST https://api.getmiso.fi/v1/chains/8453/unlocks \
+  -H "Content-Type: application/json" \
+  -d '{
+    "protocol": "lifi-escrow",
+    "orderId": "0xabc123...",
+    "settler": "0x1234567890abcdef1234567890abcdef12345678"
+  }'
+```
+
+## Path Parameters
+
+| Parameter | Type     | Description                  |
+| --------- | -------- | ---------------------------- |
+| `chainId` | `uint64` | Chain ID (must be supported) |
+
+## Request Body
+
+```go
+type UnlockBody struct {
+    Protocol ProtocolType `json:"protocol"`  // Currently only "lifi-escrow"
+    OrderID  string       `json:"orderId"`   // Order ID to unlock
+    Settler  string       `json:"settler"`   // Settler contract address
+}
+```
+
+## Response
+
+```json
+{
+  "signature": "a1b2c3d4e5f6...",
+  "id": "unlock-123"
+}
+```
+
+```go
+type UnlockResponse struct {
+    Signature string `json:"signature"`  // Hex-encoded ECDSA signature
+    ID        string `json:"id"`         // Unlock identifier
+}
+```
+
+## Errors
+
+| Status | Description                                        |
+| ------ | -------------------------------------------------- |
+| `400`  | Invalid request body or unsupported chain/protocol |
+| `500`  | Signing timeout (15s) or invalid signature         |

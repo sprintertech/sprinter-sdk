@@ -1,0 +1,65 @@
+---
+title: "Stash Repayment Service"
+description: "Automated cross-chain repayment and bridging worker"
+---
+
+The stash-repayment service is a long-running background worker that automates cross-chain loan repayment. It is **not** an API — it only exposes a `/metrics` endpoint for Prometheus.
+
+## Flow Overview
+
+Execution runs in two sequential phases per chain:
+
+### Phase 1: Repayment
+
+```
+unlock() → balance() → debt() → repay()
+```
+
+1. **unlock** — Unlock protocol-specific assets
+2. **balance** — Get solver token balances
+3. **debt** — Query outstanding debts per solver
+4. **repay** — Repay using available funds (lower threshold if pool borrowing is paused)
+
+### Phase 2: Bridging
+
+```
+balance() → debt() → bridge()
+```
+
+1. **balance** — Check repayer contract balance
+2. **debt** — Check updated solver debts
+3. **bridge** — Generate and execute bridging transactions:
+   - Same-chain transfers prioritized
+   - Bridge amount = debt amount
+   - Surplus (profit) included in bridging txs
+   - Lower threshold if destination pool has borrowing paused
+
+## Bridge Providers
+
+| ID    | Provider           |
+| ----- | ------------------ |
+| `0`   | LOCAL (same-chain) |
+| `1`   | CCTP               |
+| `2`   | ACROSS             |
+| `4`   | EVERCLEAR          |
+| `254` | MAYAN              |
+
+## External Dependencies
+
+| Service                            | Purpose                    |
+| ---------------------------------- | -------------------------- |
+| Sprinter API (`api.sprinter.tech`) | Stash debt/balance queries |
+| LiFi                               | Token swaps                |
+| CoinMarketCap                      | Token pricing              |
+| CCTP / Across / Everclear / Mayan  | Cross-chain bridging       |
+
+## Key Configuration
+
+| Variable               | Default | Description                        |
+| ---------------------- | ------- | ---------------------------------- |
+| `REPAYMENT_MINS`       | `5`     | Minutes between repayment cycles   |
+| `REPAYMENT_THRESHOLD`  | `$100`  | Min USD for repayment              |
+| `BRIDGING_MINS`        | `60`    | Minutes between bridging cycles    |
+| `BRIDGING_THRESHOLD`   | `$0.10` | Min USD for bridging               |
+| `BRIDGING_MAX_FEE_PCT` | `5%`    | Max acceptable bridge fee          |
+| `LIQUIDATION_MINS`     | `5`     | Minutes between liquidation checks |

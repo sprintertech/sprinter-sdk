@@ -1,0 +1,43 @@
+---
+title: "Miso API - Get User Cards"
+sidebarTitle: "Get User Cards"
+openapi: get /miso/cards
+---
+
+<RequestExample>
+```bash cURL
+curl --request GET \
+  --url 'https://api.getmiso.fi/miso/cards'
+```
+
+```python Python
+import requests
+
+response = requests.get("https://api.getmiso.fi/miso/cards")
+print(response.json())
+```
+
+```javascript JavaScript
+const response = await fetch("https://api.getmiso.fi/miso/cards");
+const data = await response.json();
+console.log(data);
+```
+
+```go Go
+package main
+
+import (
+	"fmt"
+	"io"
+	"net/http"
+)
+
+func main() {
+	resp, _ := http.Get("https://api.getmiso.fi/miso/cards")
+	defer resp.Body.Close()
+	body, _ := io.ReadAll(resp.Body)
+	fmt.Println(string(body))
+}
+```
+
+</RequestExample>

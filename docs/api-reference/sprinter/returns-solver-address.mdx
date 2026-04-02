@@ -1,0 +1,45 @@
+---
+title: "Returns Solver Address"
+sidebarTitle: "Returns Solver Address"
+openapi: get /protocol/{protocol}/solver
+---
+
+<RequestExample>
+```bash cURL
+curl --request GET \
+  --url 'https://api.sprinter.tech/protocol/{protocol}/solver'
+```
+
+```python Python
+import requests
+
+response = requests.get("https://api.sprinter.tech/protocol/{protocol}/solver")
+print(response.json())
+```
+
+```javascript JavaScript
+const response = await fetch(
+  "https://api.sprinter.tech/protocol/{protocol}/solver",
+);
+const data = await response.json();
+console.log(data);
+```
+
+```go Go
+package main
+
+import (
+	"fmt"
+	"io"
+	"net/http"
+)
+
+func main() {
+	resp, _ := http.Get("https://api.sprinter.tech/protocol/{protocol}/solver")
+	defer resp.Body.Close()
+	body, _ := io.ReadAll(resp.Body)
+	fmt.Println(string(body))
+}
+```
+
+</RequestExample>

@@ -1,0 +1,66 @@
+---
+title: "Get Credit Account Info"
+sidebarTitle: "Get Credit Account Info"
+openapi: get /credit/accounts/{account}/info
+---
+
+<RequestExample>
+```bash cURL
+curl --request GET \
+  --url 'https://api.sprinter.tech/credit/accounts/{account}/info'
+```
+
+```python Python
+import requests
+
+response = requests.get("https://api.sprinter.tech/credit/accounts/{account}/info")
+print(response.json())
+```
+
+```javascript JavaScript
+const response = await fetch(
+  "https://api.sprinter.tech/credit/accounts/{account}/info",
+);
+const data = await response.json();
+console.log(data);
+```
+
+```go Go
+package main
+
+import (
+	"fmt"
+	"io"
+	"net/http"
+)
+
+func main() {
+	resp, _ := http.Get("https://api.sprinter.tech/credit/accounts/{account}/info")
+	defer resp.Body.Close()
+	body, _ := io.ReadAll(resp.Body)
+	fmt.Println(string(body))
+}
+```
+
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "data": {
+    "USDC": {
+      "debt": "750.25",
+      "dueDate": "2025-07-15T23:59:59Z",
+      "healthFactor": "1.85",
+      "interest": "12.34",
+      "liquidationLimit": "900.00",
+      "mHealthFactor": "1.10",
+      "principal": "737.91",
+      "remainingCreditCapacity": "1249.75",
+      "totalCollateralValue": "2500.00",
+      "totalCreditCapacity": "2000.00"
+    }
+  }
+}
+```
+</ResponseExample>
