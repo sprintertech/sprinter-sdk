@@ -5,11 +5,11 @@ description: "Margin Period of Risk (MPOR)-driven risk framework protecting LPs 
 
 ## Why Risk Management Matters
 
-Stash extends credit against on-chain collateral — vault positions, raw assets, yield-bearing tokens. The primary goal of the risk framework is to protect LPs (the capital providers behind every credit line) from shortfall: a situation where liquidated collateral recovers less than the outstanding debt. Every parameter in the system — LTVs, maintenance thresholds, concentration caps — exists to make that outcome unlikely and bounded.
+Sprinter extends credit against on-chain collateral — vault positions, raw assets, yield-bearing tokens. The primary goal of the risk framework is to protect LPs (the capital providers behind every credit line) from shortfall: a situation where liquidated collateral recovers less than the outstanding debt. Every parameter in the system — LTVs, maintenance thresholds, concentration caps — exists to make that outcome unlikely and bounded.
 
 ## The Approach: MPOR-Driven Parameters
 
-Stash derives its risk parameters from a single core measurement: **Margin Period of Risk (MPOR)** — the total time it takes to detect an undercollateralised position, trigger liquidation, and convert that collateral back to USDC. The longer that window, the more price can move against the position, and the more buffer is needed.
+Sprinter derives its risk parameters from a single core measurement: **Margin Period of Risk (MPOR)** — the total time it takes to detect an undercollateralised position, trigger liquidation, and convert that collateral back to USDC. The longer that window, the more price can move against the position, and the more buffer is needed.
 
 LTV is an output of that measurement:
 
@@ -48,4 +48,4 @@ Multi-layer caps prevent a single failure from being catastrophic:
 
 ## Getting Your Collateral Accepted
 
-Stash uses a structured vault onboarding process to assess new collateral assets. The assessment covers audit history, oracle availability, MPOR measurement, liquidation market depth, and concentration impact. It typically takes 1–2 weeks.
+Sprinter uses a structured vault onboarding process to assess new collateral assets. The assessment covers audit history, oracle availability, MPOR measurement, liquidation market depth, and concentration impact. It typically takes 1–2 weeks.
