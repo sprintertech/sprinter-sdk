@@ -109,32 +109,6 @@
       ]
     },
     {
-      "group": "Health",
-      "pages": [
-        "api-reference/miso/health-check"
-      ]
-    },
-    {
-      "group": "User & Registration",
-      "pages": [
-        "api-reference/miso/miso/check-username-availability",
-        "api-reference/miso/miso/validate-referral-code",
-        "api-reference/miso/miso/register-a-new-user",
-        "api-reference/miso/miso/get-user-profile"
-      ]
-    },
-    {
-      "group": "Cards",
-      "pages": [
-        "api-reference/miso/miso/get-user-cards",
-        "api-reference/miso/miso/create-a-new-card",
-        "api-reference/miso/miso/rename-a-card",
-        "api-reference/miso/miso/delete-a-card",
-        "api-reference/miso/miso/initiate-tuyo-oauth-flow",
-        "api-reference/miso/miso/complete-tuyo-oauth-flow"
-      ]
-    },
-    {
       "group": "Stash V1 API",
       "pages": [
         "api-reference/stash/liquidity/get-the-borrow-quote-for-a-liquidity-transaction",
@@ -143,7 +117,6 @@
     }
   ],
   "openapi": [
-    "api-reference/miso/openapi.json",
     "api-reference/sprinter/openapi.json",
     "api-reference/stash/openapi.json"
   ],
