@@ -4,6 +4,10 @@ sidebarTitle: "Wrap into Earn Vault"
 openapi: get /credit/earn/wrap
 ---
 
+<Info>
+The `chain` parameter uses **CAIP-2 format**: `eip155:<chainId>`. For example, `eip155:8453` for Base. See [Supported Chains](/stash-credit-v2/overview#supported-chains) for the full list.
+</Info>
+
 <RequestExample>
 ```bash cURL
 curl --request GET \

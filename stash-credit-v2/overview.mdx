@@ -22,6 +22,33 @@ Sprinter Credit enables applications to get purpose-fit credit lines for their u
 - Neobanks provide a DeFi-powered liquid savings account, so users can spend their assets while having them earn yield in DeFi
 - Agents access a human-delegated undercollateralized credit line to trade extended leverage on Hyperliquid
 
+## Supported Chains
+
+The Sprinter API uses **CAIP-2** identifiers for chain references. CAIP-2 (Chain Agnostic Improvement Proposal 2) is a standard format for identifying blockchains: `namespace:chainId` — for EVM chains this is `eip155:<chainId>`.
+
+You'll see CAIP-2 identifiers in API responses (e.g. the `chain` field in contract calls) and as path/query parameters in several endpoints.
+
+### Card Spend (Overcollateralized Credit)
+
+| Chain | CAIP-2 Identifier | Chain ID | Role |
+|-------|-------------------|----------|------|
+| Base | `eip155:8453` | 8453 | Credit + Collateral |
+| Ethereum | `eip155:1` | 1 | Collateral |
+
+### Crosschain Intents (Zero-Collateral Credit)
+
+| Chain | CAIP-2 Identifier | Chain ID |
+|-------|-------------------|----------|
+| Base | `eip155:8453` | 8453 |
+| Ethereum | `eip155:1` | 1 |
+| Arbitrum | `eip155:42161` | 42161 |
+| Optimism | `eip155:10` | 10 |
+| Unichain | `eip155:130` | 130 |
+
+<Tip>
+You can always fetch the current list of supported chains and their collateral configurations from the [`GET /credit/protocol`](/api-reference/sprinter/credit/get-credit-protocol-configuration) endpoint.
+</Tip>
+
 ## Explore the API
 
 <CardGroup cols={3}>

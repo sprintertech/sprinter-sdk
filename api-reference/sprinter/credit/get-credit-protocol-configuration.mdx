@@ -4,6 +4,10 @@ sidebarTitle: "Get Protocol Configuration"
 openapi: get /credit/protocol
 ---
 
+<Info>
+Chains are identified using **CAIP-2 format**: `eip155:<chainId>`. For example, `eip155:8453` is Base and `eip155:1` is Ethereum. See [Supported Chains](/stash-credit-v2/overview#supported-chains) for the full list.
+</Info>
+
 <RequestExample>
 ```bash cURL
 curl --request GET \
