@@ -1,15 +1,10 @@
-# Sprinter & Miso API Documentation
-
-> **Initial draft** — This is the first pass at API documentation for the Sprinter and Miso ecosystem. Content is auto-generated from OpenAPI specs and source code. Expect refinements, additional examples, and expanded coverage in future updates.
+# Sprinter API Documentation
 
 ## What's Documented
 
 | Service             | Source Repo                     | Type                                            |
 | ------------------- | ------------------------------- | ----------------------------------------------- |
-| **Miso API**        | `sprintertech/miso-api`         | REST API — user registration, cards, referrals  |
 | **Sprinter API**    | `sprintertech/sprinter-api`     | REST API — credit, liquidity, solver operations |
-| **Signing API**     | `sprintertech/sprinter-signing` | MPC threshold signing service                   |
-| **Stash Repayment** | `sprintertech/stash-repayment`  | Architecture overview (background worker)       |
 
 ## Development
 
