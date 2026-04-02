@@ -1,11 +1,11 @@
 ---
 title: "Credit Engine"
-description: "How the Stash Credit Engine handles credit line creation, drawdowns, repayments, and liquidations"
+description: "How the Sprinter Credit Engine handles credit line creation, drawdowns, repayments, and liquidations"
 ---
 
 ## Introduction
 
-The Stash Credit Engine handles credit line creation, drawdowns, repayments, and liquidations. Key features include:
+The Sprinter Credit Engine handles credit line creation, drawdowns, repayments, and liquidations. Key features include:
 
 **Flexible terms** — Overcollateralized or undercollateralized, fixed-rate or variable, short-term or rolling. The credit parameters adapt to the use case, not the other way around.
 
@@ -15,7 +15,7 @@ The Stash Credit Engine handles credit line creation, drawdowns, repayments, and
 
 ## Credit Configurations
 
-Stash uses credit configurations to structure different forms of credit. Creating a new credit configuration is currently a permissioned process — if you need purpose-fit credit for your app, we'd love to hear from you!
+Sprinter uses credit configurations to structure different forms of credit. Creating a new credit configuration is currently a permissioned process — if you need purpose-fit credit for your app, we'd love to hear from you!
 
 |                   | Card Spend              | Crosschain Intents                           |
 | ----------------- | ----------------------- | -------------------------------------------- |
@@ -56,7 +56,7 @@ Sprinter Credit provides one unified credit line — and in the case of collater
 
 ## Position Health, LTVs and Liquidations
 
-Stash constantly monitors the health of all credit positions according to the defined credit configuration. In the case of collateralized credit, the collateral value is tracked continuously for changes.
+Sprinter constantly monitors the health of all credit positions according to the defined credit configuration. In the case of collateralized credit, the collateral value is tracked continuously for changes.
 
 **Loan-to-Value (LTV)**
 
@@ -90,4 +90,4 @@ A Health Factor above 1.0 means the position is safe. Below 1.0, the protocol ca
 
 **Liquidations**
 
-When a position becomes eligible for liquidation, Stash liquidates only as much collateral as needed to bring the Health Factor back above 1.0 — partial liquidations wherever possible. Liquidators who perform the liquidation receive a 5% bonus on the collateral they claim.
+When a position becomes eligible for liquidation, Sprinter liquidates only as much collateral as needed to bring the Health Factor back above 1.0 — partial liquidations wherever possible. Liquidators who perform the liquidation receive a 5% bonus on the collateral they claim.
