@@ -7,14 +7,16 @@ description: "Power Kast's collateral-backed Visa card with just-in-time credit 
 
 [Kast](https://www.kast.xyz) is a stablecoin-powered Visa card platform where users post crypto collateral to unlock a spending limit. With Sprinter Credit, Kast can replace static collateral custody with a programmable credit line — collateral earns yield in DeFi while the card is active, and USDC is drawn just-in-time at each card swipe.
 
+<div style={{ paddingRight: "120px" }}>
+```mermaid
+flowchart TD
+  A[User locks collateral via Sprinter] --> B[Credit line activated on Kast]
+  B --> C[Visa card swipe]
+  C --> D[Kast backend draws USDC via Sprinter API]
+  D --> E[Third National settles with Visa]
+  E --> F[User repays at end of billing cycle]
 ```
-User locks collateral via Sprinter
-  → Credit line activated on Kast
-    → Visa card swipe
-      → Kast backend draws USDC via Sprinter API
-        → Third National settles with Visa
-          → User repays at end of billing cycle
-```
+</div>
 
 ## Why Sprinter Credit for Kast
 
