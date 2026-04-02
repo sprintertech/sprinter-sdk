@@ -3,6 +3,8 @@ title: "Yield-Optimized Collateral Manager"
 description: "Agent skill that rebalances collateral across earn vaults to maximize yield while maintaining credit position health"
 ---
 
+## Overview
+
 This agent skill manages which earn vaults a user's collateral sits in, automatically rebalancing to maximize yield while keeping the credit line active and healthy.
 
 - **Compares vault yields** across supported strategies
@@ -239,12 +241,12 @@ curl -X GET https://api.sprinter.tech/credit/protocol
 
 The `strategies` field in the response contains available earn vaults with their IDs — use these as the `earn` param when calling `/lock`.
 
-See [Risk Management](/stash-credit-v2/risk-management) for the full collateral tier table and LTV details per vault type.
+See [Risk Management](/sprinter-credit/risk-management) for the full collateral tier table and LTV details per vault type.
 
 ## Related
 
 <CardGroup cols={3}>
-  <Card title="Credit Engine" icon="gear" href="/stash-credit-v2/credit-engine">
+  <Card title="Credit Engine" icon="gear" href="/sprinter-credit/credit-engine">
     How collateral value and LTVs affect your credit line.
   </Card>
   <Card title="Health Monitor" icon="heart-pulse" href="/quickstart/agent-skills/health-monitor">

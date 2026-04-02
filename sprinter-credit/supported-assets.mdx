@@ -9,7 +9,7 @@ Sprinter Credit supports a range of collateral assets and earn strategies. This 
 
 ## Supported Collateral
 
-Collateral can be locked to open an overcollateralized credit line. Each asset has its own LTV based on its risk profile and liquidation characteristics — see [Risk Management](/stash-credit-v2/risk-management) for how these are derived.
+Collateral can be locked to open an overcollateralized credit line. Each asset has its own LTV based on its risk profile and liquidation characteristics — see [Risk Management](/sprinter-credit/risk-management) for how these are derived.
 
 ### Currently Live
 
@@ -25,7 +25,7 @@ LTV values are returned by the API as basis points (e.g. `9000` = 90%). A `null`
 
 ### Collateral Tier Reference
 
-All supported collateral falls into one of these tiers. LTV and maintenance thresholds are set per tier based on the [MPOR-driven risk framework](/stash-credit-v2/risk-management#the-approach-mpor-driven-parameters).
+All supported collateral falls into one of these tiers. LTV and maintenance thresholds are set per tier based on the [MPOR-driven risk framework](/sprinter-credit/risk-management#the-approach-mpor-driven-parameters).
 
 | Tier | Examples | LTV | Maintenance LTV | Liquidation Bonus |
 |---|---|:---:|:---:|:---:|
@@ -37,7 +37,7 @@ All supported collateral falls into one of these tiers. LTV and maintenance thre
 | Volatile vault | yoETH | 65% | 75% | 6% |
 
 <Tip>
-New collateral assets can be onboarded through a structured assessment process covering audit history, oracle availability, and liquidation depth. See [Getting Your Collateral Accepted](/stash-credit-v2/risk-management#getting-your-collateral-accepted).
+New collateral assets can be onboarded through a structured assessment process covering audit history, oracle availability, and liquidation depth. See [Getting Your Collateral Accepted](/sprinter-credit/risk-management#getting-your-collateral-accepted).
 </Tip>
 
 ## Earn Strategies
@@ -87,10 +87,10 @@ See the [API reference](/api-reference/sprinter/credit/get-credit-protocol-confi
 ## Related
 
 <CardGroup cols={3}>
-  <Card title="Risk Management" icon="shield-halved" href="/stash-credit-v2/risk-management">
+  <Card title="Risk Management" icon="shield-halved" href="/sprinter-credit/risk-management">
     MPOR framework, collateral tiers, and concentration limits.
   </Card>
-  <Card title="Credit Engine" icon="gear" href="/stash-credit-v2/credit-engine">
+  <Card title="Credit Engine" icon="gear" href="/sprinter-credit/credit-engine">
     LTV mechanics, health factor, and liquidations.
   </Card>
   <Card title="Protocol Config API" icon="bolt" href="/api-reference/sprinter/credit/get-credit-protocol-configuration">

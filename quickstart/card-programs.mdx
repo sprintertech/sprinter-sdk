@@ -75,7 +75,7 @@ This example uses [Rain](https://www.rain.xyz) as the card issuer, but the patte
     }
     ```
 
-    See [Credit Engine](/stash-credit-v2/credit-engine) for how health factor and LTVs work.
+    See [Credit Engine](/sprinter-credit/credit-engine) for how health factor and LTVs work.
   </Step>
 
   <Step title="Draw Credit">
@@ -94,7 +94,7 @@ This example uses [Rain](https://www.rain.xyz) as the card issuer, but the patte
     Returns `{ calls: ContractCall[] }` — execute on-chain to deliver USDC to the receiver.
 
     <Info>
-    A **0.50% origination fee** is deducted from each draw. See [Fees](/stash-credit-v2/credit-engine#fees) for the full fee schedule.
+    A **0.50% origination fee** is deducted from each draw. See [Fees](/sprinter-credit/credit-engine#fees) for the full fee schedule.
     </Info>
 
     For card programs, you'll call `/draw` from your authorization webhook handler to fund each card swipe in real time:
@@ -105,7 +105,7 @@ This example uses [Rain](https://www.rain.xyz) as the card issuer, but the patte
   </Step>
 
   <Step title="Repayment">
-    Credit runs on a 30-day billing cycle with a 7-day grace period. Repay before the due date to avoid the **15% overdue APR**. See [Fees](/stash-credit-v2/credit-engine#fees).
+    Credit runs on a 30-day billing cycle with a 7-day grace period. Repay before the due date to avoid the **15% overdue APR**. See [Fees](/sprinter-credit/credit-engine#fees).
 
     <Tabs>
       <Tab title="Check Balance Owed">
@@ -181,7 +181,7 @@ Card authorizations must complete in ~2 seconds without user interaction. Your b
     Always decline if the draw cannot be confirmed on-chain. A declined swipe is recoverable; an unauthorized spend is not.
   </Accordion>
   <Accordion title="Health Monitoring" icon="heart-pulse">
-    Poll `healthFactor` from the info endpoint and surface alerts in your UI. See [Risk Management](/stash-credit-v2/risk-management) for liquidation thresholds and collateral tiers.
+    Poll `healthFactor` from the info endpoint and surface alerts in your UI. See [Risk Management](/sprinter-credit/risk-management) for liquidation thresholds and collateral tiers.
   </Accordion>
 </AccordionGroup>
 
@@ -200,10 +200,10 @@ You can also point an AI coding agent (like Claude) at the [Sprinter Credit API]
 ## Related
 
 <CardGroup cols={3}>
-  <Card title="Credit Engine" icon="gear" href="/stash-credit-v2/credit-engine">
+  <Card title="Credit Engine" icon="gear" href="/sprinter-credit/credit-engine">
     Health factor, LTVs, and liquidation mechanics.
   </Card>
-  <Card title="Risk Management" icon="shield-halved" href="/stash-credit-v2/risk-management">
+  <Card title="Risk Management" icon="shield-halved" href="/sprinter-credit/risk-management">
     Collateral tiers and concentration limits.
   </Card>
   <Card title="Credit API Reference" icon="bolt" href="/api-reference/sprinter/credit/get-credit-protocol-configuration">

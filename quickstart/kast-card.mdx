@@ -84,7 +84,7 @@ Kast's US card model already works on a collateral-backed credit basis — users
 
     Map `remainingCreditCapacity` to the Kast card spending limit. Poll this periodically to update the limit as collateral values change.
 
-    See [Credit Engine](/stash-credit-v2/credit-engine) for how health factor, LTVs, and liquidation thresholds work.
+    See [Credit Engine](/sprinter-credit/credit-engine) for how health factor, LTVs, and liquidation thresholds work.
   </Step>
 
   <Step title="Draw Credit on Card Swipe">
@@ -142,13 +142,13 @@ Kast's US card model already works on a collateral-backed credit basis — users
 
 <AccordionGroup>
   <Accordion title="Card Tiers & Credit Limits" icon="credit-card">
-    Kast offers Standard (2% rewards), Premium (5%), and Luxe (8%) tiers. Map Sprinter Credit configurations to each tier — higher tiers could have higher LTV ratios or access to more collateral types via the [Policy Engine](/stash-credit-v2/policy-engine).
+    Kast offers Standard (2% rewards), Premium (5%), and Luxe (8%) tiers. Map Sprinter Credit configurations to each tier — higher tiers could have higher LTV ratios or access to more collateral types via the [Policy Engine](/sprinter-credit/policy-engine).
   </Accordion>
   <Accordion title="Supported Stablecoins" icon="coins">
     Kast supports USDC, USDT, and USDe. Sprinter Credit currently uses USDC as the primary credit asset. Collateral can be deposited across Base, Ethereum, and Arbitrum — all chains Kast already supports for deposits.
   </Accordion>
   <Accordion title="Liquidation Alignment" icon="triangle-exclamation">
-    Kast's native model liquidates collateral if payment is 21 days past due or collateral value drops below outstanding charges. Align Sprinter's health factor thresholds with these rules — a health factor < 1.0 triggers partial liquidation in Sprinter. See [Credit Engine](/stash-credit-v2/credit-engine#position-health-ltvs-and-liquidations) for details.
+    Kast's native model liquidates collateral if payment is 21 days past due or collateral value drops below outstanding charges. Align Sprinter's health factor thresholds with these rules — a health factor < 1.0 triggers partial liquidation in Sprinter. See [Credit Engine](/sprinter-credit/credit-engine#position-health-ltvs-and-liquidations) for details.
   </Accordion>
   <Accordion title="Settlement via Third National" icon="building-columns">
     Kast uses Third National (Nimbus LLC) as the Visa card issuer. The `receiver` address in draw calls should point to the settlement address Third National expects for Visa network clearing.
@@ -176,10 +176,10 @@ The Sprinter Credit V2 API fully supports Kast's collateral-backed card model:
 ## Related
 
 <CardGroup cols={3}>
-  <Card title="Credit Engine" icon="gear" href="/stash-credit-v2/credit-engine">
+  <Card title="Credit Engine" icon="gear" href="/sprinter-credit/credit-engine">
     Health factor, LTVs, and liquidation mechanics.
   </Card>
-  <Card title="Policy Engine" icon="sliders" href="/stash-credit-v2/policy-engine">
+  <Card title="Policy Engine" icon="sliders" href="/sprinter-credit/policy-engine">
     Configure credit operators and guardrails per card tier.
   </Card>
   <Card title="Credit API Reference" icon="bolt" href="/api-reference/sprinter/credit/get-credit-protocol-configuration">
