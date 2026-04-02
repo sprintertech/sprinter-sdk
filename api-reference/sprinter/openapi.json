@@ -8,14 +8,6 @@
     "paths": {
         "/credit/accounts/{account}/draw": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    },
-                    {
-                        "BearerAuth": []
-                    }
-                ],
                 "description": "Returns the calls needed to draw credit. If the user has sufficient\nregistered collateral, the drawCredit call is returned.",
                 "tags": [
                     "Credit"
@@ -96,11 +88,6 @@
         },
         "/credit/accounts/{account}/info": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Returns credit details including collateral value, debt, health factor, interest, principal, and due date for a user account across all credit tokens",
                 "tags": [
                     "Credit"
@@ -154,11 +141,6 @@
         },
         "/credit/accounts/{account}/lock": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Creates list of contract calls to lock assets as collateral for credit account. Supports both underlying assets (e.g., USDC) which are wrapped into earn vault first, and earn positions (e.g., gtUSDCp) which are deposited directly.",
                 "tags": [
                     "Credit"
@@ -421,11 +403,6 @@
         },
         "/credit/accounts/{account}/repay": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Creates list of contract calls to approve USDC and repay debt to CreditHub",
                 "tags": [
                     "Credit"
@@ -487,11 +464,6 @@
         },
         "/credit/accounts/{account}/unlock": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Creates list of contract calls to unlock and withdraw\ncollateral and potentially unwrap position from earn vault",
                 "tags": [
                     "Credit"
@@ -570,11 +542,6 @@
         },
         "/credit/collateral/{chain}/{collateral}": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Returns detailed information about a collateral asset including APY estimate (if earn vault), price in USD, underlying asset, and earn service name",
                 "tags": [
                     "Credit"
@@ -653,11 +620,6 @@
         },
         "/credit/earn/claim": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Creates list of contract calls to Claim a position from an earn vault,\nconverting vault shares back to the underlying asset.",
                 "tags": [
                     "Credit"
@@ -751,11 +713,6 @@
         },
         "/credit/earn/unwrap": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Creates list of contract calls to unwrap a position from an earn vault,\nconverting vault shares back to the underlying asset.",
                 "tags": [
                     "Credit"
@@ -858,11 +815,6 @@
         },
         "/credit/earn/wrap": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Creates a list of contract calls (approve + deposit) to wrap an\nunderlying token into an earn vault and receive vault shares.",
                 "tags": [
                     "Credit"
@@ -955,11 +907,6 @@
         },
         "/credit/protocol": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Returns the credit protocol configuration including credit hubs and assets",
                 "tags": [
                     "Credit"
@@ -1009,11 +956,6 @@
         },
         "/liquidity/chain/{chainId}/tokens": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Returns a map of token symbols to token metadata supported by Stash on the specified chain.",
                 "tags": [
                     "Liquidity"
@@ -1056,11 +998,6 @@
         },
         "/liquidity/pools/events": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Opens a Server-Sent Events stream that pushes liquidity updates\nwhenever a reservation is created, replaced, or deleted.\nAll query parameters are optional filters.",
                 "tags": [
                     "Liquidity"
@@ -1118,11 +1055,6 @@
         },
         "/liquidity/pools/{poolType}": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Returns the pool address and available balance for the requested chain and token",
                 "tags": [
                     "Liquidity"
@@ -1203,11 +1135,6 @@
         },
         "/liquidity/protocol/{protocol}/fees": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Returns configured fee and min/max limits from solver config",
                 "tags": [
                     "Liquidity"
@@ -1296,11 +1223,6 @@
         },
         "/liquidity/v1/chain/{chain}/protocol/{protocol}/unlock": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "This endpoint returns signed authorization for an unlock transaction",
                 "tags": [
                     "Liquidity"
@@ -1373,11 +1295,6 @@
         },
         "/liquidity/v2/chain/{dstChain}/protocol/{protocol}/signature": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "This endpoint streams signed authorization for a liquidity transaction",
                 "tags": [
                     "Liquidity"
@@ -1450,11 +1367,6 @@
         },
         "/liquidity/v2/chain/{srcChain}/protocol/{protocol}/type/{type}/quote": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Calculates the borrow quote including borrow cost, required input/output, and duration",
                 "tags": [
                     "Liquidity"
@@ -1662,19 +1574,6 @@
         }
     },
     "components": {
-        "securitySchemes": {
-            "ApiKeyAuth": {
-                "type": "apiKey",
-                "name": "X-Auth-Token",
-                "in": "header"
-            },
-            "BearerAuth": {
-                "description": "Enter your Privy JWT token with the `Bearer ` prefix",
-                "type": "apiKey",
-                "name": "Authorization",
-                "in": "header"
-            }
-        },
         "schemas": {
             "config.ChainConfig": {
                 "type": "object",

@@ -20,19 +20,6 @@ flowchart TD
 This example uses [Rain](https://www.rain.xyz) as the card issuer, but the pattern applies to any card program with a webhook-based authorization flow.
 </Info>
 
-## Authentication
-
-All API calls require one of:
-
-| Method | Header |
-|---|---|
-| API Key | `X-Auth-Token: <key>` |
-| Privy JWT | `Authorization: Bearer <token>` |
-
-<Tip>
-Request credentials by dropping a Telegram DM to [@Sprinter_Intern_Bot](https://t.me/Sprinter_Intern_Bot) with `/request api key`
-</Tip>
-
 ## Integration Steps
 
 <Steps>
@@ -42,9 +29,7 @@ Request credentials by dropping a Telegram DM to [@Sprinter_Intern_Bot](https://
     First, fetch available earn strategies from the protocol config:
 
     ```bash
-    curl -X GET https://api.sprinter.tech/credit/protocol \
-      -H 'X-Auth-Token: YOUR_API_KEY'
-    ```
+    curl -X GET https://api.sprinter.tech/credit/protocol    ```
 
     This returns the credit configuration including a `strategies` field with available earn vaults and their IDs.
 
@@ -53,16 +38,12 @@ Request credentials by dropping a Telegram DM to [@Sprinter_Intern_Bot](https://
     <Tabs>
       <Tab title="Lock + Earn Vault">
         ```bash
-        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/lock?amount=1000000000000000000&asset=0xCOLLATERAL_TOKEN&earn=STRATEGY_ID' \
-          -H 'X-Auth-Token: YOUR_API_KEY'
-        ```
+        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/lock?amount=1000000000000000000&asset=0xCOLLATERAL_TOKEN&earn=STRATEGY_ID'        ```
         The `earn` parameter wraps the asset into a yield-bearing vault before locking — collateral earns while the credit line is active. Use a strategy ID from `/credit/protocol`.
       </Tab>
       <Tab title="Lock (No Vault)">
         ```bash
-        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/lock?amount=1000000000000000000&asset=0xCOLLATERAL_TOKEN' \
-          -H 'X-Auth-Token: YOUR_API_KEY'
-        ```
+        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/lock?amount=1000000000000000000&asset=0xCOLLATERAL_TOKEN'        ```
         Omit `earn` to lock the raw asset directly without wrapping into a vault.
       </Tab>
     </Tabs>
@@ -74,9 +55,7 @@ Request credentials by dropping a Telegram DM to [@Sprinter_Intern_Bot](https://
     Display `totalCollateralValue` (spendable credit) and `healthFactor` in your card UI.
 
     ```bash
-    curl -X GET https://api.sprinter.tech/credit/accounts/0xUSER/info \
-      -H 'X-Auth-Token: YOUR_API_KEY'
-    ```
+    curl -X GET https://api.sprinter.tech/credit/accounts/0xUSER/info    ```
 
     ```json
     {
@@ -99,9 +78,7 @@ Request credentials by dropping a Telegram DM to [@Sprinter_Intern_Bot](https://
     With collateral locked, you can draw credit (USDC) from the user's credit line. In a card program, this happens in your authorization webhook handler — but the `/draw` endpoint itself is a general-purpose credit draw, not specific to card authorizations.
 
     ```bash
-    curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/draw?amount=50000000&receiver=0xSETTLEMENT_ADDRESS' \
-      -H 'X-Auth-Token: YOUR_API_KEY'
-    ```
+    curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/draw?amount=50000000&receiver=0xSETTLEMENT_ADDRESS'    ```
 
     | Parameter | Description |
     |---|---|
@@ -124,16 +101,12 @@ Request credentials by dropping a Telegram DM to [@Sprinter_Intern_Bot](https://
     <Tabs>
       <Tab title="Check Balance Owed">
         ```bash
-        curl -X GET https://api.sprinter.tech/credit/accounts/0xUSER/info \
-          -H 'X-Auth-Token: YOUR_API_KEY'
-        # Returns: principal, interest, dueDate
+        curl -X GET https://api.sprinter.tech/credit/accounts/0xUSER/info        # Returns: principal, interest, dueDate
         ```
       </Tab>
       <Tab title="Build Repayment">
         ```bash
-        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/repay?amount=50000000' \
-          -H 'X-Auth-Token: YOUR_API_KEY'
-        ```
+        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/repay?amount=50000000'        ```
 
         Returns `{ calls: ContractCall[] }`. Anyone can repay on behalf of any account, so you can run an automated repayment service.
       </Tab>
@@ -144,9 +117,7 @@ Request credentials by dropping a Telegram DM to [@Sprinter_Intern_Bot](https://
     When a user closes their card and has zero outstanding debt:
 
     ```bash
-    curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/unlock?amount=1000000000000000000&asset=0xCOLLATERAL_TOKEN' \
-      -H 'X-Auth-Token: YOUR_API_KEY'
-    ```
+    curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/unlock?amount=1000000000000000000&asset=0xCOLLATERAL_TOKEN'    ```
 
     Returns `{ calls: ContractCall[] }`. Execute in the user's wallet to return collateral.
   </Step>

@@ -25,9 +25,7 @@ This agent skill manages which earn vaults a user's collateral sits in, automati
     The agent checks the user's credit position to ensure it's healthy enough to rebalance:
 
     ```bash
-    curl -X GET https://api.sprinter.tech/credit/accounts/0xUSER/info \
-      -H 'X-Auth-Token: YOUR_API_KEY'
-    ```
+    curl -X GET https://api.sprinter.tech/credit/accounts/0xUSER/info    ```
 
     The agent only proceeds if `healthFactor` > 1.5 — rebalancing temporarily changes the collateral composition, so a larger buffer is needed.
   </Step>
@@ -36,9 +34,7 @@ This agent skill manages which earn vaults a user's collateral sits in, automati
     The agent fetches the protocol config to get available earn strategies and their IDs:
 
     ```bash
-    curl -X GET https://api.sprinter.tech/credit/protocol \
-      -H 'X-Auth-Token: YOUR_API_KEY'
-    ```
+    curl -X GET https://api.sprinter.tech/credit/protocol    ```
 
     This returns the credit configuration including a `strategies` field with available earn vaults. The agent compares the user's current vault yield against alternatives.
   </Step>
@@ -49,17 +45,13 @@ This agent skill manages which earn vaults a user's collateral sits in, automati
     <Tabs>
       <Tab title="1. Unlock from Current Vault">
         ```bash
-        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/unlock?amount=1000000000000000000&asset=0xCOLLATERAL_TOKEN' \
-          -H 'X-Auth-Token: YOUR_API_KEY'
-        ```
+        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/unlock?amount=1000000000000000000&asset=0xCOLLATERAL_TOKEN'        ```
 
         Returns `{ calls: ContractCall[] }` — execute to unlock and unwrap from the current vault.
       </Tab>
       <Tab title="2. Lock into New Vault">
         ```bash
-        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/lock?amount=1000000000000000000&asset=0xCOLLATERAL_TOKEN&earn=NEW_STRATEGY_ID' \
-          -H 'X-Auth-Token: YOUR_API_KEY'
-        ```
+        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/lock?amount=1000000000000000000&asset=0xCOLLATERAL_TOKEN&earn=NEW_STRATEGY_ID'        ```
 
         Returns `{ calls: ContractCall[] }` — execute to wrap into the new vault and lock as collateral in one step.
       </Tab>
@@ -75,7 +67,6 @@ This agent skill manages which earn vaults a user's collateral sits in, automati
 
 ```typescript
 const SPRINTER_API = "https://api.sprinter.tech";
-const SPRINTER_API_KEY = process.env.SPRINTER_API_KEY!;
 const POLL_INTERVAL_MS = 60 * 60 * 1000; // 1 hour
 const MIN_HEALTH_FACTOR = 1.5; // higher threshold during rebalancing
 const MIN_YIELD_IMPROVEMENT = 0.5; // only rebalance if >= 0.5% APY improvement
@@ -94,17 +85,13 @@ interface VaultPosition {
 }
 
 async function getCreditInfo(account: string) {
-  const res = await fetch(`${SPRINTER_API}/credit/accounts/${account}/info`, {
-    headers: { "X-Auth-Token": SPRINTER_API_KEY },
-  });
+  const res = await fetch(`${SPRINTER_API}/credit/accounts/${account}/info`);
   if (!res.ok) throw new Error(`Credit info failed: ${res.status}`);
   return res.json();
 }
 
 async function getProtocolConfig() {
-  const res = await fetch(`${SPRINTER_API}/credit/protocol`, {
-    headers: { "X-Auth-Token": SPRINTER_API_KEY },
-  });
+  const res = await fetch(`${SPRINTER_API}/credit/protocol`);
   if (!res.ok) throw new Error(`Protocol config failed: ${res.status}`);
   return res.json();
 }
@@ -116,7 +103,6 @@ async function buildUnlockCalls(
 ): Promise<ContractCall[]> {
   const res = await fetch(
     `${SPRINTER_API}/credit/accounts/${account}/unlock?amount=${amount}&asset=${asset}`,
-    { headers: { "X-Auth-Token": SPRINTER_API_KEY } }
   );
   if (!res.ok) throw new Error(`Unlock calldata failed: ${res.status}`);
   const data = await res.json();
@@ -132,9 +118,7 @@ async function buildLockCalls(
   let url = `${SPRINTER_API}/credit/accounts/${account}/lock?amount=${amount}&asset=${asset}`;
   if (earn) url += `&earn=${earn}`;
 
-  const res = await fetch(url, {
-    headers: { "X-Auth-Token": SPRINTER_API_KEY },
-  });
+  const res = await fetch(url);
   if (!res.ok) throw new Error(`Lock calldata failed: ${res.status}`);
   const data = await res.json();
   return data.calls;
@@ -246,8 +230,7 @@ setInterval(() => {
 The agent can rebalance between any earn strategies returned by the protocol config:
 
 ```bash
-curl -X GET https://api.sprinter.tech/credit/protocol \
-  -H 'X-Auth-Token: YOUR_API_KEY'
+curl -X GET https://api.sprinter.tech/credit/protocol
 ```
 
 The `strategies` field in the response contains available earn vaults with their IDs — use these as the `earn` param when calling `/lock`.

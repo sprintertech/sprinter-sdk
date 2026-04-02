@@ -32,7 +32,6 @@ This example uses [Rain](https://www.rain.xyz) as the card issuer. Adapt signatu
     app.use(express.json({ verify: (req: any, _res, buf) => { req.rawBody = buf; } }));
 
     const SPRINTER_API = "https://api.sprinter.tech";
-    const SPRINTER_API_KEY = process.env.SPRINTER_API_KEY!;
     const RAIN_WEBHOOK_SECRET = process.env.RAIN_WEBHOOK_SECRET!;
     const SETTLEMENT_ADDRESS = process.env.SETTLEMENT_ADDRESS!;
     const RPC_URL = process.env.RPC_URL!;
@@ -80,9 +79,7 @@ This example uses [Rain](https://www.rain.xyz) as the card issuer. Adapt signatu
     }
 
     async function getCreditInfo(account: string): Promise<CreditInfo> {
-      const res = await fetch(`${SPRINTER_API}/credit/accounts/${account}/info`, {
-        headers: { "X-Auth-Token": SPRINTER_API_KEY },
-      });
+      const res = await fetch(`${SPRINTER_API}/credit/accounts/${account}/info`);
       if (!res.ok) throw new Error(`Credit info failed: ${res.status}`);
       return res.json();
     }
@@ -95,9 +92,7 @@ This example uses [Rain](https://www.rain.xyz) as the card issuer. Adapt signatu
       const url = new URL(`${SPRINTER_API}/credit/accounts/${account}/draw`);
       url.searchParams.set("amount", amountUsdc);
       url.searchParams.set("receiver", receiver);
-      const res = await fetch(url.toString(), {
-        headers: { "X-Auth-Token": SPRINTER_API_KEY },
-      });
+      const res = await fetch(url.toString());
       if (!res.ok) throw new Error(`Draw calldata failed: ${res.status}`);
       const data = await res.json();
       return data.calls;
@@ -244,7 +239,6 @@ Use a dedicated RPC node on Base. Public endpoints will exceed the time budget u
 
 | Variable | Description |
 |---|---|
-| `SPRINTER_API_KEY` | Sprinter Credit API key ([app.sprinter.tech](https://app.sprinter.tech)) |
 | `RAIN_WEBHOOK_SECRET` | Webhook signing secret from your card issuer |
 | `SETTLEMENT_ADDRESS` | Your card program's USDC settlement address on Base |
 | `RPC_URL` | Base RPC endpoint (dedicated node recommended) |

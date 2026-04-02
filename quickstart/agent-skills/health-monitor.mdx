@@ -24,9 +24,7 @@ This agent skill monitors a user's credit position and takes autonomous action t
     The agent periodically checks the user's credit position:
 
     ```bash
-    curl -X GET https://api.sprinter.tech/credit/accounts/0xUSER/info \
-      -H 'X-Auth-Token: YOUR_API_KEY'
-    ```
+    curl -X GET https://api.sprinter.tech/credit/accounts/0xUSER/info    ```
 
     ```json
     {
@@ -62,9 +60,7 @@ This agent skill monitors a user's credit position and takes autonomous action t
         When the due date is approaching, the agent repays the full outstanding balance:
 
         ```bash
-        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/repay?amount=2012500000' \
-          -H 'X-Auth-Token: YOUR_API_KEY'
-        ```
+        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/repay?amount=2012500000'        ```
 
         The `amount` is `principal + interest` in USDC lowest denomination (6 decimals). $2,012.50 = `2012500000`.
 
@@ -74,9 +70,7 @@ This agent skill monitors a user's credit position and takes autonomous action t
         When health factor is low, the agent locks additional collateral:
 
         ```bash
-        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/lock?amount=1000000000000000000&asset=0xCOLLATERAL_TOKEN' \
-          -H 'X-Auth-Token: YOUR_API_KEY'
-        ```
+        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/lock?amount=1000000000000000000&asset=0xCOLLATERAL_TOKEN'        ```
 
         Returns `{ calls: ContractCall[] }` — execute via the delegated signer.
       </Tab>
@@ -88,7 +82,6 @@ This agent skill monitors a user's credit position and takes autonomous action t
 
 ```typescript
 const SPRINTER_API = "https://api.sprinter.tech";
-const SPRINTER_API_KEY = process.env.SPRINTER_API_KEY!;
 const POLL_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
 const HEALTH_FACTOR_THRESHOLD = 1.3;
 const REPAY_DAYS_BEFORE_DUE = 3;
@@ -112,9 +105,7 @@ interface ContractCall {
 }
 
 async function getCreditInfo(account: string): Promise<CreditInfo> {
-  const res = await fetch(`${SPRINTER_API}/credit/accounts/${account}/info`, {
-    headers: { "X-Auth-Token": SPRINTER_API_KEY },
-  });
+  const res = await fetch(`${SPRINTER_API}/credit/accounts/${account}/info`);
   if (!res.ok) throw new Error(`Credit info failed: ${res.status}`);
   return res.json();
 }
@@ -122,7 +113,6 @@ async function getCreditInfo(account: string): Promise<CreditInfo> {
 async function buildRepayCalls(account: string, amount: string): Promise<ContractCall[]> {
   const res = await fetch(
     `${SPRINTER_API}/credit/accounts/${account}/repay?amount=${amount}`,
-    { headers: { "X-Auth-Token": SPRINTER_API_KEY } }
   );
   if (!res.ok) throw new Error(`Repay calldata failed: ${res.status}`);
   const data = await res.json();
@@ -136,7 +126,6 @@ async function buildLockCalls(
 ): Promise<ContractCall[]> {
   const res = await fetch(
     `${SPRINTER_API}/credit/accounts/${account}/lock?amount=${amount}&asset=${asset}`,
-    { headers: { "X-Auth-Token": SPRINTER_API_KEY } }
   );
   if (!res.ok) throw new Error(`Lock calldata failed: ${res.status}`);
   const data = await res.json();
