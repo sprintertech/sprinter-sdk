@@ -4,6 +4,10 @@ sidebarTitle: "Draw Credit"
 openapi: get /credit/accounts/{account}/draw
 ---
 
+<Info>
+A **0.50% origination fee** is deducted from each draw. See [Fees](/stash-credit-v2/credit-engine#fees) for details.
+</Info>
+
 <RequestExample>
 ```bash cURL
 curl --request GET \

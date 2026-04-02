@@ -1,0 +1,99 @@
+---
+title: "Supported Assets & Strategies"
+description: "Collateral assets, earn strategies, LTVs, and maintenance thresholds supported by Sprinter Credit"
+---
+
+## Overview
+
+Sprinter Credit supports a range of collateral assets and earn strategies. This page provides a quick reference for what's currently supported — you can always fetch the latest configuration programmatically via [`GET /credit/protocol`](/api-reference/sprinter/credit/get-credit-protocol-configuration).
+
+## Supported Collateral
+
+Collateral can be locked to open an overcollateralized credit line. Each asset has its own LTV based on its risk profile and liquidation characteristics — see [Risk Management](/stash-credit-v2/risk-management) for how these are derived.
+
+### Currently Live
+
+| Asset | Symbol | Chain | LTV | Maintenance LTV | Collateral Tier |
+|---|---|---|:---:|:---:|---|
+| USDC | `USDC` | Base | 90% | 94% | Raw stablecoin |
+| Gauntlet USDC Prime | `gtUSDCp` | Base | 75% | 82% | Stable vault |
+| Superform USDC | `superUSDC` | Base | — | — | USDC SuperVault |
+
+<Info>
+LTV values are returned by the API as basis points (e.g. `9000` = 90%). A `null` LTV means the asset is accepted as collateral but parameters are being finalized.
+</Info>
+
+### Collateral Tier Reference
+
+All supported collateral falls into one of these tiers. LTV and maintenance thresholds are set per tier based on the [MPOR-driven risk framework](/stash-credit-v2/risk-management#the-approach-mpor-driven-parameters).
+
+| Tier | Examples | LTV | Maintenance LTV | Liquidation Bonus |
+|---|---|:---:|:---:|:---:|
+| Raw stablecoin | USDC | 90% | 94% | 5% |
+| Stable vault | Gauntlet USDC Prime | 75% | 82% | 5% |
+| USDC SuperVault | Superform USDC | 85% | 90% | 6% |
+| Raw volatile | ETH, WBTC | 80% | 85% | 5% |
+| Volatile DEX-swap | stETH, cbETH | 75% | 82% | 5% |
+| Volatile vault | yoETH | 65% | 75% | 6% |
+
+<Tip>
+New collateral assets can be onboarded through a structured assessment process covering audit history, oracle availability, and liquidation depth. See [Getting Your Collateral Accepted](/stash-credit-v2/risk-management#getting-your-collateral-accepted).
+</Tip>
+
+## Earn Strategies
+
+Earn strategies allow collateral to generate yield while it backs a credit line. When locking collateral, pass the `earn` parameter to [`/lock`](/api-reference/sprinter/credit/calldata-to-lock-asset-as-collateral) to auto-wrap into a vault.
+
+### Currently Live
+
+| Strategy ID | Name | Protocol | Curator | Underlying | Chain | Vault Type | Risk Score |
+|---|---|---|---|---|---|---|:---:|
+| `gauntlet-usdc-prime` | Gauntlet USDC Prime | Morpho V1 | Gauntlet | USDC | Base | ERC-4626 | 5 |
+| `superform-usdc` | superUSDC | Superform | Superform | USDC | Base | ERC-7540 | 7 |
+
+Use the strategy ID as the `earn` parameter when locking collateral:
+
+```bash
+curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/lock?amount=1000000000&asset=0xCOLLATERAL&earn=gauntlet-usdc-prime'
+```
+
+<Info>
+Risk scores range from 0–10. Lower scores indicate lower risk. Strategy availability and yields change over time — always check [`GET /credit/protocol`](/api-reference/sprinter/credit/get-credit-protocol-configuration) for the current list.
+</Info>
+
+## Credit Asset
+
+Sprinter Credit currently issues credit in **USDC** on **Base** (`eip155:8453`).
+
+| Asset | Chain | Credit Hub Address |
+|---|---|---|
+| USDC | Base | `0xb5cf2A13E9aaE413E780379667274626fa9D49f6` |
+
+## Fetching Live Configuration
+
+All of the above is available programmatically:
+
+```bash
+curl -X GET https://api.sprinter.tech/credit/protocol
+```
+
+The response contains per-chain data including:
+- `collateral` — supported collateral assets with LTVs and escrow addresses
+- `strategies` — earn vault strategies with protocol, curator, and vault details
+- `creditHubs` — credit hub addresses and supported credit assets
+
+See the [API reference](/api-reference/sprinter/credit/get-credit-protocol-configuration) for the full response schema.
+
+## Related
+
+<CardGroup cols={3}>
+  <Card title="Risk Management" icon="shield-halved" href="/stash-credit-v2/risk-management">
+    MPOR framework, collateral tiers, and concentration limits.
+  </Card>
+  <Card title="Credit Engine" icon="gear" href="/stash-credit-v2/credit-engine">
+    LTV mechanics, health factor, and liquidations.
+  </Card>
+  <Card title="Protocol Config API" icon="bolt" href="/api-reference/sprinter/credit/get-credit-protocol-configuration">
+    Live protocol configuration endpoint.
+  </Card>
+</CardGroup>
