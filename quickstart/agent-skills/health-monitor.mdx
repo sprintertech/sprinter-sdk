@@ -24,7 +24,8 @@ This agent skill monitors a user's credit position and takes autonomous action t
     The agent periodically checks the user's credit position:
 
     ```bash
-    curl -X GET https://api.sprinter.tech/credit/accounts/0xUSER/info    ```
+    curl -X GET https://api.sprinter.tech/credit/accounts/0xUSER/info
+    ```
 
     ```json
     {
@@ -60,7 +61,8 @@ This agent skill monitors a user's credit position and takes autonomous action t
         When the due date is approaching, the agent repays the full outstanding balance:
 
         ```bash
-        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/repay?amount=2012500000'        ```
+        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/repay?amount=2012500000'
+        ```
 
         The `amount` is `principal + interest` in USDC lowest denomination (6 decimals). $2,012.50 = `2012500000`.
 
@@ -70,7 +72,8 @@ This agent skill monitors a user's credit position and takes autonomous action t
         When health factor is low, the agent locks additional collateral:
 
         ```bash
-        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/lock?amount=1000000000000000000&asset=0xCOLLATERAL_TOKEN'        ```
+        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/lock?amount=1000000000000000000&asset=0xCOLLATERAL_TOKEN'
+        ```
 
         Returns `{ calls: ContractCall[] }` — execute via the delegated signer.
       </Tab>

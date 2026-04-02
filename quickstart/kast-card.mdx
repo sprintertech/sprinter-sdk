@@ -36,19 +36,22 @@ Kast's US card model already works on a collateral-backed credit basis — users
     First, fetch available earn strategies so collateral earns yield while locked:
 
     ```bash
-    curl -X GET https://api.sprinter.tech/credit/protocol    ```
+    curl -X GET https://api.sprinter.tech/credit/protocol
+    ```
 
     Then lock collateral — the `earn` param auto-wraps into a yield-bearing vault:
 
     <Tabs>
       <Tab title="Lock + Earn Vault (Recommended)">
         ```bash
-        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/lock?amount=1000000000&asset=0xCOLLATERAL_TOKEN&earn=gauntlet-usdc-prime'        ```
+        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/lock?amount=1000000000&asset=0xCOLLATERAL_TOKEN&earn=gauntlet-usdc-prime'
+        ```
         Collateral earns yield in a Gauntlet or YO vault while the credit line is active. Use a strategy ID from `/credit/protocol`.
       </Tab>
       <Tab title="Lock (No Vault)">
         ```bash
-        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/lock?amount=1000000000&asset=0xCOLLATERAL_TOKEN'        ```
+        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/lock?amount=1000000000&asset=0xCOLLATERAL_TOKEN'
+        ```
         Lock the raw asset directly without vault wrapping.
       </Tab>
     </Tabs>
@@ -60,7 +63,8 @@ Kast's US card model already works on a collateral-backed credit basis — users
     Query the user's credit info to determine the Visa card spending limit:
 
     ```bash
-    curl -X GET https://api.sprinter.tech/credit/accounts/0xUSER/info    ```
+    curl -X GET https://api.sprinter.tech/credit/accounts/0xUSER/info
+    ```
 
     ```json
     {
@@ -87,7 +91,8 @@ Kast's US card model already works on a collateral-backed credit basis — users
     When a cardholder swipes their Kast Visa, Third National sends an authorization request. Your backend draws USDC from Sprinter to fund the settlement:
 
     ```bash
-    curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/draw?amount=50000000&receiver=0xKAST_SETTLEMENT'    ```
+    curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/draw?amount=50000000&receiver=0xKAST_SETTLEMENT'
+    ```
 
     | Parameter | Description |
     |---|---|
@@ -108,12 +113,14 @@ Kast's US card model already works on a collateral-backed credit basis — users
     <Tabs>
       <Tab title="Check Balance Owed">
         ```bash
-        curl -X GET https://api.sprinter.tech/credit/accounts/0xUSER/info        # Returns: principal, interest, dueDate
+        curl -X GET https://api.sprinter.tech/credit/accounts/0xUSER/info
+        # Returns: principal, interest, dueDate
         ```
       </Tab>
       <Tab title="Build Repayment">
         ```bash
-        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/repay?amount=50000000'        ```
+        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/repay?amount=50000000'
+        ```
 
         Returns `{ calls: ContractCall[] }`. Kast can run an automated repayment service — anyone can repay on behalf of any account.
       </Tab>
@@ -124,7 +131,8 @@ Kast's US card model already works on a collateral-backed credit basis — users
     When a user closes their Kast card or downgrades and has zero outstanding debt:
 
     ```bash
-    curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/unlock?amount=1000000000&asset=0xCOLLATERAL_TOKEN'    ```
+    curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/unlock?amount=1000000000&asset=0xCOLLATERAL_TOKEN'
+    ```
 
     Returns `{ calls: ContractCall[] }`. Collateral (plus any earned yield) is returned to the user's wallet.
   </Step>

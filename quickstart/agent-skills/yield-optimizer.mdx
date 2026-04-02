@@ -25,7 +25,8 @@ This agent skill manages which earn vaults a user's collateral sits in, automati
     The agent checks the user's credit position to ensure it's healthy enough to rebalance:
 
     ```bash
-    curl -X GET https://api.sprinter.tech/credit/accounts/0xUSER/info    ```
+    curl -X GET https://api.sprinter.tech/credit/accounts/0xUSER/info
+    ```
 
     The agent only proceeds if `healthFactor` > 1.5 — rebalancing temporarily changes the collateral composition, so a larger buffer is needed.
   </Step>
@@ -34,7 +35,8 @@ This agent skill manages which earn vaults a user's collateral sits in, automati
     The agent fetches the protocol config to get available earn strategies and their IDs:
 
     ```bash
-    curl -X GET https://api.sprinter.tech/credit/protocol    ```
+    curl -X GET https://api.sprinter.tech/credit/protocol
+    ```
 
     This returns the credit configuration including a `strategies` field with available earn vaults. The agent compares the user's current vault yield against alternatives.
   </Step>
@@ -45,13 +47,15 @@ This agent skill manages which earn vaults a user's collateral sits in, automati
     <Tabs>
       <Tab title="1. Unlock from Current Vault">
         ```bash
-        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/unlock?amount=1000000000000000000&asset=0xCOLLATERAL_TOKEN'        ```
+        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/unlock?amount=1000000000000000000&asset=0xCOLLATERAL_TOKEN'
+        ```
 
         Returns `{ calls: ContractCall[] }` — execute to unlock and unwrap from the current vault.
       </Tab>
       <Tab title="2. Lock into New Vault">
         ```bash
-        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/lock?amount=1000000000000000000&asset=0xCOLLATERAL_TOKEN&earn=NEW_STRATEGY_ID'        ```
+        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/lock?amount=1000000000000000000&asset=0xCOLLATERAL_TOKEN&earn=NEW_STRATEGY_ID'
+        ```
 
         Returns `{ calls: ContractCall[] }` — execute to wrap into the new vault and lock as collateral in one step.
       </Tab>
