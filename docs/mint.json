@@ -44,11 +44,11 @@
     {
       "group": "Sprinter Credit (V2)",
       "pages": [
-        "stash-credit-v2/overview",
-        "stash-credit-v2/credit-engine",
-        "stash-credit-v2/supported-assets",
-        "stash-credit-v2/policy-engine",
-        "stash-credit-v2/risk-management"
+        "sprinter-credit/overview",
+        "sprinter-credit/credit-engine",
+        "sprinter-credit/supported-assets",
+        "sprinter-credit/policy-engine",
+        "sprinter-credit/risk-management"
       ]
     },
     {
