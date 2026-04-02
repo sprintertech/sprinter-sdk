@@ -97,13 +97,6 @@
         "api-reference/sprinter/credit/unwrap-position-from-earn-vault",
         "api-reference/sprinter/credit/claim-position-from-earn-vault"
       ]
-    },
-    {
-      "group": "Stash V1 API",
-      "pages": [
-        "api-reference/stash/liquidity/get-the-borrow-quote-for-a-liquidity-transaction",
-        "api-reference/stash/liquidity/get-signing-authorization-for-a-liquidity-transaction"
-      ]
     }
   ],
   "openapi": [
