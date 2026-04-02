@@ -67,18 +67,11 @@
     },
     {
       "group": "Community",
-      "pages": [
-        "stash-points",
-        "governance",
-        "partnerships"
-      ]
+      "pages": ["stash-points", "governance", "partnerships"]
     },
     {
       "group": "Resources",
-      "pages": [
-        "resources/audits",
-        "resources/glossary"
-      ]
+      "pages": ["resources/audits", "resources/glossary"]
     },
     {
       "group": "Credit — Info",

@@ -8,18 +8,15 @@ description: "Replace prefunded card balances with just-in-time credit draws via
 Card programs typically require users to deposit USDC upfront to fund their card. With Sprinter Credit, users lock DeFi collateral instead — and credit is drawn automatically at the moment of each card authorization.
 
 <div style={{ display: "flex", justifyContent: "center" }}>
-```mermaid
-flowchart TD
-  A[User locks collateral] --> B[Credit line activated]
-  B --> C[Card swipe triggers webhook]
-  C --> D[Backend draws USDC via Sprinter API]
-  D --> E[Card network settles]
-  E --> F[User repays at end of billing cycle]
-```
+  ```mermaid flowchart TD A[User locks collateral] --> B[Credit line activated]
+  B --> C[Card swipe triggers webhook] C --> D[Backend draws USDC via Sprinter
+  API] D --> E[Card network settles] E --> F[User repays at end of billing
+  cycle] ```
 </div>
 
 <Info>
-This example uses [Rain](https://www.rain.xyz) as the card issuer, but the pattern applies to any card program with a webhook-based authorization flow.
+  This example uses [Rain](https://www.rain.xyz) as the card issuer, but the
+  pattern applies to any card program with a webhook-based authorization flow.
 </Info>
 
 ## Integration Steps
@@ -54,6 +51,7 @@ This example uses [Rain](https://www.rain.xyz) as the card issuer, but the patte
     </Tabs>
 
     Returns `{ calls: ContractCall[] }` — execute in the user's wallet. Once locked, the credit line is active.
+
   </Step>
 
   <Step title="Check Available Credit">
@@ -78,6 +76,7 @@ This example uses [Rain](https://www.rain.xyz) as the card issuer, but the patte
     ```
 
     See [Credit Engine](/stash-credit-v2/credit-engine) for how health factor and LTVs work.
+
   </Step>
 
   <Step title="Draw Credit">
@@ -100,6 +99,7 @@ This example uses [Rain](https://www.rain.xyz) as the card issuer, but the patte
     <Card title="Authorization Webhook Handler" icon="code" href="/quickstart/card-programs/authorization-webhook">
       Complete TypeScript implementation showing how to wire `/draw` into a card authorization flow with signature validation, credit checks, and sub-2-second execution.
     </Card>
+
   </Step>
 
   <Step title="Repayment">
@@ -120,6 +120,7 @@ This example uses [Rain](https://www.rain.xyz) as the card issuer, but the patte
         Returns `{ calls: ContractCall[] }`. Anyone can repay on behalf of any account, so you can run an automated repayment service.
       </Tab>
     </Tabs>
+
   </Step>
 
   <Step title="Unlock Collateral">
@@ -130,6 +131,7 @@ This example uses [Rain](https://www.rain.xyz) as the card issuer, but the patte
     ```
 
     Returns `{ calls: ContractCall[] }`. Execute in the user's wallet to return collateral.
+
   </Step>
 </Steps>
 
@@ -137,16 +139,24 @@ This example uses [Rain](https://www.rain.xyz) as the card issuer, but the patte
 
 <AccordionGroup>
   <Accordion title="Delegated Signing" icon="key">
-    For sub-second draws at spend time, set up a server-side signer authorized to draw on behalf of users. See [Authorization Webhook Handler](/quickstart/card-programs/authorization-webhook#delegated-signing) for options (ERC-7579 session keys, pre-signed permits, smart account delegation).
+    For sub-second draws at spend time, set up a server-side signer authorized
+    to draw on behalf of users. See [Authorization Webhook
+    Handler](/quickstart/card-programs/authorization-webhook#delegated-signing)
+    for options (ERC-7579 session keys, pre-signed permits, smart account
+    delegation).
   </Accordion>
   <Accordion title="Settlement Address" icon="building-columns">
-    Confirm with your card issuer which address to pass as `receiver` in the draw call. This is the address that receives USDC on each authorization.
+    Confirm with your card issuer which address to pass as `receiver` in the
+    draw call. This is the address that receives USDC on each authorization.
   </Accordion>
   <Accordion title="Fail Closed" icon="shield">
-    Always decline if the draw cannot be confirmed on-chain. A declined swipe is recoverable; an unauthorized spend is not.
+    Always decline if the draw cannot be confirmed on-chain. A declined swipe is
+    recoverable; an unauthorized spend is not.
   </Accordion>
   <Accordion title="Health Monitoring" icon="heart-pulse">
-    Poll `healthFactor` from the info endpoint and surface alerts in your UI. See [Risk Management](/stash-credit-v2/risk-management) for liquidation thresholds and collateral tiers.
+    Poll `healthFactor` from the info endpoint and surface alerts in your UI.
+    See [Risk Management](/stash-credit-v2/risk-management) for liquidation
+    thresholds and collateral tiers.
   </Accordion>
 </AccordionGroup>
 
@@ -156,8 +166,13 @@ Want to see the full card program lifecycle running end-to-end? The **Card Progr
 
 It includes a web dashboard with live progress and a CLI mode, and supports dry-run for testing without on-chain transactions.
 
-<Card title="Card Program Demo" icon="play" href="https://github.com/sprintertech/documentation/tree/main/demo">
-  Clone the repo, add a wallet with USDC on Base, and run `npm run ui` to launch the demo dashboard. See the README for full setup instructions.
+<Card
+  title="Card Program Demo"
+  icon="play"
+  href="https://github.com/sprintertech/documentation/tree/main/demo"
+>
+  Clone the repo, add a wallet with USDC on Base, and run `npm run ui` to launch
+  the demo dashboard. See the README for full setup instructions.
 </Card>
 
 ## Related
@@ -166,10 +181,18 @@ It includes a web dashboard with live progress and a CLI mode, and supports dry-
   <Card title="Credit Engine" icon="gear" href="/stash-credit-v2/credit-engine">
     Health factor, LTVs, and liquidation mechanics.
   </Card>
-  <Card title="Risk Management" icon="shield-halved" href="/stash-credit-v2/risk-management">
+  <Card
+    title="Risk Management"
+    icon="shield-halved"
+    href="/stash-credit-v2/risk-management"
+  >
     Collateral tiers and concentration limits.
   </Card>
-  <Card title="Credit API Reference" icon="bolt" href="/api-reference/sprinter/credit/get-credit-protocol-configuration">
+  <Card
+    title="Credit API Reference"
+    icon="bolt"
+    href="/api-reference/sprinter/credit/get-credit-protocol-configuration"
+  >
     Full API reference with interactive playground.
   </Card>
 </CardGroup>

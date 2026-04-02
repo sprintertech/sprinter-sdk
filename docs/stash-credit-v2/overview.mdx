@@ -27,7 +27,11 @@ Sprinter Credit enables applications to get purpose-fit credit lines for their u
 ## API Overview
 
 <CardGroup cols={3}>
-  <Card title="Sprinter Credit (V2) API" icon="bolt" href="/api-reference/sprinter/credit/get-credit-protocol-configuration">
+  <Card
+    title="Sprinter Credit (V2) API"
+    icon="bolt"
+    href="/api-reference/sprinter/credit/get-credit-protocol-configuration"
+  >
     Full API reference with interactive playground.
   </Card>
 </CardGroup>
@@ -48,21 +52,24 @@ You'll see CAIP-2 identifiers in API responses (e.g. the `chain` field in contra
 
 #### Card Spend (Overcollateralized Credit)
 
-| Chain | CAIP-2 Identifier | Chain ID | Role |
-|-------|-------------------|----------|------|
-| Base | `eip155:8453` | 8453 | Credit + Collateral |
-| Ethereum | `eip155:1` | 1 | Collateral |
+| Chain    | CAIP-2 Identifier | Chain ID | Role                |
+| -------- | ----------------- | -------- | ------------------- |
+| Base     | `eip155:8453`     | 8453     | Credit + Collateral |
+| Ethereum | `eip155:1`        | 1        | Collateral          |
 
 #### Crosschain Intents (Zero-Collateral Credit)
 
-| Chain | CAIP-2 Identifier | Chain ID |
-|-------|-------------------|----------|
-| Base | `eip155:8453` | 8453 |
-| Ethereum | `eip155:1` | 1 |
-| Arbitrum | `eip155:42161` | 42161 |
-| Optimism | `eip155:10` | 10 |
-| Unichain | `eip155:130` | 130 |
+| Chain    | CAIP-2 Identifier | Chain ID |
+| -------- | ----------------- | -------- |
+| Base     | `eip155:8453`     | 8453     |
+| Ethereum | `eip155:1`        | 1        |
+| Arbitrum | `eip155:42161`    | 42161    |
+| Optimism | `eip155:10`       | 10       |
+| Unichain | `eip155:130`      | 130      |
 
 <Tip>
-You can always fetch the current list of supported chains and their collateral configurations from the [`GET /credit/protocol`](/api-reference/sprinter/credit/get-credit-protocol-configuration) endpoint.
+  You can always fetch the current list of supported chains and their collateral
+  configurations from the [`GET
+  /credit/protocol`](/api-reference/sprinter/credit/get-credit-protocol-configuration)
+  endpoint.
 </Tip>

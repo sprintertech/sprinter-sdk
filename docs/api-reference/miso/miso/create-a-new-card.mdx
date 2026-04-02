@@ -23,14 +23,11 @@ print(response.json())
 ```
 
 ```javascript JavaScript
-const response = await fetch(
-  "https://api.getmiso.fi/miso/cards",
-  {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({}),
-  }
-);
+const response = await fetch("https://api.getmiso.fi/miso/cards", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({}),
+});
 const data = await response.json();
 console.log(data);
 ```
@@ -55,4 +52,5 @@ func main() {
 	fmt.Println(string(body))
 }
 ```
+
 </RequestExample>
