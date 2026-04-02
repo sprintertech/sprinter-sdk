@@ -189,13 +189,15 @@ Card authorizations must complete in ~2 seconds without user interaction. Your b
 
 ## Try It
 
-Want to see the full card program lifecycle running end-to-end? The **Card Program Demo** executes every step above — lock, credit check, draw, repay, unlock — using real Sprinter API calls on Base.
-
-It includes a web dashboard with live progress and a CLI mode, and supports dry-run for testing without on-chain transactions.
+Want to see the full card program lifecycle running end-to-end? The **Card Program Demo** executes every step above — lock, credit check, draw, repay, unlock — using real Sprinter API calls on Base. It also supports a dry-run mode for testing without on-chain transactions.
 
 <Card title="Card Program Demo" icon="play" href="https://github.com/sprintertech/documentation/tree/main/demo">
   Clone the repo, add a wallet with USDC on Base, and run `npm run ui` to launch the demo dashboard. See the README for full setup instructions.
 </Card>
+
+<Tip>
+You can also point an AI coding agent (like Claude) at the [Sprinter Credit API](/api-reference/sprinter/credit/get-credit-protocol-configuration) and your card issuer's API docs to generate a working proof of concept in minutes — the API is simple enough that an agent can wire up the full flow end-to-end.
+</Tip>
 
 ## Related
 
