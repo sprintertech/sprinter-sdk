@@ -13,12 +13,12 @@ This agent skill manages which earn vaults a user's collateral sits in, automati
 
 ## API Endpoints Used
 
-| Endpoint                                | Purpose                                                              |
-| --------------------------------------- | -------------------------------------------------------------------- |
-| `GET /credit/protocol`                  | Get available earn strategies                                        |
-| `GET /credit/accounts/{account}/info`   | Check health factor and current position                             |
-| `GET /credit/accounts/{account}/unlock` | Build calldata to unlock collateral from current vault               |
-| `GET /credit/accounts/{account}/lock`   | Build calldata to lock collateral into new vault (with `earn` param) |
+| Endpoint | Purpose |
+|---|---|
+| `GET /credit/protocol` | Get available earn strategies |
+| `GET /credit/accounts/{account}/info` | Check health factor and current position |
+| `GET /credit/accounts/{account}/unlock` | Build calldata to unlock collateral from current vault |
+| `GET /credit/accounts/{account}/lock` | Build calldata to lock collateral into new vault (with `earn` param) |
 
 ## How It Works
 
@@ -31,7 +31,6 @@ This agent skill manages which earn vaults a user's collateral sits in, automati
     ```
 
     The agent only proceeds if `healthFactor` > 1.5 — rebalancing temporarily changes the collateral composition, so a larger buffer is needed.
-
   </Step>
 
   <Step title="Discover Available Strategies">
@@ -42,7 +41,6 @@ This agent skill manages which earn vaults a user's collateral sits in, automati
     ```
 
     This returns the credit configuration including a `strategies` field with available earn vaults. The agent compares the user's current vault yield against alternatives.
-
   </Step>
 
   <Step title="Rebalance">
@@ -68,7 +66,6 @@ This agent skill manages which earn vaults a user's collateral sits in, automati
     <Warning>
     The unlock and lock must be executed sequentially — the collateral must be fully unlocked before it can be re-locked into a new vault.
     </Warning>
-
   </Step>
 </Steps>
 
@@ -108,7 +105,7 @@ async function getProtocolConfig() {
 async function buildUnlockCalls(
   account: string,
   amount: string,
-  asset: string,
+  asset: string
 ): Promise<ContractCall[]> {
   const res = await fetch(
     `${SPRINTER_API}/credit/accounts/${account}/unlock?amount=${amount}&asset=${asset}`,
@@ -122,7 +119,7 @@ async function buildLockCalls(
   account: string,
   amount: string,
   asset: string,
-  earn?: string,
+  earn?: string
 ): Promise<ContractCall[]> {
   let url = `${SPRINTER_API}/credit/accounts/${account}/lock?amount=${amount}&asset=${asset}`;
   if (earn) url += `&earn=${earn}`;
@@ -133,10 +130,7 @@ async function buildLockCalls(
   return data.calls;
 }
 
-async function executeCalls(
-  calls: ContractCall[],
-  signer: any,
-): Promise<string> {
+async function executeCalls(calls: ContractCall[], signer: any): Promise<string> {
   let lastTxHash = "";
   for (const call of calls) {
     const tx = await signer.sendTransaction({
@@ -145,8 +139,7 @@ async function executeCalls(
       value: call.value || "0",
     });
     const receipt = await tx.wait();
-    if (!receipt || receipt.status !== 1)
-      throw new Error(`Tx reverted: ${tx.hash}`);
+    if (!receipt || receipt.status !== 1) throw new Error(`Tx reverted: ${tx.hash}`);
     lastTxHash = tx.hash;
   }
   return lastTxHash;
@@ -155,16 +148,14 @@ async function executeCalls(
 async function optimizeYield(
   account: string,
   currentPosition: VaultPosition,
-  signer: any,
+  signer: any
 ) {
   // 1. Check health factor
   const info = await getCreditInfo(account);
   const hf = parseFloat(info.data.USDC.healthFactor);
 
   if (hf < MIN_HEALTH_FACTOR) {
-    console.log(
-      `Health factor ${hf.toFixed(2)} too low to rebalance — skipping`,
-    );
+    console.log(`Health factor ${hf.toFixed(2)} too low to rebalance — skipping`);
     return;
   }
 
@@ -185,20 +176,20 @@ async function optimizeYield(
   const improvement = bestVault.apy - currentPosition.apy;
   if (improvement < MIN_YIELD_IMPROVEMENT) {
     console.log(
-      `Best alternative: ${bestVault.apy}% APY (+${improvement.toFixed(2)}%) — below threshold`,
+      `Best alternative: ${bestVault.apy}% APY (+${improvement.toFixed(2)}%) — below threshold`
     );
     return;
   }
 
   console.log(
-    `Rebalancing: ${currentPosition.apy}% → ${bestVault.apy}% APY (+${improvement.toFixed(2)}%)`,
+    `Rebalancing: ${currentPosition.apy}% → ${bestVault.apy}% APY (+${improvement.toFixed(2)}%)`
   );
 
   // 4. Unlock from current vault
   const unlockCalls = await buildUnlockCalls(
     account,
     currentPosition.amount,
-    currentPosition.asset,
+    currentPosition.asset
   );
   const unlockTx = await executeCalls(unlockCalls, signer);
   console.log(`Unlocked from ${currentPosition.strategy}: ${unlockTx}`);
@@ -208,7 +199,7 @@ async function optimizeYield(
     account,
     currentPosition.amount,
     currentPosition.asset,
-    bestVault.id,
+    bestVault.id
   );
   const lockTx = await executeCalls(lockCalls, signer);
   console.log(`Locked into ${bestVault.id}: ${lockTx}`);
@@ -230,18 +221,13 @@ setInterval(() => {
 
 <AccordionGroup>
   <Accordion title="Poll Interval" icon="clock" defaultOpen={true}>
-    Default: every 1 hour. Vault yields change slowly, so frequent polling isn't
-    necessary. Hourly checks balance responsiveness with API usage.
+    Default: every 1 hour. Vault yields change slowly, so frequent polling isn't necessary. Hourly checks balance responsiveness with API usage.
   </Accordion>
   <Accordion title="Health Factor Threshold" icon="heart-pulse">
-    Default: 1.5. Higher than the health monitor threshold (1.3) because
-    rebalancing temporarily changes collateral composition. The extra buffer
-    prevents accidental liquidation during the unwrap/wrap window.
+    Default: 1.5. Higher than the health monitor threshold (1.3) because rebalancing temporarily changes collateral composition. The extra buffer prevents accidental liquidation during the unwrap/wrap window.
   </Accordion>
   <Accordion title="Minimum Yield Improvement" icon="arrow-up-right-dots">
-    Default: 0.5% APY. The agent only rebalances if the improvement exceeds this
-    threshold. This prevents excessive on-chain transactions for marginal gains
-    — each rebalance costs gas.
+    Default: 0.5% APY. The agent only rebalances if the improvement exceeds this threshold. This prevents excessive on-chain transactions for marginal gains — each rebalance costs gas.
   </Accordion>
 </AccordionGroup>
 
@@ -263,18 +249,10 @@ See [Risk Management](/stash-credit-v2/risk-management) for the full collateral 
   <Card title="Credit Engine" icon="gear" href="/stash-credit-v2/credit-engine">
     How collateral value and LTVs affect your credit line.
   </Card>
-  <Card
-    title="Health Monitor"
-    icon="heart-pulse"
-    href="/quickstart/agent-skills/health-monitor"
-  >
+  <Card title="Health Monitor" icon="heart-pulse" href="/quickstart/agent-skills/health-monitor">
     Pair with the health monitor to protect positions during rebalancing.
   </Card>
-  <Card
-    title="Credit API Reference"
-    icon="bolt"
-    href="/api-reference/sprinter/credit/wrap-asset-into-earn-vault"
-  >
+  <Card title="Credit API Reference" icon="bolt" href="/api-reference/sprinter/credit/wrap-asset-into-earn-vault">
     Earn vault wrap/unwrap endpoints with interactive playground.
   </Card>
 </CardGroup>

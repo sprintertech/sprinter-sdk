@@ -18,8 +18,7 @@ Card swipe → Visa → Card issuer → Your webhook endpoint
 ```
 
 <Info>
-  This example uses [Rain](https://www.rain.xyz) as the card issuer. Adapt
-  signature validation and response format for your card program.
+This example uses [Rain](https://www.rain.xyz) as the card issuer. Adapt signature validation and response format for your card program.
 </Info>
 
 ## Implementation
@@ -43,7 +42,6 @@ Card swipe → Visa → Card issuer → Your webhook endpoint
     const provider = new ethers.JsonRpcProvider(RPC_URL);
     const signer = new ethers.Wallet(SIGNER_PRIVATE_KEY, provider);
     ```
-
   </Step>
 
   <Step title="Define Types and Helpers">
@@ -124,7 +122,6 @@ Card swipe → Visa → Card issuer → Your webhook endpoint
       return (cents * 10_000).toString();
     }
     ```
-
   </Step>
 
   <Step title="Handle the Webhook">
@@ -180,7 +177,6 @@ Card swipe → Visa → Card issuer → Your webhook endpoint
 
     app.listen(3001, () => console.log("Webhook handler running on :3001"));
     ```
-
   </Step>
 </Steps>
 
@@ -190,8 +186,7 @@ Card authorizations must complete without user interaction. Your backend needs a
 
 <CardGroup cols={3}>
   <Card title="ERC-7579 Session Keys" icon="key">
-    User grants a scoped session key that can only call the credit draw
-    function.
+    User grants a scoped session key that can only call the credit draw function.
   </Card>
   <Card title="Pre-signed Permits" icon="file-signature">
     User pre-signs EIP-2612 permits for USDC transfers.
@@ -202,27 +197,24 @@ Card authorizations must complete without user interaction. Your backend needs a
 </CardGroup>
 
 <Warning>
-  The delegated signer can draw credit from user accounts. Secure the private
-  key with HSM or KMS in production — never store it in environment variables on
-  shared infrastructure.
+The delegated signer can draw credit from user accounts. Secure the private key with HSM or KMS in production — never store it in environment variables on shared infrastructure.
 </Warning>
 
 ## Latency Budget
 
 Card networks expect a response within ~2 seconds:
 
-| Step                                  |    Target    | Notes                   |
-| ------------------------------------- | :----------: | ----------------------- |
-| Signature validation                  |    < 1ms     | Local crypto            |
-| Database lookup (card → wallet)       |    < 10ms    | Index on card ID        |
-| `GET /credit/accounts/{account}/info` |   < 100ms    | Sprinter API            |
-| `GET /credit/accounts/{account}/draw` |   < 100ms    | Sprinter API            |
-| On-chain execution                    |   < 1000ms   | Dedicated Base RPC node |
-| **Total**                             | **< 1300ms** | ~700ms buffer           |
+| Step | Target | Notes |
+|---|:---:|---|
+| Signature validation | < 1ms | Local crypto |
+| Database lookup (card → wallet) | < 10ms | Index on card ID |
+| `GET /credit/accounts/{account}/info` | < 100ms | Sprinter API |
+| `GET /credit/accounts/{account}/draw` | < 100ms | Sprinter API |
+| On-chain execution | < 1000ms | Dedicated Base RPC node |
+| **Total** | **< 1300ms** | ~700ms buffer |
 
 <Tip>
-  Use a dedicated RPC node on Base. Public endpoints will exceed the time budget
-  under load.
+Use a dedicated RPC node on Base. Public endpoints will exceed the time budget under load.
 </Tip>
 
 ## Production Checklist
@@ -247,9 +239,9 @@ Card networks expect a response within ~2 seconds:
 
 ## Environment Variables
 
-| Variable              | Description                                          |
-| --------------------- | ---------------------------------------------------- |
-| `RAIN_WEBHOOK_SECRET` | Webhook signing secret from your card issuer         |
-| `SETTLEMENT_ADDRESS`  | Your card program's USDC settlement address on Base  |
-| `RPC_URL`             | Base RPC endpoint (dedicated node recommended)       |
-| `SIGNER_PRIVATE_KEY`  | Delegated signer private key (HSM/KMS in production) |
+| Variable | Description |
+|---|---|
+| `RAIN_WEBHOOK_SECRET` | Webhook signing secret from your card issuer |
+| `SETTLEMENT_ADDRESS` | Your card program's USDC settlement address on Base |
+| `RPC_URL` | Base RPC endpoint (dedicated node recommended) |
+| `SIGNER_PRIVATE_KEY` | Delegated signer private key (HSM/KMS in production) |

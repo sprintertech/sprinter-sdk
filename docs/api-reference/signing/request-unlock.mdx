@@ -21,8 +21,8 @@ curl -X POST https://api.getmiso.fi/v1/chains/8453/unlocks \
 
 ## Path Parameters
 
-| Parameter | Type     | Description                  |
-| --------- | -------- | ---------------------------- |
+| Parameter | Type | Description |
+|-----------|------|-------------|
 | `chainId` | `uint64` | Chain ID (must be supported) |
 
 ## Request Body
@@ -53,7 +53,7 @@ type UnlockResponse struct {
 
 ## Errors
 
-| Status | Description                                        |
-| ------ | -------------------------------------------------- |
-| `400`  | Invalid request body or unsupported chain/protocol |
-| `500`  | Signing timeout (15s) or invalid signature         |
+| Status | Description |
+|--------|-------------|
+| `400` | Invalid request body or unsupported chain/protocol |
+| `500` | Signing timeout (15s) or invalid signature |

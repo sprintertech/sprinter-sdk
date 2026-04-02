@@ -23,15 +23,15 @@ This means LTV tiers reflect liquidation mechanics, not arbitrary haircut rules.
 
 ### Collateral Tiers (USDC-denominated lending)
 
-| Collateral              | Examples            |     LTV      | Liquidation Threshold | Liquidation Bonus |
-| ----------------------- | ------------------- | :----------: | :-------------------: | :---------------: |
-| Stable vault            | Gauntlet USDC Prime |     90%      |          94%          |        5%         |
-| Raw volatile            | ETH, WBTC           |     80%      |          85%          |        5%         |
-| Volatile DEX-swap       | stETH, cbETH        |     75%      |          82%          |        5%         |
-| Volatile vault          | yoETH               |     65%      |          75%          |        6%         |
-| USDC SuperVault         | Superform USDC      |     85%      |          90%          |        6%         |
-| Raw stablecoin          | USDC                |     95%      |          97%          |        5%         |
-| RWA / queued redemption | —                   | Not accepted |           —           |         —         |
+| Collateral | Examples | LTV | Liquidation Threshold | Liquidation Bonus |
+|---|---|:---:|:---:|:---:|
+| Stable vault | Gauntlet USDC Prime | 90% | 94% | 5% |
+| Raw volatile | ETH, WBTC | 80% | 85% | 5% |
+| Volatile DEX-swap | stETH, cbETH | 75% | 82% | 5% |
+| Volatile vault | yoETH | 65% | 75% | 6% |
+| USDC SuperVault | Superform USDC | 85% | 90% | 6% |
+| Raw stablecoin | USDC | 95% | 97% | 5% |
+| RWA / queued redemption | — | Not accepted | — | — |
 
 The **liquidation threshold** is the health factor floor — when a position's collateral value drops below this ratio relative to debt, it becomes eligible for liquidation. The gap between LTV and the liquidation threshold is the buffer: it gives the protocol time to execute liquidation before a shortfall occurs.
 
@@ -39,12 +39,12 @@ The **liquidation threshold** is the health factor floor — when a position's c
 
 Multi-layer caps prevent a single failure from being catastrophic:
 
-| Layer                      | Cap                           |
-| -------------------------- | ----------------------------- |
-| Per vault                  | 8–20% of TVL (varies by tier) |
-| Per protocol (e.g. Morpho) | 40%                           |
-| Per stablecoin (e.g. USDC) | 60%                           |
-| Per chain (e.g. Base)      | 70%                           |
+| Layer | Cap |
+|---|---|
+| Per vault | 8–20% of TVL (varies by tier) |
+| Per protocol (e.g. Morpho) | 40% |
+| Per stablecoin (e.g. USDC) | 60% |
+| Per chain (e.g. Base) | 70% |
 
 ## Getting Your Collateral Accepted
 

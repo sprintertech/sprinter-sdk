@@ -1,2392 +1,2565 @@
 {
-  "openapi": "3.0.0",
-  "info": {
-    "contact": {},
-    "title": "",
-    "version": ""
-  },
-  "paths": {
-    "/credit/accounts/{account}/draw": {
-      "get": {
-        "description": "Returns the calls needed to draw credit. If the user has sufficient\nregistered collateral, the drawCredit call is returned.",
-        "tags": ["Credit"],
-        "summary": "Build transaction calls to draw credit",
-        "parameters": [
-          {
-            "description": "User account address (borrower)",
-            "name": "account",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Amount to borrow (in wei)",
-            "name": "amount",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Address to receive the borrowed funds",
-            "name": "receiver",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of contract calls to execute drawing credit",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/credit.DrawCredit.response"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request due to invalid input or insufficient collateral",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
+    "openapi": "3.0.0",
+    "info": {
+        "contact": {},
+        "title": "",
+        "version": ""
     },
-    "/credit/accounts/{account}/info": {
-      "get": {
-        "description": "Returns credit details including collateral value, debt, health factor, interest, principal, and due date for a user account across all credit tokens",
-        "tags": ["Credit"],
-        "summary": "Get user credit information",
-        "parameters": [
-          {
-            "example": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-            "description": "Ethereum account address",
-            "name": "account",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "User credit information",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/credit.GetCreditUserInfo.response"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid account address",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/credit/accounts/{account}/lock": {
-      "get": {
-        "description": "Creates list of contract calls to lock assets as collateral for credit account. Supports both underlying assets (e.g., USDC) which are wrapped into earn vault first, and earn positions (e.g., gtUSDCp) which are deposited directly.",
-        "tags": ["Credit"],
-        "summary": "Calldata to lock asset as collateral",
-        "parameters": [
-          {
-            "description": "Account that holds the asset and will execute calls",
-            "name": "account",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Amount in lowest denomination (e.g., wei for ETH)",
-            "name": "amount",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Asset address in eth format - either underlying asset (USDC) or earn position (gtUSDCp)",
-            "name": "asset",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Earn strategy to wrap asset before depositing. If omitted, asset is deposited directly without wrapping.",
-            "name": "earn",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of contract calls to execute locking of collateral",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/credit.Lock.response"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request due to invalid input or missing parameters",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/credit/accounts/{account}/operator": {
-      "get": {
-        "description": "Returns the current operator address and list of whitelisted credit receivers.",
-        "tags": ["Credit"],
-        "summary": "Get operator status for an account",
-        "parameters": [
-          {
-            "description": "User account address",
-            "name": "account",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Operator status",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/credit.GetOperatorStatus.response"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/credit/accounts/{account}/operator/auto-topup/disable": {
-      "get": {
-        "description": "Returns the removeCreditReceiver call if the receiver is currently\nwhitelisted; returns empty calls if already disabled.",
-        "tags": ["Credit"],
-        "summary": "Build transaction calls to disable auto top-up",
-        "parameters": [
-          {
-            "description": "User account address",
-            "name": "account",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Receiver address to remove",
-            "name": "receiver",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of contract calls",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/credit.GetDisableAutoTopup.response"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/credit/accounts/{account}/operator/auto-topup/enable": {
-      "get": {
-        "description": "Returns the calls needed to enable auto top-up. Checks on-chain state\nand only includes setOperator (if not already set) and addCreditReceiver\n(if not already whitelisted).",
-        "tags": ["Credit"],
-        "summary": "Build transaction calls to enable auto top-up",
-        "parameters": [
-          {
-            "description": "User account address",
-            "name": "account",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Receiver address to auto top-up",
-            "name": "receiver",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of contract calls",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/credit.GetEnableAutoTopup.response"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Account has a different operator",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/credit/accounts/{account}/repay": {
-      "get": {
-        "description": "Creates list of contract calls to approve USDC and repay debt to CreditHub",
-        "tags": ["Credit"],
-        "summary": "Call data to repay credit debt",
-        "parameters": [
-          {
-            "description": "Account (borrower) that will repay the debt",
-            "name": "account",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Amount in lowest denomination (e.g., wei for ETH)",
-            "name": "amount",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of contract calls to execute repayment",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/credit.Repay.response"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request due to invalid input or missing parameters",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/credit/accounts/{account}/unlock": {
-      "get": {
-        "description": "Creates list of contract calls to unlock and withdraw\ncollateral and potentially unwrap position from earn vault",
-        "tags": ["Credit"],
-        "summary": "Call data to unlock collateral",
-        "parameters": [
-          {
-            "description": "Account that holds the asset and will execute calls",
-            "name": "account",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Amount in lowest denomination (e.g., wei for ETH)",
-            "name": "amount",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Asset address in eth format",
-            "name": "asset",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Whether to generate call to unwrap from earn strategy",
-            "name": "unwrap",
-            "in": "query",
-            "schema": {
-              "type": "boolean"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of contract calls to execute unlocking of collateral",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/credit.Unlock.response"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request due to invalid input or missing parameters",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/credit/collateral/{chain}/{collateral}": {
-      "get": {
-        "description": "Returns detailed information about a collateral asset including APY estimate (if earn vault), price in USD, underlying asset, and earn service name",
-        "tags": ["Credit"],
-        "summary": "Get collateral asset details",
-        "parameters": [
-          {
-            "example": "eip155:8453",
-            "description": "Chain ID in CAIP-2 format",
-            "name": "chain",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "example": "0xeE8F4eC5672F09119b96Ab6fB59C27E1b7e44b61",
-            "description": "Collateral asset address",
-            "name": "collateral",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/credit.CollateralDetailsResponse"
+    "paths": {
+        "/credit/accounts/{account}/draw": {
+            "get": {
+                "description": "Returns the calls needed to draw credit. If the user has sufficient\nregistered collateral, the drawCredit call is returned.",
+                "tags": [
+                    "Credit"
+                ],
+                "summary": "Build transaction calls to draw credit",
+                "parameters": [
+                    {
+                        "description": "User account address (borrower)",
+                        "name": "account",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Amount to borrow (in wei)",
+                        "name": "amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Address to receive the borrowed funds",
+                        "name": "receiver",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
-                  }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of contract calls to execute drawing credit",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/credit.DrawCredit.response"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request due to invalid input or insufficient collateral",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
                 }
-              }
             }
-          },
-          "400": {
-            "description": "Invalid parameters",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Collateral not supported",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/credit/earn/claim": {
-      "get": {
-        "description": "Creates list of contract calls to Claim a position from an earn vault,\nconverting vault shares back to the underlying asset.",
-        "tags": ["Credit"],
-        "summary": "Claim position from earn vault",
-        "parameters": [
-          {
-            "example": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-            "description": "Owner address that holds the vault shares",
-            "name": "owner",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "example": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-            "description": "Address that will receive the Claimed underlying tokens",
-            "name": "receiver",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "example": "0xeE8F4eC5672F09119b96Ab6fB59C27E1b7e44b61",
-            "description": "Vault shares token address",
-            "name": "asset",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "example": "eip155:8453",
-            "description": "Chain ID in CAIP format",
-            "name": "chain",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "example": "0",
-            "description": "claimRequestId",
-            "name": "claimRequestId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/credit.ClaimResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid input parameters",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/credit/earn/unwrap": {
-      "get": {
-        "description": "Creates list of contract calls to unwrap a position from an earn vault,\nconverting vault shares back to the underlying asset.",
-        "tags": ["Credit"],
-        "summary": "Unwrap position from earn vault",
-        "parameters": [
-          {
-            "example": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-            "description": "Owner address that holds the vault shares",
-            "name": "owner",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "example": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-            "description": "Address that will receive the unwrapped underlying tokens",
-            "name": "receiver",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "example": "1000000000000000000",
-            "description": "Amount of shares to unwrap",
-            "name": "amount",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "example": "0xeE8F4eC5672F09119b96Ab6fB59C27E1b7e44b61",
-            "description": "Vault shares token address",
-            "name": "asset",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Slippage tolerance in percent (e.g. 0.5 = 0.5%)",
-            "name": "slippage",
-            "in": "query",
-            "schema": {
-              "type": "number",
-              "default": 0.3
-            }
-          },
-          {
-            "example": "eip155:8453",
-            "description": "Chain ID in CAIP format",
-            "name": "chain",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/credit.UnwrapResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid input parameters",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/credit/earn/wrap": {
-      "get": {
-        "description": "Creates a list of contract calls (approve + deposit) to wrap an\nunderlying token into an earn vault and receive vault shares.",
-        "tags": ["Credit"],
-        "summary": "Wrap asset into earn vault",
-        "parameters": [
-          {
-            "example": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-            "description": "Account providing the underlying asset",
-            "name": "account",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "example": "1000000000000000000",
-            "description": "Amount of underlying asset to wrap",
-            "name": "amount",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "example": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-            "description": "Underlying token address",
-            "name": "token",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "example": "gauntlet-usdc-prime",
-            "description": "Earn strategy identifier",
-            "name": "earn",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "example": "eip155:8453",
-            "description": "Chain CAIP-2 identifier",
-            "name": "chain",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/credit.WrapResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid input parameters",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/credit/protocol": {
-      "get": {
-        "description": "Returns the credit protocol configuration including credit hubs and assets",
-        "tags": ["Credit"],
-        "summary": "Get credit protocol configuration",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/config.CreditProtocolConfig"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized - invalid or missing API key",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/health": {
-      "get": {
-        "description": "health check",
-        "summary": "health check",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/server.HealthHandler.response"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/liquidity/chain/{chainId}/tokens": {
-      "get": {
-        "description": "Returns a map of token symbols to token metadata supported by Stash on the specified chain.",
-        "tags": ["Liquidity"],
-        "summary": "Returns supported tokens for a chain",
-        "parameters": [
-          {
-            "description": "Chain ID in CAIP format (e.g., eip155:8453)",
-            "name": "chainId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Map of token symbols to token metadata\".",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/liquidity.GetStashSupportedTokensHandler.response"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/liquidity/pools/events": {
-      "get": {
-        "description": "Opens a Server-Sent Events stream that pushes liquidity updates\nwhenever a reservation is created, replaced, or deleted.\nAll query parameters are optional filters.",
-        "tags": ["Liquidity"],
-        "summary": "Stream available liquidity updates via SSE",
-        "parameters": [
-          {
-            "description": "Pool type filter",
-            "name": "poolType",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "aave",
-                "aave_v2",
-                "usdc",
-                "usdc_v2",
-                "aave_long_term",
-                "aave_long_term_v2"
-              ]
-            }
-          },
-          {
-            "example": "eip155:1",
-            "description": "CAIP chain ID filter",
-            "name": "chain",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "example": "USDC",
-            "description": "Token symbol filter",
-            "name": "tokenSymbol",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "SSE stream of LiquidityEvent objects",
-            "content": {
-              "text/event-stream": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/liquidity/pools/{poolType}": {
-      "get": {
-        "description": "Returns the pool address and available balance for the requested chain and token",
-        "tags": ["Liquidity"],
-        "summary": "Get available liquidity for a specific pool type on a chain",
-        "parameters": [
-          {
-            "description": "Pool type",
-            "name": "poolType",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "aave",
-                "aave_v2",
-                "usdc",
-                "usdc_v2",
-                "aave_long_term",
-                "aave_long_term_v2"
-              ]
-            }
-          },
-          {
-            "example": "eip155:1",
-            "description": "CAIP chain ID",
-            "name": "chain",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "example": "USDC",
-            "description": "Token symbol",
-            "name": "tokenSymbol",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved available liquidity",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/liquidity.availableLiquidityResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request due to invalid input or missing parameters",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/liquidity/protocol/{protocol}/fees": {
-      "get": {
-        "description": "Returns configured fee and min/max limits from solver config",
-        "tags": ["Liquidity"],
-        "summary": "Get fee and limits for a given protocol route",
-        "parameters": [
-          {
-            "description": "Protocol name",
-            "name": "protocol",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Source chain CAIP ID (e.g. \\",
-            "name": "srcChain",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Destination chain CAIP ID",
-            "name": "dstChain",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Source token symbol or address",
-            "name": "srcToken",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Destination token symbol or address",
-            "name": "dstToken",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/liquidity.FeesResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/liquidity/v1/chain/{chain}/protocol/{protocol}/unlock": {
-      "post": {
-        "description": "This endpoint returns signed authorization for an unlock transaction",
-        "tags": ["Liquidity"],
-        "summary": "Get signing authorization for a an unlock transaction",
-        "parameters": [
-          {
-            "description": "Name of the protocol, e.g., Across, Lighter",
-            "name": "protocol",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "ID of the order that is to be unlocked",
-            "name": "orderId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/liquidity.Unlock"
-              }
-            }
-          },
-          "description": "request",
-          "required": true
         },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/liquidity.UnlockResponse"
+        "/credit/accounts/{account}/info": {
+            "get": {
+                "description": "Returns credit details including collateral value, debt, health factor, interest, principal, and due date for a user account across all credit tokens",
+                "tags": [
+                    "Credit"
+                ],
+                "summary": "Get user credit information",
+                "parameters": [
+                    {
+                        "example": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+                        "description": "Ethereum account address",
+                        "name": "account",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User credit information",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/credit.GetCreditUserInfo.response"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid account address",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
                 }
-              }
             }
-          },
-          "400": {
-            "description": "Bad request due to invalid input or missing parameters",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/liquidity/v2/chain/{dstChain}/protocol/{protocol}/signature": {
-      "post": {
-        "description": "This endpoint streams signed authorization for a liquidity transaction",
-        "tags": ["Liquidity"],
-        "summary": "Get signing authorization for a liquidity transaction",
-        "parameters": [
-          {
-            "description": "Name of the protocol, e.g., Across, Lighter",
-            "name": "protocol",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Destination chain Caip id, eg. eip155:8453",
-            "name": "dstChain",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/liquidity.BorrowSignatureV2.body"
-              }
-            }
-          },
-          "description": "request",
-          "required": true
         },
-        "responses": {
-          "200": {
-            "description": "This response is sent as a stringified json in SSE event with the event name 'data'",
-            "content": {
-              "text/event-stream": {
-                "schema": {
-                  "$ref": "#/components/schemas/liquidity.BorrowSignatureResponse"
+        "/credit/accounts/{account}/lock": {
+            "get": {
+                "description": "Creates list of contract calls to lock assets as collateral for credit account. Supports both underlying assets (e.g., USDC) which are wrapped into earn vault first, and earn positions (e.g., gtUSDCp) which are deposited directly.",
+                "tags": [
+                    "Credit"
+                ],
+                "summary": "Calldata to lock asset as collateral",
+                "parameters": [
+                    {
+                        "description": "Account that holds the asset and will execute calls",
+                        "name": "account",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Amount in lowest denomination (e.g., wei for ETH)",
+                        "name": "amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Asset address in eth format - either underlying asset (USDC) or earn position (gtUSDCp)",
+                        "name": "asset",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Earn strategy to wrap asset before depositing. If omitted, asset is deposited directly without wrapping.",
+                        "name": "earn",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of contract calls to execute locking of collateral",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/credit.Lock.response"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request due to invalid input or missing parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
                 }
-              }
             }
-          },
-          "400": {
-            "description": "Bad request due to invalid input or missing parameters",
-            "content": {
-              "text/event-stream": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
+        },
+        "/credit/accounts/{account}/operator": {
+            "get": {
+                "description": "Returns the current operator address and list of whitelisted credit receivers.",
+                "tags": [
+                    "Credit"
+                ],
+                "summary": "Get operator status for an account",
+                "parameters": [
+                    {
+                        "description": "User account address",
+                        "name": "account",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operator status",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/credit.GetOperatorStatus.response"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
                 }
-              }
             }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "text/event-stream": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
+        },
+        "/credit/accounts/{account}/operator/auto-topup/disable": {
+            "get": {
+                "description": "Returns the removeCreditReceiver call if the receiver is currently\nwhitelisted; returns empty calls if already disabled.",
+                "tags": [
+                    "Credit"
+                ],
+                "summary": "Build transaction calls to disable auto top-up",
+                "parameters": [
+                    {
+                        "description": "User account address",
+                        "name": "account",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Receiver address to remove",
+                        "name": "receiver",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of contract calls",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/credit.GetDisableAutoTopup.response"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
                 }
-              }
             }
-          }
-        }
-      }
-    },
-    "/liquidity/v2/chain/{srcChain}/protocol/{protocol}/type/{type}/quote": {
-      "get": {
-        "description": "Calculates the borrow quote including borrow cost, required input/output, and duration",
-        "tags": ["Liquidity"],
-        "summary": "Get the borrow quote for a liquidity transaction based on the input data",
-        "parameters": [
-          {
-            "description": "Protocol name (e.g., Across)",
-            "name": "protocol",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Quote algorithm type (e.g., ExactInput, ExactOutput)",
-            "name": "type",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Source CAIP chain ID (e.g., eip155:1)",
-            "name": "srcChain",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Destination CAIP chain ID (e.g., eip155:1)",
-            "name": "dstChain",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Exclusive fill flag (true/false)",
-            "name": "exclusive",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Amount of tokens for which we are requesting borrow quote (in the smallest denomination)",
-            "name": "amount",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Token address on destination (hex)",
-            "name": "token",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Preferred liquidity pool address to borrow from (hex)",
-            "name": "pool",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved borrow quote",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/liquidity.borrowQuoteResponse"
+        },
+        "/credit/accounts/{account}/operator/auto-topup/enable": {
+            "get": {
+                "description": "Returns the calls needed to enable auto top-up. Checks on-chain state\nand only includes setOperator (if not already set) and addCreditReceiver\n(if not already whitelisted).",
+                "tags": [
+                    "Credit"
+                ],
+                "summary": "Build transaction calls to enable auto top-up",
+                "parameters": [
+                    {
+                        "description": "User account address",
+                        "name": "account",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Receiver address to auto top-up",
+                        "name": "receiver",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of contract calls",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/credit.GetEnableAutoTopup.response"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Account has a different operator",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
                 }
-              }
             }
-          },
-          "400": {
-            "description": "Bad request due to invalid input or missing parameters",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
+        },
+        "/credit/accounts/{account}/repay": {
+            "get": {
+                "description": "Creates list of contract calls to approve USDC and repay debt to CreditHub",
+                "tags": [
+                    "Credit"
+                ],
+                "summary": "Call data to repay credit debt",
+                "parameters": [
+                    {
+                        "description": "Account (borrower) that will repay the debt",
+                        "name": "account",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Amount in lowest denomination (e.g., wei for ETH)",
+                        "name": "amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of contract calls to execute repayment",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/credit.Repay.response"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request due to invalid input or missing parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
                 }
-              }
             }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
+        },
+        "/credit/accounts/{account}/unlock": {
+            "get": {
+                "description": "Creates list of contract calls to unlock and withdraw\ncollateral and potentially unwrap position from earn vault",
+                "tags": [
+                    "Credit"
+                ],
+                "summary": "Call data to unlock collateral",
+                "parameters": [
+                    {
+                        "description": "Account that holds the asset and will execute calls",
+                        "name": "account",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Amount in lowest denomination (e.g., wei for ETH)",
+                        "name": "amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Asset address in eth format",
+                        "name": "asset",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Whether to generate call to unwrap from earn strategy",
+                        "name": "unwrap",
+                        "in": "query",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of contract calls to execute unlocking of collateral",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/credit.Unlock.response"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request due to invalid input or missing parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
                 }
-              }
             }
-          }
-        }
-      }
-    },
-    "/protocol/{protocol}/solver": {
-      "get": {
-        "description": "Returns solver address and time solver will need to fill it.",
-        "summary": "Returns solver address",
-        "parameters": [
-          {
-            "description": "order amount in USD",
-            "name": "amount",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "description": "destination chain in caip format",
-            "name": "destinationChainId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "destination token, either symbol or address",
-            "name": "destinationToken",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "source chain in caip format",
-            "name": "sourceChainId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "source token, either symbol or address",
-            "name": "sourceToken",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Protocol on which intent will be executed",
-            "name": "protocol",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/server.GetSolverHandler.response"
+        },
+        "/credit/collateral/{chain}/{collateral}": {
+            "get": {
+                "description": "Returns detailed information about a collateral asset including APY estimate (if earn vault), price in USD, underlying asset, and earn service name",
+                "tags": [
+                    "Credit"
+                ],
+                "summary": "Get collateral asset details",
+                "parameters": [
+                    {
+                        "example": "eip155:8453",
+                        "description": "Chain ID in CAIP-2 format",
+                        "name": "chain",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "0xeE8F4eC5672F09119b96Ab6fB59C27E1b7e44b61",
+                        "description": "Collateral asset address",
+                        "name": "collateral",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/credit.CollateralDetailsResponse"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Collateral not supported",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
                 }
-              }
             }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
+        },
+        "/credit/earn/claim": {
+            "get": {
+                "description": "Creates list of contract calls to Claim a position from an earn vault,\nconverting vault shares back to the underlying asset.",
+                "tags": [
+                    "Credit"
+                ],
+                "summary": "Claim position from earn vault",
+                "parameters": [
+                    {
+                        "example": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+                        "description": "Owner address that holds the vault shares",
+                        "name": "owner",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+                        "description": "Address that will receive the Claimed underlying tokens",
+                        "name": "receiver",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "0xeE8F4eC5672F09119b96Ab6fB59C27E1b7e44b61",
+                        "description": "Vault shares token address",
+                        "name": "asset",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "eip155:8453",
+                        "description": "Chain ID in CAIP format",
+                        "name": "chain",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "0",
+                        "description": "claimRequestId",
+                        "name": "claimRequestId",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/credit.ClaimResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
                 }
-              }
             }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/responses.ErrorResponse"
+        },
+        "/credit/earn/unwrap": {
+            "get": {
+                "description": "Creates list of contract calls to unwrap a position from an earn vault,\nconverting vault shares back to the underlying asset.",
+                "tags": [
+                    "Credit"
+                ],
+                "summary": "Unwrap position from earn vault",
+                "parameters": [
+                    {
+                        "example": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+                        "description": "Owner address that holds the vault shares",
+                        "name": "owner",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+                        "description": "Address that will receive the unwrapped underlying tokens",
+                        "name": "receiver",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "1000000000000000000",
+                        "description": "Amount of shares to unwrap",
+                        "name": "amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "0xeE8F4eC5672F09119b96Ab6fB59C27E1b7e44b61",
+                        "description": "Vault shares token address",
+                        "name": "asset",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Slippage tolerance in percent (e.g. 0.5 = 0.5%)",
+                        "name": "slippage",
+                        "in": "query",
+                        "schema": {
+                            "type": "number",
+                            "default": 0.3
+                        }
+                    },
+                    {
+                        "example": "eip155:8453",
+                        "description": "Chain ID in CAIP format",
+                        "name": "chain",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/credit.UnwrapResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
                 }
-              }
             }
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "config.ChainConfig": {
-        "type": "object",
-        "required": [
-          "collateral",
-          "creditHubs",
-          "escrowsMetadata",
-          "strategies",
-          "wrappedNativeAddress"
-        ],
-        "properties": {
-          "collateral": {
-            "description": "Asset collateral info per asset ID",
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/config.CollateralDetails"
+        },
+        "/credit/earn/wrap": {
+            "get": {
+                "description": "Creates a list of contract calls (approve + deposit) to wrap an\nunderlying token into an earn vault and receive vault shares.",
+                "tags": [
+                    "Credit"
+                ],
+                "summary": "Wrap asset into earn vault",
+                "parameters": [
+                    {
+                        "example": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+                        "description": "Account providing the underlying asset",
+                        "name": "account",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "1000000000000000000",
+                        "description": "Amount of underlying asset to wrap",
+                        "name": "amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                        "description": "Underlying token address",
+                        "name": "token",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "gauntlet-usdc-prime",
+                        "description": "Earn strategy identifier",
+                        "name": "earn",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "eip155:8453",
+                        "description": "Chain CAIP-2 identifier",
+                        "name": "chain",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/credit.WrapResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
             }
-          },
-          "creditHubs": {
-            "description": "Credit hub info per token symbol",
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/config.CreditHubInfo"
+        },
+        "/credit/protocol": {
+            "get": {
+                "description": "Returns the credit protocol configuration including credit hubs and assets",
+                "tags": [
+                    "Credit"
+                ],
+                "summary": "Get credit protocol configuration",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/config.CreditProtocolConfig"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - invalid or missing API key",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
             }
-          },
-          "escrowsMetadata": {
-            "description": "Escrow metadata for the chain",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/config.EscrowsMetadata"
-              }
-            ]
-          },
-          "strategies": {
-            "description": "Earn vault strategies keyed by strategy name",
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/config.EarnVaultMetadata"
+        },
+        "/health": {
+            "get": {
+                "description": "health check",
+                "summary": "health check",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/server.HealthHandler.response"
+                                }
+                            }
+                        }
+                    }
+                }
             }
-          },
-          "wrappedNativeAddress": {
-            "description": "Wrapped native token address (e.g., WETH). Zero value means native wrapping is not supported.",
-            "type": "string",
-            "example": "0x4200000000000000000000000000000000000006"
-          }
-        }
-      },
-      "config.CollateralDetails": {
-        "type": "object",
-        "required": ["escrowAddress", "ltv", "strategy", "symbol"],
-        "properties": {
-          "escrowAddress": {
-            "type": "string",
-            "example": "0xfedcba0987654321fedcba0987654321fedcba09"
-          },
-          "ltv": {
-            "type": "string",
-            "example": "12343"
-          },
-          "strategy": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/entity.EarnStrategy"
-              }
-            ],
-            "example": "gauntlet-usdc-prime"
-          },
-          "symbol": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/entity.TokenSymbol"
-              }
-            ],
-            "example": "USDC"
-          }
-        }
-      },
-      "config.CreditHubInfo": {
-        "type": "object",
-        "required": [
-          "assetAddress",
-          "creditHubAddress",
-          "creditHubControllerAddress"
-        ],
-        "properties": {
-          "assetAddress": {
-            "type": "string",
-            "example": "0xabcdef1234567890abcdef1234567890abcdef12"
-          },
-          "creditHubAddress": {
-            "description": "Credit hub contract address",
-            "type": "string",
-            "example": "0x1234567890abcdef1234567890abcdef12345678"
-          },
-          "creditHubControllerAddress": {
-            "description": "Credit hub controller contract address",
-            "type": "string",
-            "example": "0xabcdef1234567890abcdef1234567890abcdef12"
-          }
-        }
-      },
-      "config.CreditProtocolConfig": {
-        "type": "object",
-        "required": ["chains"],
-        "properties": {
-          "chains": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/config.ChainConfig"
+        },
+        "/liquidity/chain/{chainId}/tokens": {
+            "get": {
+                "description": "Returns a map of token symbols to token metadata supported by Stash on the specified chain.",
+                "tags": [
+                    "Liquidity"
+                ],
+                "summary": "Returns supported tokens for a chain",
+                "parameters": [
+                    {
+                        "description": "Chain ID in CAIP format (e.g., eip155:8453)",
+                        "name": "chainId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Map of token symbols to token metadata\".",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/liquidity.GetStashSupportedTokensHandler.response"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
             }
-          }
-        }
-      },
-      "config.EarnVaultMetadata": {
-        "type": "object",
-        "required": [
-          "curator",
-          "name",
-          "protocol",
-          "riskScore",
-          "type",
-          "underlyingAddress",
-          "vaultAddress",
-          "vaultType"
-        ],
-        "properties": {
-          "curator": {
-            "description": "Curator implementation type (e.g., \"Gauntlet\", \"Yo\")",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/entity.Curator"
-              }
-            ],
-            "example": "Gauntlet"
-          },
-          "name": {
-            "description": "Earn vault name (e.g., \"Gauntlet USDC Prime\")",
-            "type": "string",
-            "example": "Gauntlet USDC Prime"
-          },
-          "protocol": {
-            "description": "Protocol implementation type (e.g., \"morpho-v1\", \"aave-v3\")",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/entity.Strategy"
-              }
-            ],
-            "example": "morpho-v1"
-          },
-          "riskScore": {
-            "description": "RiskScore indicates the strategy's risk level (0\u201310 scale)",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/entity.RiskScore"
-              }
-            ],
-            "example": "5"
-          },
-          "type": {
-            "description": "Type is strategy type (e.g., \"Lending\")",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/entity.StrategyType"
-              }
-            ],
-            "example": "Lending"
-          },
-          "underlyingAddress": {
-            "description": "Underlying asset address (e.g., USDC)",
-            "type": "string",
-            "example": "0x0000000000000000000000000000000000000000"
-          },
-          "vaultAddress": {
-            "description": "Earn vault contract address",
-            "type": "string",
-            "example": "0x0000000000000000000000000000000000000000"
-          },
-          "vaultType": {
-            "description": "Earn vault type",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/entity.VaultType"
-              }
-            ],
-            "example": "erc4626"
-          }
-        }
-      },
-      "config.EscrowsMetadata": {
-        "type": "object",
-        "required": ["controller", "helper"],
-        "properties": {
-          "controller": {
-            "description": "Escrow controller contract address",
-            "type": "string",
-            "example": "0xabcdef1234567890abcdef1234567890abcdef12"
-          },
-          "helper": {
-            "description": "Escrow helper contract address",
-            "type": "string",
-            "example": "0xabcdef1234567890abcdef1234567890abcdef12"
-          }
-        }
-      },
-      "config.Token": {
-        "type": "object",
-        "required": ["address", "decimals"],
-        "properties": {
-          "address": {
-            "type": "string"
-          },
-          "decimals": {
-            "type": "integer"
-          }
-        }
-      },
-      "credit.ClaimResponse": {
-        "type": "object",
-        "required": ["calls"],
-        "properties": {
-          "calls": {
-            "description": "List of contract calls to execute the Claim",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/evm.ContractCall"
+        },
+        "/liquidity/pools/events": {
+            "get": {
+                "description": "Opens a Server-Sent Events stream that pushes liquidity updates\nwhenever a reservation is created, replaced, or deleted.\nAll query parameters are optional filters.",
+                "tags": [
+                    "Liquidity"
+                ],
+                "summary": "Stream available liquidity updates via SSE",
+                "parameters": [
+                    {
+                        "description": "Pool type filter",
+                        "name": "poolType",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "aave",
+                                "aave_v2",
+                                "usdc",
+                                "usdc_v2",
+                                "aave_long_term",
+                                "aave_long_term_v2"
+                            ]
+                        }
+                    },
+                    {
+                        "example": "eip155:1",
+                        "description": "CAIP chain ID filter",
+                        "name": "chain",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "USDC",
+                        "description": "Token symbol filter",
+                        "name": "tokenSymbol",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SSE stream of LiquidityEvent objects",
+                        "content": {
+                            "text/event-stream": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
             }
-          }
-        }
-      },
-      "credit.CollateralDetailsResponse": {
-        "type": "object",
-        "required": [
-          "collateralAddress",
-          "collateralPriceUsd",
-          "earnServiceName",
-          "isEarnVault"
-        ],
-        "properties": {
-          "apy": {
-            "type": "number",
-            "example": 4.56
-          },
-          "collateralAddress": {
-            "type": "string",
-            "example": "0xeE8F4eC5672F09119b96Ab6fB59C27E1b7e44b61"
-          },
-          "collateralPriceUsd": {
-            "type": "number",
-            "example": 1.023456
-          },
-          "earnServiceName": {
-            "type": "string",
-            "example": "Gauntlet"
-          },
-          "isEarnVault": {
-            "type": "boolean",
-            "example": true
-          },
-          "underlyingAsset": {
-            "type": "string",
-            "example": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
-          },
-          "underlyingPriceUsd": {
-            "type": "number",
-            "example": 1
-          }
-        }
-      },
-      "credit.DrawCredit.response": {
-        "type": "object",
-        "required": ["calls"],
-        "properties": {
-          "calls": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/evm.ContractCall"
+        },
+        "/liquidity/pools/{poolType}": {
+            "get": {
+                "description": "Returns the pool address and available balance for the requested chain and token",
+                "tags": [
+                    "Liquidity"
+                ],
+                "summary": "Get available liquidity for a specific pool type on a chain",
+                "parameters": [
+                    {
+                        "description": "Pool type",
+                        "name": "poolType",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "aave",
+                                "aave_v2",
+                                "usdc",
+                                "usdc_v2",
+                                "aave_long_term",
+                                "aave_long_term_v2"
+                            ]
+                        }
+                    },
+                    {
+                        "example": "eip155:1",
+                        "description": "CAIP chain ID",
+                        "name": "chain",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "USDC",
+                        "description": "Token symbol",
+                        "name": "tokenSymbol",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved available liquidity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/liquidity.availableLiquidityResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request due to invalid input or missing parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
             }
-          }
-        }
-      },
-      "credit.GetCreditUserInfo.response": {
-        "type": "object",
-        "required": ["data"],
-        "properties": {
-          "data": {
-            "description": "map of credit token symbol (e.g., \"USDC\") to user credit info",
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/credit.UserCreditInfoFMT"
+        },
+        "/liquidity/protocol/{protocol}/fees": {
+            "get": {
+                "description": "Returns configured fee and min/max limits from solver config",
+                "tags": [
+                    "Liquidity"
+                ],
+                "summary": "Get fee and limits for a given protocol route",
+                "parameters": [
+                    {
+                        "description": "Protocol name",
+                        "name": "protocol",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Source chain CAIP ID (e.g. \\",
+                        "name": "srcChain",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Destination chain CAIP ID",
+                        "name": "dstChain",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Source token symbol or address",
+                        "name": "srcToken",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Destination token symbol or address",
+                        "name": "dstToken",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/liquidity.FeesResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
             }
-          }
-        }
-      },
-      "credit.GetDisableAutoTopup.response": {
-        "type": "object",
-        "required": ["calls"],
-        "properties": {
-          "calls": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/evm.ContractCall"
-            }
-          }
-        }
-      },
-      "credit.GetEnableAutoTopup.response": {
-        "type": "object",
-        "required": ["calls"],
-        "properties": {
-          "calls": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/evm.ContractCall"
-            }
-          }
-        }
-      },
-      "credit.GetOperatorStatus.response": {
-        "type": "object",
-        "required": ["data"],
-        "properties": {
-          "data": {
-            "type": "object",
-            "required": ["operator", "receivers"],
-            "properties": {
-              "operator": {
-                "type": "string",
-                "example": "0x742d35Cc6634C0532925a3b844Bc9e7595f2bD18"
-              },
-              "receivers": {
-                "type": "array",
-                "items": {
-                  "type": "string"
+        },
+        "/liquidity/v1/chain/{chain}/protocol/{protocol}/unlock": {
+            "post": {
+                "description": "This endpoint returns signed authorization for an unlock transaction",
+                "tags": [
+                    "Liquidity"
+                ],
+                "summary": "Get signing authorization for a an unlock transaction",
+                "parameters": [
+                    {
+                        "description": "Name of the protocol, e.g., Across, Lighter",
+                        "name": "protocol",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "ID of the order that is to be unlocked",
+                        "name": "orderId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/liquidity.Unlock"
+                            }
+                        }
+                    },
+                    "description": "request",
+                    "required": true
                 },
-                "example": ["0xAbCdEf1234567890AbCdEf1234567890AbCdEf12"]
-              }
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/liquidity.UnlockResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request due to invalid input or missing parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
             }
-          }
-        }
-      },
-      "credit.Lock.response": {
-        "type": "object",
-        "required": ["calls"],
-        "properties": {
-          "calls": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/evm.ContractCall"
+        },
+        "/liquidity/v2/chain/{dstChain}/protocol/{protocol}/signature": {
+            "post": {
+                "description": "This endpoint streams signed authorization for a liquidity transaction",
+                "tags": [
+                    "Liquidity"
+                ],
+                "summary": "Get signing authorization for a liquidity transaction",
+                "parameters": [
+                    {
+                        "description": "Name of the protocol, e.g., Across, Lighter",
+                        "name": "protocol",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Destination chain Caip id, eg. eip155:8453",
+                        "name": "dstChain",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/liquidity.BorrowSignatureV2.body"
+                            }
+                        }
+                    },
+                    "description": "request",
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "This response is sent as a stringified json in SSE event with the event name 'data'",
+                        "content": {
+                            "text/event-stream": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/liquidity.BorrowSignatureResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request due to invalid input or missing parameters",
+                        "content": {
+                            "text/event-stream": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "text/event-stream": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
             }
-          }
-        }
-      },
-      "credit.Repay.response": {
-        "type": "object",
-        "required": ["calls"],
-        "properties": {
-          "calls": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/evm.ContractCall"
+        },
+        "/liquidity/v2/chain/{srcChain}/protocol/{protocol}/type/{type}/quote": {
+            "get": {
+                "description": "Calculates the borrow quote including borrow cost, required input/output, and duration",
+                "tags": [
+                    "Liquidity"
+                ],
+                "summary": "Get the borrow quote for a liquidity transaction based on the input data",
+                "parameters": [
+                    {
+                        "description": "Protocol name (e.g., Across)",
+                        "name": "protocol",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Quote algorithm type (e.g., ExactInput, ExactOutput)",
+                        "name": "type",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Source CAIP chain ID (e.g., eip155:1)",
+                        "name": "srcChain",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Destination CAIP chain ID (e.g., eip155:1)",
+                        "name": "dstChain",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Exclusive fill flag (true/false)",
+                        "name": "exclusive",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Amount of tokens for which we are requesting borrow quote (in the smallest denomination)",
+                        "name": "amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Token address on destination (hex)",
+                        "name": "token",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Preferred liquidity pool address to borrow from (hex)",
+                        "name": "pool",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved borrow quote",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/liquidity.borrowQuoteResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request due to invalid input or missing parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
             }
-          }
-        }
-      },
-      "credit.Unlock.response": {
-        "type": "object",
-        "required": ["calls"],
-        "properties": {
-          "calls": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/evm.ContractCall"
+        },
+        "/protocol/{protocol}/solver": {
+            "get": {
+                "description": "Returns solver address and time solver will need to fill it.",
+                "summary": "Returns solver address",
+                "parameters": [
+                    {
+                        "description": "order amount in USD",
+                        "name": "amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "destination chain in caip format",
+                        "name": "destinationChainId",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "destination token, either symbol or address",
+                        "name": "destinationToken",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "source chain in caip format",
+                        "name": "sourceChainId",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "source token, either symbol or address",
+                        "name": "sourceToken",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Protocol on which intent will be executed",
+                        "name": "protocol",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/server.GetSolverHandler.response"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
             }
-          }
         }
-      },
-      "credit.UnwrapResponse": {
-        "type": "object",
-        "required": ["amountOut", "calls", "minAmountOut", "tokenOut"],
-        "properties": {
-          "amountOut": {
-            "description": "Estimated amount of tokens to receive",
-            "type": "string",
-            "example": "1000000"
-          },
-          "calls": {
-            "description": "List of contract calls to execute the unwrap",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/evm.ContractCall"
+    },
+    "components": {
+        "schemas": {
+            "config.ChainConfig": {
+                "type": "object",
+                "required": [
+                    "collateral",
+                    "creditHubs",
+                    "escrowsMetadata",
+                    "strategies",
+                    "wrappedNativeAddress"
+                ],
+                "properties": {
+                    "collateral": {
+                        "description": "Asset collateral info per asset ID",
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/components/schemas/config.CollateralDetails"
+                        }
+                    },
+                    "creditHubs": {
+                        "description": "Credit hub info per token symbol",
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/components/schemas/config.CreditHubInfo"
+                        }
+                    },
+                    "escrowsMetadata": {
+                        "description": "Escrow metadata for the chain",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/config.EscrowsMetadata"
+                            }
+                        ]
+                    },
+                    "strategies": {
+                        "description": "Earn vault strategies keyed by strategy name",
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/components/schemas/config.EarnVaultMetadata"
+                        }
+                    },
+                    "wrappedNativeAddress": {
+                        "description": "Wrapped native token address (e.g., WETH). Zero value means native wrapping is not supported.",
+                        "type": "string",
+                        "example": "0x4200000000000000000000000000000000000006"
+                    }
+                }
+            },
+            "config.CollateralDetails": {
+                "type": "object",
+                "required": [
+                    "escrowAddress",
+                    "ltv",
+                    "strategy",
+                    "symbol"
+                ],
+                "properties": {
+                    "escrowAddress": {
+                        "type": "string",
+                        "example": "0xfedcba0987654321fedcba0987654321fedcba09"
+                    },
+                    "ltv": {
+                        "type": "string",
+                        "example": "12343"
+                    },
+                    "strategy": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/entity.EarnStrategy"
+                            }
+                        ],
+                        "example": "gauntlet-usdc-prime"
+                    },
+                    "symbol": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/entity.TokenSymbol"
+                            }
+                        ],
+                        "example": "USDC"
+                    }
+                }
+            },
+            "config.CreditHubInfo": {
+                "type": "object",
+                "required": [
+                    "assetAddress",
+                    "creditHubAddress",
+                    "creditHubControllerAddress"
+                ],
+                "properties": {
+                    "assetAddress": {
+                        "type": "string",
+                        "example": "0xabcdef1234567890abcdef1234567890abcdef12"
+                    },
+                    "creditHubAddress": {
+                        "description": "Credit hub contract address",
+                        "type": "string",
+                        "example": "0x1234567890abcdef1234567890abcdef12345678"
+                    },
+                    "creditHubControllerAddress": {
+                        "description": "Credit hub controller contract address",
+                        "type": "string",
+                        "example": "0xabcdef1234567890abcdef1234567890abcdef12"
+                    }
+                }
+            },
+            "config.CreditProtocolConfig": {
+                "type": "object",
+                "required": [
+                    "chains"
+                ],
+                "properties": {
+                    "chains": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/components/schemas/config.ChainConfig"
+                        }
+                    }
+                }
+            },
+            "config.EarnVaultMetadata": {
+                "type": "object",
+                "required": [
+                    "curator",
+                    "name",
+                    "protocol",
+                    "riskScore",
+                    "type",
+                    "underlyingAddress",
+                    "vaultAddress",
+                    "vaultType"
+                ],
+                "properties": {
+                    "curator": {
+                        "description": "Curator implementation type (e.g., \"Gauntlet\", \"Yo\")",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/entity.Curator"
+                            }
+                        ],
+                        "example": "Gauntlet"
+                    },
+                    "name": {
+                        "description": "Earn vault name (e.g., \"Gauntlet USDC Prime\")",
+                        "type": "string",
+                        "example": "Gauntlet USDC Prime"
+                    },
+                    "protocol": {
+                        "description": "Protocol implementation type (e.g., \"morpho-v1\", \"aave-v3\")",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/entity.Strategy"
+                            }
+                        ],
+                        "example": "morpho-v1"
+                    },
+                    "riskScore": {
+                        "description": "RiskScore indicates the strategy's risk level (0\u201310 scale)",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/entity.RiskScore"
+                            }
+                        ],
+                        "example": "5"
+                    },
+                    "type": {
+                        "description": "Type is strategy type (e.g., \"Lending\")",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/entity.StrategyType"
+                            }
+                        ],
+                        "example": "Lending"
+                    },
+                    "underlyingAddress": {
+                        "description": "Underlying asset address (e.g., USDC)",
+                        "type": "string",
+                        "example": "0x0000000000000000000000000000000000000000"
+                    },
+                    "vaultAddress": {
+                        "description": "Earn vault contract address",
+                        "type": "string",
+                        "example": "0x0000000000000000000000000000000000000000"
+                    },
+                    "vaultType": {
+                        "description": "Earn vault type",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/entity.VaultType"
+                            }
+                        ],
+                        "example": "erc4626"
+                    }
+                }
+            },
+            "config.EscrowsMetadata": {
+                "type": "object",
+                "required": [
+                    "controller",
+                    "helper"
+                ],
+                "properties": {
+                    "controller": {
+                        "description": "Escrow controller contract address",
+                        "type": "string",
+                        "example": "0xabcdef1234567890abcdef1234567890abcdef12"
+                    },
+                    "helper": {
+                        "description": "Escrow helper contract address",
+                        "type": "string",
+                        "example": "0xabcdef1234567890abcdef1234567890abcdef12"
+                    }
+                }
+            },
+            "config.Token": {
+                "type": "object",
+                "required": [
+                    "address",
+                    "decimals"
+                ],
+                "properties": {
+                    "address": {
+                        "type": "string"
+                    },
+                    "decimals": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "credit.ClaimResponse": {
+                "type": "object",
+                "required": [
+                    "calls"
+                ],
+                "properties": {
+                    "calls": {
+                        "description": "List of contract calls to execute the Claim",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/evm.ContractCall"
+                        }
+                    }
+                }
+            },
+            "credit.CollateralDetailsResponse": {
+                "type": "object",
+                "required": [
+                    "collateralAddress",
+                    "collateralPriceUsd",
+                    "earnServiceName",
+                    "isEarnVault"
+                ],
+                "properties": {
+                    "apy": {
+                        "type": "number",
+                        "example": 4.56
+                    },
+                    "collateralAddress": {
+                        "type": "string",
+                        "example": "0xeE8F4eC5672F09119b96Ab6fB59C27E1b7e44b61"
+                    },
+                    "collateralPriceUsd": {
+                        "type": "number",
+                        "example": 1.023456
+                    },
+                    "earnServiceName": {
+                        "type": "string",
+                        "example": "Gauntlet"
+                    },
+                    "isEarnVault": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "underlyingAsset": {
+                        "type": "string",
+                        "example": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+                    },
+                    "underlyingPriceUsd": {
+                        "type": "number",
+                        "example": 1
+                    }
+                }
+            },
+            "credit.DrawCredit.response": {
+                "type": "object",
+                "required": [
+                    "calls"
+                ],
+                "properties": {
+                    "calls": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/evm.ContractCall"
+                        }
+                    }
+                }
+            },
+            "credit.GetCreditUserInfo.response": {
+                "type": "object",
+                "required": [
+                    "data"
+                ],
+                "properties": {
+                    "data": {
+                        "description": "map of credit token symbol (e.g., \"USDC\") to user credit info",
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/components/schemas/credit.UserCreditInfoFMT"
+                        }
+                    }
+                }
+            },
+            "credit.GetDisableAutoTopup.response": {
+                "type": "object",
+                "required": [
+                    "calls"
+                ],
+                "properties": {
+                    "calls": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/evm.ContractCall"
+                        }
+                    }
+                }
+            },
+            "credit.GetEnableAutoTopup.response": {
+                "type": "object",
+                "required": [
+                    "calls"
+                ],
+                "properties": {
+                    "calls": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/evm.ContractCall"
+                        }
+                    }
+                }
+            },
+            "credit.GetOperatorStatus.response": {
+                "type": "object",
+                "required": [
+                    "data"
+                ],
+                "properties": {
+                    "data": {
+                        "type": "object",
+                        "required": [
+                            "operator",
+                            "receivers"
+                        ],
+                        "properties": {
+                            "operator": {
+                                "type": "string",
+                                "example": "0x742d35Cc6634C0532925a3b844Bc9e7595f2bD18"
+                            },
+                            "receivers": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "example": [
+                                    "0xAbCdEf1234567890AbCdEf1234567890AbCdEf12"
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "credit.Lock.response": {
+                "type": "object",
+                "required": [
+                    "calls"
+                ],
+                "properties": {
+                    "calls": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/evm.ContractCall"
+                        }
+                    }
+                }
+            },
+            "credit.Repay.response": {
+                "type": "object",
+                "required": [
+                    "calls"
+                ],
+                "properties": {
+                    "calls": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/evm.ContractCall"
+                        }
+                    }
+                }
+            },
+            "credit.Unlock.response": {
+                "type": "object",
+                "required": [
+                    "calls"
+                ],
+                "properties": {
+                    "calls": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/evm.ContractCall"
+                        }
+                    }
+                }
+            },
+            "credit.UnwrapResponse": {
+                "type": "object",
+                "required": [
+                    "amountOut",
+                    "calls",
+                    "minAmountOut",
+                    "tokenOut"
+                ],
+                "properties": {
+                    "amountOut": {
+                        "description": "Estimated amount of tokens to receive",
+                        "type": "string",
+                        "example": "1000000"
+                    },
+                    "calls": {
+                        "description": "List of contract calls to execute the unwrap",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/evm.ContractCall"
+                        }
+                    },
+                    "minAmountOut": {
+                        "description": "Minimum amount of tokens to receive (after slippage)",
+                        "type": "string",
+                        "example": "997000"
+                    },
+                    "tokenOut": {
+                        "description": "Token address that will be received after unwrapping",
+                        "type": "string",
+                        "example": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+                    }
+                }
+            },
+            "credit.UserCreditInfoFMT": {
+                "type": "object",
+                "required": [
+                    "debt",
+                    "healthFactor",
+                    "interest",
+                    "liquidationLimit",
+                    "mHealthFactor",
+                    "principal",
+                    "remainingCreditCapacity",
+                    "totalCollateralValue",
+                    "totalCreditCapacity"
+                ],
+                "properties": {
+                    "debt": {
+                        "description": "Debt is the total amount of drawn credit plus accrued interest",
+                        "type": "string",
+                        "example": "750.25"
+                    },
+                    "dueDate": {
+                        "description": "DueDate is the repayment due date (derived from grace period end).\nNull when no active credit exists.",
+                        "type": "string",
+                        "example": "2024-12-31T23:59:59Z"
+                    },
+                    "healthFactor": {
+                        "description": "HealthFactor indicates liquidation safety\n(e.g. \"0.4044\", \"1.25\")",
+                        "type": "string",
+                        "example": "1.25"
+                    },
+                    "interest": {
+                        "description": "Interest accrued in USD (e.g. \"12.34\")",
+                        "type": "string",
+                        "example": "12.34"
+                    },
+                    "liquidationLimit": {
+                        "description": "LiquidationLimit is the collateral value threshold below which liquidation is triggered",
+                        "type": "string",
+                        "example": "900.00"
+                    },
+                    "mHealthFactor": {
+                        "description": "MHealthFactor is the maintenance health factor",
+                        "type": "string",
+                        "example": "1.10"
+                    },
+                    "principal": {
+                        "description": "Principal borrowed amount in USD (Debt \u2212 Interest)",
+                        "type": "string",
+                        "example": "737.91"
+                    },
+                    "remainingCreditCapacity": {
+                        "description": "RemainingCreditCapacity is the maximum credit available to the user taking into account debt and fixed fees.\nNote that this value is going to be the minimum of `remainingCreditCapacity(user)` and `immediateCreditCapacity` (see contracts).",
+                        "type": "string",
+                        "example": "1500.50"
+                    },
+                    "totalCollateralValue": {
+                        "description": "TotalCollateralValue is amount of deposited collateral value in token units displayed in highest denomination.",
+                        "type": "string",
+                        "example": "1000.00"
+                    },
+                    "totalCreditCapacity": {
+                        "description": "TotalCreditCapacity is the maximum credit available based on collateral in token units displayed in highest denomination.",
+                        "type": "string",
+                        "example": "1500.50"
+                    }
+                }
+            },
+            "credit.WrapResponse": {
+                "type": "object",
+                "required": [
+                    "amountOut",
+                    "calls",
+                    "tokenOut"
+                ],
+                "properties": {
+                    "amountOut": {
+                        "description": "Estimated shares minted",
+                        "type": "string",
+                        "example": "1000000000000000000"
+                    },
+                    "calls": {
+                        "description": "approve + deposit calls",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/evm.ContractCall"
+                        }
+                    },
+                    "tokenOut": {
+                        "description": "Vault share token received",
+                        "type": "string",
+                        "example": "0xeE8F4eC5672F09119b96Ab6fB59C27E1b7e44b61"
+                    }
+                }
+            },
+            "entity.ChainID": {
+                "type": "integer",
+                "format": "int32",
+                "enum": [
+                    1,
+                    42161
+                ],
+                "x-enum-varnames": [
+                    "Ethereum",
+                    "Arbitrum"
+                ]
+            },
+            "entity.Curator": {
+                "type": "string",
+                "enum": [
+                    "Gauntlet",
+                    "Yo",
+                    "Superform"
+                ],
+                "x-enum-varnames": [
+                    "Gauntlet",
+                    "Yo",
+                    "Superform"
+                ]
+            },
+            "entity.EarnStrategy": {
+                "type": "string",
+                "enum": [
+                    "gauntlet-usdc-prime",
+                    "yo-eth",
+                    "yo-btc",
+                    "yo-usdc",
+                    "superform-usdc",
+                    ""
+                ],
+                "x-enum-varnames": [
+                    "StrategyGauntletUSDCPrime",
+                    "StrategyYoETH",
+                    "StrategyYoBTC",
+                    "StrategyYoUSDC",
+                    "StrategySuperformUSDC",
+                    "StrategyNone"
+                ]
+            },
+            "entity.RiskScore": {
+                "type": "string",
+                "enum": [
+                    "1",
+                    "3",
+                    "5",
+                    "7",
+                    "10"
+                ],
+                "x-enum-varnames": [
+                    "VeryLow",
+                    "Low",
+                    "Medium",
+                    "High",
+                    "VeryHigh"
+                ]
+            },
+            "entity.Strategy": {
+                "type": "string",
+                "enum": [
+                    "morpho-v1",
+                    "yo-protocol",
+                    "superform"
+                ],
+                "x-enum-varnames": [
+                    "MorphoV1",
+                    "YoProtocol",
+                    "SuperformProtocol"
+                ]
+            },
+            "entity.StrategyType": {
+                "type": "string",
+                "enum": [
+                    "Lending"
+                ],
+                "x-enum-varnames": [
+                    "Lending"
+                ]
+            },
+            "entity.TokenSymbol": {
+                "type": "string",
+                "enum": [
+                    "usdc",
+                    "usdt",
+                    "frxusd",
+                    "liquidusd",
+                    "liquidreserve"
+                ],
+                "x-enum-varnames": [
+                    "TokenUSDC",
+                    "TokenUSDT",
+                    "TokenFrxUSD",
+                    "TokenLiquidUSD",
+                    "TokenLiquidReserve"
+                ]
+            },
+            "entity.VaultType": {
+                "type": "string",
+                "enum": [
+                    "erc4626",
+                    "erc7540"
+                ],
+                "x-enum-varnames": [
+                    "ERC4626",
+                    "ERC7540"
+                ]
+            },
+            "evm.ContractCall": {
+                "type": "object",
+                "required": [
+                    "chain",
+                    "data",
+                    "to",
+                    "value"
+                ],
+                "properties": {
+                    "chain": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    "to": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    "value": {
+                        "$ref": "#/components/schemas/types.BigInt"
+                    }
+                }
+            },
+            "liquidity.BorrowCost": {
+                "description": "Borrow authorisation signature and details.",
+                "type": "object",
+                "required": [
+                    "borrowAmount",
+                    "borrowCost",
+                    "borrowToken",
+                    "liquidityPool",
+                    "nonce",
+                    "signature"
+                ],
+                "properties": {
+                    "borrowAmount": {
+                        "description": "amount to be borrowed in lowest denomination of the borrowed token",
+                        "type": "string"
+                    },
+                    "borrowCost": {
+                        "description": "cost to borrow the liquidity in lowest denomination of the borrowed token (excluding gas costs)",
+                        "type": "string"
+                    },
+                    "borrowToken": {
+                        "description": "address of the token being borrowed from the liquidity pool",
+                        "type": "string"
+                    },
+                    "deadline": {
+                        "description": "deadline for executing the borrow transaction",
+                        "type": "string"
+                    },
+                    "liquidityPool": {
+                        "description": "address of the liquidity pool from which the liquidity will be borrowed",
+                        "type": "string"
+                    },
+                    "nonce": {
+                        "description": "unique nonce for the borrow request",
+                        "type": "string"
+                    },
+                    "signature": {
+                        "description": "hex string containing the MPC set signature used on the Liquidity pool contract",
+                        "type": "string"
+                    }
+                }
+            },
+            "liquidity.BorrowSignatureResponse": {
+                "type": "object",
+                "required": [
+                    "data"
+                ],
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/liquidity.BorrowCost"
+                    }
+                }
+            },
+            "liquidity.BorrowSignatureV2.body": {
+                "type": "object",
+                "required": [
+                    "caller",
+                    "input",
+                    "quoteId",
+                    "txHash"
+                ],
+                "properties": {
+                    "caller": {
+                        "description": "eoa wallet address which will be used to call the liquidity pool contract",
+                        "type": "string"
+                    },
+                    "input": {
+                        "description": "hex encoded input data which will be executed on the liquidity pool contract with borrowed liquidity",
+                        "type": "string"
+                    },
+                    "metadata": {
+                        "description": "protocol-specific metadata as JSON object. For lifi-escrow: {\"srcChain\": \"eip155:1\"}\nwhere srcChain is the source chain CAIP ID used for on-chain order fetching fallback",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    "quoteId": {
+                        "description": "quote ID obtained from the borrow quote endpoint",
+                        "type": "string"
+                    },
+                    "txHash": {
+                        "description": "tx hash of the deposit transaction which will be used to verify liquidity repayment guarantee",
+                        "type": "string"
+                    }
+                }
+            },
+            "liquidity.FeesResponse": {
+                "type": "object",
+                "required": [
+                    "data"
+                ],
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/types.FeeTier"
+                        }
+                    }
+                }
+            },
+            "liquidity.GetStashSupportedTokensHandler.response": {
+                "type": "object",
+                "required": [
+                    "data"
+                ],
+                "properties": {
+                    "data": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/components/schemas/config.Token"
+                        }
+                    }
+                }
+            },
+            "liquidity.Quote": {
+                "type": "object",
+                "required": [
+                    "borrowCost",
+                    "duration",
+                    "estimatedFillDuration",
+                    "feeBps",
+                    "liquidityPool",
+                    "quoteDuration",
+                    "repaymentChain",
+                    "repaymentRecipient",
+                    "requiredInput",
+                    "requiredOutput"
+                ],
+                "properties": {
+                    "borrowCost": {
+                        "description": "Cost to borrow the liquidity (in the smallest denomination). Excludes gas costs.",
+                        "type": "string"
+                    },
+                    "duration": {
+                        "description": "Deprecated: use EstimatedFillDuration instead.",
+                        "type": "number"
+                    },
+                    "estimatedFillDuration": {
+                        "description": "Estimated duration for the borrow transaction to complete.\nDepends on the required amount of confirmations on the source chain.",
+                        "type": "number"
+                    },
+                    "feeBps": {
+                        "description": "Borrow fee in basis points. Excludes gas costs.",
+                        "type": "number"
+                    },
+                    "id": {
+                        "description": "Unique identifier for the quote. Guarantees liquidity reservation. Used on borrow signature request.",
+                        "type": "string"
+                    },
+                    "liquidityPool": {
+                        "description": "Liquidity pool from which the liquidity will be borrowed",
+                        "type": "string"
+                    },
+                    "quoteDuration": {
+                        "description": "Duration for which this quote remains valid.",
+                        "type": "number"
+                    },
+                    "repaymentChain": {
+                        "description": "Chain on which the repayment will be received",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/entity.ChainID"
+                            }
+                        ]
+                    },
+                    "repaymentRecipient": {
+                        "description": "Address to which the repayment should be sent",
+                        "type": "string"
+                    },
+                    "requiredInput": {
+                        "description": "Amount of input tokens required to fulfill the borrow (in the smallest denomination)",
+                        "type": "string"
+                    },
+                    "requiredOutput": {
+                        "description": "Amount of output tokens that will be received from the borrow (in the smallest denomination)",
+                        "type": "string"
+                    }
+                }
+            },
+            "liquidity.Unlock": {
+                "description": "unlock authorisation signature.",
+                "type": "object",
+                "required": [
+                    "signature"
+                ],
+                "properties": {
+                    "signature": {
+                        "type": "string"
+                    }
+                }
+            },
+            "liquidity.UnlockResponse": {
+                "type": "object",
+                "required": [
+                    "data"
+                ],
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/liquidity.Unlock"
+                    }
+                }
+            },
+            "liquidity.availableLiquidityResponse": {
+                "type": "object",
+                "required": [
+                    "data"
+                ],
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/liquidity.poolLiquidity"
+                    }
+                }
+            },
+            "liquidity.borrowQuoteResponse": {
+                "type": "object",
+                "required": [
+                    "data"
+                ],
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/liquidity.Quote"
+                    }
+                }
+            },
+            "liquidity.poolLiquidity": {
+                "type": "object",
+                "required": [
+                    "address",
+                    "balance"
+                ],
+                "properties": {
+                    "address": {
+                        "type": "string"
+                    },
+                    "balance": {
+                        "type": "string"
+                    }
+                }
+            },
+            "responses.ErrorResponse": {
+                "type": "object",
+                "required": [
+                    "error"
+                ],
+                "properties": {
+                    "debug": {
+                        "type": "string"
+                    },
+                    "error": {
+                        "type": "string"
+                    }
+                }
+            },
+            "server.GetSolverHandler.response": {
+                "type": "object",
+                "required": [
+                    "duration",
+                    "solver"
+                ],
+                "properties": {
+                    "duration": {
+                        "type": "integer"
+                    },
+                    "solver": {
+                        "type": "string"
+                    }
+                }
+            },
+            "server.HealthHandler.response": {
+                "type": "object",
+                "required": [
+                    "status"
+                ],
+                "properties": {
+                    "status": {
+                        "type": "string"
+                    }
+                }
+            },
+            "types.BigInt": {
+                "type": "object"
+            },
+            "types.FeeTier": {
+                "type": "object",
+                "required": [
+                    "feeBps",
+                    "maxAmount",
+                    "minAmount"
+                ],
+                "properties": {
+                    "feeBps": {
+                        "type": "number"
+                    },
+                    "maxAmount": {
+                        "type": "integer"
+                    },
+                    "minAmount": {
+                        "type": "integer"
+                    }
+                }
             }
-          },
-          "minAmountOut": {
-            "description": "Minimum amount of tokens to receive (after slippage)",
-            "type": "string",
-            "example": "997000"
-          },
-          "tokenOut": {
-            "description": "Token address that will be received after unwrapping",
-            "type": "string",
-            "example": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
-          }
         }
-      },
-      "credit.UserCreditInfoFMT": {
-        "type": "object",
-        "required": [
-          "debt",
-          "healthFactor",
-          "interest",
-          "liquidationLimit",
-          "mHealthFactor",
-          "principal",
-          "remainingCreditCapacity",
-          "totalCollateralValue",
-          "totalCreditCapacity"
-        ],
-        "properties": {
-          "debt": {
-            "description": "Debt is the total amount of drawn credit plus accrued interest",
-            "type": "string",
-            "example": "750.25"
-          },
-          "dueDate": {
-            "description": "DueDate is the repayment due date (derived from grace period end).\nNull when no active credit exists.",
-            "type": "string",
-            "example": "2024-12-31T23:59:59Z"
-          },
-          "healthFactor": {
-            "description": "HealthFactor indicates liquidation safety\n(e.g. \"0.4044\", \"1.25\")",
-            "type": "string",
-            "example": "1.25"
-          },
-          "interest": {
-            "description": "Interest accrued in USD (e.g. \"12.34\")",
-            "type": "string",
-            "example": "12.34"
-          },
-          "liquidationLimit": {
-            "description": "LiquidationLimit is the collateral value threshold below which liquidation is triggered",
-            "type": "string",
-            "example": "900.00"
-          },
-          "mHealthFactor": {
-            "description": "MHealthFactor is the maintenance health factor",
-            "type": "string",
-            "example": "1.10"
-          },
-          "principal": {
-            "description": "Principal borrowed amount in USD (Debt \u2212 Interest)",
-            "type": "string",
-            "example": "737.91"
-          },
-          "remainingCreditCapacity": {
-            "description": "RemainingCreditCapacity is the maximum credit available to the user taking into account debt and fixed fees.\nNote that this value is going to be the minimum of `remainingCreditCapacity(user)` and `immediateCreditCapacity` (see contracts).",
-            "type": "string",
-            "example": "1500.50"
-          },
-          "totalCollateralValue": {
-            "description": "TotalCollateralValue is amount of deposited collateral value in token units displayed in highest denomination.",
-            "type": "string",
-            "example": "1000.00"
-          },
-          "totalCreditCapacity": {
-            "description": "TotalCreditCapacity is the maximum credit available based on collateral in token units displayed in highest denomination.",
-            "type": "string",
-            "example": "1500.50"
-          }
+    },
+    "servers": [
+        {
+            "url": "https://api.sprinter.tech",
+            "description": "Production server"
         }
-      },
-      "credit.WrapResponse": {
-        "type": "object",
-        "required": ["amountOut", "calls", "tokenOut"],
-        "properties": {
-          "amountOut": {
-            "description": "Estimated shares minted",
-            "type": "string",
-            "example": "1000000000000000000"
-          },
-          "calls": {
-            "description": "approve + deposit calls",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/evm.ContractCall"
-            }
-          },
-          "tokenOut": {
-            "description": "Vault share token received",
-            "type": "string",
-            "example": "0xeE8F4eC5672F09119b96Ab6fB59C27E1b7e44b61"
-          }
-        }
-      },
-      "entity.ChainID": {
-        "type": "integer",
-        "format": "int32",
-        "enum": [1, 42161],
-        "x-enum-varnames": ["Ethereum", "Arbitrum"]
-      },
-      "entity.Curator": {
-        "type": "string",
-        "enum": ["Gauntlet", "Yo", "Superform"],
-        "x-enum-varnames": ["Gauntlet", "Yo", "Superform"]
-      },
-      "entity.EarnStrategy": {
-        "type": "string",
-        "enum": [
-          "gauntlet-usdc-prime",
-          "yo-eth",
-          "yo-btc",
-          "yo-usdc",
-          "superform-usdc",
-          ""
-        ],
-        "x-enum-varnames": [
-          "StrategyGauntletUSDCPrime",
-          "StrategyYoETH",
-          "StrategyYoBTC",
-          "StrategyYoUSDC",
-          "StrategySuperformUSDC",
-          "StrategyNone"
-        ]
-      },
-      "entity.RiskScore": {
-        "type": "string",
-        "enum": ["1", "3", "5", "7", "10"],
-        "x-enum-varnames": ["VeryLow", "Low", "Medium", "High", "VeryHigh"]
-      },
-      "entity.Strategy": {
-        "type": "string",
-        "enum": ["morpho-v1", "yo-protocol", "superform"],
-        "x-enum-varnames": ["MorphoV1", "YoProtocol", "SuperformProtocol"]
-      },
-      "entity.StrategyType": {
-        "type": "string",
-        "enum": ["Lending"],
-        "x-enum-varnames": ["Lending"]
-      },
-      "entity.TokenSymbol": {
-        "type": "string",
-        "enum": ["usdc", "usdt", "frxusd", "liquidusd", "liquidreserve"],
-        "x-enum-varnames": [
-          "TokenUSDC",
-          "TokenUSDT",
-          "TokenFrxUSD",
-          "TokenLiquidUSD",
-          "TokenLiquidReserve"
-        ]
-      },
-      "entity.VaultType": {
-        "type": "string",
-        "enum": ["erc4626", "erc7540"],
-        "x-enum-varnames": ["ERC4626", "ERC7540"]
-      },
-      "evm.ContractCall": {
-        "type": "object",
-        "required": ["chain", "data", "to", "value"],
-        "properties": {
-          "chain": {
-            "type": "string"
-          },
-          "data": {
-            "type": "array",
-            "items": {
-              "type": "integer"
-            }
-          },
-          "to": {
-            "type": "array",
-            "items": {
-              "type": "integer"
-            }
-          },
-          "value": {
-            "$ref": "#/components/schemas/types.BigInt"
-          }
-        }
-      },
-      "liquidity.BorrowCost": {
-        "description": "Borrow authorisation signature and details.",
-        "type": "object",
-        "required": [
-          "borrowAmount",
-          "borrowCost",
-          "borrowToken",
-          "liquidityPool",
-          "nonce",
-          "signature"
-        ],
-        "properties": {
-          "borrowAmount": {
-            "description": "amount to be borrowed in lowest denomination of the borrowed token",
-            "type": "string"
-          },
-          "borrowCost": {
-            "description": "cost to borrow the liquidity in lowest denomination of the borrowed token (excluding gas costs)",
-            "type": "string"
-          },
-          "borrowToken": {
-            "description": "address of the token being borrowed from the liquidity pool",
-            "type": "string"
-          },
-          "deadline": {
-            "description": "deadline for executing the borrow transaction",
-            "type": "string"
-          },
-          "liquidityPool": {
-            "description": "address of the liquidity pool from which the liquidity will be borrowed",
-            "type": "string"
-          },
-          "nonce": {
-            "description": "unique nonce for the borrow request",
-            "type": "string"
-          },
-          "signature": {
-            "description": "hex string containing the MPC set signature used on the Liquidity pool contract",
-            "type": "string"
-          }
-        }
-      },
-      "liquidity.BorrowSignatureResponse": {
-        "type": "object",
-        "required": ["data"],
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/liquidity.BorrowCost"
-          }
-        }
-      },
-      "liquidity.BorrowSignatureV2.body": {
-        "type": "object",
-        "required": ["caller", "input", "quoteId", "txHash"],
-        "properties": {
-          "caller": {
-            "description": "eoa wallet address which will be used to call the liquidity pool contract",
-            "type": "string"
-          },
-          "input": {
-            "description": "hex encoded input data which will be executed on the liquidity pool contract with borrowed liquidity",
-            "type": "string"
-          },
-          "metadata": {
-            "description": "protocol-specific metadata as JSON object. For lifi-escrow: {\"srcChain\": \"eip155:1\"}\nwhere srcChain is the source chain CAIP ID used for on-chain order fetching fallback",
-            "type": "array",
-            "items": {
-              "type": "integer"
-            }
-          },
-          "quoteId": {
-            "description": "quote ID obtained from the borrow quote endpoint",
-            "type": "string"
-          },
-          "txHash": {
-            "description": "tx hash of the deposit transaction which will be used to verify liquidity repayment guarantee",
-            "type": "string"
-          }
-        }
-      },
-      "liquidity.FeesResponse": {
-        "type": "object",
-        "required": ["data"],
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/types.FeeTier"
-            }
-          }
-        }
-      },
-      "liquidity.GetStashSupportedTokensHandler.response": {
-        "type": "object",
-        "required": ["data"],
-        "properties": {
-          "data": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/config.Token"
-            }
-          }
-        }
-      },
-      "liquidity.Quote": {
-        "type": "object",
-        "required": [
-          "borrowCost",
-          "duration",
-          "estimatedFillDuration",
-          "feeBps",
-          "liquidityPool",
-          "quoteDuration",
-          "repaymentChain",
-          "repaymentRecipient",
-          "requiredInput",
-          "requiredOutput"
-        ],
-        "properties": {
-          "borrowCost": {
-            "description": "Cost to borrow the liquidity (in the smallest denomination). Excludes gas costs.",
-            "type": "string"
-          },
-          "duration": {
-            "description": "Deprecated: use EstimatedFillDuration instead.",
-            "type": "number"
-          },
-          "estimatedFillDuration": {
-            "description": "Estimated duration for the borrow transaction to complete.\nDepends on the required amount of confirmations on the source chain.",
-            "type": "number"
-          },
-          "feeBps": {
-            "description": "Borrow fee in basis points. Excludes gas costs.",
-            "type": "number"
-          },
-          "id": {
-            "description": "Unique identifier for the quote. Guarantees liquidity reservation. Used on borrow signature request.",
-            "type": "string"
-          },
-          "liquidityPool": {
-            "description": "Liquidity pool from which the liquidity will be borrowed",
-            "type": "string"
-          },
-          "quoteDuration": {
-            "description": "Duration for which this quote remains valid.",
-            "type": "number"
-          },
-          "repaymentChain": {
-            "description": "Chain on which the repayment will be received",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/entity.ChainID"
-              }
-            ]
-          },
-          "repaymentRecipient": {
-            "description": "Address to which the repayment should be sent",
-            "type": "string"
-          },
-          "requiredInput": {
-            "description": "Amount of input tokens required to fulfill the borrow (in the smallest denomination)",
-            "type": "string"
-          },
-          "requiredOutput": {
-            "description": "Amount of output tokens that will be received from the borrow (in the smallest denomination)",
-            "type": "string"
-          }
-        }
-      },
-      "liquidity.Unlock": {
-        "description": "unlock authorisation signature.",
-        "type": "object",
-        "required": ["signature"],
-        "properties": {
-          "signature": {
-            "type": "string"
-          }
-        }
-      },
-      "liquidity.UnlockResponse": {
-        "type": "object",
-        "required": ["data"],
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/liquidity.Unlock"
-          }
-        }
-      },
-      "liquidity.availableLiquidityResponse": {
-        "type": "object",
-        "required": ["data"],
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/liquidity.poolLiquidity"
-          }
-        }
-      },
-      "liquidity.borrowQuoteResponse": {
-        "type": "object",
-        "required": ["data"],
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/liquidity.Quote"
-          }
-        }
-      },
-      "liquidity.poolLiquidity": {
-        "type": "object",
-        "required": ["address", "balance"],
-        "properties": {
-          "address": {
-            "type": "string"
-          },
-          "balance": {
-            "type": "string"
-          }
-        }
-      },
-      "responses.ErrorResponse": {
-        "type": "object",
-        "required": ["error"],
-        "properties": {
-          "debug": {
-            "type": "string"
-          },
-          "error": {
-            "type": "string"
-          }
-        }
-      },
-      "server.GetSolverHandler.response": {
-        "type": "object",
-        "required": ["duration", "solver"],
-        "properties": {
-          "duration": {
-            "type": "integer"
-          },
-          "solver": {
-            "type": "string"
-          }
-        }
-      },
-      "server.HealthHandler.response": {
-        "type": "object",
-        "required": ["status"],
-        "properties": {
-          "status": {
-            "type": "string"
-          }
-        }
-      },
-      "types.BigInt": {
-        "type": "object"
-      },
-      "types.FeeTier": {
-        "type": "object",
-        "required": ["feeBps", "maxAmount", "minAmount"],
-        "properties": {
-          "feeBps": {
-            "type": "number"
-          },
-          "maxAmount": {
-            "type": "integer"
-          },
-          "minAmount": {
-            "type": "integer"
-          }
-        }
-      }
-    }
-  },
-  "servers": [
-    {
-      "url": "https://api.sprinter.tech",
-      "description": "Production server"
-    }
-  ]
+    ]
 }
