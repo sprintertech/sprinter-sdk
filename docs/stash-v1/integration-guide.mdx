@@ -13,15 +13,15 @@ Sprinter Stash enables solvers to **borrow crosschain credit on-demand** to exec
 
 ## Overview of the Stash Fill Lifecycle
 
-```mermaid
-flowchart TD
-  A[Solver Detects User Intent] --> B[2 - Solver Previews estimated borrowing /quote of credit]
-  B --> C[Receive Borrow Quote Estimate]
-  C --> D{Fill using Stash Credit?}
-  D -- Yes --> E[3 - Solver Reserves credit and authorize the fill /cost]
-  D -- No --> F[Abort Fill]
-  E --> G[Solver Borrow Liquidity from Sprinter Stash]
-  G --> H[Stash Executes Cross-Chain Swap/Bridge Execution /request]
-  H --> I[Intent Protocol Repays Borrowed Credit + Costs]
-  I --> J[Fill Complete]
+```
+Solver detects user intent
+  → Solver previews estimated borrowing quote
+    → Receive borrow quote estimate
+      → Fill using Stash Credit?
+          Yes → Solver reserves credit and authorizes the fill
+            → Solver borrows liquidity from Sprinter Stash
+              → Stash executes cross-chain swap/bridge
+                → Intent protocol repays borrowed credit + costs
+                  → Fill complete
+          No  → Abort fill
 ```
