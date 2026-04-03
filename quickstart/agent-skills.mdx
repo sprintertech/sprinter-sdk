@@ -5,59 +5,11 @@ description: "Pre-built agent skills that use the Sprinter Credit API to autonom
 
 ## Overview
 
-AI agents need liquidity. Whether it's settling a cross-chain swap, funding a card payment, or capturing an arbitrage opportunity — the bottleneck is always the same: the agent has collateral but not the right asset, on the right chain, at the right time.
+Agent skills are pre-built modules that let AI agents autonomously manage credit positions via the Sprinter Credit API. Each skill handles a specific part of the credit lifecycle — borrowing, health monitoring, or collateral optimization.
 
-Sprinter fixes this. An agent locks collateral, borrows instantly, does its job, and repays — all via API. No custody handoff, no waiting for bridges, no idle capital.
-
-<Card title="Agent Credit Borrow" icon="hand-holding-dollar" href="/quickstart/agent-skills/credit-borrow">
-  The core skill — let any AI agent borrow from Sprinter via MCP or direct API. Full walkthrough, example repo, and MCP server included.
-</Card>
-
-## How It Works
-
-```
-Agent needs liquidity
-  → Lock USDC as collateral        POST calldata via /lock
-  → Borrow against it instantly     POST calldata via /draw
-  → Use the funds                   Swap, bridge, settle — agent's own logic
-  → Repay when done                 POST calldata via /repay
-  → Unlock collateral               POST calldata via /unlock
-```
+Sprinter works with any agent framework. Integrate via an [MCP server](https://modelcontextprotocol.io/) for agents that speak Model Context Protocol (Claude, Cursor, LI.FI, ChatGPT), or use plain HTTP calls for custom agents, bots, and scripts.
 
 Every Sprinter endpoint returns `{ calls: ContractCall[] }` — unsigned transaction calldata. The agent's wallet signs and broadcasts. No API keys needed for on-chain operations, no custody, no intermediaries.
-
-### MCP or Direct API
-
-Sprinter works with any agent framework:
-
-| Integration | How | Best for |
-|---|---|---|
-| **[MCP Server](/quickstart/agent-skills/credit-borrow#mcp-integration)** | Add `sprinter-credit` to your MCP config | Claude, Cursor, LI.FI, ChatGPT, any MCP client |
-| **[Direct API](/quickstart/agent-skills/credit-borrow#direct-api-no-mcp)** | Plain HTTP calls to `api.sprinter.tech` | Custom agents, bots, scripts, any language |
-
-An agent using LI.FI for routing and Sprinter for credit can compose both MCP servers — the agent gets bridging *and* borrowing as native tools:
-
-```json
-{
-  "mcpServers": {
-    "lifi": { "type": "http", "url": "https://mcp.li.quest/mcp" },
-    "sprinter-credit": {
-      "command": "npx",
-      "args": ["tsx", "src/server.ts"],
-      "cwd": "/path/to/examples/sprinter-mcp"
-    }
-  }
-}
-```
-
-### Why Agents Borrow
-
-| Scenario | Flow |
-|----------|------|
-| **Cross-chain swap** | Agent holds USDC on Base but needs funds on Arbitrum. Borrow → bridge via LI.FI → repay when settled. |
-| **Card settlement** | Card authorization arrives. Borrow instantly to settle with the network, repay when the user's funds clear. |
-| **Arbitrage** | Agent spots a price gap. Borrow, execute, repay from profits — same block. |
-| **Yield farming** | Borrow to enter a short-term opportunity, repay when unwinding. |
 
 <Info>
 All skills require a delegated signer authorized to execute on-chain transactions on behalf of the user. See [Delegated Signing](/quickstart/credit-draw/authorization-webhook#delegated-signing) for setup options.
