@@ -17,11 +17,13 @@ Official documentation for Sprinter — programmable credit infrastructure for a
 
 ### Examples & Demos
 
+Examples and demos live in the [`sprintertech/documentation`](https://github.com/sprintertech/documentation) repo:
+
 | Directory | Description |
 |-----------|-------------|
-| [`demo/`](demo/) | Credit Draw demo — full lock/draw/repay/unlock lifecycle with web UI |
-| [`examples/sprinter-mcp/`](examples/sprinter-mcp/) | MCP server exposing Sprinter Credit as agent tools |
-| [`card-issuer-demo-mock/`](card-issuer-demo-mock/) | Card issuer integration demo with mock issuer |
+| [`examples/demo/`](https://github.com/sprintertech/documentation/tree/main/examples/demo) | Credit Draw demo — full lock/draw/repay/unlock lifecycle with web UI |
+| [`examples/sprinter-mcp/`](https://github.com/sprintertech/documentation/tree/main/examples/sprinter-mcp) | MCP server exposing Sprinter Credit as agent tools |
+| [`examples/card-issuer-demo-mock/`](https://github.com/sprintertech/documentation/tree/main/examples/card-issuer-demo-mock) | Card issuer integration demo with mock issuer |
 
 ### API
 
