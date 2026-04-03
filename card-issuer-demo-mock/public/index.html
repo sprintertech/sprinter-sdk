@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sprinter + Card Issuer — Validation Demo</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0a0a0f;
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      background: linear-gradient(135deg, #6366f1, #06b6d4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      color: #888;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .mode-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-bottom: 28px;
+      letter-spacing: 0.5px;
+    }
+
+    .mode-badge.mock { background: #3b2a0a; color: #f59e0b; }
+    .mode-badge.live { background: #052e16; color: #22c55e; }
+    .mode-badge.dry-run { background: #1e1b4b; color: #818cf8; margin-left: 6px; }
+
+    .status-bar {
+      background: #13131a;
+      border: 1px solid #1e1e2e;
+      border-radius: 12px;
+      padding: 20px 24px;
+      width: 100%;
+      max-width: 680px;
+      margin-bottom: 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .status-item { display: flex; flex-direction: column; gap: 4px; }
+    .status-item.full { grid-column: 1 / -1; }
+
+    .status-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #666;
+    }
+
+    .status-value {
+      font-size: 14px;
+      font-family: "SF Mono", "Fira Code", monospace;
+      color: #ccc;
+      word-break: break-all;
+    }
+
+    .status-value.highlight { color: #8b5cf6; }
+
+    .run-btn {
+      background: linear-gradient(135deg, #6366f1, #06b6d4);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 14px 40px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 32px;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+
+    .run-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    .run-btn:active { transform: translateY(0); }
+    .run-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+    .pipeline {
+      width: 100%;
+      max-width: 680px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .step {
+      background: #13131a;
+      border: 1px solid #1e1e2e;
+      border-radius: 10px;
+      padding: 16px 20px;
+      transition: border-color 0.3s;
+    }
+
+    .step.running { border-color: #6366f1; }
+    .step.done { border-color: #22c55e; }
+    .step.error { border-color: #ef4444; }
+
+    .step-header { display: flex; align-items: center; gap: 10px; }
+
+    .step-icon {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700;
+      background: #1e1e2e; color: #666;
+      flex-shrink: 0;
+    }
+
+    .step.running .step-icon { background: #6366f1; color: white; }
+    .step.done .step-icon { background: #22c55e; color: white; }
+    .step.error .step-icon { background: #ef4444; color: white; }
+
+    .step-title { font-size: 15px; font-weight: 500; flex: 1; }
+
+    .step-source {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 2px 6px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    .step-source.sprinter { background: #1e1b4b; color: #818cf8; }
+    .step-source.card { background: #0c4a6e; color: #38bdf8; }
+    .step-source.both { background: #1a1a2e; color: #a78bfa; }
+
+    .step-spinner {
+      width: 18px; height: 18px;
+      border: 2px solid #333;
+      border-top-color: #6366f1;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .step-check { color: #22c55e; font-size: 18px; }
+
+    .step-details {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #1e1e2e;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .detail-item { display: flex; flex-direction: column; gap: 2px; }
+    .detail-item.full { grid-column: 1 / -1; }
+
+    .detail-label {
+      font-size: 11px; color: #666;
+      text-transform: uppercase; letter-spacing: 0.3px;
+    }
+
+    .detail-value {
+      font-size: 13px;
+      font-family: "SF Mono", "Fira Code", monospace;
+      color: #aaa;
+    }
+
+    .detail-value a { color: #8b5cf6; text-decoration: none; }
+    .detail-value a:hover { text-decoration: underline; }
+
+    .log-panel {
+      width: 100%;
+      max-width: 680px;
+      margin-top: 24px;
+      background: #0d0d12;
+      border: 1px solid #1a1a24;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .log-header {
+      padding: 10px 16px;
+      font-size: 12px; font-weight: 600;
+      color: #666;
+      border-bottom: 1px solid #1a1a24;
+      cursor: pointer; user-select: none;
+    }
+
+    .log-body {
+      max-height: 250px;
+      overflow-y: auto;
+      padding: 8px 16px;
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 12px; line-height: 1.6;
+      color: #555;
+    }
+
+    .log-body.collapsed { display: none; }
+    .log-line.warn { color: #f59e0b; }
+    .log-line.info { color: #6366f1; }
+
+    .banner {
+      width: 100%;
+      max-width: 680px;
+      margin-top: 24px;
+      border-radius: 10px;
+      padding: 20px 24px;
+      text-align: center;
+    }
+
+    .banner.complete {
+      background: linear-gradient(135deg, #052e16, #0a2a1a);
+      border: 1px solid #166534;
+    }
+
+    .banner.complete h3 { color: #22c55e; font-size: 18px; margin-bottom: 8px; }
+    .banner.complete p { color: #86efac; font-size: 13px; }
+
+    .banner.error {
+      background: #1a0a0a;
+      border: 1px solid #7f1d1d;
+    }
+
+    .banner.error h3 { color: #ef4444; font-size: 16px; margin-bottom: 8px; }
+    .banner.error p { color: #fca5a5; font-size: 13px; font-family: "SF Mono", "Fira Code", monospace; }
+
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <h1>Sprinter + Card Issuer</h1>
+  <p class="subtitle">End-to-End Card Program Validation on Base</p>
+  <div id="modeBadges">
+    <span class="mode-badge mock" id="cardBadge">CARD ISSUER: MOCK</span>
+  </div>
+
+  <div class="status-bar" id="statusBar">
+    <div class="status-item full">
+      <span class="status-label">Wallet</span>
+      <span class="status-value" id="walletAddr">Loading...</span>
+    </div>
+    <div class="status-item">
+      <span class="status-label">USDC Balance</span>
+      <span class="status-value highlight" id="usdcBal">-</span>
+    </div>
+    <div class="status-item">
+      <span class="status-label">ETH Balance</span>
+      <span class="status-value" id="ethBal">-</span>
+    </div>
+    <div class="status-item">
+      <span class="status-label">Demo Amount</span>
+      <span class="status-value highlight" id="demoAmt">-</span>
+    </div>
+    <div class="status-item">
+      <span class="status-label">Sprinter API</span>
+      <span class="status-value" id="apiStatus">-</span>
+    </div>
+  </div>
+
+  <button class="run-btn" id="runBtn" disabled>Run Full Demo</button>
+
+  <div class="pipeline" id="pipeline"></div>
+
+  <div class="banner complete hidden" id="completeBanner">
+    <h3>Validation Complete</h3>
+    <p id="completeMsg">Full Sprinter + card issuer lifecycle executed.</p>
+  </div>
+  <div class="banner error hidden" id="errorBanner">
+    <h3>Error</h3>
+    <p id="errorMsg"></p>
+  </div>
+
+  <div class="log-panel">
+    <div class="log-header" id="logToggle">API Logs (Sprinter + Card Issuer)</div>
+    <div class="log-body" id="logBody"></div>
+  </div>
+
+  <script>
+    const STEPS = [
+      { title: "API Health Check", source: "both" },
+      { title: "Card Issuer: Create User (KYC)", source: "card" },
+      { title: "Card Issuer: Issue Virtual Card", source: "card" },
+      { title: "Sprinter: Lock USDC Collateral", source: "sprinter" },
+      { title: "Sprinter: Check Credit Line", source: "sprinter" },
+      { title: "Draw Credit + Fund Card", source: "both" },
+      { title: "Sprinter: Repay & Unlock", source: "sprinter" },
+    ];
+
+    const $ = (id) => document.getElementById(id);
+    let logsCollapsed = false;
+
+    async function loadStatus() {
+      try {
+        const res = await fetch("/api/status");
+        const data = await res.json();
+
+        $("walletAddr").textContent = data.account;
+        $("usdcBal").textContent = `${parseFloat(data.usdcBalance).toFixed(2)} USDC`;
+        $("ethBal").textContent = `${parseFloat(data.ethBalance).toFixed(4)} ETH`;
+        $("demoAmt").textContent = `${data.demoAmount} USDC`;
+        $("apiStatus").textContent = data.apiStatus || "unknown";
+
+        const badge = $("cardBadge");
+        if (data.cardIssuerLive) {
+          badge.textContent = "CARD ISSUER: LIVE";
+          badge.className = "mode-badge live";
+        }
+
+        if (data.dryRun) {
+          const dryBadge = document.createElement("span");
+          dryBadge.className = "mode-badge dry-run";
+          dryBadge.textContent = "DRY RUN";
+          $("modeBadges").appendChild(dryBadge);
+        }
+
+        $("runBtn").disabled = false;
+      } catch (err) {
+        $("walletAddr").textContent = "Failed to connect";
+      }
+    }
+
+    function renderSteps() {
+      const pipeline = $("pipeline");
+      pipeline.innerHTML = "";
+      STEPS.forEach((s, i) => {
+        const div = document.createElement("div");
+        div.className = "step";
+        div.id = `step-${i}`;
+        div.innerHTML = `
+          <div class="step-header">
+            <div class="step-icon">${i + 1}</div>
+            <div class="step-title">${s.title}</div>
+            <span class="step-source ${s.source}">${s.source.toUpperCase()}</span>
+          </div>
+        `;
+        pipeline.appendChild(div);
+      });
+    }
+
+    function updateStep(data) {
+      const el = $(`step-${data.step}`);
+      if (!el) return;
+
+      el.className = `step ${data.status}`;
+      if (data.title) el.querySelector(".step-title").textContent = data.title;
+
+      const header = el.querySelector(".step-header");
+      const existing = header.querySelector(".step-spinner, .step-check");
+      if (existing) existing.remove();
+
+      if (data.status === "running") {
+        const spinner = document.createElement("div");
+        spinner.className = "step-spinner";
+        header.appendChild(spinner);
+      } else if (data.status === "done") {
+        const check = document.createElement("span");
+        check.className = "step-check";
+        check.textContent = "\u2713";
+        header.appendChild(check);
+      }
+
+      if (data.details || data.txHash) {
+        let detailsEl = el.querySelector(".step-details");
+        if (!detailsEl) {
+          detailsEl = document.createElement("div");
+          detailsEl.className = "step-details";
+          el.appendChild(detailsEl);
+        }
+        detailsEl.innerHTML = "";
+
+        if (data.txHash && data.txHash !== "0x_dry_run") {
+          const item = document.createElement("div");
+          item.className = "detail-item full";
+          item.innerHTML = `
+            <span class="detail-label">Transaction</span>
+            <span class="detail-value"><a href="https://basescan.org/tx/${data.txHash}" target="_blank">${data.txHash.slice(0, 10)}...${data.txHash.slice(-8)}</a></span>
+          `;
+          detailsEl.appendChild(item);
+        }
+
+        if (data.details) {
+          for (const [key, value] of Object.entries(data.details)) {
+            const item = document.createElement("div");
+            item.className = "detail-item";
+            const label = key.replace(/([A-Z])/g, " $1").replace(/^./, (s) => s.toUpperCase());
+            item.innerHTML = `
+              <span class="detail-label">${label}</span>
+              <span class="detail-value">${value}</span>
+            `;
+            detailsEl.appendChild(item);
+          }
+        }
+      }
+
+      el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    function addLog(msg, type) {
+      const body = $("logBody");
+      const line = document.createElement("div");
+      line.className = `log-line ${type || ""}`;
+      line.textContent = msg;
+      body.appendChild(line);
+      body.scrollTop = body.scrollHeight;
+    }
+
+    async function runDemo() {
+      $("runBtn").disabled = true;
+      $("completeBanner").classList.add("hidden");
+      $("errorBanner").classList.add("hidden");
+      $("logBody").innerHTML = "";
+      renderSteps();
+
+      const eventSource = new EventSource("/api/run");
+
+      eventSource.addEventListener("step", (e) => updateStep(JSON.parse(e.data)));
+      eventSource.addEventListener("log", (e) => {
+        const data = JSON.parse(e.data);
+        addLog(data.message, data.type);
+      });
+
+      eventSource.addEventListener("complete", (e) => {
+        const data = JSON.parse(e.data);
+        const mode = data.cardIssuerMode === "LIVE"
+          ? "Card issuer API calls were LIVE."
+          : "Card issuer API calls were MOCKED. Swap MockCardIssuer for a real implementation to validate.";
+        $("completeMsg").textContent = `Full lifecycle complete. ${mode}`;
+        $("completeBanner").classList.remove("hidden");
+        $("runBtn").disabled = false;
+        eventSource.close();
+        loadStatus();
+      });
+
+      eventSource.addEventListener("error", (e) => {
+        try {
+          const data = JSON.parse(e.data);
+          $("errorMsg").textContent = data.message;
+        } catch {
+          $("errorMsg").textContent = "Connection lost";
+        }
+        $("errorBanner").classList.remove("hidden");
+        $("runBtn").disabled = false;
+        eventSource.close();
+      });
+    }
+
+    $("runBtn").addEventListener("click", runDemo);
+    $("logToggle").addEventListener("click", () => {
+      logsCollapsed = !logsCollapsed;
+      $("logBody").classList.toggle("collapsed", logsCollapsed);
+      $("logToggle").textContent = `API Logs (Sprinter + Card Issuer) ${logsCollapsed ? "\u25B8" : "\u25BE"}`;
+    });
+
+    renderSteps();
+    loadStatus();
+  </script>
+</body>
+</html>

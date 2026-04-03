@@ -1,0 +1,21 @@
+{
+  "name": "sprinter-card-issuer-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "End-to-end validation: Sprinter Credit + Card Issuance on Base",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx server.ts",
+    "dev:dry-run": "DRY_RUN=true tsx server.ts"
+  },
+  "dependencies": {
+    "ethers": "^6.13.0",
+    "express": "^4.21.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "dotenv": "^16.4.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0"
+  }
+}
