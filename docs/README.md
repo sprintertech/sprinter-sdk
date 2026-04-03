@@ -22,7 +22,6 @@ Official documentation for Sprinter — programmable credit infrastructure for a
 | [`demo/`](demo/) | Credit Draw demo — full lock/draw/repay/unlock lifecycle with web UI |
 | [`examples/sprinter-mcp/`](examples/sprinter-mcp/) | MCP server exposing Sprinter Credit as agent tools |
 | [`card-issuer-demo-mock/`](card-issuer-demo-mock/) | Card issuer integration demo with mock issuer |
-| [`rain-demo-real-api/`](rain-demo-real-api/) | Sprinter + Rain card issuer validation demo |
 
 ### API
 
@@ -37,6 +36,7 @@ Official documentation for Sprinter — programmable credit infrastructure for a
 Requires Node 22 LTS (Node 25+ is not supported by Mintlify).
 
 ```bash
+cd docs
 npx mintlify dev
 ```
 
