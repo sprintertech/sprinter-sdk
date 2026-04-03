@@ -7,6 +7,46 @@ description: "Integrate a card issuer with Sprinter Credit — KYC, card issuanc
 
 A card issuer integration connects a card issuing platform (e.g. Rain, Stripe Issuing, Marqeta) with Sprinter Credit so that cardholders can spend against DeFi collateral instead of prefunded balances. The card issuer handles KYC, card issuance, and deposit contracts — Sprinter handles the credit line.
 
+## Card Issuer Interface
+
+The integration uses a generic `CardIssuer` interface that can be swapped for any card issuing platform:
+
+```typescript
+interface CardUser {
+  id: string;
+  applicationStatus: string; // "approved", "pending", "rejected"
+}
+
+interface CardContract {
+  id: string;
+  chainId: number;
+  depositAddress: string; // on-chain address to receive USDC
+}
+
+interface Card {
+  id: string;
+  type: string;      // "virtual" or "physical"
+  status: string;     // "active", "frozen", etc.
+  last4: string;
+  network: string;    // "visa", "mastercard"
+}
+
+interface CardIssuer {
+  readonly isLive: boolean;
+
+  /** Submit a KYC application for a wallet address */
+  createUser(walletAddress: string): Promise<CardUser>;
+
+  /** Get the on-chain deposit contract for a user on a given chain */
+  retrieveContract(userId: string, chainId: number): Promise<CardContract>;
+
+  /** Issue a virtual card for an approved user */
+  issueCard(userId: string): Promise<Card>;
+}
+```
+
+To integrate a real card issuer, implement this interface against their API. The Sprinter Credit side stays the same — only the card issuer implementation changes.
+
 <div style={{ paddingRight: "120px" }}>
 ```mermaid
 flowchart TD
@@ -56,11 +96,6 @@ Your Backend
     Submit the user's wallet address to the card issuer for KYC onboarding. The issuer handles identity verification and compliance.
 
     ```typescript
-    interface CardUser {
-      id: string;
-      applicationStatus: string; // "approved", "pending", "rejected"
-    }
-
     const user = await cardIssuer.createUser(walletAddress);
     // user.id → use for all subsequent card issuer calls
     // user.applicationStatus → "approved" when KYC passes
@@ -75,12 +110,6 @@ Your Backend
     Each card issuer provides a per-user deposit contract on the target chain. This is the address where USDC must be sent to fund the card.
 
     ```typescript
-    interface CardContract {
-      id: string;
-      chainId: number;
-      depositAddress: string; // on-chain address to receive USDC
-    }
-
     const contract = await cardIssuer.retrieveContract(user.id, 8453); // Base
     // contract.depositAddress → pass as `receiver` in Sprinter draw calls
     ```
@@ -92,14 +121,6 @@ Your Backend
     Once KYC is approved, issue a virtual card for the user.
 
     ```typescript
-    interface Card {
-      id: string;
-      type: string;      // "virtual" or "physical"
-      status: string;     // "active", "frozen", etc.
-      last4: string;
-      network: string;    // "visa", "mastercard"
-    }
-
     const card = await cardIssuer.issueCard(user.id);
     // card.last4, card.network → display in your UI
     ```
@@ -152,27 +173,6 @@ Your Backend
     Credit runs on a 30-day billing cycle with a 7-day grace period. See [Fees](/sprinter-credit/credit-engine#fees).
   </Step>
 </Steps>
-
-## Card Issuer Interface
-
-The demo uses a generic `CardIssuer` interface that can be swapped for any card issuing platform. Here's the interface:
-
-```typescript
-interface CardIssuer {
-  readonly isLive: boolean;
-
-  /** Submit a KYC application for a wallet address */
-  createUser(walletAddress: string): Promise<CardUser>;
-
-  /** Get the on-chain deposit contract for a user on a given chain */
-  retrieveContract(userId: string, chainId: number): Promise<CardContract>;
-
-  /** Issue a virtual card for an approved user */
-  issueCard(userId: string): Promise<Card>;
-}
-```
-
-To integrate a real card issuer, implement this interface against their API and swap it into the demo server. The Sprinter Credit side stays the same — only the card issuer implementation changes.
 
 ## Integration Notes
 
