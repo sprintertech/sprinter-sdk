@@ -36,7 +36,6 @@ Official documentation for Sprinter — programmable credit infrastructure for a
 Requires Node 22 LTS (Node 25+ is not supported by Mintlify).
 
 ```bash
-cd docs
 npx mintlify dev
 ```
 
