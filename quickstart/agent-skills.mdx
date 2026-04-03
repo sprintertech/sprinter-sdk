@@ -5,33 +5,74 @@ description: "Pre-built agent skills that use the Sprinter Credit API to autonom
 
 ## Overview
 
-AI agents can use the Sprinter Credit API to autonomously manage credit positions on behalf of users. These skills are designed to be picked up by any agent framework — each one maps directly to real API endpoints and can run without user interaction once authorized.
+AI agents need liquidity. Whether it's settling a cross-chain swap, funding a card payment, or capturing an arbitrage opportunity — the bottleneck is always the same: the agent has collateral but not the right asset, on the right chain, at the right time.
+
+Sprinter fixes this. An agent locks collateral, borrows instantly, does its job, and repays — all via API. No custody handoff, no waiting for bridges, no idle capital.
+
+<Card title="Agent Credit Borrow" icon="hand-holding-dollar" href="/quickstart/agent-skills/credit-borrow">
+  The core skill — let any AI agent borrow from Sprinter via MCP or direct API. Full walkthrough, example repo, and MCP server included.
+</Card>
+
+## How It Works
+
+```
+Agent needs liquidity
+  → Lock USDC as collateral        POST calldata via /lock
+  → Borrow against it instantly     POST calldata via /draw
+  → Use the funds                   Swap, bridge, settle — agent's own logic
+  → Repay when done                 POST calldata via /repay
+  → Unlock collateral               POST calldata via /unlock
+```
+
+Every Sprinter endpoint returns `{ calls: ContractCall[] }` — unsigned transaction calldata. The agent's wallet signs and broadcasts. No API keys needed for on-chain operations, no custody, no intermediaries.
+
+### MCP or Direct API
+
+Sprinter works with any agent framework:
+
+| Integration | How | Best for |
+|---|---|---|
+| **[MCP Server](/quickstart/agent-skills/credit-borrow#mcp-integration)** | Add `sprinter-credit` to your MCP config | Claude, Cursor, LI.FI, ChatGPT, any MCP client |
+| **[Direct API](/quickstart/agent-skills/credit-borrow#direct-api-no-mcp)** | Plain HTTP calls to `api.sprinter.tech` | Custom agents, bots, scripts, any language |
+
+An agent using LI.FI for routing and Sprinter for credit can compose both MCP servers — the agent gets bridging *and* borrowing as native tools:
+
+```json
+{
+  "mcpServers": {
+    "lifi": { "type": "http", "url": "https://mcp.li.quest/mcp" },
+    "sprinter-credit": {
+      "command": "npx",
+      "args": ["tsx", "src/server.ts"],
+      "cwd": "/path/to/examples/sprinter-mcp"
+    }
+  }
+}
+```
+
+### Why Agents Borrow
+
+| Scenario | Flow |
+|----------|------|
+| **Cross-chain swap** | Agent holds USDC on Base but needs funds on Arbitrum. Borrow → bridge via LI.FI → repay when settled. |
+| **Card settlement** | Card authorization arrives. Borrow instantly to settle with the network, repay when the user's funds clear. |
+| **Arbitrage** | Agent spots a price gap. Borrow, execute, repay from profits — same block. |
+| **Yield farming** | Borrow to enter a short-term opportunity, repay when unwinding. |
 
 <Info>
-All skills require a Sprinter API key and a delegated signer authorized to execute on-chain transactions on behalf of the user. See [Card Programs — Delegated Signing](/quickstart/card-programs/authorization-webhook#delegated-signing) for setup options.
+All skills require a delegated signer authorized to execute on-chain transactions on behalf of the user. See [Delegated Signing](/quickstart/credit-draw/authorization-webhook#delegated-signing) for setup options.
 </Info>
 
-## Available Skills
+## All Skills
 
 <CardGroup cols={2}>
+  <Card title="Agent Credit Borrow" icon="hand-holding-dollar" href="/quickstart/agent-skills/credit-borrow">
+    Lock collateral, draw credit, use the funds, repay. MCP server + example repo included.
+  </Card>
   <Card title="Credit Health Monitor & Auto-Repay" icon="heart-pulse" href="/quickstart/agent-skills/health-monitor">
-    Watches health factor and due dates. Auto-repays before billing cycle ends to avoid overdue rates. Tops up collateral if health drops.
+    Watches health factor and due dates. Auto-repays before billing cycle ends to avoid overdue rates.
   </Card>
   <Card title="Yield-Optimized Collateral Manager" icon="chart-line" href="/quickstart/agent-skills/yield-optimizer">
     Rebalances collateral across earn vaults to maximize yield while keeping the credit line healthy.
   </Card>
 </CardGroup>
-
-## How Agent Skills Work
-
-Every Sprinter Credit API endpoint returns `{ calls: ContractCall[] }` — an array of transactions to execute on-chain. This makes the API agent-friendly by design: the agent decides *what* to do, the API tells it *how*, and the delegated signer executes.
-
-```
-Agent polls /credit/accounts/{account}/info
-  → Evaluates position (health factor, debt, due date, vault yields)
-  → Decides on action (repay, lock more collateral, rebalance vaults)
-  → Calls the relevant endpoint to get calldata
-  → Executes on-chain via delegated signer
-  → Logs the action and loops
-```
-

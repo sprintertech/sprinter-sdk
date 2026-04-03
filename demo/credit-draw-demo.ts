@@ -350,7 +350,7 @@ async function preflightChecks(): Promise<{ usdcBalance: string; ethBalance: str
 
 async function main() {
   console.log("╔══════════════════════════════════════════════════════════╗");
-  console.log("║       Sprinter Credit — Card Program Demo               ║");
+  console.log("║       Sprinter Credit — Credit Draw Demo                 ║");
   console.log("╚══════════════════════════════════════════════════════════╝");
   console.log();
 
@@ -439,7 +439,7 @@ async function main() {
   const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
   console.log();
   console.log("╔══════════════════════════════════════════════════════════╗");
-  console.log(`║  ✅ Card program demo completed in ${elapsed}s`);
+  console.log(`║  ✅ Credit draw demo completed in ${elapsed}s`);
   console.log("╚══════════════════════════════════════════════════════════╝");
   console.log();
   console.log("On-chain transactions (verify on Basescan):");

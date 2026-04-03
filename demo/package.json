@@ -1,11 +1,11 @@
 {
-  "name": "sprinter-card-program-demo",
+  "name": "sprinter-credit-draw-demo",
   "version": "1.0.0",
-  "description": "Live demo of the Sprinter Credit Card Programs integration",
+  "description": "Live demo of the Sprinter Credit Draw lifecycle — lock, draw, repay, unlock",
   "type": "module",
   "scripts": {
-    "demo": "tsx card-program-demo.ts",
-    "demo:dry-run": "DRY_RUN=true tsx card-program-demo.ts",
+    "demo": "tsx credit-draw-demo.ts",
+    "demo:dry-run": "DRY_RUN=true tsx credit-draw-demo.ts",
     "ui": "tsx server.ts",
     "ui:dry-run": "DRY_RUN=true tsx server.ts"
   },

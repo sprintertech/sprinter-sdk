@@ -1,10 +1,10 @@
-# Sprinter Credit — Card Program Demo
+# Sprinter Credit — Credit Draw Demo
 
-Live demonstration of the full card program lifecycle using the Sprinter Credit V2 API on Base.
+Live demonstration of the full credit draw lifecycle using the Sprinter Credit V2 API on Base.
 
 ## What it does
 
-Walks through a complete credit card flow in ~60 seconds:
+Walks through a complete credit draw flow in ~60 seconds:
 
 1. **Lock** — Deposit USDC as collateral
 2. **Check Credit** — View credit line and health factor
@@ -114,14 +114,14 @@ You should always run recovery before re-running the demo if a previous run didn
 ```
 demo/
   server.ts            Express server (SSE streaming, /api/status, /api/run, /api/recover)
-  card-program-demo.ts CLI version of the same flow
+  credit-draw-demo.ts CLI version of the same flow
   public/index.html    Single-page web UI (vanilla JS, no build step)
   .env.example         Template for environment variables
   .env                 Your local config (gitignored)
 ```
 
 - **Web UI** (`server.ts` + `public/index.html`): Express serves a dashboard that streams real-time progress via Server-Sent Events (SSE). Each step fires `step`, `log`, and `complete`/`error` events.
-- **CLI** (`card-program-demo.ts`): Same flow with terminal-formatted output. Good for quick testing.
+- **CLI** (`credit-draw-demo.ts`): Same flow with terminal-formatted output. Good for quick testing.
 - Both share the same Sprinter API calls and transaction logic.
 
 ## Troubleshooting

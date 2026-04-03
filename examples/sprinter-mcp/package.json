@@ -1,0 +1,26 @@
+{
+  "name": "sprinter-credit-mcp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MCP server exposing Sprinter Credit API as agent tools — lets any MCP-compatible agent (LI.FI, Claude, Cursor, etc.) borrow against on-chain collateral",
+  "type": "module",
+  "bin": {
+    "sprinter-mcp": "./dist/server.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "tsx src/server.ts",
+    "demo": "tsx src/demo-agent.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "ethers": "^6.13.0",
+    "dotenv": "^16.4.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "@types/node": "^22.0.0"
+  }
+}

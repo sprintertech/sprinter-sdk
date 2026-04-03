@@ -472,7 +472,7 @@ app.get("/api/run", async (req, res) => {
 app.listen(PORT, () => {
   console.log();
   console.log("╔══════════════════════════════════════════════════════════╗");
-  console.log("║       Sprinter Credit — Card Program Demo               ║");
+  console.log("║       Sprinter Credit — Credit Draw Demo                 ║");
   console.log("╚══════════════════════════════════════════════════════════╝");
   console.log();
   console.log(`  🌐 Open http://localhost:${PORT} in your browser`);

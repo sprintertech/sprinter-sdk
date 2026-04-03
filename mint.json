@@ -21,16 +21,23 @@
       "group": "Quickstart",
       "pages": [
         {
-          "group": "Card Programs",
+          "group": "Credit Draw",
           "pages": [
-            "quickstart/card-programs",
-            "quickstart/card-programs/authorization-webhook"
+            "quickstart/credit-draw",
+            "quickstart/credit-draw/authorization-webhook"
+          ]
+        },
+        {
+          "group": "Card Issuer Integration",
+          "pages": [
+            "quickstart/card-issuer-integration"
           ]
         },
         {
           "group": "Agent Skills",
           "pages": [
             "quickstart/agent-skills",
+            "quickstart/agent-skills/credit-borrow",
             "quickstart/agent-skills/health-monitor",
             "quickstart/agent-skills/yield-optimizer"
           ]

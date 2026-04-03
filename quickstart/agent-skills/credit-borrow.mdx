@@ -1,0 +1,238 @@
+---
+title: "Agent Credit Borrow"
+description: "Let any AI agent borrow from Sprinter — lock collateral, draw credit, repay, and unlock via MCP or direct API calls"
+---
+
+## Overview
+
+AI agents often need on-demand liquidity — to settle a swap, bridge funds, or execute a trade. Instead of holding idle capital, an agent can borrow from Sprinter: lock collateral, draw credit in under 2 seconds, use the funds, and repay when done.
+
+This skill works with any agent framework. We provide:
+
+- An **MCP server** for agents that speak [Model Context Protocol](https://modelcontextprotocol.io/) (LI.FI, Claude, Cursor, ChatGPT, etc.)
+- A **direct API** pattern for agents using plain HTTP
+
+<Card title="Example Repo" icon="github" href="https://github.com/sprintertech/documentation/tree/main/examples/sprinter-mcp">
+  Full MCP server + demo agent script — clone and run.
+</Card>
+
+## The Borrow Flow
+
+```
+Agent needs liquidity
+  → Lock USDC as collateral (sprinter-lock-collateral)
+  → Draw credit (sprinter-draw-credit)
+  → Use the funds (swap, bridge, settle — agent's own logic)
+  → Repay debt (sprinter-repay-debt)
+  → Unlock collateral (sprinter-unlock-collateral)
+```
+
+Every Sprinter endpoint returns `{ calls: ContractCall[] }` — unsigned transaction calldata. The agent's wallet signs and broadcasts. No custody, no API keys for on-chain operations.
+
+## MCP Integration
+
+The Sprinter MCP server exposes 7 tools that any MCP-compatible agent can discover and call:
+
+| Tool | Description |
+|------|-------------|
+| `sprinter-health-check` | API health check |
+| `sprinter-protocol-config` | Supported chains, collateral assets, LTV ratios |
+| `sprinter-credit-info` | Account credit position — capacity, debt, health factor |
+| `sprinter-lock-collateral` | Build calldata to lock collateral |
+| `sprinter-draw-credit` | Build calldata to borrow (draw) |
+| `sprinter-repay-debt` | Build calldata to repay debt |
+| `sprinter-unlock-collateral` | Build calldata to unlock collateral |
+
+### Setup
+
+Add to your MCP client config (Claude Desktop, Cursor, etc.):
+
+```json
+{
+  "mcpServers": {
+    "sprinter-credit": {
+      "command": "npx",
+      "args": ["tsx", "src/server.ts"],
+      "cwd": "/path/to/examples/sprinter-mcp"
+    }
+  }
+}
+```
+
+Or if you also use LI.FI's MCP server, the agent gets both tool sets:
+
+```json
+{
+  "mcpServers": {
+    "lifi": {
+      "type": "http",
+      "url": "https://mcp.li.quest/mcp"
+    },
+    "sprinter-credit": {
+      "command": "npx",
+      "args": ["tsx", "src/server.ts"],
+      "cwd": "/path/to/examples/sprinter-mcp"
+    }
+  }
+}
+```
+
+Now the agent can use LI.FI for routing/bridging and Sprinter for credit — borrowing liquidity just-in-time for a cross-chain swap.
+
+## Direct API (No MCP)
+
+If your agent doesn't use MCP, the same flow works with plain HTTP:
+
+<Steps>
+  <Step title="Check Credit Position">
+    ```bash
+    curl https://api.sprinter.tech/credit/accounts/0xAGENT_WALLET/info
+    ```
+
+    Response includes `remainingCreditCapacity` — if it's enough to cover the borrow, skip to step 3.
+  </Step>
+
+  <Step title="Lock Collateral">
+    ```bash
+    curl 'https://api.sprinter.tech/credit/accounts/0xAGENT_WALLET/lock?amount=1000000&asset=0x833589fcd6edb6e08f4c7c32d4f71b54bda02913'
+    ```
+
+    Returns `{ calls: ContractCall[] }`. Sign and broadcast each call.
+    With 1 USDC locked at 90% LTV, the agent gets ~0.90 USDC credit capacity.
+  </Step>
+
+  <Step title="Draw Credit (Borrow)">
+    ```bash
+    curl 'https://api.sprinter.tech/credit/accounts/0xAGENT_WALLET/draw?amount=500000&receiver=0xRECEIVER'
+    ```
+
+    The `receiver` gets the borrowed USDC. This can be the agent's own wallet, a DEX router, a bridge contract — wherever the funds need to go.
+  </Step>
+
+  <Step title="Use the Funds">
+    The agent does its work — swap via LI.FI, bridge to another chain, settle a trade, pay a merchant, etc.
+  </Step>
+
+  <Step title="Repay">
+    ```bash
+    curl 'https://api.sprinter.tech/credit/accounts/0xAGENT_WALLET/repay?amount=500000'
+    ```
+
+    Repaying restores credit capacity. The agent can borrow again immediately.
+  </Step>
+
+  <Step title="Unlock Collateral (Optional)">
+    ```bash
+    curl 'https://api.sprinter.tech/credit/accounts/0xAGENT_WALLET/unlock?amount=1000000&asset=0x833589fcd6edb6e08f4c7c32d4f71b54bda02913'
+    ```
+
+    Only needed if the agent wants its collateral back. If it plans to borrow again soon, leaving collateral locked avoids extra gas.
+  </Step>
+</Steps>
+
+## Implementation
+
+A minimal autonomous agent that borrows, uses funds, and repays:
+
+```typescript
+const SPRINTER_API = "https://api.sprinter.tech";
+const USDC = "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913";
+
+interface ContractCall {
+  to: string;
+  data: string;
+  value: string;
+}
+
+async function sprinterGet(path: string): Promise<any> {
+  const res = await fetch(`${SPRINTER_API}${path}`);
+  if (!res.ok) throw new Error(`Sprinter ${res.status}: ${await res.text()}`);
+  return res.json();
+}
+
+async function executeCalls(calls: ContractCall[], signer: any): Promise<string> {
+  let lastHash = "";
+  for (const call of calls) {
+    const tx = await signer.sendTransaction({
+      to: call.to,
+      data: call.data,
+      value: call.value || "0",
+    });
+    const receipt = await tx.wait();
+    if (!receipt || receipt.status !== 1) throw new Error(`Reverted: ${tx.hash}`);
+    lastHash = tx.hash;
+  }
+  return lastHash;
+}
+
+/**
+ * Borrow from Sprinter, use the funds, and repay.
+ *
+ * @param account    - Agent's wallet address
+ * @param signer     - Ethers signer for the wallet
+ * @param borrowAmt  - Amount to borrow (USDC smallest unit)
+ * @param collateral - Amount of collateral to lock (USDC smallest unit)
+ * @param useFunds   - Callback where the agent uses the borrowed funds
+ */
+async function borrowAndRepay(
+  account: string,
+  signer: any,
+  borrowAmt: string,
+  collateral: string,
+  useFunds: () => Promise<void>
+) {
+  // 1. Lock collateral
+  const lockData = await sprinterGet(
+    `/credit/accounts/${account}/lock?amount=${collateral}&asset=${USDC}`
+  );
+  await executeCalls(lockData.calls, signer);
+
+  // 2. Borrow
+  const drawData = await sprinterGet(
+    `/credit/accounts/${account}/draw?amount=${borrowAmt}&receiver=${account}`
+  );
+  await executeCalls(drawData.calls, signer);
+
+  // 3. Agent uses the funds
+  await useFunds();
+
+  // 4. Repay
+  const repayData = await sprinterGet(
+    `/credit/accounts/${account}/repay?amount=${borrowAmt}`
+  );
+  await executeCalls(repayData.calls, signer);
+
+  // 5. Unlock collateral
+  const unlockData = await sprinterGet(
+    `/credit/accounts/${account}/unlock?amount=${collateral}&asset=${USDC}`
+  );
+  await executeCalls(unlockData.calls, signer);
+}
+```
+
+<Info>
+The `useFunds` callback is where the agent plugs in its own logic — call LI.FI's API to bridge, execute a DEX swap, settle a card payment, etc. The borrow/repay lifecycle wraps around whatever the agent needs to do.
+</Info>
+
+## When to Use This
+
+| Scenario | Why borrow? |
+|----------|-------------|
+| **Cross-chain swap** | Agent holds USDC on Base but needs funds on Arbitrum. Borrow on Base → bridge via LI.FI → repay when the swap settles. |
+| **Just-in-time settlement** | Agent receives a card authorization. Borrow immediately to settle with the card network, repay when the user's funds arrive. |
+| **Arbitrage** | Agent spots a price difference. Borrow, execute the arb, repay from profits — all in one block. |
+| **Yield farming** | Agent borrows to enter a short-term yield opportunity, repays when it unwinds the position. |
+
+## Related
+
+<CardGroup cols={3}>
+  <Card title="Health Monitor" icon="heart-pulse" href="/quickstart/agent-skills/health-monitor">
+    Pair with the health monitor to auto-repay if the agent's position gets risky.
+  </Card>
+  <Card title="Credit Draw" icon="money-bill-transfer" href="/quickstart/credit-draw">
+    Core credit draw lifecycle — lock, draw, repay, unlock.
+  </Card>
+  <Card title="Credit API Reference" icon="bolt" href="/api-reference/sprinter/credit/build-transaction-calls-to-draw-credit">
+    Full draw endpoint docs with interactive playground.
+  </Card>
+</CardGroup>
