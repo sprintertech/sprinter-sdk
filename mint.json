@@ -78,6 +78,12 @@
       ]
     },
     {
+      "group": "Credit API",
+      "pages": [
+        "api-reference/sprinter/credit/overview"
+      ]
+    },
+    {
       "group": "Credit — Info",
       "pages": [
         "api-reference/sprinter/credit/get-credit-protocol-configuration",

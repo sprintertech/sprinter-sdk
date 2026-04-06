@@ -1,0 +1,72 @@
+---
+title: "Sprinter Credit API"
+description: "Full API reference for the Sprinter Credit engine — lock collateral, draw credit, repay, unlock, and manage earn vaults"
+---
+
+## Base URL
+
+```
+https://api.sprinter.tech
+```
+
+## OpenAPI Specification
+
+The full machine-readable API spec is available for AI agents, code generators, and API clients:
+
+| Resource | URL |
+|----------|-----|
+| **OpenAPI Spec (JSON)** | [api.sprinter.tech/swagger/doc.json](https://api.sprinter.tech/swagger/doc.json) |
+| **Swagger UI** | [api.sprinter.tech/swagger/index.html](https://api.sprinter.tech/swagger/index.html) |
+
+<Tip>
+Point your AI agent or code generator at the [OpenAPI spec](https://api.sprinter.tech/swagger/doc.json) to auto-generate a client in any language.
+</Tip>
+
+## Endpoints
+
+### Info
+
+| Endpoint | Description |
+|----------|-------------|
+| [`GET /credit/protocol`](/api-reference/sprinter/credit/get-credit-protocol-configuration) | Protocol configuration — supported chains, collateral assets, LTV ratios, earn strategies |
+| [`GET /credit/accounts/{account}/info`](/api-reference/sprinter/credit/get-user-credit-information) | Account credit position — capacity, debt, health factor |
+| [`GET /credit/accounts/{account}/collateral`](/api-reference/sprinter/credit/get-collateral-asset-details) | Collateral asset details |
+| [`GET /credit/accounts/{account}/operator`](/api-reference/sprinter/credit/get-operator-status-for-an-account) | Operator status for delegated draws |
+
+### Actions
+
+| Endpoint | Description |
+|----------|-------------|
+| [`GET /credit/accounts/{account}/lock`](/api-reference/sprinter/credit/calldata-to-lock-asset-as-collateral) | Build calldata to lock collateral |
+| [`GET /credit/accounts/{account}/unlock`](/api-reference/sprinter/credit/call-data-to-unlock-collateral) | Build calldata to unlock collateral |
+| [`GET /credit/accounts/{account}/draw`](/api-reference/sprinter/credit/build-transaction-calls-to-draw-credit) | Build calldata to draw (borrow) credit |
+| [`GET /credit/accounts/{account}/repay`](/api-reference/sprinter/credit/call-data-to-repay-credit-debt) | Build calldata to repay debt |
+
+### Advanced
+
+| Endpoint | Description |
+|----------|-------------|
+| [`GET /credit/accounts/{account}/auto-top-up/enable`](/api-reference/sprinter/credit/build-transaction-calls-to-enable-auto-top-up) | Enable auto top-up |
+| [`GET /credit/accounts/{account}/auto-top-up/disable`](/api-reference/sprinter/credit/build-transaction-calls-to-disable-auto-top-up) | Disable auto top-up |
+| [`GET /credit/accounts/{account}/wrap`](/api-reference/sprinter/credit/wrap-asset-into-earn-vault) | Wrap asset into earn vault |
+| [`GET /credit/accounts/{account}/unwrap`](/api-reference/sprinter/credit/unwrap-position-from-earn-vault) | Unwrap from earn vault |
+| [`GET /credit/accounts/{account}/claim`](/api-reference/sprinter/credit/claim-position-from-earn-vault) | Claim position from earn vault |
+
+## Response Format
+
+All transaction-building endpoints return unsigned calldata:
+
+```json
+{
+  "calls": [
+    {
+      "chain": "8453",
+      "to": "0x...",
+      "data": "0x...",
+      "value": "0"
+    }
+  ]
+}
+```
+
+Sign and broadcast each `ContractCall` in the user's wallet. No API keys needed for on-chain operations.
