@@ -88,7 +88,7 @@ RPC_URL=https://mainnet.base.org        # optional, defaults to Base mainnet
 SPRINTER_API=https://api.sprinter.tech   # optional
 ```
 
-The wallet needs USDC on Base (the demo locks 1 USDC as collateral and borrows 0.50 USDC).
+The wallet needs USDC and a small amount of ETH (for gas) on Base. The demo locks 1 USDC as collateral and borrows 0.50 USDC.
 
 ### Run
 

@@ -117,7 +117,7 @@ The web UI connects to `/api/run` via SSE and renders each step in real time —
 
 ## Links
 
-- [Card Issuer Integration Quickstart](https://docs.sprinter.tech/quickstart/card-issuer-integration)
+- [Card Program Integration](https://docs.sprinter.tech/quickstart/card-program)
 - [Credit Draw Quickstart](https://docs.sprinter.tech/quickstart/credit-draw)
 - [Sprinter Credit API Reference](https://docs.sprinter.tech/api-reference/sprinter/credit/get-credit-protocol-configuration)
 - [Sprinter Documentation](https://docs.sprinter.tech)

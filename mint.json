@@ -28,9 +28,9 @@
           ]
         },
         {
-          "group": "Card Issuer Integration",
+          "group": "Card Program Integration",
           "pages": [
-            "quickstart/card-issuer-integration"
+            "quickstart/card-program"
           ]
         },
         {
