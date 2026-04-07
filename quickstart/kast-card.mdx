@@ -203,6 +203,14 @@ Every step maps to a single Sprinter endpoint:
 | Unlock collateral | `GET /credit/accounts/{account}/unlock` |
 | Get protocol config | `GET /credit/protocol` |
 
+## Try It
+
+The **Card Program Demo** runs the full credit-backed card lifecycle on Base — collateral locking, credit draw to a settlement address, repay, and unlock — with a mock card issuer that simulates the card program side.
+
+<Card title="Card Program Demo" icon="play" href="https://github.com/sprintertech/documentation/tree/main/examples/card-issuer-demo-mock">
+  Clone the repo, add a wallet with USDC and ETH on Base, and run `npm run dev`. The mock card issuer handles the card program side — focus on the Sprinter Credit steps.
+</Card>
+
 ## Related
 
 <CardGroup cols={3}>
