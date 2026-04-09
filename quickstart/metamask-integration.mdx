@@ -1,0 +1,229 @@
+---
+title: "MetaMask Integration"
+description: "Let MetaMask users borrow against their existing ETH and stETH — no selling, no bridging, just credit"
+---
+
+## Overview
+
+With Sprinter Credit, MetaMask users can borrow USDC against their existing holdings — ETH, stETH, wstETH — without selling. Users lock collateral, get a credit line, and spend or transfer USDC while their assets stay productive.
+
+MetaMask already has the signer. Sprinter provides the credit engine — you just execute the calldata it returns.
+
+| Without Sprinter | With Sprinter |
+|---|---|
+| User sells ETH to get USDC | User locks ETH, draws USDC — keeps ETH exposure |
+| stETH sits in wallet earning yield but illiquid | stETH earns yield **and** backs a spendable credit line |
+| User bridges to get stablecoins on another chain | Cross-chain collateral — one credit line, any chain |
+| No spending power without selling | Instant USDC credit against existing portfolio |
+
+<div style={{ paddingRight: "120px" }}>
+```mermaid
+flowchart TD
+  A[User locks ETH / stETH as collateral] --> B[Credit line activated]
+  B --> C[User draws USDC from credit line]
+  C --> D[USDC sent to any address — pay, transfer, swap]
+  D --> E[User repays when ready]
+  E --> F[Collateral unlocked — ETH / stETH returned]
+```
+</div>
+
+Every Sprinter endpoint returns `{ calls: ContractCall[] }` — unsigned transaction calldata. MetaMask signs and submits. No custody handoff.
+
+## What You Need from Sprinter
+
+| MetaMask handles | Sprinter handles |
+|---|---|
+| Wallet UX, account management | Collateral locking & credit line activation |
+| Transaction signing & submission | USDC credit draws to any receiver address |
+| Portfolio display, balance tracking | Health factor monitoring, LTV enforcement |
+| Network switching, gas estimation | Earn vaults (collateral earns yield while locked) |
+| User authentication | Repayment & collateral unlock |
+
+## Supported Collateral
+
+Users can lock assets they already hold. Each asset has its own LTV based on its risk profile:
+
+| Asset | LTV | Collateral Tier | Notes |
+|---|:---:|---|---|
+| ETH | 80% | Raw volatile | Native ETH — highest liquidity |
+| stETH | 75% | Volatile DEX-swap | Lido staked ETH — earns staking yield while locked |
+| wstETH | 75% | Volatile DEX-swap | Wrapped stETH — same yield, no rebase |
+| USDC | 90% | Raw stablecoin | Stablecoin — highest LTV |
+
+Use `GET /credit/protocol` to fetch the latest supported assets and LTVs. See [Supported Assets](/sprinter-credit/supported-assets) for the full list and collateral tier framework.
+
+## Integration
+
+<Steps>
+  <Step title="User Locks Collateral">
+    When a user wants to borrow, they lock collateral from their wallet. The API returns calldata — MetaMask signs and submits.
+
+    <Tabs>
+      <Tab title="Lock ETH">
+        ```bash
+        # Lock 1 ETH as collateral on Base
+        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/lock?amount=1000000000000000000&asset=0xETH_ADDRESS'
+        ```
+      </Tab>
+      <Tab title="Lock stETH">
+        ```bash
+        # Lock stETH as collateral
+        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/lock?amount=1000000000000000000&asset=0xSTETH_ADDRESS'
+        ```
+      </Tab>
+      <Tab title="Lock + Earn Vault">
+        ```bash
+        # Lock collateral and wrap into a yield-bearing vault
+        curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/lock?amount=1000000000000000000&asset=0xCOLLATERAL&earn=STRATEGY_ID'
+        ```
+        The `earn` parameter wraps the asset into a yield-bearing vault — collateral earns while the credit line is active. Use `GET /credit/protocol` for available strategies.
+      </Tab>
+    </Tabs>
+
+    Returns `{ calls: ContractCall[] }` — present to the user for signing. Once confirmed, the credit line is active.
+  </Step>
+
+  <Step title="Show Credit Position">
+    After locking, display the user's credit position in the MetaMask UI.
+
+    ```bash
+    curl -X GET https://api.sprinter.tech/credit/accounts/0xUSER/info
+    ```
+
+    ```json
+    {
+      "data": {
+        "USDC": {
+          "totalCreditCapacity": "2400.00",
+          "remainingCreditCapacity": "2400.00",
+          "totalCollateralValue": "3000.00",
+          "principal": "0",
+          "interest": "0",
+          "healthFactor": "Infinity",
+          "dueDate": null
+        }
+      }
+    }
+    ```
+
+    Key fields to surface in your UI:
+
+    | Field | What to show |
+    |---|---|
+    | `remainingCreditCapacity` | Available to borrow |
+    | `totalCollateralValue` | Total locked collateral value |
+    | `principal` + `interest` | Outstanding debt |
+    | `healthFactor` | Position health (warn below 1.5, danger below 1.2) |
+    | `dueDate` | Repayment deadline |
+  </Step>
+
+  <Step title="User Draws USDC">
+    When the user wants to borrow, draw USDC to any address — their own wallet, a merchant, a DEX, another wallet.
+
+    ```bash
+    curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/draw?amount=500000000&receiver=0xRECEIVER'
+    ```
+
+    | Parameter | Description |
+    |---|---|
+    | `account` | User's wallet address (borrower) |
+    | `amount` | USDC amount (6 decimals — $500 = `500000000`) |
+    | `receiver` | Any address — user's wallet, merchant, protocol |
+
+    Returns `{ calls: ContractCall[] }` — user signs, USDC is delivered.
+
+    <Info>
+    A **0.50% origination fee** is deducted from each draw. See [Fees](/sprinter-credit/credit-engine#fees).
+    </Info>
+  </Step>
+
+  <Step title="Repay & Unlock">
+    Users repay debt to free their collateral. Anyone can repay on behalf of any account.
+
+    ```bash
+    # Check outstanding debt
+    curl -X GET https://api.sprinter.tech/credit/accounts/0xUSER/info
+
+    # Repay
+    curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/repay?amount=500000000'
+
+    # Unlock collateral
+    curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/unlock?amount=1000000000000000000&asset=0xCOLLATERAL'
+    ```
+
+    Credit runs on a 30-day billing cycle with a 7-day grace period. See [Fees](/sprinter-credit/credit-engine#fees).
+  </Step>
+</Steps>
+
+## UX Patterns
+
+<Tabs>
+  <Tab title="Portfolio Credit Line">
+    Display Sprinter Credit as a feature within MetaMask's portfolio view.
+
+    **UX:**
+    - Show "Available Credit" alongside token balances
+    - "Borrow" button next to eligible collateral (ETH, stETH)
+    - Health factor gauge with color coding (green → yellow → red)
+    - Repayment reminder before due date
+
+    Users treat it like an overdraft — they see available credit and draw when needed.
+  </Tab>
+  <Tab title="Buy Now, Pay Later">
+    When a user tries to swap or purchase but lacks stablecoins, offer credit as an alternative to selling.
+
+    **Flow:**
+    1. User wants to buy an NFT / swap for a token but has no USDC
+    2. Prompt: "Borrow $X against your ETH instead of selling?"
+    3. User confirms → lock ETH, draw USDC, complete purchase
+    4. User repays within 30 days
+
+    This prevents forced selling and keeps users' long positions intact.
+  </Tab>
+</Tabs>
+
+## Integration Notes
+
+<AccordionGroup>
+  <Accordion title="Health Monitoring" icon="heart-pulse">
+    Poll `healthFactor` from the info endpoint and surface alerts in your wallet UI. A health factor approaching 1.0 means the position is close to liquidation — prompt the user to add collateral or repay. See [Risk Management](/sprinter-credit/risk-management).
+  </Accordion>
+  <Accordion title="Collateral Yield" icon="chart-line">
+    Use the `earn` parameter when locking to wrap collateral into a yield-bearing vault. For stETH users, this means earning staking yield **and** vault yield simultaneously. Use `GET /credit/protocol` to discover available strategies.
+  </Accordion>
+  <Accordion title="No Custody" icon="lock">
+    Sprinter returns unsigned calldata — the user's wallet signs everything. Sprinter never has access to user funds. This means your wallet integration doesn't change your custody model.
+  </Accordion>
+  <Accordion title="Volatile Collateral" icon="triangle-exclamation">
+    ETH and stETH prices fluctuate. If collateral value drops, the health factor decreases and the user may face liquidation. Build alerts into your wallet UI — warn at health factor 1.5, strongly warn at 1.2.
+  </Accordion>
+  <Accordion title="Cross-Chain Collateral" icon="link">
+    Users can lock collateral on any supported chain. Sprinter handles cross-chain accounting — one credit line across all chains. This means users don't need to bridge assets before borrowing.
+  </Accordion>
+</AccordionGroup>
+
+## API Reference
+
+Every step maps to a single Sprinter endpoint:
+
+| Wallet Flow | Sprinter API |
+|---|---|
+| User locks collateral | `GET /credit/accounts/{account}/lock` |
+| Lock + earn vault | `GET /credit/accounts/{account}/lock?earn=STRATEGY_ID` |
+| Show credit position | `GET /credit/accounts/{account}/info` |
+| Draw USDC | `GET /credit/accounts/{account}/draw?receiver={addr}` |
+| Repay debt | `GET /credit/accounts/{account}/repay` |
+| Unlock collateral | `GET /credit/accounts/{account}/unlock` |
+| Get protocol config | `GET /credit/protocol` |
+
+<CardGroup cols={3}>
+  <Card title="Credit Draw" icon="money-bill-transfer" href="/quickstart/credit-draw">
+    Core credit draw lifecycle — lock, draw, repay, unlock.
+  </Card>
+  <Card title="Supported Assets" icon="coins" href="/sprinter-credit/supported-assets">
+    Full collateral list, LTVs, and earn strategies.
+  </Card>
+  <Card title="Credit API Reference" icon="bolt" href="/api-reference/sprinter/credit/get-credit-protocol-configuration">
+    Full API reference with interactive playground.
+  </Card>
+</CardGroup>
