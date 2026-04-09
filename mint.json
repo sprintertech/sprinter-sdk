@@ -33,7 +33,7 @@
             "quickstart/card-program"
           ]
         },
-        "quickstart/wallet-integration-generic",
+        "quickstart/wallets-integration",
         {
           "group": "Agent Skills",
           "pages": [
