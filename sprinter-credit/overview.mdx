@@ -16,7 +16,7 @@ On a high-level, Sprinter Credit (V2) consists of the following components:
 2. **[Supported Assets & Strategies](/sprinter-credit/supported-assets)**
    Collateral assets, earn vaults, LTV parameters, and chain support — all in one reference.
 3. **[Policy Engine](/sprinter-credit/policy-engine)**
-   Credit policies enable Sprinter Credit to 1) provide favorable credit conditions and 2) enable users and applications to constrain usage of credit.
+   Credit policies and [Credit Operators](/sprinter-credit/policy-engine#credit-operators) enable Sprinter Credit to 1) provide favorable credit conditions and 2) enable users and applications to delegate and constrain usage of credit — from card programs drawing on behalf of users to agents operating within on-chain guardrails.
 4. **Liquidity Layer**
    The Sprinter Credit Liquidity Layer provides the liquidity required for the credit engine. The Sprinter Credit Liquidity Hub & App allow Liquidity Providers to earn yield by providing capital.
 
@@ -24,7 +24,10 @@ Sprinter Credit enables applications to get purpose-fit credit lines for their u
 
 - Card Programmes fund card spend just-in-time, so users don't have to hold assets idle
 - Neobanks provide a DeFi-powered liquid savings account, so users can spend their assets while having them earn yield in DeFi
+- Wallets let users borrow USDC against their holdings — pay, transfer, or swap without selling
 - Agents access a human-delegated undercollateralized credit line to trade extended leverage on Hyperliquid
+
+The moment drawn USDC arrives at its destination, real-world actions are enabled: a card swipe settles, a merchant gets paid, an agent executes a trade. The credit draw is just the trigger; the value is in what it enables. Every Sprinter draw sends USDC to a `receiver` address specified by the integrator, and the receiver is what defines the use case. See [From Credit to Action](/sprinter-credit/credit-engine#from-credit-to-action) for the full picture.
 
 ## API Overview
 

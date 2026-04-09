@@ -22,6 +22,15 @@ flowchart TD
 This example demonstrates the core credit draw flow. For a card program integration, see the [Card Program Integration](/quickstart/card-program) quickstart.
 </Info>
 
+## Before You Start
+
+If your use case requires drawing credit without user interaction (e.g. card authorizations, agent actions, automated strategies), you'll need a delegation model:
+
+1. **Which account type?** EOA (existing wallet) or Smart Account — this affects how delegation is set up. See [Credit Accounts](/sprinter-credit/credit-accounts).
+2. **Which operator model?** A [Credit Operator](/sprinter-credit/policy-engine#credit-operators) lets your backend act on the user's credit position without custody. See [Delegated Credit Draws](#delegated-credit-draws) below.
+
+If users sign every transaction themselves, you can skip this and go straight to the integration steps.
+
 ## Integration Steps
 
 <Steps>
@@ -83,6 +92,10 @@ This example demonstrates the core credit draw flow. For a card program integrat
   <Step title="Draw Credit">
     With collateral locked, draw USDC from the user's credit line. The `/draw` endpoint is a general-purpose credit draw — the `receiver` can be any address (your settlement address, a card issuer's deposit address, etc.).
 
+    <Info>
+    If your use case requires server-side draws without user interaction, you'll need a delegation model. See [Before You Start](#before-you-start).
+    </Info>
+
     ```bash
     curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/draw?amount=50000000&receiver=0xRECEIVER_ADDRESS'
     ```
@@ -139,7 +152,7 @@ This example demonstrates the core credit draw flow. For a card program integrat
 
 ## Delegated Credit Draws
 
-Some use cases (like card authorizations) require credit draws without user interaction. Your backend needs the ability to draw credit on behalf of users. There are two approaches:
+Some use cases (like card authorizations) require credit draws without user interaction. This requires a [Credit Operator](/sprinter-credit/policy-engine#credit-operators) — a contract that lets your backend act on the user's credit position without custody. See [Credit Accounts](/sprinter-credit/credit-accounts) for choosing between EOA + Operator vs Smart Account. Two approaches:
 
 <Tabs>
   <Tab title="Non-Custodial (Smart Accounts)">

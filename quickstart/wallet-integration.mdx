@@ -52,6 +52,12 @@ Users can lock assets they already hold. Each asset has its own LTV based on its
 
 Use `GET /credit/protocol` to fetch the latest supported assets and LTVs. See [Supported Assets](/sprinter-credit/supported-assets) for the full list and collateral tier framework.
 
+## Before You Start
+
+For most wallet integrations, users sign every transaction themselves — no delegation needed. A standard EOA (existing wallet) works out of the box.
+
+If you want to support features like auto-repayment, scheduled draws, or agent-assisted actions, you'll need a delegation model. See [Credit Accounts](/sprinter-credit/credit-accounts) for EOA + Operator vs Smart Account trade-offs, and [Credit Operators](/sprinter-credit/policy-engine#credit-operators) for how delegation works.
+
 ## Integration
 
 <Steps>
@@ -168,6 +174,8 @@ Use `GET /credit/protocol` to fetch the latest supported assets and LTVs. See [S
     4. User signs one transaction (the draw), payment is settled
     5. User repays later from any source
 
+    **What happens after draw:** USDC lands directly in the merchant's or recipient's wallet. The payment is settled on-chain — no intermediary, no delay. The user paid with credit backed by their ETH, and the merchant received real USDC.
+
     This turns every ETH/stETH holder into a USDC spender without any sell pressure.
   </Tab>
   <Tab title="Portfolio Credit Line">
@@ -178,6 +186,8 @@ Use `GET /credit/protocol` to fetch the latest supported assets and LTVs. See [S
     - "Borrow" button next to eligible collateral (ETH, stETH)
     - Health factor gauge with color coding (green → yellow → red)
     - Repayment reminder before due date
+
+    **What happens after draw:** When the user draws, USDC arrives in their wallet instantly — ready to send, swap, or spend. It feels like unlocking liquidity that was always there, just locked up in ETH.
 
     Users treat it like an overdraft — they see available credit and draw when needed.
   </Tab>
@@ -190,7 +200,29 @@ Use `GET /credit/protocol` to fetch the latest supported assets and LTVs. See [S
     3. User confirms → lock ETH, draw USDC, complete purchase
     4. User repays within 30 days
 
+    **What happens after draw:** The USDC goes directly to the seller or protocol — the NFT lands in the user's wallet, the swap executes, the purchase completes. The user got what they wanted without selling a single asset. They repay on their own schedule.
+
     This prevents forced selling and keeps users' long positions intact.
+  </Tab>
+  <Tab title="Peer-to-Peer Transfers">
+    Users can send USDC to friends, family, or other wallets — funded by their credit line instead of their token balance.
+
+    **Flow:**
+    1. User wants to send $200 to a friend but only holds ETH
+    2. User draws USDC with the friend's address as the `receiver`
+    3. USDC arrives in the friend's wallet — one transaction
+
+    **What happens after draw:** The friend receives USDC directly — no intermediate step, no swap. The sender's ETH stays locked and earning yield. This makes credit-backed transfers as simple as a regular wallet send.
+  </Tab>
+  <Tab title="DeFi Access">
+    Let users interact with DeFi protocols using borrowed USDC — provide liquidity, enter yield positions, or fund a DEX trade.
+
+    **Flow:**
+    1. User wants to provide liquidity on a DEX but doesn't want to sell ETH for the USDC side
+    2. User draws USDC from their credit line
+    3. USDC is used to enter the LP position alongside their existing tokens
+
+    **What happens after draw:** The drawn USDC goes to the user's wallet or directly to a protocol address. The user is now earning LP fees on borrowed USDC while their ETH collateral continues earning staking yield — yield on both sides.
   </Tab>
 </Tabs>
 
@@ -205,6 +237,9 @@ Use `GET /credit/protocol` to fetch the latest supported assets and LTVs. See [S
   </Accordion>
   <Accordion title="No Custody" icon="lock">
     Sprinter returns unsigned calldata — the user's wallet signs everything. Sprinter never has access to user funds. This means your wallet integration doesn't change your custody model.
+  </Accordion>
+  <Accordion title="Account Type" icon="wallet">
+    If your users sign every transaction themselves, a standard EOA (existing wallet) is all you need. If you want to enable delegated actions like auto-repayment or scheduled draws, you'll need to choose between an Operator contract or Smart Account. See [Credit Accounts](/sprinter-credit/credit-accounts) for the full comparison.
   </Accordion>
   <Accordion title="Volatile Collateral" icon="triangle-exclamation">
     ETH and stETH prices fluctuate. If collateral value drops, the health factor decreases and the user may face liquidation. Build alerts into your wallet UI — warn at health factor 1.5, strongly warn at 1.2.

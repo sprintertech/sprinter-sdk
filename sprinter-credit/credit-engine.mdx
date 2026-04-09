@@ -13,6 +13,36 @@ The Sprinter Credit Engine handles credit line creation, drawdowns, repayments, 
 
 **Productive collateral** — Integrations with leading DeFi strategists Gauntlet and YO provide market-leading yield on your collateral assets such as USDC, ETH & BTC.
 
+## From Credit to Action
+
+Drawing credit is not the end — it is the beginning. The real value of Sprinter Credit is what happens _after_ USDC leaves the credit line: credit drawn, USDC delivered, real-world action completed.
+
+Every Sprinter draw sends USDC to a `receiver` address. What that receiver is determines the outcome:
+
+| Integration Type | Receiver | What Happens After Draw |
+|---|---|---|
+| Card program | Settlement address | USDC settles the card transaction — user pays at a restaurant, buys online, taps Apple Pay |
+| Wallet | User's wallet or merchant | User sends a payment, tops up a balance, or pays a friend |
+| Agent | Protocol address | Agent executes a swap, enters a yield position, or fills a trade on a DEX |
+| Buy Now, Pay Later | Merchant / seller | Purchase completes immediately — user repays over 30 days |
+| Subscription | Service provider | Recurring payment drawn automatically via an [Operator](/sprinter-credit/policy-engine#credit-operators) |
+
+The key insight: the draw endpoint is generic (`/draw?receiver=0x...`), but the receiver address is what defines the use case. Sprinter doesn't need to know what the credit is for — it just delivers USDC to the address you specify, and your app handles the rest.
+
+This means any app with a settlement flow can plug into Sprinter: if you have an address that needs USDC, Sprinter can fund it from collateralized credit.
+
+<div style={{ paddingRight: "120px" }}>
+```mermaid
+flowchart LR
+  A[User's Collateral] --> B[Sprinter Credit Engine]
+  B -->|draw USDC| C[Receiver Address]
+  C --> D[Card Settlement]
+  C --> E[Wallet Payment]
+  C --> F[Agent Execution]
+  C --> G[Merchant / Protocol]
+```
+</div>
+
 ## Credit Configurations
 
 Sprinter uses credit configurations to structure different forms of credit. Creating a new credit configuration is currently a permissioned process — if you need purpose-fit credit for your app, we'd love to hear from you!

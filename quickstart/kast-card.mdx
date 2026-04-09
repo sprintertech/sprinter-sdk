@@ -37,6 +37,13 @@ flowchart TD
 | Visa settlement via Rain / Third National | Earn vaults — collateral earns while locked |
 | Cashback rewards (1–8% by tier) | Repayment & collateral unlock |
 
+## Before You Start
+
+Card programs that draw credit on behalf of cardholders (e.g. just-in-time at card swipe) need a delegation model. You should decide upfront:
+
+1. **Which account type?** EOA (existing wallet) or Smart Account — this affects onboarding and how delegation is set up. See [Credit Accounts](/sprinter-credit/credit-accounts).
+2. **Which operator model?** A [Credit Operator](/sprinter-credit/policy-engine#credit-operators) lets your backend draw credit without cardholder interaction. Most card programs use the `ExclusiveOperator` — see [Delegated Credit Draws](#delegated-credit-draws) below for implementation.
+
 ## Integration
 
 <Steps>
@@ -84,6 +91,10 @@ flowchart TD
 
   <Step title="Draw USDC on Card Use">
     When the card is used, Kast draws USDC from the cardholder's credit line to its settlement address. Two funding models:
+
+    <Info>
+    Just-in-time draws require a delegation model (Operator or Smart Account). If you haven't set this up yet, see [Before You Start](#before-you-start).
+    </Info>
 
     <Tabs>
       <Tab title="Just-in-Time (at swipe)">
@@ -139,7 +150,7 @@ flowchart TD
 
 ## Delegated Credit Draws
 
-Just-in-time card authorizations require drawing credit without cardholder interaction. Two approaches:
+Just-in-time card authorizations require drawing credit without cardholder interaction. This requires a [Credit Operator](/sprinter-credit/policy-engine#credit-operators) — a contract that lets your backend act on the user's credit position without custody. See [Credit Accounts](/sprinter-credit/credit-accounts) for choosing between EOA + Operator vs Smart Account. Two approaches:
 
 <Tabs>
   <Tab title="Operator Contract (Recommended)">

@@ -1,0 +1,82 @@
+---
+title: "Credit Accounts"
+description: "EOA vs Smart Account — choosing the right account type for your Sprinter Credit integration"
+---
+
+## Overview
+
+Every Sprinter credit position is tied to an on-chain account. Integrators need to decide which account type their users will use. This choice affects how delegation works, what permissions are possible, and how the end-user experience feels.
+
+There are two options: **EOA (Externally Owned Account)** — a regular wallet address, or **Smart Account** — a contract wallet with programmable permissions.
+
+| | EOA + Operator | Smart Account |
+|---|---|---|
+| Setup complexity | Low — user keeps existing wallet | Higher — user deploys or migrates to smart wallet |
+| Delegation model | Operator contract draws to whitelisted receivers | Session keys with fine-grained permissions |
+| Permission granularity | Receiver whitelist + operator-level constraints | Full control — amount caps, time limits, action types, co-sign |
+| Custody model | Non-custodial (operator can't touch collateral) | Fully non-custodial (user owns the contract) |
+| Revocation | Time-delayed (prevents mid-settlement abuse) | Instant (session key revoked immediately) |
+| Best for | Card programs, simple delegation, most integrations | Advanced use cases, multi-party access, tight on-chain guardrails |
+
+## EOA + Operator
+
+The simplest path. Users keep their existing wallet (MetaMask, Rainbow, Coinbase Wallet, etc.) and interact with Sprinter directly. For delegated actions — where your app needs to act on the user's behalf, like drawing credit at card swipe — you deploy an [Operator contract](/sprinter-credit/policy-engine#credit-operators) that the user opts into.
+
+**How it works:**
+1. User locks collateral from their existing wallet
+2. User calls `setOperator()` to authorize your Operator contract
+3. User calls `addCreditReceiver()` to whitelist your settlement address
+4. Your backend calls the Operator to draw credit — no user signature needed at transaction time
+
+## Smart Account
+
+Users deploy a smart contract wallet (ERC-4337) with programmable session keys or modules. Your app is authorized via a session key that defines exactly what it can do — amount caps, time windows, action types.
+
+**How it works:**
+1. User deploys a smart account (or your app provisions one during onboarding)
+2. User configures a session key authorizing your backend
+3. Session key defines permissions: which actions, how much, how often
+4. Your backend uses the session key to execute — user retains full custody
+
+## Which Should You Choose?
+
+<Tabs>
+  <Tab title="Card Programs">
+    **Recommended: EOA + Operator**
+
+    Card programs typically have a simple delegation model — your backend draws USDC to a settlement address when the card is swiped. The `ExclusiveOperator` contract handles this cleanly. Users don't need to change their wallet setup, and the Operator's receiver whitelist ensures funds can only go to your settlement address.
+
+    Use Smart Accounts if you need per-user spending caps enforced on-chain, or if your users already have smart wallets.
+  </Tab>
+  <Tab title="Wallets & Super Apps">
+    **Recommended: EOA (no Operator needed)**
+
+    For wallet integrations where the user signs every transaction themselves, no delegation is needed. The user locks collateral and draws credit directly from their wallet. EOA is the simplest path.
+
+    Consider adding an Operator if you want to enable features like auto-repayment or scheduled draws.
+  </Tab>
+  <Tab title="AI Agents">
+    **Recommended: Smart Account or EOA + Operator (depends on trust model)**
+
+    For agents acting on behalf of a user, the key question is how much autonomy the agent has:
+
+    - **Bounded autonomy** (e.g. agent can draw up to $500/day): Smart Account with a session key that enforces caps on-chain.
+    - **App-managed autonomy** (e.g. your platform controls the agent): EOA + Operator, where your platform's backend is the authorized caller.
+
+    Smart Accounts give you the tightest on-chain guardrails. Operators are simpler if your platform already enforces limits off-chain.
+  </Tab>
+</Tabs>
+
+## Related
+
+<CardGroup cols={3}>
+  <Card title="Credit Operators" icon="key" href="/sprinter-credit/policy-engine#credit-operators">
+    How operators work, existing operators, and how to build your own.
+  </Card>
+  <Card title="Credit Engine" icon="gear" href="/sprinter-credit/credit-engine">
+    Credit line creation, drawdowns, repayments, and liquidations.
+  </Card>
+  <Card title="Policy Engine" icon="shield-check" href="/sprinter-credit/policy-engine">
+    Fine-grained credit controls and guardrailed accounts.
+  </Card>
+</CardGroup>

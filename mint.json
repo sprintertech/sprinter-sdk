@@ -50,6 +50,7 @@
       "pages": [
         "sprinter-credit/overview",
         "sprinter-credit/credit-engine",
+        "sprinter-credit/credit-accounts",
         "sprinter-credit/supported-assets",
         "sprinter-credit/policy-engine",
         "sprinter-credit/risk-management"
