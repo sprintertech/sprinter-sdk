@@ -1,11 +1,11 @@
 ---
 title: "Agent Credit Borrow"
-description: "Let any AI agent borrow from Sprinter — lock collateral, draw credit, repay, and unlock via MCP or direct API calls"
+description: "Give AI agents access to credit — humans delegate collateral-backed credit lines, agents draw and repay autonomously"
 ---
 
 ## Overview
 
-AI agents often need on-demand liquidity — to settle a swap, bridge funds, or execute a trade. Instead of holding idle capital, an agent can borrow from Sprinter: lock collateral, draw credit in under 2 seconds, use the funds, and repay when done.
+AI agents need on-demand liquidity — to settle a swap, bridge funds, or execute a trade. But agents shouldn't need to manage collateral themselves. With Sprinter Credit, a human operator pledges collateral and delegates credit access to an agent. The agent draws and repays within the bounds the human defines.
 
 This skill works with any agent framework. We provide:
 
@@ -16,34 +16,102 @@ This skill works with any agent framework. We provide:
   Full MCP server + demo agent script — clone and run.
 </Card>
 
-## The Borrow Flow
+## How It Works
+
+The credit lifecycle is split between two roles: the **human operator** who manages collateral, and the **agent** who uses the credit line.
 
 ```
-Agent needs liquidity
-  → Lock USDC as collateral (sprinter-lock-collateral)
-  → Draw credit (sprinter-draw-credit)
-  → Use the funds (swap, bridge, settle — agent's own logic)
-  → Repay debt (sprinter-repay-debt)
-  → Unlock collateral (sprinter-unlock-collateral)
+Human operator (one-time setup):
+  → Lock collateral (ETH, stETH, USDC, etc.)
+  → Set up a Credit Operator authorizing the agent
+  → Whitelist receiver addresses the agent can draw to
+
+Agent (ongoing operations):
+  → Check available credit capacity
+  → Draw USDC to whitelisted receivers
+  → Use the funds (swap, bridge, settle, trade)
+  → Repay debt to restore capacity
 ```
 
-Every Sprinter endpoint returns `{ calls: ContractCall[] }` — unsigned transaction calldata. The agent's wallet signs and broadcasts. No custody, no API keys for on-chain operations.
+The human retains full control of the collateral — the agent can only draw credit to pre-approved addresses and can never touch or withdraw the underlying collateral. See [Credit Operators](/sprinter-credit/policy-engine#credit-operators) for how the delegation model works.
 
-## MCP Integration
+<div style={{ paddingRight: "120px" }}>
+```mermaid
+flowchart TD
+  A[Human locks collateral] --> B[Sets Credit Operator for agent]
+  B --> C[Agent checks credit capacity]
+  C --> D[Agent draws USDC to whitelisted receiver]
+  D --> E[Agent uses funds — swap, bridge, settle]
+  E --> F[Agent repays debt]
+  F --> C
+```
+</div>
+
+## Before You Start
+
+The human operator needs to set up the credit position and delegation before the agent can operate:
+
+1. **Choose an account type** — EOA + Operator (simplest) or Smart Account (tightest guardrails). See [Credit Accounts](/sprinter-credit/credit-accounts).
+2. **Set up a Credit Operator** — deploy or use an existing [Operator contract](/sprinter-credit/policy-engine#credit-operators) that authorizes the agent as a caller.
+3. **Lock collateral** — the human locks assets to activate the credit line. See the [Credit Draw quickstart](/quickstart/credit-draw) for the lock flow.
+
+Once this is done, the agent can operate autonomously within the delegated bounds.
+
+## Human Operator Setup
+
+<Steps>
+  <Step title="Lock Collateral">
+    The human locks collateral to activate the credit line. This is the collateral the agent's credit draws will be backed by.
+
+    ```bash
+    # Human locks 1 ETH as collateral
+    curl -X GET 'https://api.sprinter.tech/credit/accounts/0xHUMAN_WALLET/lock?amount=1000000000000000000&asset=0xETH_ADDRESS'
+
+    # Or lock with earn vault — collateral earns yield while locked
+    curl -X GET 'https://api.sprinter.tech/credit/accounts/0xHUMAN_WALLET/lock?amount=1000000000000000000&asset=0xETH_ADDRESS&earn=STRATEGY_ID'
+    ```
+
+    Returns `{ calls: ContractCall[] }` — the human signs and submits.
+  </Step>
+
+  <Step title="Deploy Operator & Authorize Agent">
+    Deploy an `ExclusiveOperator` with the agent's address as the authorized caller. Then the human opts in.
+
+    ```solidity
+    // 1. Deploy operator with agent as caller
+    ExclusiveOperator operator = new ExclusiveOperator(agentAddress, creditHubAddress);
+
+    // 2. Human sets the operator on their credit position
+    creditHub.setOperator(address(operator));
+
+    // 3. Human whitelists receiver addresses the agent can draw to
+    creditHub.addCreditReceiver(dexRouterAddress);
+    creditHub.addCreditReceiver(bridgeContractAddress);
+    ```
+
+    The agent can now draw credit — but only to whitelisted receivers. See [Credit Operators](/sprinter-credit/policy-engine#credit-operators) for custom operators with amount caps, time windows, and co-sign requirements.
+  </Step>
+</Steps>
+
+## Agent Operations
+
+Once the human has set up the credit position and delegation, the agent operates with these tools:
+
+### MCP Integration
 
 The Sprinter MCP server exposes 7 tools that any MCP-compatible agent can discover and call:
 
-| Tool | Description |
-|------|-------------|
-| `sprinter-health-check` | API health check |
-| `sprinter-protocol-config` | Supported chains, collateral assets, LTV ratios |
-| `sprinter-credit-info` | Account credit position — capacity, debt, health factor |
-| `sprinter-lock-collateral` | Build calldata to lock collateral |
-| `sprinter-draw-credit` | Build calldata to borrow (draw) |
-| `sprinter-repay-debt` | Build calldata to repay debt |
-| `sprinter-unlock-collateral` | Build calldata to unlock collateral |
+| Tool | Description | Used by |
+|------|-------------|---------|
+| `sprinter-health-check` | API health check | Agent |
+| `sprinter-protocol-config` | Supported chains, collateral assets, LTV ratios | Agent |
+| `sprinter-credit-info` | Account credit position — capacity, debt, health factor | Agent |
+| `sprinter-lock-collateral` | Build calldata to lock collateral | Human (setup) |
+| `sprinter-draw-credit` | Build calldata to borrow (draw) | Agent |
+| `sprinter-repay-debt` | Build calldata to repay debt | Agent |
+| `sprinter-unlock-collateral` | Build calldata to unlock collateral | Human |
 
-### Setup
+#### Setup
 
 Add to your MCP client config (Claude Desktop, Cursor, etc.):
 
@@ -79,64 +147,46 @@ Or if you also use LI.FI's MCP server, the agent gets both tool sets:
 
 Now the agent can use LI.FI for routing/bridging and Sprinter for credit — borrowing liquidity just-in-time for a cross-chain swap.
 
-## Direct API (No MCP)
+### Direct API (No MCP)
 
 If your agent doesn't use MCP, the same flow works with plain HTTP:
 
 <Steps>
-  <Step title="Check Credit Position">
+  <Step title="Check Credit Capacity">
     ```bash
-    curl https://api.sprinter.tech/credit/accounts/0xAGENT_WALLET/info
+    curl https://api.sprinter.tech/credit/accounts/0xHUMAN_WALLET/info
     ```
 
-    Response includes `remainingCreditCapacity` — if it's enough to cover the borrow, skip to step 3.
+    Response includes `remainingCreditCapacity` — this is how much the agent can draw. The account is the human's address (the collateral owner).
   </Step>
 
-  <Step title="Lock Collateral">
+  <Step title="Draw Credit">
     ```bash
-    curl 'https://api.sprinter.tech/credit/accounts/0xAGENT_WALLET/lock?amount=1000000&asset=0x833589fcd6edb6e08f4c7c32d4f71b54bda02913'
+    curl 'https://api.sprinter.tech/credit/accounts/0xHUMAN_WALLET/draw?amount=500000&receiver=0xWHITELISTED_RECEIVER'
     ```
 
-    Returns `{ calls: ContractCall[] }`. Sign and broadcast each call.
-    With 1 USDC locked at 90% LTV, the agent gets ~0.90 USDC credit capacity.
-  </Step>
-
-  <Step title="Draw Credit (Borrow)">
-    ```bash
-    curl 'https://api.sprinter.tech/credit/accounts/0xAGENT_WALLET/draw?amount=500000&receiver=0xRECEIVER'
-    ```
-
-    The `receiver` gets the borrowed USDC. This can be the agent's own wallet, a DEX router, a bridge contract — wherever the funds need to go.
+    The agent draws USDC to a whitelisted receiver address via the Operator contract. The `receiver` can be a DEX router, bridge contract, or any address the human pre-approved.
   </Step>
 
   <Step title="Use the Funds">
-    The agent does its work — swap via LI.FI, bridge to another chain, settle a trade, pay a merchant, etc.
+    The agent does its work — swap via LI.FI, bridge to another chain, settle a trade, enter a yield position, etc.
   </Step>
 
   <Step title="Repay">
     ```bash
-    curl 'https://api.sprinter.tech/credit/accounts/0xAGENT_WALLET/repay?amount=500000'
+    curl 'https://api.sprinter.tech/credit/accounts/0xHUMAN_WALLET/repay?amount=500000'
     ```
 
-    Repaying restores credit capacity. The agent can borrow again immediately.
-  </Step>
-
-  <Step title="Unlock Collateral (Optional)">
-    ```bash
-    curl 'https://api.sprinter.tech/credit/accounts/0xAGENT_WALLET/unlock?amount=1000000&asset=0x833589fcd6edb6e08f4c7c32d4f71b54bda02913'
-    ```
-
-    Only needed if the agent wants its collateral back. If it plans to borrow again soon, leaving collateral locked avoids extra gas.
+    Repaying restores credit capacity. The agent can draw again immediately.
   </Step>
 </Steps>
 
-## Implementation
+### Implementation
 
-A minimal autonomous agent that borrows, uses funds, and repays:
+A minimal agent that draws from a delegated credit line, uses funds, and repays:
 
 ```typescript
 const SPRINTER_API = "https://api.sprinter.tech";
-const USDC = "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913";
 
 interface ContractCall {
   to: string;
@@ -166,73 +216,89 @@ async function executeCalls(calls: ContractCall[], signer: any): Promise<string>
 }
 
 /**
- * Borrow from Sprinter, use the funds, and repay.
+ * Agent draws from a human-delegated credit line, uses the funds, and repays.
  *
- * @param account    - Agent's wallet address
- * @param signer     - Ethers signer for the wallet
- * @param borrowAmt  - Amount to borrow (USDC smallest unit)
- * @param collateral - Amount of collateral to lock (USDC smallest unit)
- * @param useFunds   - Callback where the agent uses the borrowed funds
+ * @param humanAccount - Human operator's wallet address (collateral owner)
+ * @param agentSigner  - Agent's signer (authorized caller on the Operator)
+ * @param borrowAmt    - Amount to borrow (USDC smallest unit)
+ * @param receiver     - Whitelisted receiver address for the drawn USDC
+ * @param useFunds     - Callback where the agent uses the borrowed funds
  */
-async function borrowAndRepay(
-  account: string,
-  signer: any,
+async function agentBorrowAndRepay(
+  humanAccount: string,
+  agentSigner: any,
   borrowAmt: string,
-  collateral: string,
+  receiver: string,
   useFunds: () => Promise<void>
 ) {
-  // 1. Lock collateral
-  const lockData = await sprinterGet(
-    `/credit/accounts/${account}/lock?amount=${collateral}&asset=${USDC}`
-  );
-  await executeCalls(lockData.calls, signer);
+  // 1. Check available credit
+  const info = await sprinterGet(`/credit/accounts/${humanAccount}/info`);
+  const available = parseFloat(info.data.USDC.remainingCreditCapacity);
+  const needed = parseInt(borrowAmt) / 1e6;
+  if (available < needed) {
+    throw new Error(`Insufficient credit: ${available} USDC available, ${needed} needed`);
+  }
 
-  // 2. Borrow
+  // 2. Draw credit (via Operator — agent is authorized caller)
   const drawData = await sprinterGet(
-    `/credit/accounts/${account}/draw?amount=${borrowAmt}&receiver=${account}`
+    `/credit/accounts/${humanAccount}/draw?amount=${borrowAmt}&receiver=${receiver}`
   );
-  await executeCalls(drawData.calls, signer);
+  await executeCalls(drawData.calls, agentSigner);
 
   // 3. Agent uses the funds
   await useFunds();
 
   // 4. Repay
   const repayData = await sprinterGet(
-    `/credit/accounts/${account}/repay?amount=${borrowAmt}`
+    `/credit/accounts/${humanAccount}/repay?amount=${borrowAmt}`
   );
-  await executeCalls(repayData.calls, signer);
-
-  // 5. Unlock collateral
-  const unlockData = await sprinterGet(
-    `/credit/accounts/${account}/unlock?amount=${collateral}&asset=${USDC}`
-  );
-  await executeCalls(unlockData.calls, signer);
+  await executeCalls(repayData.calls, agentSigner);
 }
 ```
 
 <Info>
-The `useFunds` callback is where the agent plugs in its own logic — call LI.FI's API to bridge, execute a DEX swap, settle a card payment, etc. The borrow/repay lifecycle wraps around whatever the agent needs to do.
+The `useFunds` callback is where the agent plugs in its own logic — call LI.FI's API to bridge, execute a DEX swap, settle a trade, etc. The borrow/repay lifecycle wraps around whatever the agent needs to do.
 </Info>
 
 ## When to Use This
 
-| Scenario | Why borrow? |
+| Scenario | How it works |
 |----------|-------------|
-| **Cross-chain swap** | Agent holds USDC on Base but needs funds on Arbitrum. Borrow on Base → bridge via LI.FI → repay when the swap settles. |
-| **Just-in-time settlement** | Agent receives a card authorization. Borrow immediately to settle with the card network, repay when the user's funds arrive. |
-| **Arbitrage** | Agent spots a price difference. Borrow, execute the arb, repay from profits — all in one block. |
-| **Yield farming** | Agent borrows to enter a short-term yield opportunity, repays when it unwinds the position. |
+| **Cross-chain swap** | Human delegates credit on Base. Agent borrows → bridges via LI.FI → repays when the swap settles. |
+| **Just-in-time settlement** | Human backs a card program. Agent receives authorization → borrows to settle → repays when billing cycle ends. |
+| **Arbitrage** | Human provides collateral. Agent spots a price difference → borrows → executes the arb → repays from profits. |
+| **Yield farming** | Human delegates a credit line. Agent borrows to enter a short-term yield opportunity → repays when it unwinds. |
+| **DCA / Recurring buys** | Human sets up an Operator with daily caps. Agent draws small amounts on schedule to accumulate a position. |
+
+## Agent-Owned Credit (Advanced)
+
+In some cases, an agent may manage its own collateral and credit line directly — without human delegation. This model is suited for fully autonomous agents that hold their own assets.
+
+```
+Agent owns collateral
+  → Agent locks collateral (sprinter-lock-collateral)
+  → Agent draws credit (sprinter-draw-credit)
+  → Agent uses funds
+  → Agent repays (sprinter-repay-debt)
+  → Agent unlocks collateral (sprinter-unlock-collateral)
+```
+
+This follows the same API calls but the agent's wallet is both the collateral owner and the borrower. No Operator setup needed — the agent signs everything directly.
+
+<Warning>
+Agent-owned credit means the agent has full control over collateral. This model requires strong safeguards in the agent's logic to prevent collateral loss. For most use cases, human-delegated credit is safer — the agent can draw credit but never touch collateral.
+</Warning>
 
 ## Related
 
 <CardGroup cols={3}>
   <Card title="Health Monitor" icon="heart-pulse" href="/quickstart/agent-skills/health-monitor">
-    Pair with the health monitor to auto-repay if the agent's position gets risky.
+    Pair with the health monitor to auto-repay if the position gets risky.
   </Card>
-  <Card title="Credit Draw" icon="money-bill-transfer" href="/quickstart/credit-draw">
-    Core credit draw lifecycle — lock, draw, repay, unlock.
+  <Card title="Credit Operators" icon="key" href="/sprinter-credit/policy-engine#credit-operators">
+    How operators work, existing operators, and how to build custom ones.
   </Card>
-  <Card title="Credit API Reference" icon="bolt" href="/api-reference/sprinter/credit/build-transaction-calls-to-draw-credit">
-    Full draw endpoint docs with interactive playground.
+  <Card title="Credit Accounts" icon="wallet" href="/sprinter-credit/credit-accounts">
+    EOA vs Smart Account — choosing the right account type for agent delegation.
   </Card>
 </CardGroup>
