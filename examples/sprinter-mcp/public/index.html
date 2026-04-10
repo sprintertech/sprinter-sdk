@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sprinter Credit — Operator Dashboard</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0a0a0f;
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle { color: #888; font-size: 14px; margin-bottom: 32px; }
+
+    .container { width: 100%; max-width: 640px; }
+
+    .card {
+      background: #13131a;
+      border: 1px solid #1e1e2e;
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+    }
+
+    .card h2 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #aaa;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .field { display: flex; flex-direction: column; gap: 4px; }
+    .field.full { grid-column: 1 / -1; }
+    .field-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #666; }
+    .field-value {
+      font-size: 14px;
+      font-family: "SF Mono", "Fira Code", monospace;
+      color: #ccc;
+      word-break: break-all;
+    }
+    .field-value.highlight { color: #8b5cf6; }
+    .field-value.green { color: #22c55e; }
+    .field-value.yellow { color: #f59e0b; }
+    .field-value.red { color: #ef4444; }
+
+    .btn {
+      background: linear-gradient(135deg, #6366f1, #7c3aed);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      width: 100%;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn.secondary {
+      background: #1e1e2e;
+      border: 1px solid #2e2e3e;
+    }
+
+    input {
+      background: #0a0a0f;
+      border: 1px solid #2e2e3e;
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: #e0e0e0;
+      font-size: 14px;
+      font-family: "SF Mono", "Fira Code", monospace;
+      width: 100%;
+    }
+    input:focus { outline: none; border-color: #6366f1; }
+    input::placeholder { color: #444; }
+
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 12px; color: #888; margin-bottom: 4px; }
+
+    .status-msg {
+      font-size: 13px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin-top: 12px;
+      font-family: "SF Mono", "Fira Code", monospace;
+    }
+    .status-msg.info { background: #0f172a; color: #60a5fa; border: 1px solid #1e3a5f; }
+    .status-msg.success { background: #052e16; color: #22c55e; border: 1px solid #14532d; }
+    .status-msg.error { background: #2a0a0a; color: #ef4444; border: 1px solid #5f1e1e; }
+    .status-msg.pending { background: #1a1a0a; color: #f59e0b; border: 1px solid #5f4a1e; }
+
+    .receiver-list {
+      list-style: none;
+      margin-top: 8px;
+    }
+    .receiver-list li {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 13px;
+      color: #8b5cf6;
+      padding: 4px 0;
+    }
+
+    .hidden { display: none; }
+
+    .chain-badge {
+      display: inline-block;
+      background: #1e1e2e;
+      color: #8b5cf6;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-left: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Sprinter Credit</h1>
+  <p class="subtitle">Operator Dashboard — set up collateral & delegate credit to your agent</p>
+
+  <div class="container">
+    <!-- Connect Wallet -->
+    <div class="card" id="wallet-card">
+      <button class="btn" id="connect-btn" onclick="connectWallet()">Connect MetaMask</button>
+      <div id="wallet-info" class="hidden">
+        <div class="grid" style="margin-top: 16px;">
+          <div class="field full">
+            <span class="field-label">Connected</span>
+            <span class="field-value highlight" id="wallet-address"></span>
+          </div>
+          <div class="field">
+            <span class="field-label">Network</span>
+            <span class="field-value" id="wallet-network"></span>
+          </div>
+          <div class="field">
+            <span class="field-label">ETH Balance</span>
+            <span class="field-value" id="wallet-eth"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Credit Position -->
+    <div class="card hidden" id="credit-card">
+      <h2>Credit Position</h2>
+      <div class="grid">
+        <div class="field">
+          <span class="field-label">Collateral Value</span>
+          <span class="field-value" id="credit-collateral">-</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Credit Capacity</span>
+          <span class="field-value" id="credit-capacity">-</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Available to Borrow</span>
+          <span class="field-value highlight" id="credit-remaining">-</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Outstanding Debt</span>
+          <span class="field-value" id="credit-debt">-</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Health Factor</span>
+          <span class="field-value" id="credit-health">-</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Due Date</span>
+          <span class="field-value" id="credit-due">-</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lock Collateral -->
+    <div class="card hidden" id="lock-card">
+      <h2>Lock Collateral</h2>
+      <div class="form-group">
+        <label>Amount (USDC)</label>
+        <input type="text" id="lock-amount" placeholder="e.g. 100" />
+      </div>
+      <button class="btn" id="lock-btn" onclick="lockCollateral()">Lock USDC</button>
+      <div id="lock-status"></div>
+    </div>
+
+    <!-- Operator Setup -->
+    <div class="card hidden" id="operator-card">
+      <h2>Agent Delegation</h2>
+      <div id="operator-status">
+        <div class="grid">
+          <div class="field full">
+            <span class="field-label">Operator Contract</span>
+            <span class="field-value" id="operator-address">Not set</span>
+          </div>
+          <div class="field full">
+            <span class="field-label">Whitelisted Receivers</span>
+            <ul class="receiver-list" id="receiver-list">
+              <li style="color: #666;">None</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 16px;">
+        <div class="form-group">
+          <label>Agent / Receiver Address</label>
+          <input type="text" id="operator-receiver" placeholder="0x..." />
+        </div>
+        <button class="btn" id="operator-btn" onclick="setupOperator()">Set Up Operator & Whitelist</button>
+        <div id="operator-msg"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.0/ethers.umd.min.js"></script>
+  <script>
+    const USDC_ADDRESS = "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913";
+    const USDC_DECIMALS = 6;
+    const BASE_CHAIN_ID = "0x2105"; // 8453
+
+    let provider = null;
+    let signer = null;
+    let account = null;
+
+    // ── Connect Wallet ──────────────────────────────────────────────
+
+    async function connectWallet() {
+      if (!window.ethereum) {
+        alert("MetaMask not found. Please install MetaMask.");
+        return;
+      }
+
+      try {
+        document.getElementById("connect-btn").disabled = true;
+        document.getElementById("connect-btn").textContent = "Connecting...";
+
+        // Request accounts
+        await window.ethereum.request({ method: "eth_requestAccounts" });
+
+        // Ensure Base network
+        const chainId = await window.ethereum.request({ method: "eth_chainId" });
+        if (chainId !== BASE_CHAIN_ID) {
+          try {
+            await window.ethereum.request({
+              method: "wallet_switchEthereumChain",
+              params: [{ chainId: BASE_CHAIN_ID }],
+            });
+          } catch (switchErr) {
+            alert("Please switch to Base network (chainId 8453) in MetaMask.");
+            document.getElementById("connect-btn").disabled = false;
+            document.getElementById("connect-btn").textContent = "Connect MetaMask";
+            return;
+          }
+        }
+
+        provider = new ethers.BrowserProvider(window.ethereum);
+        signer = await provider.getSigner();
+        account = await signer.getAddress();
+
+        // Show wallet info
+        document.getElementById("wallet-address").textContent = account;
+        document.getElementById("wallet-network").textContent = "Base";
+        const ethBal = await provider.getBalance(account);
+        document.getElementById("wallet-eth").textContent = parseFloat(ethers.formatEther(ethBal)).toFixed(4) + " ETH";
+
+        document.getElementById("wallet-info").classList.remove("hidden");
+        document.getElementById("connect-btn").textContent = "Connected";
+
+        // Show other sections
+        document.getElementById("credit-card").classList.remove("hidden");
+        document.getElementById("lock-card").classList.remove("hidden");
+        document.getElementById("operator-card").classList.remove("hidden");
+
+        // Load data
+        await Promise.all([refreshCreditPosition(), refreshOperatorStatus()]);
+      } catch (err) {
+        alert("Failed to connect: " + err.message);
+        document.getElementById("connect-btn").disabled = false;
+        document.getElementById("connect-btn").textContent = "Connect MetaMask";
+      }
+    }
+
+    // ── Credit Position ─────────────────────────────────────────────
+
+    async function refreshCreditPosition() {
+      try {
+        const res = await fetch(`/api/credit-info/${account}`);
+        const data = await res.json();
+        const usdc = data.data?.USDC || data.data?.usdc;
+
+        if (!usdc) {
+          document.getElementById("credit-collateral").textContent = "$0.00";
+          document.getElementById("credit-capacity").textContent = "$0.00";
+          document.getElementById("credit-remaining").textContent = "$0.00";
+          document.getElementById("credit-debt").textContent = "$0.00";
+          document.getElementById("credit-health").textContent = "-";
+          document.getElementById("credit-due").textContent = "None";
+          return;
+        }
+
+        document.getElementById("credit-collateral").textContent = "$" + parseFloat(usdc.totalCollateralValue).toFixed(2);
+        document.getElementById("credit-capacity").textContent = "$" + parseFloat(usdc.totalCreditCapacity).toFixed(2);
+        document.getElementById("credit-remaining").textContent = "$" + parseFloat(usdc.remainingCreditCapacity).toFixed(2);
+        document.getElementById("credit-debt").textContent = "$" + parseFloat(usdc.principal || usdc.debt || "0").toFixed(2);
+
+        const hf = parseFloat(usdc.healthFactor);
+        const hfEl = document.getElementById("credit-health");
+        if (hf > 1000000 || usdc.healthFactor === "Infinity") {
+          hfEl.textContent = "Healthy";
+          hfEl.className = "field-value green";
+        } else if (hf > 1.5) {
+          hfEl.textContent = hf.toFixed(2);
+          hfEl.className = "field-value green";
+        } else if (hf > 1.2) {
+          hfEl.textContent = hf.toFixed(2);
+          hfEl.className = "field-value yellow";
+        } else {
+          hfEl.textContent = hf.toFixed(2);
+          hfEl.className = "field-value red";
+        }
+
+        document.getElementById("credit-due").textContent = usdc.dueDate || "None";
+      } catch (err) {
+        console.error("Failed to refresh credit position:", err);
+      }
+    }
+
+    // ── Lock Collateral ─────────────────────────────────────────────
+
+    async function lockCollateral() {
+      const amountStr = document.getElementById("lock-amount").value.trim();
+      if (!amountStr || isNaN(parseFloat(amountStr))) {
+        showStatus("lock-status", "Enter a valid USDC amount", "error");
+        return;
+      }
+
+      const btn = document.getElementById("lock-btn");
+      btn.disabled = true;
+      btn.textContent = "Locking...";
+      showStatus("lock-status", "Fetching calldata from Sprinter...", "info");
+
+      try {
+        const amount = BigInt(Math.round(parseFloat(amountStr) * 10 ** USDC_DECIMALS)).toString();
+
+        // Get lock calldata
+        const res = await fetch(`/api/lock/${account}?amount=${amount}&asset=${USDC_ADDRESS}`);
+        const data = await res.json();
+
+        if (!data.calls || data.calls.length === 0) {
+          throw new Error("No transaction calls returned");
+        }
+
+        // Handle USDC approval if needed
+        const nonUsdcCall = data.calls.find(c => c.to.toLowerCase() !== USDC_ADDRESS.toLowerCase());
+        if (nonUsdcCall) {
+          showStatus("lock-status", "Checking USDC approval...", "info");
+          await ensureApproval(USDC_ADDRESS, nonUsdcCall.to, amount);
+        }
+
+        // Execute calls (skip approve calls from API)
+        const calls = data.calls.filter(c =>
+          !(c.to.toLowerCase() === USDC_ADDRESS.toLowerCase() && c.data.startsWith("0x095ea7b3"))
+        );
+
+        for (let i = 0; i < calls.length; i++) {
+          showStatus("lock-status", `Signing transaction ${i + 1}/${calls.length}...`, "pending");
+          const tx = await signer.sendTransaction({
+            to: calls[i].to,
+            data: calls[i].data,
+            value: calls[i].value || "0",
+          });
+          showStatus("lock-status", `Waiting for confirmation... ${tx.hash.slice(0, 10)}...`, "pending");
+          const receipt = await tx.wait();
+          if (!receipt || receipt.status !== 1) throw new Error("Transaction reverted");
+        }
+
+        showStatus("lock-status", `Locked ${amountStr} USDC as collateral`, "success");
+        document.getElementById("lock-amount").value = "";
+        await refreshCreditPosition();
+      } catch (err) {
+        showStatus("lock-status", err.message, "error");
+      }
+
+      btn.disabled = false;
+      btn.textContent = "Lock USDC";
+    }
+
+    // ── Operator Setup ──────────────────────────────────────────────
+
+    async function refreshOperatorStatus() {
+      try {
+        const res = await fetch(`/api/operator/${account}`);
+        const data = await res.json();
+
+        const opAddr = data.data?.operator;
+        const receivers = data.data?.receivers || [];
+
+        document.getElementById("operator-address").textContent = opAddr || "Not set";
+        document.getElementById("operator-address").className =
+          "field-value" + (opAddr ? " highlight" : "");
+
+        const list = document.getElementById("receiver-list");
+        if (receivers.length > 0) {
+          list.innerHTML = receivers.map(r => `<li>${r}</li>`).join("");
+        } else {
+          list.innerHTML = '<li style="color: #666;">None</li>';
+        }
+      } catch (err) {
+        console.error("Failed to refresh operator status:", err);
+      }
+    }
+
+    async function setupOperator() {
+      const receiver = document.getElementById("operator-receiver").value.trim();
+      if (!receiver || !receiver.startsWith("0x")) {
+        showStatus("operator-msg", "Enter a valid address", "error");
+        return;
+      }
+
+      const btn = document.getElementById("operator-btn");
+      btn.disabled = true;
+      btn.textContent = "Setting up...";
+      showStatus("operator-msg", "Fetching operator setup calldata...", "info");
+
+      try {
+        const res = await fetch(`/api/enable-operator/${account}?receiver=${receiver}`);
+        const data = await res.json();
+
+        if (res.status === 409) {
+          throw new Error("Account already has a different operator set. You may need to remove it first.");
+        }
+
+        if (!data.calls || data.calls.length === 0) {
+          showStatus("operator-msg", "Operator already configured for this receiver", "success");
+          await refreshOperatorStatus();
+          btn.disabled = false;
+          btn.textContent = "Set Up Operator & Whitelist";
+          return;
+        }
+
+        for (let i = 0; i < data.calls.length; i++) {
+          showStatus("operator-msg", `Signing transaction ${i + 1}/${data.calls.length}...`, "pending");
+          const tx = await signer.sendTransaction({
+            to: data.calls[i].to,
+            data: data.calls[i].data,
+            value: data.calls[i].value || "0",
+          });
+          showStatus("operator-msg", `Waiting for confirmation... ${tx.hash.slice(0, 10)}...`, "pending");
+          const receipt = await tx.wait();
+          if (!receipt || receipt.status !== 1) throw new Error("Transaction reverted");
+        }
+
+        showStatus("operator-msg", `Operator set up. Receiver ${receiver.slice(0, 10)}... whitelisted.`, "success");
+        document.getElementById("operator-receiver").value = "";
+        await refreshOperatorStatus();
+      } catch (err) {
+        showStatus("operator-msg", err.message, "error");
+      }
+
+      btn.disabled = false;
+      btn.textContent = "Set Up Operator & Whitelist";
+    }
+
+    // ── Helpers ──────────────────────────────────────────────────────
+
+    async function ensureApproval(tokenAddress, spender, amount) {
+      const token = new ethers.Contract(
+        tokenAddress,
+        [
+          "function allowance(address,address) view returns (uint256)",
+          "function approve(address,uint256) returns (bool)",
+        ],
+        signer
+      );
+
+      const allowance = await token.allowance(account, spender);
+      if (allowance >= BigInt(amount)) return;
+
+      showStatus("lock-status", "Requesting USDC approval in MetaMask...", "pending");
+      const tx = await token.approve(spender, ethers.MaxUint256);
+      showStatus("lock-status", "Waiting for approval confirmation...", "pending");
+      await tx.wait();
+    }
+
+    function showStatus(elementId, message, type) {
+      const el = document.getElementById(elementId);
+      el.innerHTML = `<div class="status-msg ${type}">${message}</div>`;
+    }
+
+    // Handle account/chain changes
+    if (window.ethereum) {
+      window.ethereum.on("accountsChanged", () => window.location.reload());
+      window.ethereum.on("chainChanged", () => window.location.reload());
+    }
+  </script>
+</body>
+</html>

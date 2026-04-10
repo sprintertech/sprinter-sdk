@@ -1,10 +1,87 @@
-# Sprinter Credit MCP Server
+# Sprinter Credit MCP Server + Operator Dashboard
 
-MCP server that exposes the [Sprinter Credit API](https://docs.sprinter.tech) as tools for AI agents. Any MCP-compatible client — Claude Desktop, Cursor, ChatGPT, LI.FI agents, or custom agents — can discover and call these tools to borrow against on-chain collateral.
+MCP server that exposes the [Sprinter Credit API](https://docs.sprinter.tech) as tools for AI agents, plus a local web dashboard where the human operator sets up collateral and delegates credit access to the agent.
 
-Also includes a standalone demo agent script that runs the full borrow lifecycle (lock → draw → use → repay → unlock) via direct API calls.
+## Architecture
 
-## Tools
+```
+Human Operator (Dashboard UI)          Agent (CLI or MCP)
+         |                                     |
+    Lock collateral                    Check credit capacity
+    Set up Credit Operator              Draw USDC (via Operator)
+    Whitelist receivers                 Use funds (swap, bridge, etc.)
+         |                              Repay debt
+         v                                     |
+    [Sprinter Credit Engine] <-----------------+
+```
+
+The human posts collateral and delegates credit access. The agent draws and repays within the delegated bounds. The agent can never touch the human's collateral.
+
+## Quick Start
+
+### 1. Install
+
+```bash
+npm install
+```
+
+### 2. Human: Set Up Collateral & Delegation
+
+Run the Operator Dashboard:
+
+```bash
+npm run ui
+```
+
+Open http://localhost:3001 in your browser. Connect MetaMask (on Base network) and:
+
+1. **Lock collateral** — enter a USDC amount and lock it
+2. **Set up operator** — enter the agent's wallet address (or a receiver address) to set up the Credit Operator and whitelist it
+
+Your credit position and operator status are displayed in the dashboard.
+
+### 3. Agent: Draw & Repay
+
+Copy `.env.example` to `.env` and fill in:
+
+```bash
+cp .env.example .env
+```
+
+```
+PRIVATE_KEY=0xAGENT_PRIVATE_KEY       # Agent's wallet key (authorized caller)
+HUMAN_ACCOUNT=0xHUMAN_WALLET           # Human's wallet address (from dashboard)
+RECEIVER_ADDRESS=0xWHITELISTED_ADDR    # Must be whitelisted by the human
+```
+
+Run the agent:
+
+```bash
+npm run demo
+```
+
+Output:
+
+```
+=== Agent: Delegated Credit Draw ===
+
+Agent:          0xAgent...
+Human account:  0xHuman...
+Receiver:       0xReceiver...
+Borrow amount:  0.5 USDC
+
+[1] Checking credit capacity on human's account...
+[2] Drawing 0.5 USDC to 0xReceiver...
+[3] Agent uses borrowed funds...
+[4] Repaying 0.5 USDC...
+[5] Verifying position...
+
+=== Agent: Complete ===
+```
+
+## MCP Server
+
+The MCP server exposes 7 tools for any MCP-compatible agent (Claude, Cursor, LI.FI, ChatGPT):
 
 | Tool | Description |
 |------|-------------|
@@ -16,29 +93,7 @@ Also includes a standalone demo agent script that runs the full borrow lifecycle
 | `sprinter-repay-debt` | Build unsigned calldata to repay outstanding debt |
 | `sprinter-unlock-collateral` | Build unsigned calldata to unlock collateral |
 
-All transaction-building tools return `{ calls: ContractCall[] }` — unsigned calldata. The agent's wallet signs and broadcasts. No custody, no API keys for on-chain operations.
-
-## Quick Start
-
-### 1. Install
-
-```bash
-npm install
-```
-
-### 2. Run the MCP Server
-
-```bash
-npm run dev
-```
-
-The server communicates over stdio (the standard MCP transport). It doesn't open a port — your MCP client connects to it by spawning the process.
-
-### 3. Add to Your MCP Client
-
-**Claude Desktop / Cursor:**
-
-Add to your MCP client config (e.g. `claude_desktop_config.json`):
+### Add to your MCP client
 
 ```json
 {
@@ -52,7 +107,7 @@ Add to your MCP client config (e.g. `claude_desktop_config.json`):
 }
 ```
 
-**With LI.FI (agent gets both bridging and borrowing):**
+With LI.FI (agent gets both bridging and borrowing):
 
 ```json
 {
@@ -70,86 +125,35 @@ Add to your MCP client config (e.g. `claude_desktop_config.json`):
 }
 ```
 
-## Demo Agent
-
-The demo agent (`src/demo-agent.ts`) runs the full borrow lifecycle on Base using direct HTTP calls — no MCP required. It demonstrates what an autonomous agent does when it needs liquidity.
-
-### Setup
-
-```bash
-cp .env.example .env
-```
-
-Edit `.env`:
-
-```
-PRIVATE_KEY=0xYOUR_PRIVATE_KEY_HERE
-RPC_URL=https://mainnet.base.org        # optional, defaults to Base mainnet
-SPRINTER_API=https://api.sprinter.tech   # optional
-```
-
-The wallet needs USDC and a small amount of ETH (for gas) on Base. The demo locks 1 USDC as collateral and borrows 0.50 USDC.
-
-### Run
-
-```bash
-npm run demo
-```
-
-Output:
-
-```
-=== Agent: Borrow from Sprinter ===
-
-Account:    0x...
-Collateral: 1 USDC
-Borrow:     0.5 USDC
-
-[1] Checking credit position...
-[2] Locking 1 USDC as collateral...
-[3] Drawing 0.5 USDC...
-[4] Agent uses borrowed funds (swap, bridge, settle, etc.)
-[5] Repaying 0.5 USDC...
-[6] Unlocking 1 USDC collateral...
-
-=== Agent: Borrow complete ===
-```
-
 ## Project Structure
 
 ```
 sprinter-mcp/
 ├── src/
-│   ├── server.ts        # MCP server — exposes 7 Sprinter Credit tools
-│   └── demo-agent.ts    # Standalone agent script (direct API, no MCP)
-├── .env.example         # Environment variables template
+│   ├── server.ts          # MCP server — 7 Sprinter Credit tools
+│   ├── ui-server.ts       # Express server for the Operator Dashboard
+│   └── demo-agent.ts      # Agent script — delegated credit draw & repay
+├── public/
+│   └── index.html         # Operator Dashboard UI (single HTML file)
+├── .env.example            # Environment variables template
 ├── package.json
 └── tsconfig.json
 ```
-
-## How It Works
-
-1. **Agent needs liquidity** — it holds collateral (e.g. USDC on Base) but needs to borrow
-2. **Lock collateral** → `sprinter-lock-collateral` returns unsigned calldata
-3. **Draw credit** → `sprinter-draw-credit` sends borrowed USDC to any receiver address
-4. **Agent does its work** — swap via LI.FI, bridge to another chain, settle a payment, etc.
-5. **Repay** → `sprinter-repay-debt` clears the debt and restores credit capacity
-6. **Unlock collateral** → `sprinter-unlock-collateral` returns collateral to the agent
-
-Every step returns unsigned `ContractCall[]` calldata. The agent's wallet signs and broadcasts — Sprinter never has custody.
 
 ## Scripts
 
 | Script | Command | Description |
 |--------|---------|-------------|
-| `dev` | `npm run dev` | Run MCP server in development mode (tsx) |
-| `demo` | `npm run demo` | Run the standalone demo agent |
+| `ui` | `npm run ui` | Start the Operator Dashboard (http://localhost:3001) |
+| `demo` | `npm run demo` | Run the agent demo (delegated draw & repay) |
+| `dev` | `npm run dev` | Run MCP server in development mode |
 | `build` | `npm run build` | Compile TypeScript to `dist/` |
-| `start` | `npm run start` | Run compiled MCP server from `dist/` |
+| `start` | `npm run start` | Run compiled MCP server |
 
 ## Links
 
 - [Agent Credit Borrow Quickstart](https://docs.sprinter.tech/quickstart/agent-skills/credit-borrow)
+- [Credit Accounts (EOA vs Smart Account)](https://docs.sprinter.tech/sprinter-credit/credit-accounts)
+- [Credit Operators](https://docs.sprinter.tech/sprinter-credit/policy-engine#credit-operators)
 - [Sprinter Credit API Reference](https://docs.sprinter.tech/api-reference/sprinter/credit/get-credit-protocol-configuration)
 - [Model Context Protocol](https://modelcontextprotocol.io/)
-- [Sprinter Documentation](https://docs.sprinter.tech)
