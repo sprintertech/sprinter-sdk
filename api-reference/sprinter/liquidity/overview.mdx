@@ -1,0 +1,56 @@
+---
+title: "Overview"
+description: "API reference for Sprinter liquidity — discover available liquidity, quote a cross-chain borrow, and get signing authorization to execute and unlock"
+---
+
+The Liquidity API exposes Sprinter's cross-chain liquidity layer: query where liquidity is available, get a quote for a borrow, and obtain the signing authorization needed to execute the transaction and later unlock collateral.
+
+## Base URL
+
+```
+https://api.sprinter.tech
+```
+
+## OpenAPI Specification
+
+The full machine-readable API spec is available for AI agents, code generators, and API clients:
+
+| Resource | URL |
+|----------|-----|
+| **OpenAPI Spec (JSON)** | [api.sprinter.tech/swagger/doc.json](https://api.sprinter.tech/swagger/doc.json) |
+| **Swagger UI** | [api.sprinter.tech/swagger/index.html](https://api.sprinter.tech/swagger/index.html) |
+
+<Tip>
+Point your AI agent or code generator at the [OpenAPI spec](https://api.sprinter.tech/swagger/doc.json) to auto-generate a client in any language.
+</Tip>
+
+## How it works
+
+A typical cross-chain borrow follows this lifecycle:
+
+1. **Discover** — check the tokens and liquidity available for a route (`tokens`, `pools`, `fees`).
+2. **Quote** — request a borrow quote for the source chain, protocol, and type to get cost, fees, and a quote id.
+3. **Authorize** — post the quote to get the signing authorization for the liquidity transaction.
+4. **Execute** — submit the authorized transaction on-chain.
+5. **Unlock** — when the position is settled, request the signing authorization to unlock collateral.
+
+## Endpoints
+
+### Info
+
+| Endpoint | Description |
+|----------|-------------|
+| [`GET /liquidity/chain/{chainId}/tokens`](/api-reference/sprinter/liquidity/returns-supported-tokens-for-a-chain) | Supported tokens for a chain |
+| [`GET /liquidity/pools/{poolType}`](/api-reference/sprinter/liquidity/get-available-liquidity-for-a-specific-pool-type-on-a-chain) | Available liquidity for a pool type on a chain |
+| [`GET /liquidity/pools/events`](/api-reference/sprinter/liquidity/stream-available-liquidity-updates-via-sse) | Stream available-liquidity updates via SSE |
+| [`GET /liquidity/protocol/{protocol}/fees`](/api-reference/sprinter/liquidity/get-fee-and-limits-for-a-given-protocol-route) | Fees and limits for a protocol route |
+| [`GET /protocol/{protocol}/solver`](/api-reference/sprinter/returns-solver-address) | Solver address for a protocol |
+| [`GET /health`](/api-reference/sprinter/health-check) | Service health check |
+
+### Actions
+
+| Endpoint | Description |
+|----------|-------------|
+| [`GET /liquidity/v2/chain/{srcChain}/protocol/{protocol}/type/{type}/quote`](/api-reference/sprinter/liquidity/get-the-borrow-quote-for-a-liquidity-transaction-based-on-the-input-data) | Borrow quote for a liquidity transaction |
+| [`POST /liquidity/v2/chain/{dstChain}/protocol/{protocol}/signature`](/api-reference/sprinter/liquidity/get-signing-authorization-for-a-liquidity-transaction) | Signing authorization for a liquidity transaction |
+| [`POST /liquidity/v1/chain/{chain}/protocol/{protocol}/unlock`](/api-reference/sprinter/liquidity/get-signing-authorization-for-a-an-unlock-transaction) | Signing authorization for an unlock transaction |

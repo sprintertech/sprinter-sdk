@@ -8,8 +8,8 @@
   "favicon": "/favicon.svg",
   "tabs": [
     {
-      "name": "Sprinter Credit (V2) API",
-      "url": "api-reference/sprinter"
+      "name": "Sprinter API",
+      "url": "api-reference"
     }
   ],
   "navigation": [
@@ -79,43 +79,80 @@
       ]
     },
     {
-      "group": "Credit API",
+      "group": "Credit",
       "pages": [
-        "api-reference/sprinter/credit/overview"
+        "api-reference/sprinter/credit/overview",
+        {
+          "group": "Info",
+          "pages": [
+            "api-reference/sprinter/credit/get-credit-protocol-configuration",
+            "api-reference/sprinter/credit/get-user-credit-information",
+            "api-reference/sprinter/credit/get-collateral-asset-details",
+            "api-reference/sprinter/credit/get-operator-status-for-an-account"
+          ]
+        },
+        {
+          "group": "Actions",
+          "pages": [
+            "api-reference/sprinter/credit/calldata-to-lock-asset-as-collateral",
+            "api-reference/sprinter/credit/call-data-to-unlock-collateral",
+            "api-reference/sprinter/credit/build-transaction-calls-to-draw-credit",
+            "api-reference/sprinter/credit/call-data-to-repay-credit-debt"
+          ]
+        },
+        {
+          "group": "Advanced",
+          "pages": [
+            "api-reference/sprinter/credit/build-transaction-calls-to-enable-auto-top-up",
+            "api-reference/sprinter/credit/build-transaction-calls-to-disable-auto-top-up",
+            "api-reference/sprinter/credit/wrap-asset-into-earn-vault",
+            "api-reference/sprinter/credit/unwrap-position-from-earn-vault",
+            "api-reference/sprinter/credit/claim-position-from-earn-vault"
+          ]
+        }
       ]
     },
     {
-      "group": "Credit — Info",
+      "group": "Liquidity",
       "pages": [
-        "api-reference/sprinter/credit/get-credit-protocol-configuration",
-        "api-reference/sprinter/credit/get-user-credit-information",
-        "api-reference/sprinter/credit/get-collateral-asset-details",
-        "api-reference/sprinter/credit/get-operator-status-for-an-account"
+        "api-reference/sprinter/liquidity/overview",
+        {
+          "group": "Info",
+          "pages": [
+            "api-reference/sprinter/liquidity/returns-supported-tokens-for-a-chain",
+            "api-reference/sprinter/liquidity/get-available-liquidity-for-a-specific-pool-type-on-a-chain",
+            "api-reference/sprinter/liquidity/stream-available-liquidity-updates-via-sse",
+            "api-reference/sprinter/liquidity/get-fee-and-limits-for-a-given-protocol-route",
+            "api-reference/sprinter/returns-solver-address",
+            "api-reference/sprinter/health-check"
+          ]
+        },
+        {
+          "group": "Actions",
+          "pages": [
+            "api-reference/sprinter/liquidity/get-the-borrow-quote-for-a-liquidity-transaction-based-on-the-input-data",
+            "api-reference/sprinter/liquidity/get-signing-authorization-for-a-liquidity-transaction",
+            "api-reference/sprinter/liquidity/get-signing-authorization-for-a-an-unlock-transaction"
+          ]
+        }
       ]
     },
     {
-      "group": "Credit — Actions",
+      "group": "Swaps",
       "pages": [
-        "api-reference/sprinter/credit/calldata-to-lock-asset-as-collateral",
-        "api-reference/sprinter/credit/call-data-to-unlock-collateral",
-        "api-reference/sprinter/credit/build-transaction-calls-to-draw-credit",
-        "api-reference/sprinter/credit/call-data-to-repay-credit-debt"
-      ]
-    },
-    {
-      "group": "Credit — Advanced",
-      "pages": [
-        "api-reference/sprinter/credit/build-transaction-calls-to-enable-auto-top-up",
-        "api-reference/sprinter/credit/build-transaction-calls-to-disable-auto-top-up",
-        "api-reference/sprinter/credit/wrap-asset-into-earn-vault",
-        "api-reference/sprinter/credit/unwrap-position-from-earn-vault",
-        "api-reference/sprinter/credit/claim-position-from-earn-vault"
+        "api-reference/solve/overview",
+        {
+          "group": "Actions",
+          "pages": [
+            "api-reference/solve/get-v2route"
+          ]
+        }
       ]
     }
   ],
   "openapi": [
     "api-reference/sprinter/openapi.json",
-    "api-reference/stash/openapi.json"
+    "api-reference/solve/openapi.yaml"
   ],
   "logo": {
     "light": "/logo/light.svg",
