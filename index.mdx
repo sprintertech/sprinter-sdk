@@ -1,6 +1,6 @@
 ---
 title: "Sprinter Documentation"
-description: "Programmable credit infrastructure for people and AI agents"
+description: "Programmable credit infrastructure for the onchain economy"
 ---
 
 <img src="/images/credit-header.png" alt="Sprinter" />
@@ -9,44 +9,46 @@ description: "Programmable credit infrastructure for people and AI agents"
 
 <CardGroup cols={3}>
   <Card title="What Is Sprinter?" icon="rocket" href="/introduction">
-    Learn about Sprinter's cross-chain credit infrastructure.
+    Programmable credit infrastructure for the onchain economy.
   </Card>
-  <Card title="Sprinter Credit (V2)" icon="vault" href="/sprinter-credit/overview">
-    Credit Hub, Policy Engine, and the Liquidity Layer.
+  <Card title="Sprinter Credit" icon="vault" href="/sprinter-credit/overview">
+    Credit Hub, Policy Engine, and the liquidity layer behind credit lines.
+  </Card>
+  <Card title="Sprinter Liquidity" icon="database" href="/stash-v1/overview">
+    Zero-collateral crosschain liquidity for solvers and LPs.
   </Card>
   <Card title="Partnerships" icon="handshake" href="/partnerships">
     Partner with Sprinter — card programs, wallets, AI agents, and more.
-  </Card>
-  <Card title="Governance" icon="scale-balanced" href="/governance">
-    Multisig structure and admin controls.
   </Card>
 </CardGroup>
 
 ## Quickstart
 
+Pick the path that matches what you're building:
+
 <CardGroup cols={2}>
-  <Card title="Credit Draw" icon="money-bill-transfer" href="/quickstart/credit-draw">
-    Draw credit against locked DeFi collateral — lock, draw, repay, unlock.
+  <Card title="Neobanks & Card Programmes" icon="credit-card" href="/quickstart/card-program">
+    Let users spend against DeFi holdings without selling. Uses the **Sprinter Credit** API.
   </Card>
-  <Card title="Card Program Integration" icon="credit-card" href="/quickstart/card-program">
-    Add credit-backed card spending to your card program.
+  <Card title="Wallets" icon="wallet" href="/quickstart/wallets-integration">
+    Add credit lines so users borrow against their holdings without selling. Uses **Sprinter Credit**.
   </Card>
-  <Card title="Wallet Integration" icon="wallet" href="/quickstart/wallets-integration">
-    Add credit lines to your wallet — users borrow against ETH/stETH without selling.
+  <Card title="AI Agents" icon="robot" href="/quickstart/agent-skills">
+    Pre-built skills for autonomous, policy-bound credit management. Uses **Sprinter Credit**.
   </Card>
-  <Card title="Agent Skills" icon="robot" href="/quickstart/agent-skills">
-    Pre-built agent skills for autonomous credit management.
+  <Card title="Crosschain Solvers" icon="arrows-rotate" href="/stash-v1/integration-guide">
+    Fill intents with zero-collateral crosschain liquidity. Uses **Sprinter Liquidity**.
   </Card>
 </CardGroup>
 
 ## API Reference
 
 <CardGroup cols={2}>
-  <Card title="Sprinter Credit (V2) API" icon="bolt" href="/api-reference/sprinter/health-check">
-    Credit, liquidity, and solver operations with interactive playground.
+  <Card title="Sprinter Credit API" icon="bolt" href="/api-reference/sprinter/credit/overview">
+    Lock collateral, draw credit, repay, and manage earn vaults — with an interactive playground.
   </Card>
-  <Card title="Stash Solver Credit (V1) API" icon="database" href="/api-reference/stash/liquidity/get-the-borrow-quote-for-a-liquidity-transaction-based-on-the-input-data">
-    Borrow quote and signing authorization endpoints.
+  <Card title="Sprinter Liquidity API" icon="database" href="/api-reference/sprinter/liquidity/overview">
+    Discover available liquidity, quote a borrow, and get signing authorization.
   </Card>
 </CardGroup>
 
