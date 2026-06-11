@@ -1,25 +1,25 @@
 ---
 title: "Stream Available Liquidity Updates via SSE"
 sidebarTitle: "Stream Liquidity Updates"
-openapi: get /liquidity/pools/events
+openapi: get /liquidity/protocol/{protocol}/events
 ---
 
 <RequestExample>
 ```bash cURL
 curl --request GET \
-  --url 'https://api.sprinter.tech/liquidity/pools/events'
+  --url 'https://api.sprinter.tech/liquidity/protocol/{protocol}/events'
 ```
 
 ```python Python
 import requests
 
-response = requests.get("https://api.sprinter.tech/liquidity/pools/events")
+response = requests.get("https://api.sprinter.tech/liquidity/protocol/{protocol}/events")
 print(response.json())
 ```
 
 ```javascript JavaScript
 const response = await fetch(
-  "https://api.sprinter.tech/liquidity/pools/events"
+  "https://api.sprinter.tech/liquidity/protocol/{protocol}/events"
 );
 const data = await response.json();
 console.log(data);
@@ -35,7 +35,7 @@ import (
 )
 
 func main() {
-	resp, _ := http.Get("https://api.sprinter.tech/liquidity/pools/events")
+	resp, _ := http.Get("https://api.sprinter.tech/liquidity/protocol/{protocol}/events")
 	defer resp.Body.Close()
 	body, _ := io.ReadAll(resp.Body)
 	fmt.Println(string(body))
