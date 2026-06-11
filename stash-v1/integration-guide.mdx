@@ -1,28 +1,28 @@
 ---
-title: "Stash API Integration Guide"
-description: "Guide for crosschain DeFi solvers to integrate with Sprinter Stash for on-demand credit borrowing"
+title: "Sprinter Liquidity Integration Guide"
+description: "Guide for crosschain DeFi solvers to integrate with Sprinter Liquidity for on-demand credit borrowing"
 ---
 
 <Tip>
-Request your Stash API key by dropping a Telegram DM to [@Sprinter_Intern_Bot](https://t.me/Sprinter_Intern_Bot) with `/request api key`
+Request your Sprinter Liquidity API key by dropping a Telegram DM to [@Sprinter_Intern_Bot](https://t.me/Sprinter_Intern_Bot) with `/request api key`
 </Tip>
 
 ## For crosschain DeFi
 
-Sprinter Stash enables solvers to **borrow crosschain credit on-demand** to execute user intents without needing pre-funded inventory.
+Sprinter Liquidity enables solvers to **borrow crosschain credit on-demand** to execute user intents without needing pre-funded inventory.
 
-## Overview of the Stash Fill Lifecycle
+## Overview of the fill lifecycle
 
 <div style={{ paddingRight: "120px" }}>
 ```mermaid
 flowchart TD
   A[Solver Detects User Intent] --> B[Solver Previews estimated borrowing quote]
   B --> C[Receive Borrow Quote Estimate]
-  C --> D{Fill using Stash Credit?}
+  C --> D{Fill using Sprinter Liquidity?}
   D -- Yes --> E[Solver Reserves credit and authorizes the fill]
   D -- No --> F[Abort Fill]
-  E --> G[Solver Borrows Liquidity from Sprinter Stash]
-  G --> H[Stash Executes Cross-Chain Swap/Bridge]
+  E --> G[Solver Borrows Liquidity from Sprinter]
+  G --> H[Sprinter Executes Cross-Chain Swap/Bridge]
   H --> I[Intent Protocol Repays Borrowed Credit + Costs]
   I --> J[Fill Complete]
 ```
