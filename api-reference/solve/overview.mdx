@@ -19,8 +19,8 @@ https://swaps.sprinter.tech/base
 All requests use HTTP Basic authentication. Your credentials are a username and an API key (format `sk_live_*`) used as the password:
 
 ```bash
-curl 'https://swaps.sprinter.tech/base/v1/route?amountIn=5000000000&tokenIn=0x...&tokenOut=0x...&slippageBps=50' \
-  --user 'YOUR_USERNAME:YOUR_API_KEY'
+curl --user 'YOUR_USERNAME:YOUR_API_KEY' \
+  'https://swaps.sprinter.tech/base/v1/route?tokenIn=0x833589fcd6edb6e08f4c7c32d4f71b54bda02913&tokenOut=0x50c5725949a6f0c72e6c4a641f24049a917db0cb&amountIn=5000000000&slippageBps=50'
 ```
 
 <Tip>
