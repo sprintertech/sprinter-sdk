@@ -50,18 +50,21 @@ paths:
           schema:
             $ref: "#/components/schemas/TokenAmount"
           required: true
+          example: "5000000000"
         - in: query
           name: tokenIn
           description: Contract address of the input token to sell. The zero address (0x00…00) represents the native currency ETH.
           schema:
             $ref: "#/components/schemas/Address"
           required: true
+          example: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
         - in: query
           name: tokenOut
           description: Contract address of the output token to buy. The zero address (0x00…00) represents the native currency ETH.
           schema:
             $ref: "#/components/schemas/Address"
           required: true
+          example: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
         - in: query
           name: slippageBps
           description: The slippage tolerance in basis points (e.g., 50 for 0.5%)
