@@ -16,44 +16,45 @@ https://swaps.sprinter.tech/base
 
 ## Authentication
 
-All requests are authenticated with an API key sent in the `X-API-Key` header (format `sk_live_*`):
+All requests use HTTP Basic authentication. Your credentials are a username and an API key (format `sk_live_*`) used as the password:
 
 ```bash
-curl 'https://swaps.sprinter.tech/mainnet/v2/route?amount_in=1000000000000000000&token_in=0x...&token_out=0x...&slippage=0.5' \
-  --header 'X-API-Key: your_api_key_here'
+curl 'https://swaps.sprinter.tech/base/v1/route?amountIn=5000000000&tokenIn=0x...&tokenOut=0x...&slippageBps=50' \
+  --user 'YOUR_USERNAME:YOUR_API_KEY'
 ```
 
 <Tip>
-Request a Solve API key by contacting [support@sprinter.tech](mailto:support@sprinter.tech).
+Request Solve API credentials by contacting [support@sprinter.tech](mailto:support@sprinter.tech).
 </Tip>
 
 ## How it works
 
 1. **Detect an intent** — a user wants to swap one token for another.
-2. **Get a route** — call [`GET /v2/route`](/api-reference/solve/get-v2route) with the input amount, token in/out, and slippage. The response includes `amount_out`, `min_amount_out`, the `target` contract, and the executable `swap_call_data`.
-3. **Execute** — send a transaction to `target` with `swap_call_data` from the user's wallet to fulfill the swap on-chain.
+2. **Get a route** — call [`GET /v1/route`](/api-reference/solve/get-v1route) with the input amount, token in/out, and slippage (in basis points). The response includes `amountOut`, `minAmountOut`, the `target` contract, the executable `callData`, and gas estimates.
+3. **Execute** — send a transaction to `target` with `callData` from the user's wallet to fulfill the swap on-chain.
 
 ## Endpoints
 
 | Endpoint | Description |
 |----------|-------------|
-| [`GET /v2/route`](/api-reference/solve/get-v2route) | Get an optimal swap route and execution call data |
+| [`GET /v1/route`](/api-reference/solve/get-v1route) | Get an optimal swap route and execution call data |
 
 ## Response format
 
-`GET /v2/route` returns the route and the call data needed to execute the swap:
+`GET /v1/route` returns the route and the call data needed to execute the swap:
 
 ```json
 {
-  "quote_id": "q_12345678",
-  "amount_out": "99850000",
-  "min_amount_out": "99350000",
+  "requestId": "0x...",
+  "amountOut": "99850000",
+  "minAmountOut": "99350000",
   "target": "0x...",
-  "swap_call_data": "0x...",
-  "rainbow_input": "0x..."
+  "callData": "0x...",
+  "gasUsed": 180000,
+  "gasLimit": 234000
 }
 ```
 
 <Tip>
-Quotes expire quickly — re-query `/v2/route` before execution if there is a delay, and simulate the call data (e.g. with Tenderly) before sending.
+Re-query `/v1/route` before execution if there is a delay, and simulate the call data (e.g. with Tenderly) before sending.
 </Tip>
