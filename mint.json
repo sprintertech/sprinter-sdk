@@ -21,32 +21,38 @@
       "group": "Quickstart",
       "pages": [
         {
-          "group": "Credit Draw",
+          "group": "Neobanks & Card Programmes",
           "pages": [
             "quickstart/credit-draw",
-            "quickstart/credit-draw/authorization-webhook"
-          ]
-        },
-        {
-          "group": "Card Program Integration",
-          "pages": [
+            "quickstart/credit-draw/authorization-webhook",
             "quickstart/card-program"
           ]
         },
-        "quickstart/wallets-integration",
         {
-          "group": "Agent Skills",
+          "group": "Wallets",
+          "pages": [
+            "quickstart/wallets-integration"
+          ]
+        },
+        {
+          "group": "AI Agents",
           "pages": [
             "quickstart/agent-skills",
             "quickstart/agent-skills/credit-borrow",
             "quickstart/agent-skills/health-monitor",
             "quickstart/agent-skills/yield-optimizer"
           ]
+        },
+        {
+          "group": "Crosschain Solvers",
+          "pages": [
+            "stash-v1/integration-guide"
+          ]
         }
       ]
     },
     {
-      "group": "Sprinter Credit (V2)",
+      "group": "Sprinter Credit",
       "pages": [
         "sprinter-credit/overview",
         "sprinter-credit/credit-engine",
@@ -57,18 +63,10 @@
       ]
     },
     {
-      "group": "Stash Solver Credit (V1)",
+      "group": "Sprinter Liquidity",
       "pages": [
         "stash-v1/overview",
-        "stash-v1/integration-guide",
         "stash-v1/contracts"
-      ]
-    },
-    {
-      "group": "Community",
-      "pages": [
-        "stash-points",
-        "governance"
       ]
     },
     {
