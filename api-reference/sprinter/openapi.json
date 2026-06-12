@@ -961,6 +961,11 @@
                     "Liquidity"
                 ],
                 "summary": "Returns supported tokens for a chain",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "description": "Chain ID in CAIP format (e.g., eip155:8453)",
@@ -1003,6 +1008,11 @@
                     "Liquidity"
                 ],
                 "summary": "Stream available liquidity updates via SSE",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "description": "Protocol to monitor the liquidity and fees for.",
@@ -1035,6 +1045,11 @@
                     "Liquidity"
                 ],
                 "summary": "Get available liquidity for a specific pool type on a chain",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "description": "Pool type",
@@ -1115,6 +1130,11 @@
                     "Liquidity"
                 ],
                 "summary": "Get fee and limits for a given protocol route",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "description": "Protocol name",
@@ -1203,6 +1223,11 @@
                     "Liquidity"
                 ],
                 "summary": "Get signing authorization for a liquidity transaction",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "description": "Name of the protocol, e.g., Across, Lighter",
@@ -1275,6 +1300,11 @@
                     "Liquidity"
                 ],
                 "summary": "Get the borrow quote for a liquidity transaction based on the input data",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "description": "Protocol name (e.g., Across)",
@@ -2456,6 +2486,13 @@
                         "type": "integer"
                     }
                 }
+            }
+        },
+        "securitySchemes": {
+            "ApiKeyAuth": {
+                "type": "apiKey",
+                "name": "X-Auth-Token",
+                "in": "header"
             }
         }
     },

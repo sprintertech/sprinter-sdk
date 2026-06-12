@@ -15,6 +15,20 @@ These are **zero-collateral** loans — solvers borrow without locking upfront c
 https://api.sprinter.tech
 ```
 
+## Authentication
+
+All Liquidity API requests must be authenticated with an API key, passed in the `X-Auth-Token` header:
+
+```bash
+curl --request GET \
+  --url 'https://api.sprinter.tech/liquidity/chain/eip155:8453/tokens' \
+  --header 'X-Auth-Token: YOUR_API_KEY'
+```
+
+<Tip>
+Request Liquidity API credentials by contacting [support@sprinter.tech](mailto:support@sprinter.tech).
+</Tip>
+
 ## OpenAPI Specification
 
 The full machine-readable API spec is available for AI agents, code generators, and API clients:
