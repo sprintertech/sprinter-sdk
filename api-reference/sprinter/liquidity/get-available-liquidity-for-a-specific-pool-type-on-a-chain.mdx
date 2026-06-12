@@ -1,25 +1,27 @@
 ---
 title: "Get Available Liquidity for a Specific Pool Type on a Chain"
-sidebarTitle: "Get Available Liquidity for a Specific Pool Type on a Chain"
+sidebarTitle: "Available Liquidity"
 openapi: get /liquidity/pools/{poolType}
 ---
 
 <RequestExample>
 ```bash cURL
 curl --request GET \
-  --url 'https://api.sprinter.tech/liquidity/pools/{poolType}'
+  --url 'https://api.sprinter.tech/liquidity/pools/{poolType}' \
+  --header 'X-Auth-Token: YOUR_API_KEY'
 ```
 
 ```python Python
 import requests
 
-response = requests.get("https://api.sprinter.tech/liquidity/pools/{poolType}")
+response = requests.get("https://api.sprinter.tech/liquidity/pools/{poolType}", headers={"X-Auth-Token": "YOUR_API_KEY"})
 print(response.json())
 ```
 
 ```javascript JavaScript
 const response = await fetch(
-  "https://api.sprinter.tech/liquidity/pools/{poolType}"
+  "https://api.sprinter.tech/liquidity/pools/{poolType}",
+  { headers: { "X-Auth-Token": "YOUR_API_KEY" } }
 );
 const data = await response.json();
 console.log(data);
@@ -35,7 +37,9 @@ import (
 )
 
 func main() {
-	resp, _ := http.Get("https://api.sprinter.tech/liquidity/pools/{poolType}")
+	req, _ := http.NewRequest("GET", "https://api.sprinter.tech/liquidity/pools/{poolType}", nil)
+	req.Header.Set("X-Auth-Token", "YOUR_API_KEY")
+	resp, _ := http.DefaultClient.Do(req)
 	defer resp.Body.Close()
 	body, _ := io.ReadAll(resp.Body)
 	fmt.Println(string(body))

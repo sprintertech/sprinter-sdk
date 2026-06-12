@@ -14,6 +14,31 @@ servers:
     description: Base Swap API
 
 paths:
+  /health:
+    get:
+      operationId: getHealth
+      description: Health check endpoint (admin only)
+      responses:
+        200:
+          description: Service is healthy
+          headers:
+            Request-ID:
+              $ref: "#/components/headers/RequestID"
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "✅"
+        401:
+          description: Unauthorized access - only accessible by admin user
+          headers:
+            Request-ID:
+              $ref: "#/components/headers/RequestID"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
   /v1/route:
     get:
       operationId: getRouteV1
@@ -22,21 +47,27 @@ paths:
         - in: query
           name: amountIn
           description: The amount of input tokens to swap (in token's smallest unit)
-          schema:
-            $ref: "#/components/schemas/TokenAmount"
           required: true
+          schema:
+            type: string
+            pattern: "^[0-9]+$"
+            example: "5000000000"
         - in: query
           name: tokenIn
           description: Contract address of the input token to sell. The zero address (0x00…00) represents the native currency ETH.
-          schema:
-            $ref: "#/components/schemas/Address"
           required: true
+          schema:
+            type: string
+            pattern: "^0x[a-fA-F0-9]{40}$"
+            example: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
         - in: query
           name: tokenOut
           description: Contract address of the output token to buy. The zero address (0x00…00) represents the native currency ETH.
-          schema:
-            $ref: "#/components/schemas/Address"
           required: true
+          schema:
+            type: string
+            pattern: "^0x[a-fA-F0-9]{40}$"
+            example: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
         - in: query
           name: slippageBps
           description: The slippage tolerance in basis points (e.g., 50 for 0.5%)
@@ -65,6 +96,64 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/RouteV1Response"
+        400:
+          description: Bad request due to invalid parameters
+          headers:
+            Request-ID:
+              $ref: "#/components/headers/RequestID"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        401:
+          description: Unauthorized access due to invalid or missing credentials
+          headers:
+            Request-ID:
+              $ref: "#/components/headers/RequestID"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        404:
+          description: No viable swap route found for the given parameters
+          headers:
+            Request-ID:
+              $ref: "#/components/headers/RequestID"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        500:
+          description: Internal server error
+          headers:
+            Request-ID:
+              $ref: "#/components/headers/RequestID"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /lifi/quote:
+    post:
+      operationId: postLiFiQuote
+      description: LiFi API compatibility endpoint for getting swap quotes. Accepts LiFi-formatted requests and returns LiFi-formatted responses.
+      requestBody:
+        description: LiFi quote request parameters
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LiFiQuoteRequest"
+      responses:
+        200:
+          description: Successfully calculated swap route with LiFi-compatible response
+          headers:
+            Request-ID:
+              $ref: "#/components/headers/RequestID"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LiFiQuoteResponse"
         400:
           description: Bad request due to invalid parameters
           headers:
@@ -139,16 +228,7 @@ components:
     RouteV1Response:
       description: Successfully created route with execution details
       type: object
-      required:
-        [
-          requestId,
-          amountOut,
-          minAmountOut,
-          target,
-          callData,
-          gasUsed,
-          gasLimit,
-        ]
+      required: [requestId, amountOut, minAmountOut, target, callData, gasUsed, gasLimit]
       properties:
         requestId:
           $ref: "#/components/schemas/RequestID"
@@ -190,3 +270,72 @@ components:
         error:
           description: Error message
           type: string
+
+    LiFiQuoteRequest:
+      description: LiFi API compatible quote request
+      type: object
+      required: [fromToken, toToken, fromAmount]
+      properties:
+        fromToken:
+          description: Contract address of the input token to sell. The zero address (0x00…00) represents the native currency ETH.
+          $ref: "#/components/schemas/Address"
+        toToken:
+          description: Contract address of the output token to buy. The zero address (0x00…00) represents the native currency ETH.
+          $ref: "#/components/schemas/Address"
+        fromAmount:
+          description: Amount of input tokens to swap (in token's smallest unit) as a decimal string
+          $ref: "#/components/schemas/TokenAmount"
+        slippage:
+          description: The slippage tolerance as a decimal fraction (e.g., 0.005 for 0.5%). Must be in interval [0..1].
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          default: 0.005
+          example: 0.005
+
+    LiFiQuoteResponse:
+      description: LiFi API compatible quote response
+      type: object
+      required: [fromAmount, toAmount, toAmountMin, slippage, gasEstimation, transaction]
+      properties:
+        fromAmount:
+          description: Amount of tokens being sold
+          $ref: "#/components/schemas/TokenAmount"
+        toAmount:
+          description: Amount of tokens to receive
+          $ref: "#/components/schemas/TokenAmount"
+        toAmountMin:
+          description: Minimum amount of tokens to receive after slippage
+          $ref: "#/components/schemas/TokenAmount"
+        slippage:
+          description: The applied slippage tolerance as a decimal fraction (e.g., 0.005 for 0.5%)
+          type: number
+          format: float
+          example: 0.005
+        approveToAddress:
+          description: The contract address that needs token approval (for ERC20 tokens)
+          $ref: "#/components/schemas/Address"
+        gasEstimation:
+          description: Estimated gas consumption for the swap
+          type: integer
+          format: uint64
+          minimum: 0
+          example: 180000
+        transaction:
+          $ref: "#/components/schemas/LiFiTransaction"
+
+    LiFiTransaction:
+      description: Transaction data for executing the swap
+      type: object
+      required: [to, value, callData]
+      properties:
+        to:
+          description: The target contract address for the swap transaction
+          $ref: "#/components/schemas/Address"
+        value:
+          description: Native token value to attach to the transaction (in wei, as a decimal string)
+          $ref: "#/components/schemas/TokenAmount"
+        callData:
+          description: Hex encoded calldata for the swap transaction
+          $ref: "#/components/schemas/Bytes"

@@ -1,0 +1,60 @@
+---
+title: "Overview"
+description: "API reference for Sprinter Solve — request an optimal swap route and execute the returned call data"
+---
+
+Sprinter Solve enables efficient, intent-based swap execution through the Solve API, powered by the Sprinter Solver (built on the Project Blanc solver). You request a route for a token swap and receive the executable call data, optimized for best price with MEV protection and low slippage.
+
+## Base URL
+
+The Swap API is served per network:
+
+```
+https://swaps.sprinter.tech/mainnet
+https://swaps.sprinter.tech/base
+```
+
+## Authentication
+
+All requests use HTTP Basic authentication. Your credentials are a username and an API key (format `sk_live_*`) used as the password:
+
+```bash
+curl --user 'YOUR_USERNAME:YOUR_API_KEY' \
+  'https://swaps.sprinter.tech/base/v1/route?tokenIn=0x833589fcd6edb6e08f4c7c32d4f71b54bda02913&tokenOut=0x50c5725949a6f0c72e6c4a641f24049a917db0cb&amountIn=5000000000&slippageBps=50'
+```
+
+<Tip>
+Request Solve API credentials by contacting [support@sprinter.tech](mailto:support@sprinter.tech).
+</Tip>
+
+## How it works
+
+1. **Detect an intent** — a user wants to swap one token for another.
+2. **Get a route** — call [`GET /v1/route`](/api-reference/solve/get-v1route) with the input amount, token in/out, and slippage (in basis points). The response includes `amountOut`, `minAmountOut`, the `target` contract, the executable `callData`, and gas estimates.
+3. **Execute** — send a transaction to `target` with `callData` from the user's wallet to fulfill the swap on-chain.
+
+## Endpoints
+
+| Endpoint | Description |
+|----------|-------------|
+| [`GET /v1/route`](/api-reference/solve/get-v1route) | Get an optimal swap route and execution call data |
+
+## Response format
+
+`GET /v1/route` returns the route and the call data needed to execute the swap:
+
+```json
+{
+  "requestId": "0x...",
+  "amountOut": "99850000",
+  "minAmountOut": "99350000",
+  "target": "0x...",
+  "callData": "0x...",
+  "gasUsed": 180000,
+  "gasLimit": 234000
+}
+```
+
+<Tip>
+Re-query `/v1/route` before execution if there is a delay, and simulate the call data (e.g. with Tenderly) before sending.
+</Tip>

@@ -1,0 +1,72 @@
+---
+title: "Overview"
+description: "API reference for Sprinter liquidity — discover available liquidity, quote a cross-chain borrow, and get signing authorization to execute"
+---
+
+The Liquidity API exposes **Sprinter Intent Liquidity** that can be accessed through one of the supported intent protocols such as Across or LiFi Intents. The API allows you to discover where liquidity is available, get a quote for a borrow, and obtain the signing authorization needed to execute the transaction — all scoped to a chosen intent protocol.
+
+<Note>
+These are **zero-collateral** loans — solvers borrow without locking upfront capital. Repayment is secured by the intent protocol's escrow and settlement flow.
+</Note>
+
+## Base URL
+
+```
+https://api.sprinter.tech
+```
+
+## Authentication
+
+All Liquidity API requests must be authenticated with an API key, passed in the `X-Auth-Token` header:
+
+```bash
+curl --request GET \
+  --url 'https://api.sprinter.tech/liquidity/chain/eip155:8453/tokens' \
+  --header 'X-Auth-Token: YOUR_API_KEY'
+```
+
+<Tip>
+Request Liquidity API credentials by contacting [support@sprinter.tech](mailto:support@sprinter.tech).
+</Tip>
+
+## OpenAPI Specification
+
+The full machine-readable API spec is available for AI agents, code generators, and API clients:
+
+| Resource | URL |
+|----------|-----|
+| **OpenAPI Spec (JSON)** | [api.sprinter.tech/swagger/doc.json](https://api.sprinter.tech/swagger/doc.json) |
+| **Swagger UI** | [api.sprinter.tech/swagger/index.html](https://api.sprinter.tech/swagger/index.html) |
+
+<Tip>
+Point your AI agent or code generator at the [OpenAPI spec](https://api.sprinter.tech/swagger/doc.json) to auto-generate a client in any language.
+</Tip>
+
+## How it works
+
+A typical cross-chain borrow follows this lifecycle:
+
+1. **Discover** — check the tokens and liquidity available for a route (`tokens`, `pools`, `fees`).
+2. **Quote** — request a borrow quote for the source chain, protocol, and type to get cost, fees, and a quote id.
+3. **Authorize** — post the quote to get the signing authorization for the liquidity transaction.
+4. **Execute** — submit the authorized transaction on-chain.
+
+## Endpoints
+
+### Info
+
+| Endpoint | Description |
+|----------|-------------|
+| [`GET /liquidity/chain/{chainId}/tokens`](/api-reference/sprinter/liquidity/returns-supported-tokens-for-a-chain) | Supported tokens for a chain |
+| [`GET /liquidity/pools/{poolType}`](/api-reference/sprinter/liquidity/get-available-liquidity-for-a-specific-pool-type-on-a-chain) | Available liquidity for a pool type on a chain |
+| [`GET /liquidity/protocol/{protocol}/events`](/api-reference/sprinter/liquidity/stream-available-liquidity-updates-via-sse) | Stream available-liquidity updates via SSE |
+| [`GET /liquidity/protocol/{protocol}/fees`](/api-reference/sprinter/liquidity/get-fee-and-limits-for-a-given-protocol-route) | Fees and limits for a protocol route |
+| [`GET /protocol/{protocol}/solver`](/api-reference/sprinter/returns-solver-address) | Solver address for a protocol |
+| [`GET /health`](/api-reference/sprinter/health-check) | Service health check |
+
+### Actions
+
+| Endpoint | Description |
+|----------|-------------|
+| [`GET /liquidity/v2/chain/{srcChain}/protocol/{protocol}/type/{type}/quote`](/api-reference/sprinter/liquidity/get-the-borrow-quote-for-a-liquidity-transaction-based-on-the-input-data) | Borrow quote for a liquidity transaction |
+| [`POST /liquidity/v2/chain/{dstChain}/protocol/{protocol}/signature`](/api-reference/sprinter/liquidity/get-signing-authorization-for-a-liquidity-transaction) | Signing authorization for a liquidity transaction |

@@ -961,6 +961,11 @@
                     "Liquidity"
                 ],
                 "summary": "Returns supported tokens for a chain",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "description": "Chain ID in CAIP format (e.g., eip155:8453)",
@@ -996,44 +1001,24 @@
                 }
             }
         },
-        "/liquidity/pools/events": {
+        "/liquidity/protocol/{protocol}/events": {
             "get": {
-                "description": "Opens a Server-Sent Events stream that pushes liquidity updates\nwhenever a reservation is created, replaced, or deleted.\nAll query parameters are optional filters.",
+                "description": "Opens a Server-Sent Events stream that pushes a **LiquidityEvent** whenever a pool's available liquidity changes and a **FeeEvent** whenever a route fee updates. Current fee and liquidity state is pushed immediately on a new connection. Liquidity events fire when a reservation is created, increased, or deleted; duration-only extensions do not trigger an event.",
                 "tags": [
                     "Liquidity"
                 ],
                 "summary": "Stream available liquidity updates via SSE",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "parameters": [
                     {
-                        "description": "Pool type filter",
-                        "name": "poolType",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "aave",
-                                "aave_v2",
-                                "usdc",
-                                "usdc_v2",
-                                "aave_long_term",
-                                "aave_long_term_v2"
-                            ]
-                        }
-                    },
-                    {
-                        "example": "eip155:1",
-                        "description": "CAIP chain ID filter",
-                        "name": "chain",
-                        "in": "query",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "example": "USDC",
-                        "description": "Token symbol filter",
-                        "name": "tokenSymbol",
-                        "in": "query",
+                        "description": "Protocol to monitor the liquidity and fees for.",
+                        "name": "protocol",
+                        "in": "path",
+                        "required": true,
                         "schema": {
                             "type": "string"
                         }
@@ -1041,7 +1026,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "SSE stream of LiquidityEvent objects",
+                        "description": "SSE stream of FeeEvent and LiquidityEvent objects",
                         "content": {
                             "text/event-stream": {
                                 "schema": {
@@ -1060,6 +1045,11 @@
                     "Liquidity"
                 ],
                 "summary": "Get available liquidity for a specific pool type on a chain",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "description": "Pool type",
@@ -1140,6 +1130,11 @@
                     "Liquidity"
                 ],
                 "summary": "Get fee and limits for a given protocol route",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "description": "Protocol name",
@@ -1221,78 +1216,6 @@
                 }
             }
         },
-        "/liquidity/v1/chain/{chain}/protocol/{protocol}/unlock": {
-            "post": {
-                "description": "This endpoint returns signed authorization for an unlock transaction",
-                "tags": [
-                    "Liquidity"
-                ],
-                "summary": "Get signing authorization for a an unlock transaction",
-                "parameters": [
-                    {
-                        "description": "Name of the protocol, e.g., Across, Lighter",
-                        "name": "protocol",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "ID of the order that is to be unlocked",
-                        "name": "orderId",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/liquidity.Unlock"
-                            }
-                        }
-                    },
-                    "description": "request",
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/liquidity.UnlockResponse"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request due to invalid input or missing parameters",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/responses.ErrorResponse"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/liquidity/v2/chain/{dstChain}/protocol/{protocol}/signature": {
             "post": {
                 "description": "This endpoint streams signed authorization for a liquidity transaction",
@@ -1300,6 +1223,11 @@
                     "Liquidity"
                 ],
                 "summary": "Get signing authorization for a liquidity transaction",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "description": "Name of the protocol, e.g., Across, Lighter",
@@ -1372,6 +1300,11 @@
                     "Liquidity"
                 ],
                 "summary": "Get the borrow quote for a liquidity transaction based on the input data",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "description": "Protocol name (e.g., Across)",
@@ -2553,6 +2486,13 @@
                         "type": "integer"
                     }
                 }
+            }
+        },
+        "securitySchemes": {
+            "ApiKeyAuth": {
+                "type": "apiKey",
+                "name": "X-Auth-Token",
+                "in": "header"
             }
         }
     },
