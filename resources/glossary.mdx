@@ -1,6 +1,6 @@
 ---
 title: "Sprinter Glossary"
-description: "Key terms and definitions for the Sprinter protocol and Stash credit system"
+description: "Key terms and definitions for Sprinter Credit and Sprinter Liquidity"
 ---
 
 ## Terms
@@ -11,7 +11,7 @@ Protocols that facilitate asset and data transfer between different blockchain n
 
 ### Collateral
 
-Assets deposited by a user to secure a credit line. Stash values collateral across all supported chains as a single unified portfolio.
+Assets deposited by a user to secure a credit line. Sprinter Credit values collateral across all supported chains as a single unified portfolio.
 
 ### Credit Account
 
@@ -23,15 +23,15 @@ The financial terms governing a credit line: supported collateral assets, LTV ra
 
 ### Credit Hub
 
-The core component of Stash V2. Handles credit line creation, drawdowns, repayments, and liquidations across supported networks.
+The core component of Sprinter Credit. Handles credit line creation, drawdowns, repayments, and liquidations across supported networks.
 
 ### Credit Line
 
-A pre-approved borrowing facility issued by Stash, allowing users or agents to draw funds up to a defined limit based on their collateral and credit configuration.
+A pre-approved borrowing facility issued by Sprinter Credit, allowing users or agents to draw funds up to a defined limit based on their collateral and credit configuration.
 
 ### Credit Operator
 
-An entity (user, app, or agent) granted access to a Stash credit line on behalf of its owner, subject to fine-grained policy constraints such as allowed actions, amount caps, and co-sign requirements.
+An entity (user, app, or agent) granted access to a Sprinter Credit line on behalf of its owner, subject to fine-grained policy constraints such as allowed actions, amount caps, and co-sign requirements.
 
 ### Drawdown
 
@@ -39,7 +39,7 @@ The act of drawing funds from an open credit line up to the available credit lim
 
 ### Fill
 
-A fill represents the full lifecycle: Detecting a user intent, borrowing liquidity, executing the transaction, repaying liquidity, and realizing solver and protocol profits.
+A fill represents the full lifecycle: detecting a user intent, borrowing liquidity, executing the transaction, repaying liquidity, and realizing solver and protocol profits.
 
 ### Health Factor
 
@@ -55,15 +55,15 @@ The ability of multiple blockchain networks to communicate and share information
 
 ### Liquidation
 
-When a position's Health Factor drops below 1.0, Stash liquidates as much collateral as needed to restore a healthy position. Partial liquidations are preferred. Liquidators receive a 5% bonus on the collateral they claim.
+When a position's Health Factor drops below 1.0, Sprinter Credit liquidates as much collateral as needed to restore a healthy position. Partial liquidations are preferred. Liquidators receive a 5% bonus on the collateral they claim.
 
 ### Liquidity Layer
 
-The Stash component that sources and manages the capital required for credit issuance. Liquidity Providers deposit into the Liquidity Hub to earn yield.
+The component that sources and manages the capital required for credit issuance. Liquidity Providers deposit into the Liquidity Hub to earn yield.
 
 ### Liquidity Provider
 
-A participant who supplies capital to the Stash Liquidity Layer in exchange for yield.
+A participant who supplies capital to the Sprinter Liquidity Hub in exchange for yield.
 
 ### Loan-to-Value (LTV)
 
@@ -83,23 +83,23 @@ A credit line where the value of deposited collateral exceeds the credit issued,
 
 ### Policy Engine
 
-The Stash component that makes credit configurable. Every credit line is governed by a policy defining who can use it, what they can do with it, and under what conditions. Tighter constraints enable more favourable credit terms.
+The Sprinter Credit component that makes credit configurable. Every credit line is governed by a policy defining who can use it, what they can do with it, and under what conditions. Tighter constraints enable more favourable credit terms.
 
 ### Productive Collateral
 
-Collateral assets that continue to generate yield while locked in Stash, making credit cheaper by design. Stash integrates with DeFi strategies from Gauntlet and YO for this purpose.
+Collateral assets that continue to generate yield while locked in Sprinter Credit, making credit cheaper by design. Sprinter Credit integrates with DeFi strategies from Gauntlet and YO for this purpose.
 
 ### Solvers
 
 Automated agents that find and execute the most efficient way to fulfill a user's intent, optimizing for cost, speed, and security.
 
-### Stash Borrow Quote
+### Borrow Quote
 
-A borrow quote is the preliminary estimated fee a solver would incur to borrow credit from Sprinter Stash. It is returned off-chain via the Stash API and helps solvers determine if pursuing a fill is profitable. Borrow quote includes expected gas, risk premiums, protocol fees, and capital access costs — but it is not a binding or reserved price.
+A borrow quote is the preliminary estimated fee a solver would incur to borrow credit from Sprinter Liquidity. It is returned off-chain via the Sprinter Liquidity API and helps solvers determine if pursuing a fill is profitable. A borrow quote includes expected gas, risk premiums, protocol fees, and capital access costs — but it is not a binding or reserved price.
 
-### Stash Borrow Cost
+### Borrow Cost
 
-A borrow cost is the final, authorized borrowing offer issued by Sprinter Stash when a solver decides to proceed with a fill. It reserves credit under specific conditions, allowing solvers to confidently execute the crosschain transaction.
+A borrow cost is the final, authorized borrowing offer issued by Sprinter Liquidity when a solver decides to proceed with a fill. It reserves credit under specific conditions, allowing solvers to confidently execute the crosschain transaction.
 
 ### Swaps
 
