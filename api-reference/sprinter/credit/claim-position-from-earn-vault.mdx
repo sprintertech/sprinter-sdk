@@ -11,19 +11,28 @@ The `chain` parameter uses **CAIP-2 format**: `eip155:<chainId>`. For example, `
 <RequestExample>
 ```bash cURL
 curl --request GET \
-  --url 'https://api.sprinter.tech/credit/earn/claim'
+  --url 'https://api.sprinter.tech/credit/earn/claim?owner=0xUSER&receiver=0xRECEIVER&asset=0xeE8F4eC5672F09119b96Ab6fB59C27E1b7e44b61&chain=eip155:8453&claimRequestId=0'
 ```
 
 ```python Python
 import requests
 
-response = requests.get("https://api.sprinter.tech/credit/earn/claim")
+response = requests.get(
+    "https://api.sprinter.tech/credit/earn/claim",
+    params={
+        "owner": "0xUSER",
+        "receiver": "0xRECEIVER",
+        "asset": "0xeE8F4eC5672F09119b96Ab6fB59C27E1b7e44b61",
+        "chain": "eip155:8453",
+        "claimRequestId": "0"
+    }
+)
 print(response.json())
 ```
 
 ```javascript JavaScript
 const response = await fetch(
-  "https://api.sprinter.tech/credit/earn/claim"
+  "https://api.sprinter.tech/credit/earn/claim?owner=0xUSER&receiver=0xRECEIVER&asset=0xeE8F4eC5672F09119b96Ab6fB59C27E1b7e44b61&chain=eip155:8453&claimRequestId=0"
 );
 const data = await response.json();
 console.log(data);
@@ -39,7 +48,7 @@ import (
 )
 
 func main() {
-	resp, _ := http.Get("https://api.sprinter.tech/credit/earn/claim")
+	resp, _ := http.Get("https://api.sprinter.tech/credit/earn/claim?owner=0xUSER&receiver=0xRECEIVER&asset=0xeE8F4eC5672F09119b96Ab6fB59C27E1b7e44b61&chain=eip155:8453&claimRequestId=0")
 	defer resp.Body.Close()
 	body, _ := io.ReadAll(resp.Body)
 	fmt.Println(string(body))

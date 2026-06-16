@@ -1,7 +1,7 @@
 ---
-title: "Enable Auto Top-Up"
-sidebarTitle: "Enable Auto Top-Up"
-openapi: get /credit/v2/accounts/{account}/assets/{asset}/operator/auto-topup/enable
+title: "Update Auto Top-Up"
+sidebarTitle: "Update Auto Top-Up"
+openapi: get /credit/v2/accounts/{account}/assets/{asset}/operator/auto-topup/update
 ---
 
 <Info>
@@ -11,14 +11,14 @@ The `asset` parameter is the credit asset symbol — currently supported values 
 <RequestExample>
 ```bash cURL
 curl --request GET \
-  --url 'https://api.sprinter.tech/credit/v2/accounts/0xUSER/assets/usdc/operator/auto-topup/enable?receiver=0xRECEIVER&threshold=500000000&targetBalance=1000000000'
+  --url 'https://api.sprinter.tech/credit/v2/accounts/0xUSER/assets/usdc/operator/auto-topup/update?receiver=0xRECEIVER&threshold=500000000&targetBalance=1000000000'
 ```
 
 ```python Python
 import requests
 
 response = requests.get(
-    "https://api.sprinter.tech/credit/v2/accounts/0xUSER/assets/usdc/operator/auto-topup/enable",
+    "https://api.sprinter.tech/credit/v2/accounts/0xUSER/assets/usdc/operator/auto-topup/update",
     params={"receiver": "0xRECEIVER", "threshold": "500000000", "targetBalance": "1000000000"}
 )
 print(response.json())
@@ -26,7 +26,7 @@ print(response.json())
 
 ```javascript JavaScript
 const response = await fetch(
-  "https://api.sprinter.tech/credit/v2/accounts/0xUSER/assets/usdc/operator/auto-topup/enable?receiver=0xRECEIVER&threshold=500000000&targetBalance=1000000000"
+  "https://api.sprinter.tech/credit/v2/accounts/0xUSER/assets/usdc/operator/auto-topup/update?receiver=0xRECEIVER&threshold=500000000&targetBalance=1000000000"
 );
 const data = await response.json();
 console.log(data);
@@ -42,7 +42,7 @@ import (
 )
 
 func main() {
-	resp, _ := http.Get("https://api.sprinter.tech/credit/v2/accounts/0xUSER/assets/usdc/operator/auto-topup/enable?receiver=0xRECEIVER&threshold=500000000&targetBalance=1000000000")
+	resp, _ := http.Get("https://api.sprinter.tech/credit/v2/accounts/0xUSER/assets/usdc/operator/auto-topup/update?receiver=0xRECEIVER&threshold=500000000&targetBalance=1000000000")
 	defer resp.Body.Close()
 	body, _ := io.ReadAll(resp.Body)
 	fmt.Println(string(body))
