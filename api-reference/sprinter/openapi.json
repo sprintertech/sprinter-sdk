@@ -1504,6 +1504,800 @@
                     }
                 }
             }
+        },
+        "/credit/v2/assets/{asset}/collateral/{chain}/{collateral}": {
+            "get": {
+                "description": "Returns detailed information about a collateral asset including APY estimate (if earn vault), price in USD, underlying asset, and earn service name",
+                "tags": [
+                    "Credit"
+                ],
+                "summary": "Get collateral asset details",
+                "parameters": [
+                    {
+                        "example": "usdc",
+                        "description": "Credit asset symbol (e.g. usdc, eure)",
+                        "name": "asset",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "eip155:8453",
+                        "description": "Chain ID in CAIP-2 format",
+                        "name": "chain",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "0xeE8F4eC5672F09119b96Ab6fB59C27E1b7e44b61",
+                        "description": "Collateral asset address",
+                        "name": "collateral",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/credit.CollateralDetailsResponse"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Collateral not supported",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/credit/v2/accounts/{account}/assets/{asset}/operator": {
+            "get": {
+                "description": "Returns the current operator address and list of whitelisted credit receivers.",
+                "tags": [
+                    "Credit"
+                ],
+                "summary": "Get operator status for an account",
+                "parameters": [
+                    {
+                        "description": "User account address",
+                        "name": "account",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "usdc",
+                        "description": "Credit asset symbol (e.g. usdc, eure)",
+                        "name": "asset",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operator status",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/credit.GetOperatorStatus.response"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/credit/v2/accounts/{account}/assets/{asset}/lock": {
+            "get": {
+                "description": "Creates list of contract calls to lock assets as collateral for credit account. Supports both underlying assets (e.g., USDC) which are wrapped into earn vault first, and earn positions (e.g., gtUSDCp) which are deposited directly.",
+                "tags": [
+                    "Credit"
+                ],
+                "summary": "Calldata to lock asset as collateral",
+                "parameters": [
+                    {
+                        "description": "Account that holds the asset and will execute calls",
+                        "name": "account",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "usdc",
+                        "description": "Credit asset symbol (e.g. usdc, eure)",
+                        "name": "asset",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Amount in lowest denomination (e.g., wei for ETH)",
+                        "name": "amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Asset address in eth format - either underlying asset (USDC) or earn position (gtUSDCp)",
+                        "name": "earnAsset",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Earn strategy to wrap asset before depositing. If omitted, asset is deposited directly without wrapping.",
+                        "name": "earn",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of contract calls to execute locking of collateral",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/credit.Lock.response"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request due to invalid input or missing parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/credit/v2/accounts/{account}/assets/{asset}/unlock": {
+            "get": {
+                "description": "Creates list of contract calls to unlock and withdraw\ncollateral and potentially unwrap position from earn vault",
+                "tags": [
+                    "Credit"
+                ],
+                "summary": "Call data to unlock collateral",
+                "parameters": [
+                    {
+                        "description": "Account that holds the asset and will execute calls",
+                        "name": "account",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "usdc",
+                        "description": "Credit asset symbol (e.g. usdc, eure)",
+                        "name": "asset",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Amount in lowest denomination (e.g., wei for ETH)",
+                        "name": "amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Asset address in eth format",
+                        "name": "collateral",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Whether to generate call to unwrap from earn strategy",
+                        "name": "unwrap",
+                        "in": "query",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of contract calls to execute unlocking of collateral",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/credit.Unlock.response"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request due to invalid input or missing parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/credit/v2/accounts/{account}/assets/{asset}/draw": {
+            "get": {
+                "description": "Returns the calls needed to draw credit. If the user has sufficient\nregistered collateral, the drawCredit call is returned.",
+                "tags": [
+                    "Credit"
+                ],
+                "summary": "Build transaction calls to draw credit",
+                "parameters": [
+                    {
+                        "description": "User account address (borrower)",
+                        "name": "account",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "usdc",
+                        "description": "Credit asset symbol (e.g. usdc, eure)",
+                        "name": "asset",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Amount to borrow (in wei)",
+                        "name": "amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Address to receive the borrowed funds",
+                        "name": "receiver",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of contract calls to execute drawing credit",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/credit.DrawCredit.response"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request due to invalid input or insufficient collateral",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/credit/v2/accounts/{account}/assets/{asset}/repay": {
+            "get": {
+                "description": "Creates list of contract calls to approve USDC and repay debt to CreditHub",
+                "tags": [
+                    "Credit"
+                ],
+                "summary": "Call data to repay credit debt",
+                "parameters": [
+                    {
+                        "description": "Account (borrower) that will repay the debt",
+                        "name": "account",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "usdc",
+                        "description": "Credit asset symbol (e.g. usdc, eure)",
+                        "name": "asset",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Amount in lowest denomination (e.g., wei for ETH)",
+                        "name": "amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of contract calls to execute repayment",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/credit.Repay.response"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request due to invalid input or missing parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/credit/v2/accounts/{account}/assets/{asset}/operator/auto-topup/enable": {
+            "get": {
+                "description": "Returns the calls needed to enable auto top-up. Checks on-chain state\nand only includes setOperator (if not already set) and addCreditReceiver\n(if not already whitelisted).",
+                "tags": [
+                    "Credit"
+                ],
+                "summary": "Build transaction calls to enable auto top-up",
+                "parameters": [
+                    {
+                        "description": "User account address",
+                        "name": "account",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "usdc",
+                        "description": "Asset symbol to auto top-up (e.g. usdc, eure)",
+                        "name": "asset",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Receiver address to auto top-up",
+                        "name": "receiver",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of contract calls",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/credit.GetEnableAutoTopup.response"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Account has a different operator",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/credit/v2/accounts/{account}/assets/{asset}/operator/auto-topup/disable": {
+            "get": {
+                "description": "Returns the removeCreditReceiver call if the receiver is currently\nwhitelisted; returns empty calls if already disabled.",
+                "tags": [
+                    "Credit"
+                ],
+                "summary": "Build transaction calls to disable auto top-up",
+                "parameters": [
+                    {
+                        "description": "User account address",
+                        "name": "account",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "usdc",
+                        "description": "Credit asset symbol (e.g. usdc, eure)",
+                        "name": "asset",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Receiver address to remove",
+                        "name": "receiver",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of contract calls",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/credit.GetDisableAutoTopup.response"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responses.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/credit/v2/accounts/{account}/assets/{asset}/operator/auto-topup/config": {
+            "get": {
+                "description": "Returns the current auto top-up configuration for a given receiver.",
+                "tags": [
+                    "Credit"
+                ],
+                "summary": "Get auto top-up config",
+                "parameters": [
+                    {
+                        "description": "User account address",
+                        "name": "account",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "usdc",
+                        "description": "Credit asset symbol (e.g. usdc, eure)",
+                        "name": "asset",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Receiver address to get config for",
+                        "name": "receiver",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Auto top-up configuration",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "required": [
+                                        "config"
+                                    ],
+                                    "properties": {
+                                        "config": {
+                                            "type": "object",
+                                            "required": [
+                                                "threshold",
+                                                "targetBalance",
+                                                "healthFactor"
+                                            ],
+                                            "properties": {
+                                                "threshold": {
+                                                    "type": "string",
+                                                    "example": "500000000"
+                                                },
+                                                "targetBalance": {
+                                                    "type": "string",
+                                                    "example": "1000000000"
+                                                },
+                                                "healthFactor": {
+                                                    "type": "string",
+                                                    "example": "10000"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/credit/v2/accounts/{account}/assets/{asset}/operator/auto-topup/update": {
+            "get": {
+                "description": "Builds calldata to update an existing auto top-up configuration.",
+                "tags": [
+                    "Credit"
+                ],
+                "summary": "Update auto top-up config",
+                "parameters": [
+                    {
+                        "description": "User account address",
+                        "name": "account",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "example": "usdc",
+                        "description": "Credit asset symbol (e.g. usdc, eure)",
+                        "name": "asset",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Receiver address whose config is being updated",
+                        "name": "receiver",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "New balance threshold that triggers top-up (in wei)",
+                        "name": "threshold",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "New target balance after top-up (in wei, must be >= threshold)",
+                        "name": "targetBalance",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Minimum health factor in basis points (10000 = 1.0)",
+                        "name": "healthFactor",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Calldata to update auto top-up",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/credit.callsResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {

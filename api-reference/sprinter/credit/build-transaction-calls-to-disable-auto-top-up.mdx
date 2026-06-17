@@ -1,25 +1,32 @@
 ---
 title: "Disable Auto Top-Up"
 sidebarTitle: "Disable Auto Top-Up"
-openapi: get /credit/accounts/{account}/operator/auto-topup/disable
+openapi: get /credit/v2/accounts/{account}/assets/{asset}/operator/auto-topup/disable
 ---
+
+<Info>
+The `asset` parameter is the credit asset symbol — currently supported values are `usdc` and `eure`.
+</Info>
 
 <RequestExample>
 ```bash cURL
 curl --request GET \
-  --url 'https://api.sprinter.tech/credit/accounts/0xUSER/operator/auto-topup/disable'
+  --url 'https://api.sprinter.tech/credit/v2/accounts/0xUSER/assets/usdc/operator/auto-topup/disable?receiver=0xRECEIVER'
 ```
 
 ```python Python
 import requests
 
-response = requests.get("https://api.sprinter.tech/credit/accounts/0xUSER/operator/auto-topup/disable")
+response = requests.get(
+    "https://api.sprinter.tech/credit/v2/accounts/0xUSER/assets/usdc/operator/auto-topup/disable",
+    params={"receiver": "0xRECEIVER"}
+)
 print(response.json())
 ```
 
 ```javascript JavaScript
 const response = await fetch(
-  "https://api.sprinter.tech/credit/accounts/0xUSER/operator/auto-topup/disable"
+  "https://api.sprinter.tech/credit/v2/accounts/0xUSER/assets/usdc/operator/auto-topup/disable?receiver=0xRECEIVER"
 );
 const data = await response.json();
 console.log(data);
@@ -35,7 +42,7 @@ import (
 )
 
 func main() {
-	resp, _ := http.Get("https://api.sprinter.tech/credit/accounts/0xUSER/operator/auto-topup/disable")
+	resp, _ := http.Get("https://api.sprinter.tech/credit/v2/accounts/0xUSER/assets/usdc/operator/auto-topup/disable?receiver=0xRECEIVER")
 	defer resp.Body.Close()
 	body, _ := io.ReadAll(resp.Body)
 	fmt.Println(string(body))
