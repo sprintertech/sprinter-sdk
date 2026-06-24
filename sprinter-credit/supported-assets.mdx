@@ -17,7 +17,9 @@ Collateral can be locked to open an overcollateralized credit line. Each asset h
 |---|---|---|:---:|:---:|---|
 | USDC | `USDC` | Base | 90% | 94% | Raw stablecoin |
 | Gauntlet USDC Prime | `gtUSDCp` | Base | 75% | 82% | Stable vault |
-| Superform USDC | `superUSDC` | Base | — | — | USDC SuperVault |
+| Superform USDC | `superUSDC` | Base | 70% | — | USDC SuperVault |
+| yoUSDC | `yoUSD` | Base | 70% | — | Stable vault |
+| yoBTC | `yoBTC` | Base | 55% | — | Volatile vault |
 
 <Info>
 LTV values are returned by the API as basis points (e.g. `9000` = 90%). A `null` LTV means the asset is accepted as collateral but parameters are being finalized.
@@ -50,11 +52,13 @@ Earn strategies allow collateral to generate yield while it backs a credit line.
 |---|---|---|---|---|---|---|:---:|
 | `gauntlet-usdc-prime` | Gauntlet USDC Prime | Morpho V1 | Gauntlet | USDC | Base | ERC-4626 | 5 |
 | `superform-usdc` | superUSDC | Superform | Superform | USDC | Base | ERC-7540 | 7 |
+| `yo-usdc` | yoUSDC | Yo Protocol | Yo | USDC | Base | ERC-7540 | 5 |
+| `yo-btc` | yoBTC | Yo Protocol | Yo | BTC | Base | ERC-7540 | 5 |
 
 Use the strategy ID as the `earn` parameter when locking collateral:
 
 ```bash
-curl -X GET 'https://api.sprinter.tech/credit/accounts/0xUSER/lock?amount=1000000000&asset=0xCOLLATERAL&earn=gauntlet-usdc-prime'
+curl -X GET 'https://api.sprinter.tech/credit/v2/accounts/0xUSER/assets/usdc/lock?amount=1000000000&earnAsset=0xCOLLATERAL&earn=gauntlet-usdc-prime'
 ```
 
 <Info>
