@@ -15,11 +15,11 @@ Collateral can be locked to open an overcollateralized credit line. Each asset h
 
 | Asset | Symbol | Chain | LTV | Maintenance LTV | Collateral Tier |
 |---|---|---|:---:|:---:|---|
-| USDC | `USDC` | Base | 90% | 94% | Raw stablecoin |
-| Gauntlet USDC Prime | `gtUSDCp` | Base | 75% | 82% | Stable vault |
-| Superform USDC | `superUSDC` | Base | 70% | — | USDC SuperVault |
-| yoUSDC | `yoUSD` | Base | 70% | — | Stable vault |
-| yoBTC | `yoBTC` | Base | 55% | — | Volatile vault |
+| USDC | `USDC` | Base | 90% | 92.5% | Raw stablecoin |
+| Gauntlet USDC Prime | `gtUSDCp` | Base | 75% | 80% | Stable vault |
+| Superform USDC | `superUSDC` | Base | 70% | 75% | USDC SuperVault |
+| yoUSDC | `yoUSD` | Base | 70% | 80% | Stable vault |
+| yoBTC | `yoBTC` | Base | 55% | 70% | Volatile vault |
 
 <Info>
 LTV values are returned by the API as basis points (e.g. `9000` = 90%). A `null` LTV means the asset is accepted as collateral but parameters are being finalized.
@@ -31,9 +31,10 @@ All supported collateral falls into one of these tiers. LTV and maintenance thre
 
 | Tier | Examples | LTV | Maintenance LTV | Liquidation Bonus |
 |---|---|:---:|:---:|:---:|
-| Raw stablecoin | USDC | 90% | 94% | 5% |
-| Stable vault | Gauntlet USDC Prime | 75% | 82% | 5% |
-| USDC SuperVault | Superform USDC | 85% | 90% | 6% |
+| Raw stablecoin | USDC | 90% | 92.5% | 1% |
+| Stable vault | gtUSDCp, yoUSDC | 75% | 80% | 6% |
+| USDC SuperVault | superUSDC | 70% | 75% | 6% |
+| Volatile vault | yoBTC | 55% | 70% | 8% |
 | Raw volatile | ETH, WBTC | 80% | 85% | 5% |
 | Volatile DEX-swap | stETH, cbETH | 75% | 82% | 5% |
 | Volatile vault | yoETH | 65% | 75% | 6% |
